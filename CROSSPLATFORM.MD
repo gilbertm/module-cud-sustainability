@@ -1,6 +1,6 @@
 # CROSSPLATFORM Compatibility Notes
 
-This document records the cross-version compatibility changes implemented so the `cud_research` module can run on Drupal 8.9.x, 9.x, and 10.x from the same codebase.
+This document records the cross-version compatibility changes implemented so the `cud_sustainability` module can run on Drupal 8.9.x, 9.x, and 10.x from the same codebase.
 
 ## Target Support Matrix
 
@@ -12,7 +12,7 @@ This document records the cross-version compatibility changes implemented so the
 
 ### 1) Module Metadata Compatibility
 
-File: `cud_research.info.yml`
+File: `cud_sustainability.info.yml`
 
 - Updated `core_version_requirement` from `^10 || ^11` to `^8.9 || ^9 || ^10`.
 - Added explicit dependency on `drupal:media` to match carousel media usage.
@@ -46,7 +46,7 @@ Why:
 Files:
 
 - `src/Controller/ResearchController.php`
-- `cud_research.module`
+- `cud_sustainability.module`
 
 Replaced `?->` nullsafe operator usage with explicit request checks, for example:
 
@@ -88,7 +88,7 @@ Why:
 
 ### 6) Entity Query Access Check Backward Compatibility
 
-File: `cud_research.install`
+File: `cud_sustainability.install`
 
 In uninstall logic:
 
@@ -102,16 +102,16 @@ Why:
 
 ### 7) Update Hook Numbering for 8.x/9.x/10.x Paths
 
-File: `cud_research.install`
+File: `cud_sustainability.install`
 
 Added wrapper update hooks:
 
-- `cud_research_update_8001` through `cud_research_update_8005`
-- `cud_research_update_9001` through `cud_research_update_9005`
+- `cud_sustainability_update_8001` through `cud_sustainability_update_8005`
+- `cud_sustainability_update_9001` through `cud_sustainability_update_9005`
 
 Each wrapper delegates to existing logic in:
 
-- `cud_research_update_10001` through `cud_research_update_10005`
+- `cud_sustainability_update_10001` through `cud_sustainability_update_10005`
 
 Why:
 - Different major lines can expect different update number sequences.
@@ -121,7 +121,7 @@ Why:
 
 These changes are intended to preserve module behavior while widening compatibility:
 
-- Same route/controller behavior for `/research`, `/research/search`, and `/research/{slug}`.
+- Same route/controller behavior for `/sustainability`, `/sustainability/search`, and `/sustainability/{slug}`.
 - Same settings form behavior.
 - Same content type/field/menu install and update intent.
 - Same carousel/search/menu rendering intent.
@@ -139,16 +139,16 @@ Run on each target site (8.9.x, 9.x, 10.x):
 
 1. Enable module and run database updates.
 2. Verify install created:
-   - `research` content type
+   - `sustainability` content type
    - slug/carousel/sections fields
    - primary/secondary menus and starter links
 3. Open and verify routes:
-   - `/research`
-   - `/research/search?q=test`
-   - `/research/{slug}` for an existing slug
+   - `/sustainability`
+   - `/sustainability/search?q=test`
+   - `/sustainability/{slug}` for an existing slug
 4. Confirm carousel image URLs render correctly.
 5. Open settings page:
-   - `/admin/config/content/cud-research`
+   - `/admin/config/content/cud-sustainability`
    - Save `logo_filename` and confirm logo resolution.
 6. Uninstall in a test environment and confirm cleanup completes without fatals.
 
@@ -156,8 +156,8 @@ Run on each target site (8.9.x, 9.x, 10.x):
 
 Compatibility updates were applied in these files:
 
-- `cud_research.info.yml`
+- `cud_sustainability.info.yml`
 - `src/Form/CudResearchSettingsForm.php`
 - `src/Controller/ResearchController.php`
-- `cud_research.module`
-- `cud_research.install`
+- `cud_sustainability.module`
+- `cud_sustainability.install`

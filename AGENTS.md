@@ -1,10 +1,10 @@
-# CUD Research Chat Guardrails
+# CUD Sustainability Chat Guardrails
 
 This file defines mandatory chat-agent behavior for this module.
 
 ## Scope
 
-- Work only in `web/modules/custom/cud_research`.
+- Work only in `web/modules/custom/cud_sustainability`.
 - Do not change Drupal core, contrib modules, themes, profiles, or global project files unless the user explicitly asks.
 
 ## Testing command restrictions
@@ -22,4 +22,4 @@ Replace `<php-service>` with the actual service/container name used by the hosti
 ## Safety
 
 - Do not run database updates, install/uninstall commands, or destructive commands unless explicitly requested.
-- Keep all development and fixes focused on `cud_research` module code.
+- Keep all development and fixes focused on `cud_sustainability` module code.

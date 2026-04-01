@@ -20,7 +20,7 @@ Rendering note:
 
   <div class="title-description flex flex-1 items-center pt-4 sm:pt-0">
     <div class="cud-carousel-text max-w-[92vw] sm:max-w-3xl lg:max-w-4xl">
-      <h3 class="cud-carousel-title max-w-[16ch] text-[clamp(1.75rem,5vw,4.5rem)] leading-[0.95] sm:max-w-[14ch]">Mapping Future Research Pathways</h3>
+      <h3 class="cud-carousel-title max-w-[16ch] text-[clamp(1.75rem,5vw,4.5rem)] leading-[0.95] sm:max-w-[14ch]">Mapping Future Sustainability Pathways</h3>
       <p class="cud-carousel-description mt-3 max-w-[62ch] text-sm leading-6 sm:text-base sm:leading-7">A full overlay block rendered as one unit from the field.</p>
 
       <div class="mt-5 flex flex-wrap items-center gap-2.5 sm:mt-8 sm:gap-3">
@@ -55,7 +55,7 @@ Rendering note:
 
   <div class="title-description flex flex-1 items-center justify-center pt-4 sm:pt-0">
     <div class="cud-carousel-text mx-auto max-w-[94vw] sm:max-w-3xl">
-      <h3 class="cud-carousel-title mx-auto max-w-[16ch] text-[clamp(1.65rem,4.6vw,4.25rem)] leading-[0.98]">Mapping Future Research Pathways</h3>
+      <h3 class="cud-carousel-title mx-auto max-w-[16ch] text-[clamp(1.65rem,4.6vw,4.25rem)] leading-[0.98]">Mapping Future Sustainability Pathways</h3>
       <p class="cud-carousel-description mx-auto mt-3 max-w-[58ch] text-sm leading-6 sm:text-base sm:leading-7">A centered full-overlay variant for balanced hero presentation.</p>
 
       <div class="mt-5 flex flex-wrap items-center justify-center gap-2.5 sm:mt-8 sm:gap-3">
@@ -90,7 +90,7 @@ Rendering note:
 
   <div class="title-description flex flex-1 items-center justify-start pt-4 sm:justify-end sm:pt-0">
     <div class="cud-carousel-text max-w-[92vw] sm:ml-auto sm:max-w-3xl">
-      <h3 class="cud-carousel-title max-w-[16ch] text-[clamp(1.65rem,4.8vw,4.25rem)] leading-[0.98] sm:ml-auto">Mapping Future Research Pathways</h3>
+      <h3 class="cud-carousel-title max-w-[16ch] text-[clamp(1.65rem,4.8vw,4.25rem)] leading-[0.98] sm:ml-auto">Mapping Future Sustainability Pathways</h3>
       <p class="cud-carousel-description mt-3 max-w-[58ch] text-sm leading-6 sm:ml-auto sm:text-base sm:leading-7">A right-hand full-overlay variant to keep focus away from left-heavy imagery.</p>
 
       <div class="mt-5 flex flex-wrap items-center justify-start gap-2.5 sm:mt-8 sm:justify-end sm:gap-3">

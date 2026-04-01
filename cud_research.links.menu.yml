@@ -1,6 +1,0 @@
-cud_research.settings:
-  title: 'CUD Research'
-  description: 'Configure CUD Research module settings.'
-  route_name: cud_research.settings
-  parent: system.admin_config_content
-  weight: 100
