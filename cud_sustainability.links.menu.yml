@@ -1,0 +1,6 @@
+cud_sustainability.settings:
+  title: 'CUD Sustainability'
+  description: 'Configure CUD Sustainability module settings.'
+  route_name: cud_sustainability.settings
+  parent: system.admin_config_content
+  weight: 100

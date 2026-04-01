@@ -1,0 +1,476 @@
+<?php
+
+declare(strict_types=1);
+
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\menu_link_content\Entity\MenuLinkContent;
+use Drupal\node\Entity\Node;
+use Drupal\node\Entity\NodeType;
+use Drupal\system\Entity\Menu;
+
+/**
+ * Implements hook_install().
+ */
+function cud_sustainability_install(): void {
+  cud_sustainability_ensure_research_bundle();
+  cud_sustainability_create_main_entry();
+  cud_sustainability_ensure_menus();
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function cud_sustainability_uninstall(): void {
+  $type_id = 'sustainability';
+  $entity_type_manager = \Drupal::entityTypeManager();
+
+  // 1. Delete all sustainability nodes so no orphaned rows remain in node* tables.
+  $node_storage = $entity_type_manager->getStorage('node');
+  $query = \Drupal::entityQuery('node')
+    ->condition('type', $type_id);
+  if (method_exists($query, 'accessCheck')) {
+    $query->accessCheck(FALSE);
+  }
+  $nids = $query->execute();
+  if ($nids) {
+    $node_storage->delete($node_storage->loadMultiple($nids));
+  }
+
+  // 2. Delete field instances then field storage for each field.
+  $fields_to_remove = [
+    'field_research_slug',
+    'field_research_carousel_images',
+    'field_research_carousel_content',
+    'field_research_sections',
+  ];
+
+  foreach ($fields_to_remove as $field_name) {
+    $instance = FieldConfig::loadByName('node', $type_id, $field_name);
+    if ($instance) {
+      $instance->delete();
+    }
+
+    // Only drop the storage table when no other bundles use this field.
+    $remaining = $entity_type_manager
+      ->getStorage('field_config')
+      ->loadByProperties(['entity_type' => 'node', 'field_name' => $field_name]);
+    if (empty($remaining)) {
+      $storage = FieldStorageConfig::loadByName('node', $field_name);
+      if ($storage) {
+        $storage->delete();
+        // Purge any residual field data rows the delete may have queued.
+        field_purge_batch(100);
+      }
+    }
+  }
+
+  // 3. Delete navigation menu items and menus.
+  if (\Drupal::moduleHandler()->moduleExists('menu_link_content')) {
+    $mlc_storage = $entity_type_manager->getStorage('menu_link_content');
+    foreach (['cud-sustainability-primary', 'cud-sustainability-secondary'] as $menu_name) {
+      $links = $mlc_storage->loadByProperties(['menu_name' => $menu_name]);
+      if (!empty($links)) {
+        $mlc_storage->delete($links);
+      }
+    }
+  }
+  foreach (['cud-sustainability-primary', 'cud-sustainability-secondary'] as $menu_name) {
+    $menu = Menu::load($menu_name);
+    if ($menu) {
+      $menu->delete();
+    }
+  }
+
+  // 4. Delete the node type itself.
+  $type = NodeType::load($type_id);
+  if ($type) {
+    $type->delete();
+  }
+}
+
+/**
+ * Adds the CUD Sustainability content type and slug field for existing installs.
+ */
+function cud_sustainability_update_8001(): void {
+  cud_sustainability_update_10001();
+}
+
+/**
+ * Creates a starter "main" sustainability node when missing.
+ */
+function cud_sustainability_update_8002(): void {
+  cud_sustainability_update_10002();
+}
+
+/**
+ * Adds carousel image and overlay fields to the sustainability bundle.
+ */
+function cud_sustainability_update_8003(): void {
+  cud_sustainability_update_10003();
+}
+
+/**
+ * Adds the sections field to the sustainability bundle.
+ */
+function cud_sustainability_update_8004(): void {
+  cud_sustainability_update_10004();
+}
+
+/**
+ * Creates the CUD Sustainability navigation menus with starter link items.
+ */
+function cud_sustainability_update_8005(): void {
+  cud_sustainability_update_10005();
+}
+
+/**
+ * Adds the CUD Sustainability content type and slug field for existing installs.
+ */
+function cud_sustainability_update_9001(): void {
+  cud_sustainability_update_10001();
+}
+
+/**
+ * Creates a starter "main" sustainability node when missing.
+ */
+function cud_sustainability_update_9002(): void {
+  cud_sustainability_update_10002();
+}
+
+/**
+ * Adds carousel image and overlay fields to the sustainability bundle.
+ */
+function cud_sustainability_update_9003(): void {
+  cud_sustainability_update_10003();
+}
+
+/**
+ * Adds the sections field to the sustainability bundle.
+ */
+function cud_sustainability_update_9004(): void {
+  cud_sustainability_update_10004();
+}
+
+/**
+ * Creates the CUD Sustainability navigation menus with starter link items.
+ */
+function cud_sustainability_update_9005(): void {
+  cud_sustainability_update_10005();
+}
+
+/**
+ * Adds the CUD Sustainability content type and slug field for existing installs.
+ */
+function cud_sustainability_update_10001(): void {
+  cud_sustainability_ensure_research_bundle();
+}
+
+/**
+ * Creates a starter "main" sustainability node when missing.
+ */
+function cud_sustainability_update_10002(): void {
+  cud_sustainability_ensure_research_bundle();
+  cud_sustainability_create_main_entry();
+}
+
+/**
+ * Adds carousel image and overlay fields to the sustainability bundle.
+ */
+function cud_sustainability_update_10003(): void {
+  cud_sustainability_ensure_carousel_fields();
+}
+
+/**
+ * Adds the sections field to the sustainability bundle.
+ */
+function cud_sustainability_update_10004(): void {
+  cud_sustainability_ensure_sections_field();
+}
+
+/**
+ * Ensures the sustainability bundle and slug field exist.
+ */
+function cud_sustainability_ensure_research_bundle(): void {
+  $type_id = 'sustainability';
+
+  if (!NodeType::load($type_id)) {
+    $type = NodeType::create([
+      'type' => $type_id,
+      'name' => 'CUD Sustainability',
+      'description' => 'Sustainability entries rendered at /sustainability and /sustainability/{slug}.',
+      'new_revision' => TRUE,
+      'preview_mode' => 1,
+      'display_submitted' => FALSE,
+    ]);
+    $type->save();
+  }
+
+  if (!FieldStorageConfig::loadByName('node', 'field_research_slug')) {
+    FieldStorageConfig::create([
+      'field_name' => 'field_research_slug',
+      'entity_type' => 'node',
+      'type' => 'string',
+      'cardinality' => 1,
+      'settings' => [
+        'max_length' => 128,
+        'is_ascii' => TRUE,
+        'case_sensitive' => FALSE,
+      ],
+      'translatable' => FALSE,
+    ])->save();
+  }
+
+  if (!FieldConfig::loadByName('node', $type_id, 'field_research_slug')) {
+    FieldConfig::create([
+      'field_name' => 'field_research_slug',
+      'entity_type' => 'node',
+      'bundle' => $type_id,
+      'label' => 'Sustainability slug',
+      'description' => 'Use "main" for /sustainability and unique values for /sustainability/{slug}.',
+      'required' => TRUE,
+      'settings' => [],
+    ])->save();
+  }
+
+  $form_display = \Drupal::service('entity_display.repository')
+    ->getFormDisplay('node', $type_id, 'default');
+  if (!$form_display->getComponent('field_research_slug')) {
+    $form_display->setComponent('field_research_slug', [
+      'type' => 'string_textfield',
+      'weight' => -4,
+      'settings' => [
+        'size' => 64,
+        'placeholder' => 'main',
+      ],
+    ]);
+    $form_display->save();
+  }
+
+  $view_display = \Drupal::service('entity_display.repository')
+    ->getViewDisplay('node', $type_id, 'default');
+  if (!$view_display->getComponent('field_research_slug')) {
+    $view_display->setComponent('field_research_slug', [
+      'label' => 'hidden',
+      'type' => 'string',
+      'weight' => 98,
+    ]);
+    $view_display->save();
+  }
+
+  cud_sustainability_ensure_carousel_fields();
+  cud_sustainability_ensure_sections_field();
+}
+
+/**
+ * Adds carousel image and overlay fields to the sustainability bundle.
+ */
+function cud_sustainability_ensure_carousel_fields(): void {
+  $type_id = 'sustainability';
+
+  if (!FieldStorageConfig::loadByName('node', 'field_research_carousel_images')) {
+    FieldStorageConfig::create([
+      'field_name' => 'field_research_carousel_images',
+      'entity_type' => 'node',
+      'type' => 'entity_reference',
+      'cardinality' => FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED,
+      'settings' => ['target_type' => 'media'],
+    ])->save();
+  }
+
+  if (!FieldConfig::loadByName('node', $type_id, 'field_research_carousel_images')) {
+    FieldConfig::create([
+      'field_name' => 'field_research_carousel_images',
+      'entity_type' => 'node',
+      'bundle' => $type_id,
+      'label' => 'Carousel images',
+      'required' => FALSE,
+      'settings' => [
+        'handler' => 'default:media',
+        'handler_settings' => ['target_bundles' => ['image' => 'image']],
+      ],
+    ])->save();
+  }
+
+  if (!FieldStorageConfig::loadByName('node', 'field_research_carousel_content')) {
+    FieldStorageConfig::create([
+      'field_name' => 'field_research_carousel_content',
+      'entity_type' => 'node',
+      'type' => 'text_long',
+      'cardinality' => FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED,
+    ])->save();
+  }
+
+  if (!FieldConfig::loadByName('node', $type_id, 'field_research_carousel_content')) {
+    FieldConfig::create([
+      'field_name' => 'field_research_carousel_content',
+      'entity_type' => 'node',
+      'bundle' => $type_id,
+      'label' => 'Carousel slide overlays',
+      'required' => FALSE,
+      'description' => 'HTML overlay per slide, paired by position with carousel images.',
+      'settings' => [],
+    ])->save();
+  }
+
+  $form_display = \Drupal::service('entity_display.repository')
+    ->getFormDisplay('node', $type_id, 'default');
+  $needs_save = FALSE;
+
+  if (!$form_display->getComponent('field_research_carousel_images')) {
+    $form_display->setComponent('field_research_carousel_images', [
+      'type' => 'media_library_widget',
+      'weight' => 5,
+    ]);
+    $needs_save = TRUE;
+  }
+
+  if (!$form_display->getComponent('field_research_carousel_content')) {
+    $form_display->setComponent('field_research_carousel_content', [
+      'type' => 'text_textarea',
+      'weight' => 6,
+      'settings' => ['rows' => 3],
+    ]);
+    $needs_save = TRUE;
+  }
+
+  if ($needs_save) {
+    $form_display->save();
+  }
+}
+
+/**
+ * Adds the sections field to the sustainability bundle.
+ */
+function cud_sustainability_ensure_sections_field(): void {
+  $type_id = 'sustainability';
+  $field_name = 'field_research_sections';
+
+  if (!FieldStorageConfig::loadByName('node', $field_name)) {
+    FieldStorageConfig::create([
+      'field_name' => $field_name,
+      'entity_type' => 'node',
+      'type' => 'text_long',
+      'cardinality' => FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED,
+    ])->save();
+  }
+
+  if (!FieldConfig::loadByName('node', $type_id, $field_name)) {
+    FieldConfig::create([
+      'field_name' => $field_name,
+      'entity_type' => 'node',
+      'bundle' => $type_id,
+      'label' => 'Sections',
+      'required' => FALSE,
+      'description' => 'Full HTML sections printed in order on the page. Add as many as needed.',
+      'settings' => [],
+    ])->save();
+  }
+
+  $form_display = \Drupal::service('entity_display.repository')
+    ->getFormDisplay('node', $type_id, 'default');
+  if (!$form_display->getComponent($field_name)) {
+    $form_display->setComponent($field_name, [
+      'type' => 'text_textarea',
+      'weight' => 10,
+      'settings' => ['rows' => 8],
+    ]);
+    $form_display->save();
+  }
+
+  $view_display = \Drupal::service('entity_display.repository')
+    ->getViewDisplay('node', $type_id, 'default');
+  if (!$view_display->getComponent($field_name)) {
+    $view_display->setComponent($field_name, [
+      'label' => 'hidden',
+      'type' => 'text_default',
+      'weight' => 10,
+    ]);
+    $view_display->save();
+  }
+}
+
+/**
+ * Creates a starter published sustainability entry for /sustainability.
+ */
+function cud_sustainability_create_main_entry(): void {
+  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+  $existing = $node_storage->loadByProperties([
+    'type' => 'sustainability',
+    'field_research_slug' => 'main',
+  ]);
+
+  if (!empty($existing)) {
+    return;
+  }
+
+  $node = Node::create([
+    'type' => 'sustainability',
+    'title' => 'Sustainability Overview',
+    'status' => 1,
+    'field_research_slug' => 'main',
+  ]);
+  $node->save();
+}
+
+/**
+ * Creates the CUD Sustainability navigation menus with starter link items.
+ */
+function cud_sustainability_update_10005(): void {
+  cud_sustainability_ensure_menus();
+}
+
+/**
+ * Ensures the CUD Sustainability primary and secondary menus exist with starter items.
+ */
+function cud_sustainability_ensure_menus(): void {
+  $menu_definitions = [
+    'cud-sustainability-primary' => 'CUD Sustainability Primary',
+    'cud-sustainability-secondary' => 'CUD Sustainability Secondary',
+  ];
+
+  foreach ($menu_definitions as $id => $label) {
+    if (!Menu::load($id)) {
+      Menu::create([
+        'id' => $id,
+        'label' => $label,
+        'description' => $label . ' navigation menu.',
+      ])->save();
+    }
+  }
+
+  if (!\Drupal::moduleHandler()->moduleExists('menu_link_content')) {
+    return;
+  }
+
+  $starter_items = [
+    'cud-sustainability-primary' => [
+      ['title' => 'Sustainability Home', 'uri' => 'internal:/sustainability'],
+      ['title' => 'Sustainability Topics', 'uri' => 'internal:/sustainability/topics'],
+      ['title' => 'Publications', 'uri' => 'internal:/sustainability/publications'],
+    ],
+    'cud-sustainability-secondary' => [
+      ['title' => 'About Sustainability', 'uri' => 'internal:/sustainability/about'],
+      ['title' => 'Partnerships', 'uri' => 'internal:/sustainability/partnerships'],
+      ['title' => 'Contact', 'uri' => 'internal:/sustainability/contact'],
+    ],
+  ];
+
+  $mlc_storage = \Drupal::entityTypeManager()->getStorage('menu_link_content');
+  foreach ($starter_items as $menu_name => $items) {
+    $existing = $mlc_storage->loadByProperties(['menu_name' => $menu_name]);
+    if (!empty($existing)) {
+      continue;
+    }
+    foreach ($items as $weight => $item) {
+      MenuLinkContent::create([
+        'title' => $item['title'],
+        'link' => ['uri' => $item['uri']],
+        'menu_name' => $menu_name,
+        'weight' => $weight,
+        'enabled' => TRUE,
+      ])->save();
+    }
+  }
+}

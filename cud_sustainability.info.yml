@@ -1,0 +1,9 @@
+name: CUD Sustainability
+package: Custom
+type: module
+description: 'Custom routing and controller handling for /sustainability paths.'
+core_version_requirement: ^8.9 || ^9 || ^10
+dependencies:
+  - drupal:node
+  - drupal:media
+  - drupal:menu_link_content

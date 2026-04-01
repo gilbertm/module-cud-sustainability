@@ -1,0 +1,37 @@
+cud_sustainability.index:
+  path: '/sustainability'
+  defaults:
+    _controller: 'Drupal\cud_sustainability\Controller\SustainabilityController::index'
+    _title: 'Sustainability Overview'
+  requirements:
+    _permission: 'access content'
+
+cud_sustainability.search:
+  path: '/sustainability/search'
+  defaults:
+    _controller: 'Drupal\cud_sustainability\Controller\SustainabilityController::search'
+    _title: 'Sustainability Search'
+  requirements:
+    _permission: 'access content'
+
+cud_sustainability.sub_pages:
+  path: '/sustainability/{slug}'
+  defaults:
+    _controller: 'Drupal\cud_sustainability\Controller\SustainabilityController::renderPage'
+  requirements:
+    _permission: 'access content'
+    slug: '.+'
+  options:
+    parameters:
+      slug:
+        type: string
+
+cud_sustainability.settings:
+  path: '/admin/config/content/cud-sustainability'
+  defaults:
+    _form: 'Drupal\cud_sustainability\Form\CudSustainabilitySettingsForm'
+    _title: 'CUD Sustainability settings'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE

@@ -1,0 +1,39 @@
+## Self-contained font stack for CUD Sustainability.
+#
+# This library loads ALL fonts needed by the module so it is completely
+# independent of the active theme. It is a dependency of every other library
+# in this module that renders visible text.
+#
+# Local fonts (GothamHTF, KozGoPro, Dubai/Arabic) are bundled under
+# assets/fonts/ and declared via @font-face in cud_sustainability.fonts.css.
+#
+# Sora and Open Sans are not bundled locally; they are loaded from Google
+# Fonts as external CSS. Drupal treats these as plain <link> tags that bypass
+# aggregation — the correct behaviour for a CDN-hosted variable font.
+fonts:
+  version: 1.x
+  css:
+    base:
+      'https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Sora:wght@600;700;800&display=swap': { type: external, minified: true }
+    theme:
+      css/cud_sustainability.fonts.css: {}
+
+fontawesome:
+  version: 1.x
+  css:
+    base:
+      'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css': { type: external, minified: true }
+
+page:
+  version: 1.x
+  css:
+    theme:
+      css/cud_sustainability.tailwind.css: {}
+      css/cud_sustainability.css: {}
+  js:
+    js/cud_sustainability.carousel.js: {}
+    js/cud_sustainability.accessibility.js: {}
+  dependencies:
+    - core/drupal
+    - cud_sustainability/fonts
+    - cud_sustainability/fontawesome

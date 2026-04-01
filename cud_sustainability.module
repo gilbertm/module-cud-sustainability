@@ -1,0 +1,449 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * @file
+ * Theme hooks for CUD Sustainability.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function cud_sustainability_theme(array $existing, string $type, string $theme, string $path): array {
+  return [
+    'html__cud_sustainability' => [
+      'base hook' => 'html',
+      'template' => 'html--cud-sustainability',
+    ],
+    'page__cud_sustainability' => [
+      'base hook' => 'page',
+      'template' => 'page--cud-sustainability',
+    ],
+    'off_canvas_page_wrapper__cud_sustainability' => [
+      'base hook' => 'off_canvas_page_wrapper',
+      'template' => 'off-canvas-page-wrapper--cud-sustainability',
+    ],
+    'cud_sustainability_main' => [
+      'variables' => [
+        'title' => NULL,
+        'content' => NULL,
+        'mode' => 'main',
+        'carousel_items' => [],
+        'sections' => [],
+        'primary_nav' => [],
+        'secondary_nav' => [],
+      ],
+      'template' => 'cud-sustainability-main',
+    ],
+    'cud_sustainability_secondary' => [
+      'variables' => [
+        'title' => NULL,
+        'content' => NULL,
+        'mode' => 'secondary',
+        'carousel_items' => [],
+        'sections' => [],
+        'primary_nav' => [],
+        'secondary_nav' => [],
+      ],
+      'template' => 'cud-sustainability-secondary',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_route_alter().
+ *
+ * Forces CUD Sustainability to own /sustainability paths by disabling conflicting routes
+ * from other modules/themes when this module is enabled.
+ */
+function cud_sustainability_route_alter(\Symfony\Component\Routing\RouteCollection $collection): void {
+  foreach ($collection->all() as $route_name => $route) {
+    if (cud_sustainability_starts_with($route_name, 'cud_sustainability.')) {
+      continue;
+    }
+
+    $path = $route->getPath();
+    if ($path === NULL || $path === '') {
+      continue;
+    }
+
+    if (!cud_sustainability_is_overridden_path($path)) {
+      continue;
+    }
+
+    // Make conflicting routes impossible to match while preserving their
+    // definitions for debugging/inspection.
+    $route->setRequirement('_access', 'FALSE');
+  }
+}
+
+/**
+ * Determines if a route path conflicts with CUD Sustainability public paths.
+ */
+function cud_sustainability_is_overridden_path(string $path): bool {
+  return $path === '/sustainability' || cud_sustainability_starts_with($path, '/sustainability/');
+}
+
+/**
+ * Polyfill-safe prefix check for Drupal 8.x/PHP 7 compatibility.
+ */
+function cud_sustainability_starts_with(string $haystack, string $prefix): bool {
+  if ($prefix === '') {
+    return TRUE;
+  }
+
+  return strpos($haystack, $prefix) === 0;
+}
+
+/**
+ * Implements hook_theme_suggestions_html_alter().
+ */
+function cud_sustainability_theme_suggestions_html_alter(array &$suggestions, array $variables): void {
+  if (!cud_sustainability_is_route()) {
+    return;
+  }
+
+  $suggestions[] = 'html__cud_sustainability';
+}
+
+/**
+ * Implements hook_theme_suggestions_page_alter().
+ */
+function cud_sustainability_theme_suggestions_page_alter(array &$suggestions, array $variables): void {
+  if (!cud_sustainability_is_route()) {
+    return;
+  }
+
+  $suggestions[] = 'page__cud_sustainability';
+}
+
+/**
+ * Implements hook_theme_suggestions_block_alter().
+ */
+/* function cud_sustainability_theme_suggestions_block_alter(array &$suggestions, array $variables): void {
+  if (!cud_sustainability_is_route()) {
+    return;
+  }
+
+  $suggestions[] = 'block__cud_sustainability';
+} */
+
+/**
+ * Implements hook_preprocess_block().
+ *
+ * Removes Drupal block wrapper attributes (including id="block-*") on
+ * sustainability routes to keep output markup minimal.
+ */
+/* function cud_sustainability_preprocess_block(array &$variables): void {
+  if (!cud_sustainability_is_route()) {
+    return;
+  }
+
+  if (isset($variables['attributes'])) {
+    $variables['attributes'] = new \Drupal\Core\Template\Attribute();
+  }
+
+  if (isset($variables['content_attributes'])) {
+    $variables['content_attributes'] = new \Drupal\Core\Template\Attribute();
+  }
+
+  if (isset($variables['title_attributes'])) {
+    $variables['title_attributes'] = new \Drupal\Core\Template\Attribute();
+  }
+} */
+
+/**
+ * Implements hook_theme_suggestions_off_canvas_page_wrapper_alter().
+ */
+function cud_sustainability_theme_suggestions_off_canvas_page_wrapper_alter(array &$suggestions, array $variables): void {
+  if (!cud_sustainability_is_route()) {
+    return;
+  }
+
+  $suggestions[] = 'off_canvas_page_wrapper__cud_sustainability';
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function cud_sustainability_preprocess_page(array &$variables): void {
+  if (!cud_sustainability_is_route()) {
+    return;
+  }
+
+  $request = \Drupal::requestStack()->getCurrentRequest();
+  $variables['primary_nav'] = cud_sustainability_menu_items('cud-sustainability-primary');
+  $variables['secondary_nav'] = cud_sustainability_menu_items('cud-sustainability-secondary');
+  $variables['research_mode'] = cud_sustainability_resolve_mode();
+  $variables['research_site_name'] = (string) \Drupal::config('system.site')->get('name');
+  $variables['research_home_url'] = \Drupal\Core\Url::fromRoute('<front>')->toString();
+  $variables['research_logo_url'] = cud_sustainability_resolve_logo_url();
+  $variables['research_search_action'] = \Drupal\Core\Url::fromRoute('cud_sustainability.search')->toString();
+  $variables['research_search_query'] = $request ? trim((string) $request->query->get('q', '')) : '';
+  $contact_url = trim((string) \Drupal::config('cud_sustainability.settings')->get('contact_url'));
+  $variables['research_contact_url'] = $contact_url !== '' ? $contact_url : '/sustainability/contact';
+}
+
+/**
+ * Implements hook_preprocess_html().
+ */
+function cud_sustainability_preprocess_html(array &$variables): void {
+  if (!cud_sustainability_is_route()) {
+    return;
+  }
+
+  $variables['attributes']['class'][] = 'cud-sustainability-route';
+}
+
+/**
+ * Implements hook_page_alter().
+ *
+ * Removes Drupal's off-canvas page wrapper on sustainability routes so output does
+ * not include the dialog-off-canvas-main-canvas container.
+ */
+function cud_sustainability_page_alter(array &$page): void {
+  if (!cud_sustainability_is_route() || empty($page['#theme_wrappers'])) {
+    return;
+  }
+
+  if (isset($page['#theme_wrappers']['off_canvas_page_wrapper'])) {
+    unset($page['#theme_wrappers']['off_canvas_page_wrapper']);
+  }
+}
+
+/**
+ * Implements hook_page_attachments_alter().
+ *
+ * Removes active-theme libraries from sustainability routes so the custom module
+ * shell is not restyled or scripted by the site theme.
+ */
+function cud_sustainability_page_attachments_alter(array &$attachments): void {
+  if (!cud_sustainability_should_strip_theme_assets() || empty($attachments['#attached']['library'])) {
+    return;
+  }
+
+  $theme_library_prefixes = cud_sustainability_theme_library_prefixes();
+  $attachments['#attached']['library'] = array_values(array_filter(
+    $attachments['#attached']['library'],
+    static function ($library) use ($theme_library_prefixes): bool {
+      if (!is_string($library)) {
+        return TRUE;
+      }
+
+      foreach ($theme_library_prefixes as $prefix) {
+        if (strpos($library, $prefix) === 0) {
+          return FALSE;
+        }
+      }
+
+      return TRUE;
+    }
+  ));
+}
+
+/**
+ * Implements hook_css_alter().
+ */
+function cud_sustainability_css_alter(array &$css, \Drupal\Core\Asset\AttachedAssetsInterface $assets): void {
+  if (!cud_sustainability_should_strip_theme_assets()) {
+    return;
+  }
+
+  foreach ($css as $key => $item) {
+    if (!empty($item['data']) && is_string($item['data']) && cud_sustainability_is_theme_asset($item['data'])) {
+      unset($css[$key]);
+    }
+  }
+}
+
+/**
+ * Implements hook_js_alter().
+ */
+function cud_sustainability_js_alter(array &$javascript, \Drupal\Core\Asset\AttachedAssetsInterface $assets): void {
+  if (!cud_sustainability_should_strip_theme_assets()) {
+    return;
+  }
+
+  foreach ($javascript as $key => $item) {
+    if (!empty($item['data']) && is_string($item['data']) && cud_sustainability_is_theme_asset($item['data'])) {
+      unset($javascript[$key]);
+    }
+  }
+}
+
+/**
+ * Determines whether the current route is a CUD sustainability route.
+ */
+function cud_sustainability_is_route(): bool {
+  $route_name = \Drupal::routeMatch()->getRouteName();
+
+  return in_array($route_name, ['cud_sustainability.index', 'cud_sustainability.search', 'cud_sustainability.sub_pages'], TRUE);
+}
+
+/**
+ * Determines whether theme assets should be stripped for the current request.
+ */
+function cud_sustainability_should_strip_theme_assets(): bool {
+  if (!cud_sustainability_is_route()) {
+    return FALSE;
+  }
+
+  // Keep admin styling/scripts intact for administrative users and routes.
+  if (cud_sustainability_is_admin_context()) {
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
+/**
+ * Determines if current request should preserve admin-side assets.
+ */
+function cud_sustainability_is_admin_context(): bool {
+  $route_match = \Drupal::routeMatch();
+  $route = $route_match->getRouteObject();
+  if ($route && $route->getOption('_admin_route')) {
+    return TRUE;
+  }
+
+  $request = \Drupal::requestStack()->getCurrentRequest();
+  if ($request && strpos($request->getPathInfo(), '/admin') === 0) {
+    return TRUE;
+  }
+
+  $account = \Drupal::currentUser();
+  return $account->hasPermission('access administration pages');
+}
+
+/**
+ * Returns library prefixes for the active theme and all of its base themes.
+ *
+ * @return string[]
+ *   Library prefixes such as theme_name/.
+ */
+function cud_sustainability_theme_library_prefixes(): array {
+  $active_theme = \Drupal::theme()->getActiveTheme();
+  $prefixes = [$active_theme->getName() . '/'];
+
+  foreach ($active_theme->getBaseThemeExtensions() as $base_theme_name => $extension) {
+    $prefixes[] = $base_theme_name . '/';
+  }
+
+  return array_values(array_unique($prefixes));
+}
+
+/**
+ * Determines whether an asset file belongs to the active theme tree.
+ */
+function cud_sustainability_is_theme_asset(string $asset_path): bool {
+  $active_theme = \Drupal::theme()->getActiveTheme();
+  $theme_paths = [$active_theme->getPath() . '/'];
+
+  foreach ($active_theme->getBaseThemeExtensions() as $extension) {
+    $theme_paths[] = $extension->getPath() . '/';
+  }
+
+  foreach (array_unique($theme_paths) as $theme_path) {
+    if (strpos($asset_path, $theme_path) === 0) {
+      return TRUE;
+    }
+  }
+
+  return FALSE;
+}
+
+/**
+ * Returns enabled menu items for page-level sustainability navigation, with one
+ * level of children for megamenu rendering.
+ *
+ * @return list<array{title: string, url: string, active: bool, children: list<array{title: string, url: string, active: bool}>}>
+ */
+function cud_sustainability_menu_items(string $menu_name): array {
+  $parameters = new \Drupal\Core\Menu\MenuTreeParameters();
+  $parameters->setMaxDepth(2)->onlyEnabledLinks();
+
+  $menu_tree = \Drupal::service('menu.link_tree');
+  $tree = $menu_tree->load($menu_name, $parameters);
+  $tree = $menu_tree->transform($tree, [
+    ['callable' => 'menu.default_tree_manipulators:checkAccess'],
+    ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
+  ]);
+
+  $request = \Drupal::requestStack()->getCurrentRequest();
+  $current_path = $request ? $request->getPathInfo() : '/';
+  $items = [];
+
+  foreach ($tree as $element) {
+    if (!($element->access && $element->access->isAllowed())) {
+      continue;
+    }
+
+    $url = $element->link->getUrlObject()->toString();
+    $children = [];
+
+    foreach ($element->subtree as $child_element) {
+      if (!($child_element->access && $child_element->access->isAllowed())) {
+        continue;
+      }
+      $child_url = $child_element->link->getUrlObject()->toString();
+      $children[] = [
+        'title' => $child_element->link->getTitle(),
+        'url' => $child_url,
+        'active' => rtrim($child_url, '/') === rtrim($current_path, '/'),
+      ];
+    }
+
+    $is_active = rtrim($url, '/') === rtrim($current_path, '/');
+    if (!$is_active) {
+      foreach ($children as $child) {
+        if ($child['active']) {
+          $is_active = TRUE;
+          break;
+        }
+      }
+    }
+
+    $items[] = [
+      'title' => $element->link->getTitle(),
+      'url' => $url,
+      'active' => $is_active,
+      'children' => $children,
+    ];
+  }
+
+  return $items;
+}
+
+/**
+ * Resolves requested display mode from the query string.
+ */
+function cud_sustainability_resolve_mode(): string {
+  $request = \Drupal::requestStack()->getCurrentRequest();
+  $mode = $request ? (string) $request->query->get('mode', 'main') : 'main';
+  $mode = strtolower(trim($mode));
+
+  return in_array($mode, ['main', 'secondary'], TRUE) ? $mode : 'main';
+}
+
+/**
+ * Resolves logo URL with priority: module image -> theme logo -> NULL.
+ */
+function cud_sustainability_resolve_logo_url(): ?string {
+  $filename = trim((string) \Drupal::config('cud_sustainability.settings')->get('logo_filename'));
+
+  if ($filename !== '') {
+    $filename = basename($filename);
+    $relative = \Drupal::service('extension.list.module')->getPath('cud_sustainability') . '/assets/images/' . $filename;
+    $absolute = DRUPAL_ROOT . '/' . $relative;
+
+    if (is_file($absolute)) {
+      return base_path() . $relative;
+    }
+  }
+
+  $theme_logo = (string) theme_get_setting('logo.url');
+
+  return $theme_logo !== '' ? $theme_logo : NULL;
+}
+
