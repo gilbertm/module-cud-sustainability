@@ -16,16 +16,16 @@
 
 {% if carousel_slides %}
 	<section class="carousel group relative mb-8 w-screen max-w-none -translate-x-1/2 left-1/2" data-cud-carousel data-cud-carousel-autoplay="5600" aria-label="{{ 'Sustainability highlights carousel'|t }}">
-		<div class="relative overflow-hidden">
-			<div class="flex transition-transform duration-700 ease-out will-change-transform" data-cud-carousel-track>
+		<div class="w-full relative overflow-hidden">
+			<div class="w-full flex transition-transform duration-700 ease-out will-change-transform" data-cud-carousel-track>
 				{% for item in carousel_slides %}
 					<article class="relative min-w-full" data-cud-carousel-slide>
 						{% if item.image %}
-							<div class="cud-sustainability-carousel__frame aspect-[2.6/1] min-h-[360px] overflow-hidden sm:min-h-[420px] lg:min-h-[500px]">
+							<div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[360px] overflow-hidden sm:min-h-[420px] lg:min-h-[500px]">
 								{{ item.image }}
 							</div>
 						{% elseif item.image_url %}
-							<div class="cud-sustainability-carousel__frame aspect-[2.6/1] min-h-[360px] overflow-hidden sm:min-h-[420px] lg:min-h-[500px]">
+							<div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[360px] overflow-hidden sm:min-h-[420px] lg:min-h-[500px]">
 								<img src="{{ item.image_url }}" alt="{{ item.title|default('Sustainability highlight') }}" loading="lazy" class="h-full w-full object-cover">
 							</div>
 						{% endif %}
