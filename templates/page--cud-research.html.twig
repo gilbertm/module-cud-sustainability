@@ -1,0 +1,323 @@
+{#
+/**
+ * @file
+ * Responsive page shell for CUD Research routes.
+ *
+ * This template owns the route-level header/footer and only delegates the page
+ * body to page.content.
+ *
+ * Optional Drupal page regions available to enable later by uncommenting:
+ *
+ * <div class="research-region research-region--header">{{ page.header }}</div>
+ * <div class="research-region research-region--primary-menu">{{ page.primary_menu }}</div>
+ * <div class="research-region research-region--secondary-menu">{{ page.secondary_menu }}</div>
+ * <div class="research-region research-region--highlighted">{{ page.highlighted }}</div>
+ * <div class="research-region research-region--breadcrumb">{{ page.breadcrumb }}</div>
+ * <div class="research-region research-region--help">{{ page.help }}</div>
+ * <div class="research-region research-region--sidebar-first">{{ page.sidebar_first }}</div>
+ * <div class="research-region research-region--sidebar-second">{{ page.sidebar_second }}</div>
+ * <div class="research-region research-region--footer">{{ page.footer }}</div>
+ */
+#}
+
+{{ attach_library('cud_research/page') }}
+
+{% set is_secondary = research_mode == 'secondary' %}
+{% set accent_bg = is_secondary ? 'bg-orange-50' : 'bg-slate-50' %}
+{% set accent_border = is_secondary ? 'border-orange-200' : 'border-slate-200' %}
+{% set accent_text = is_secondary ? 'text-orange-700' : 'text-sky-700' %}
+{% set footer_bg = is_secondary ? 'bg-orange-950 text-orange-100' : 'bg-[#414c55] text-slate-100' %}
+{% set footer_link = is_secondary ? 'text-orange-200 hover:text-white' : 'text-sky-300 hover:text-white' %}
+{% set logo_bg = is_secondary ? 'bg-orange-600' : 'bg-slate-900' %}
+{% set page_primary_nav = primary_nav|default([]) %}
+{% set page_secondary_nav = secondary_nav|default([]) %}
+<script type="application/ld+json">
+	{
+			  "@context": "https://schema.org",
+			  "@type": "EducationalOrganization",
+			  "name": "Canadian University Dubai",
+			  "url": "https://www.cud.ac.ae",
+			  "logo": "https://www.cud.ac.ae/themes/indicud/media/logo/bigger/logo.png",
+				"description": "CUD holds the prestigious Five-Star status as per the Quacquarelli Symonds (QS) Star University Rating System. The QS ranking system is recognized among the world's most respected university rankings.",
+			  "address": {
+			    "@type": "PostalAddress",
+			    "addressLocality": "Dubai",
+			    "addressCountry": "UAE"
+			  },
+			  "knowsAbout": [
+			    "Sustainable Urban Systems",
+			    "Secure & Ethical AI",
+			    "Next-Gen Health Equity",
+			    "Quantum Information Science"
+			  ],
+				"award": [
+					"QS World University 5 Star Rating",
+					"#1 Ranked University in Dubai for the fifth consecutive year (QS World University Rankings 2026)",
+					"#4 for International Faculty Worldwide (QS World University Rankings 2025)",
+					"#6 for International Students Worldwide (QS World University Rankings 2025)",
+					"#21 in the Arab Region (QS Arab Region Rankings 2026)",
+					"#22 among Private Universities Across Asia (AppliedHE ALL ASIA Private University Ranking 2026)",
+					"#523 University Worldwide (QS World University Rankings 2025)"
+				]
+			}
+</script>
+
+<div class="cud-research-page-layout min-h-screen {{ accent_bg }} text-slate-900">
+	<a class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-slate-900 focus:px-4 focus:py-2 focus:text-white" href="#main-content">Skip to content</a>
+
+	<header class="border-b {{ accent_border }} bg-white/90 backdrop-blur z-100" data-research-sticky data-header-variant="daisyui">
+		<div id="logo-navigation-daisyui" class="mx-auto flex max-w-7xl gap-5 px-4 py-4 sm:px-6 lg:px-8">
+			<a class="research-logo-link flex min-h-[80px] items-center gap-4" href="{{ research_home_url }}">
+				{% if research_logo_url %}
+					<img alt="{{ research_site_name }}" class="min-h-[80px] h-20 w-auto object-contain" src="{{ research_logo_url }}">
+				{% else %}
+					<div class="min-w-0">
+						<p class="text-[0.68rem] font-semibold uppercase tracking-[0.28em] {{ accent_text }}">CUD Research</p>
+						<p class="truncate text-base font-semibold text-slate-900 sm:text-lg">{{ research_site_name ?: 'Research Hub' }}</p>
+					</div>
+				{% endif %}
+			</a>
+
+			<button type="button" class="research-nav-toggle" data-research-nav-toggle aria-controls="research-nav-panels-daisyui" aria-expanded="false">
+				<span class="sr-only">{{ 'Toggle navigation'|t }}</span>
+				<span class="research-nav-toggle__line"></span>
+				<span class="research-nav-toggle__line"></span>
+				<span class="research-nav-toggle__line"></span>
+			</button>
+
+			<div id="research-nav-panels-daisyui" class="research-nav-panels flex flex-col gap-3 items-end" data-research-nav-panels>
+				<div class="secondary-nav flex items-center gap-4">
+					{% if page_secondary_nav %}
+						<nav class="research-nav-list flex flex-wrap items-center gap-x-1 gap-y-2 rounded-2xl border-none" aria-label="{{ 'CUD Research Secondary'|t }}">
+							{% for item in page_secondary_nav %}
+								<a href="{{ item.url }}" class="rounded-full px-3.5 py-1 text-[12px] font-medium transition-colors{% if item.active %} bg-slate-700 text-[#858585] shadow-sm{% else %} text-[#858585] hover:text-[#757575]{% endif %}">{{ item.title }}</a>
+							{% endfor %}
+						</nav>
+					{% endif %}
+					<div id="disability-accessibility-daisyui" class="research-a11y-toolbar" role="toolbar" aria-label="{{ 'Accessibility tools'|t }}">
+						<button type="button" data-research-font="increase" title="{{ 'Increase font size'|t }}" aria-label="{{ 'Increase font size'|t }}">
+							<span aria-hidden="true">A<sup>+</sup>
+							</span>
+						</button>
+						<button type="button" data-research-font="decrease" title="{{ 'Decrease font size'|t }}" aria-label="{{ 'Decrease font size'|t }}">
+							<span aria-hidden="true">A<sup>−</sup>
+							</span>
+						</button>
+						<button type="button" data-research-font="reset" title="{{ 'Reset font size'|t }}" aria-label="{{ 'Reset font size'|t }}">
+							<span aria-hidden="true">A</span>
+						</button>
+					</div>
+					<div class="inline-flex items-center border-0 px-3.5 py-1 text-sm font-medium text-slate-700">
+						<span class="mr-1.5 inline-flex h-4 w-4 items-center justify-center" aria-hidden="true">
+							<svg viewbox="0 0 24 24" fill="none" class="h-4 w-4" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.75"/><path d="M3 12H21" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M12 3C14.3 5.4 15.6 8.6 15.6 12C15.6 15.4 14.3 18.6 12 21" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M12 3C9.7 5.4 8.4 8.6 8.4 12C8.4 15.4 9.7 18.6 12 21" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+						</span>
+						<span class="text-sm">EN</span>
+					</div>
+				</div>
+
+				<div class="primary-navigation primary-nav flex w-full flex-col gap-4 lg:flex-row lg:items-center lg:justify-end">
+					{% if page_primary_nav %}
+						<nav class="research-nav-list research-primary-nav w-full lg:min-w-0 lg:flex-1" aria-label="{{ 'CUD Research Primary (DaisyUI)'|t }}">
+							<ul class="flex w-full flex-col gap-x-1 gap-y-2 rounded-2xl border-0 p-0 lg:flex-row lg:items-center lg:justify-end">
+								{% for item in page_primary_nav %}
+									{% set item_children = item.children|default([]) %}
+									{% if item_children %}
+										<li class="research-primary-item dropdown dropdown-end dropdown-hover">
+											<button tabindex="0" class="research-primary-item__link rounded-full px-3.5 py-1 pb-3 text-sm font-medium transition-colors text-[#858585] hover:text-[#757575] flex items-center gap-1">
+												{{ item.title }}
+												<svg class="h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/></svg>
+											</button>
+											<ul tabindex="0" class="dropdown-content menu bg-white rounded-lg shadow-xl p-0 w-80 lg:w-auto z-50">
+												<li role="presentation" class="menu-title hidden">
+													<span class="px-3.5 py-2 text-sm font-semibold">{{ item.title }}</span>
+												</li>
+												{% for child in item_children %}
+													<li role="presentation" class="hover:bg-slate-100">
+														{# <a href="{{ child.url }}" class="px-3.5 py-2 text-sm{% if child.active %} active{% endif %}">{{ child.title }}</a> } #}
+														<a href="{{ child.url }}" class="px-3.5 py-2 text-sm text-[#757575]">{{ child.title }}</a>
+													</li>
+												{% endfor %}
+											</ul>
+										</li>
+									{% else %}
+										<li class="research-primary-item">
+											<a href="{{ item.url }}" class="research-primary-item__link rounded-full px-3.5 py-1 pb-3 text-sm font-medium transition-colors text-[#858585] hover:text-[#757575]">{{ item.title }}</a>
+										</li>
+									{% endif %}
+								{% endfor %}
+							</ul>
+						</nav>
+					{% endif %}
+					<div class="search submit-proposal flex shrink-0 flex-nowrap items-center gap-1.5 lg:justify-end">
+						<form action="{{ research_search_action }}" method="get" role="search" class="relative flex flex-nowrap items-stretch">
+							<label class="sr-only" for="cud-research-search-daisyui">{{ 'Search research'|t }}</label>
+							<input id="cud-research-search-daisyui" type="search" name="q" value="{{ research_search_query|default('') }}" placeholder="{{ 'Search research'|t }}" class="w-36 rounded-md border border-slate-300 bg-white px-2.5 py-1.5 pr-8 text-[11px] leading-tight text-slate-900 placeholder:text-slate-400 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-200 lg:w-36">
+							{% if research_mode == 'secondary' %}
+								<input type="hidden" name="mode" value="secondary">
+							{% endif %}
+							<button type="submit" aria-label="{{ 'Search'|t }}" class="absolute right-1 top-1/2 inline-flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-md text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400">
+								<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewbox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M8.5 3a5.5 5.5 0 013.983 9.294l3.611 3.612a1 1 0 01-1.414 1.414l-3.612-3.611A5.5 5.5 0 118.5 3zm0 2a3.5 3.5 0 100 7 3.5 3.5 0 000-7z" clip-rule="evenodd"/></svg>
+							</button>
+						</form>
+						<a href="{{ research_contact_url }}" class="inline-flex w-[140px] max-w-[160px] items-center justify-between gap-1 whitespace-nowrap rounded-md border border-[#7f1d1d]/35 bg-[#b13634] px-2.5 py-1.5 text-[11px] font-semibold leading-tight tracking-[0.04em] text-[#ffffff] shadow-sm transition-colors hover:bg-[#7f1d1d] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#7f1d1d]/40 focus:ring-offset-2">
+							<span class="min-w-0 truncate">{{ 'Submit Research'|t }}</span>
+							<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewbox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.293 4.293a1 1 0 011.414 0l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414-1.414L13.586 11H4a1 1 0 110-2h9.586l-3.293-3.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<section>
+		{{ page.content }}
+	</section>
+
+	<footer class="border-t border-slate-800/70 {{ footer_bg }}">
+		<div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-12">
+			<div class="grid gap-8 lg:grid-cols-[1.2fr_1fr_1fr_1fr] lg:gap-10">
+				<div class="space-y-5">
+					<a href="https://www.cud.ac.ae/about/accreditation" class="inline-block" target="_blank" rel="noopener noreferrer">
+						<img alt="Canadian University Dubai" class="h-14 w-auto object-contain" src="/modules/custom/cud_research/assets/images/logo-footer-qs-2024.png">
+					</a>
+					<a class="inline-flex items-center rounded-full border-2 border-[#d5202a] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#d5202a]" href="https://cudportal.cud.ac.ae/apply?utm_source=Organic_channel&amp;utm_medium=search_engine&amp;utm_campaign=not_applicable" target="_blank" rel="noopener noreferrer">Apply online</a>
+
+<ul class="flex flex-wrap gap-3 mt-1">
+						<li>
+							<a href="http://www.youtube.com/user/webcud" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="flex h-8 w-8 items-center justify-center rounded-full text-slate-300 transition-colors hover:bg-white/10 hover:text-white">
+								<i class="fa-brands fa-youtube text-lg" aria-hidden="true"></i>
+							</a>
+						</li>
+						<li>
+							<a href="https://twitter.com/@cuduae" target="_blank" rel="noopener noreferrer" aria-label="X / Twitter" class="flex h-8 w-8 items-center justify-center rounded-full text-slate-300 transition-colors hover:bg-white/10 hover:text-white">
+								<i class="fa-brands fa-x-twitter text-lg" aria-hidden="true"></i>
+							</a>
+						</li>
+						<li>
+							<a href="http://instagram.com/canadianuniversitydubai" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="flex h-8 w-8 items-center justify-center rounded-full text-slate-300 transition-colors hover:bg-white/10 hover:text-white">
+								<i class="fa-brands fa-instagram text-lg" aria-hidden="true"></i>
+							</a>
+						</li>
+						<li>
+							<a href="http://www.facebook.com/CanadianUniversityDubai" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="flex h-8 w-8 items-center justify-center rounded-full text-slate-300 transition-colors hover:bg-white/10 hover:text-white">
+								<i class="fa-brands fa-facebook-f text-lg" aria-hidden="true"></i>
+							</a>
+						</li>
+						<li>
+							<a href="https://www.linkedin.com/school/canadian-university-dubai" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="flex h-8 w-8 items-center justify-center rounded-full text-slate-300 transition-colors hover:bg-white/10 hover:text-white">
+								<i class="fa-brands fa-linkedin-in text-lg" aria-hidden="true"></i>
+							</a>
+						</li>
+						<li>
+							<a href="https://api.whatsapp.com/send?phone=97180069283" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="flex h-8 w-8 items-center justify-center rounded-full text-slate-300 transition-colors hover:bg-white/10 hover:text-white">
+								<i class="fa-brands fa-whatsapp text-lg" aria-hidden="true"></i>
+							</a>
+						</li>
+						<li>
+							<a href="https://www.tiktok.com/@canadianuniversitydubai" target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="flex h-8 w-8 items-center justify-center rounded-full text-slate-300 transition-colors hover:bg-white/10 hover:text-white">
+								<i class="fa-brands fa-tiktok text-lg" aria-hidden="true"></i>
+							</a>
+						</li>
+					</ul>
+				</div>
+
+
+				<div>
+					<h3 class="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-white">Quick Links</h3>
+					<ul class="space-y-2 text-sm">
+						<li>
+							<a class="{{ footer_link }}" href="/about">About CUD</a>
+						</li>
+						<li>
+							<a class="{{ footer_link }}" href="https://careers.cud.ac.ae/" target="_blank" rel="noopener noreferrer">Careers</a>
+						</li>
+						<li>
+							<a class="{{ footer_link }}" href="/programs">Programs</a>
+						</li>
+						<li>
+							<a class="{{ footer_link }}" href="/about/mission-and-vision">Mission and Vision</a>
+						</li>
+						<li>
+							<a class="{{ footer_link }}" href="/why-cud">Why choose us?</a>
+						</li>
+						<li>
+							<a class="{{ footer_link }}" href="https://lrc.cud.ac.ae/home" target="_blank" rel="noopener noreferrer">Learning Resource Centre</a>
+						</li>
+					</ul>
+				</div>
+
+				<div>
+					<h3 class="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-white">Get In Touch</h3>
+					<ul class="space-y-2 text-sm">
+						<li>
+							<a class="{{ footer_link }}" href="/contact">Contact us</a>
+						</li>
+						<li>
+							<a class="{{ footer_link }}" href="/downloads/location-map">Location map</a>
+						</li>
+						<li>
+							<a class="{{ footer_link }}" href="/contact/university-timings">Timings</a>
+						</li>
+						<li>
+							<a class="{{ footer_link }}" href="/sitemap">Sitemap</a>
+						</li>
+						<li>
+							<a class="{{ footer_link }}" href="/legal-information">Terms and conditions</a>
+						</li>
+					</ul>
+				</div>
+
+				<div>
+					<h3 class="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-white">Study In Canada</h3>
+					<ul class="space-y-2 text-sm">
+						<li>
+							<a class="{{ footer_link }}" href="/international-education/study-canada">Overview</a>
+						</li>
+						<li>
+							<a class="{{ footer_link }}" href="/transfer-canada/">Transfer Partners</a>
+						</li>
+						<li>
+							<a class="{{ footer_link }}" href="/transfer-canada/">Study Abroad Options</a>
+						</li>
+						<li>
+							<a class="{{ footer_link }}" href="/about/accreditation">Accreditation</a>
+						</li>
+						<li>
+							<a class="{{ footer_link }}" href="/fees">Fees</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="mt-8 grid grid-cols-1 gap-6 border-t border-white/15 pt-6 lg:grid-cols-3 lg:items-start">
+				<div class="space-y-5 lg:col-span-1">
+					<div class="overflow-hidden rounded-xl border border-white/15">
+						<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14439.48283549347!2d55.2644333!3d25.2075823!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x5cc89b41e81e0384!2sCanadian%20University%20Dubai!5e0!3m2!1sen!2sae!4v1635854321675!5m2!1sen!2sae" width="100%" height="220" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+					</div>
+
+					<div class="text-sm leading-6 text-slate-200">
+						<p class="font-semibold text-white">Canadian University Dubai</p>
+						<p>City Walk, Dubai, United Arab Emirates</p>
+						<p>
+							<a class="{{ footer_link }}" href="tel:80069283">800 69283</a>
+						</p>
+					</div>
+				</div>
+				<div class="hidden lg:block" aria-hidden="true"></div>
+				<div class="inspiring-minds lg:justify-self-end lg:self-start">
+					<img alt="Canadian University Dubai" class="h-14 w-auto object-contain" src="/modules/custom/cud_research/assets/images/slogan-inspiring-minds-transforming-lives.png">
+				</div>
+			</div>
+
+			<div class="mt-10 border-t border-white/15 pt-6">
+				<div class="flex flex-col gap-4 text-sm text-slate-300 md:flex-row md:items-center md:justify-between">
+					<p>©{{ "now"|date("Y") }}
+						Canadian University Dubai. All rights reserved.</p>
+				</div>
+				<p class="mt-5 text-xs leading-6 text-slate-400">
+					Canadian University Dubai, a duly licensed and accredited higher education institution by the Ministry of Higher Education and Scientific Research, United Arab Emirates, confirms that its sole legal and physical campus is in the Emirate of Dubai. All admission, registration, payment and official communication are conducted only through authorized university channels and the contact details listed at www.cud.ac.ae. Report suspicious contact to info@cud.ac.ae.
+				</p>
+			</div>
+		</div>
+	</footer>
+</div>

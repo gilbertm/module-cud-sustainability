@@ -1,0 +1,12 @@
+{
+  "name": "cud-research-tailwind",
+  "private": true,
+  "scripts": {
+    "build": "tailwindcss -c tailwind.config.js -i ./assets/tailwind.input.css -o ./css/cud_research.tailwind.css --minify",
+    "watch": "tailwindcss -c tailwind.config.js -i ./assets/tailwind.input.css -o ./css/cud_research.tailwind.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.19",
+    "daisyui": "^4.12.10"
+  }
+}

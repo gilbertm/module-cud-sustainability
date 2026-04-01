@@ -1,0 +1,17 @@
+# Node / Tailwind build
+node_modules/
+npm-debug.log*
+yarn-error.log
+
+# Generated CSS (rebuild with `npm run build`)
+css/cud_research.tailwind.css
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
