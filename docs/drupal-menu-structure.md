@@ -39,7 +39,7 @@ This file maps the proposed sustainability IA into Drupal-friendly menu structur
 ### Research and Innovation
 | Parent | Child | Path | Weight |
 |---|---|---|---:|
-| Research and Innovation | Center for Sustainability and Innovation | /sustainability/research-innovation/center-for-sustainability-and-innovation | 10 |
+| Research and Innovation | Center for Sustainability | /sustainability/research-innovation/center-for-sustainability-and-innovation | 10 |
 | Research and Innovation | Research Pillars | /sustainability/research-innovation/research-pillars | 20 |
 | Research and Innovation | Research Groups | /sustainability/research-innovation/research-groups | 30 |
 | Research and Innovation | Publications and Projects | /sustainability/research-innovation/publications-projects | 40 |
@@ -47,7 +47,7 @@ This file maps the proposed sustainability IA into Drupal-friendly menu structur
 ### Campus Operations
 | Parent | Child | Path | Weight |
 |---|---|---|---:|
-| Campus Operations | Path to Net Zero | /sustainability/campus-operations/path-to-net-zero | 10 |
+| Campus Operations | Net Zero Path | /sustainability/campus-operations/path-to-net-zero | 10 |
 | Campus Operations | Emissions and Energy | /sustainability/campus-operations/emissions-energy | 20 |
 | Campus Operations | Water and Waste | /sustainability/campus-operations/water-waste | 30 |
 | Campus Operations | Sustainable Infrastructure | /sustainability/campus-operations/sustainable-infrastructure | 40 |
@@ -79,17 +79,17 @@ This file maps the proposed sustainability IA into Drupal-friendly menu structur
 | Reports and Disclosures | Annual Report | /sustainability/reports-disclosures/annual-report | 20 |
 | Reports and Disclosures | Indicator Dashboard | /sustainability/reports-disclosures/indicator-dashboard | 30 |
 | Reports and Disclosures | Evidence Repository | /sustainability/reports-disclosures/evidence-repository | 40 |
-| Reports and Disclosures | Submission Readiness Tracker | /sustainability/reports-disclosures/submission-readiness | 50 |
+| Reports and Disclosures | Submission Tracker | /sustainability/reports-disclosures/submission-readiness | 50 |
 
 ## Utility Menu Structure
 
 | Menu | Item | Path | Weight |
 |---|---|---|---:|
 | Sustainability Utility | SDG Framework | /sustainability/sdg-framework | 10 |
-| Sustainability Utility | Policies Library | /sustainability/policies | 20 |
+| Sustainability Utility | Policies | /sustainability/policies | 20 |
 | Sustainability Utility | Sustainability Team | /sustainability/team | 30 |
 | Sustainability Utility | Contact | /sustainability/contact | 40 |
-| Sustainability Utility | Collaborate With Us | /sustainability/collaborate | 50 |
+| Sustainability Utility | Collaborate | /sustainability/collaborate | 50 |
 
 ## Build Notes
 - Keep Sustainability as one root parent for predictable IA.

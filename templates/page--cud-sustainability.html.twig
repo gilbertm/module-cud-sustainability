@@ -90,7 +90,10 @@
 					{% if page_secondary_nav %}
 						<nav class="sustainability-nav-list flex flex-wrap items-center gap-x-1 gap-y-2 rounded-2xl border-none" aria-label="{{ 'CUD Sustainability Secondary'|t }}">
 							{% for item in page_secondary_nav %}
-								<a href="{{ item.url }}" class="rounded-full px-3.5 py-1 text-[12px] font-medium transition-colors{% if item.active %} bg-slate-700 text-[#858585] shadow-sm{% else %} text-[#858585] hover:text-[#757575]{% endif %}">{{ item.title }}</a>
+								{% set item_title = item.title|default(item.text|default('')) %}
+								{% set item_url = item.url|default('#') %}
+								{% set item_active = item.active|default(false) %}
+								<a href="{{ item_url }}" class="rounded-full px-3.5 py-1 text-[12px] font-medium transition-colors{% if item_active %} bg-slate-700 text-[#858585] shadow-sm{% else %} text-[#858585] hover:text-[#757575]{% endif %}">{{ item_title }}</a>
 							{% endfor %}
 						</nav>
 					{% endif %}
@@ -120,50 +123,38 @@
 						<nav class="sustainability-nav-list sustainability-primary-nav w-full lg:min-w-0 lg:flex-1" aria-label="{{ 'CUD Sustainability Primary (DaisyUI)'|t }}">
 							<ul class="flex w-full flex-col gap-x-1 gap-y-2 rounded-2xl border-0 p-0 lg:flex-row lg:items-center lg:justify-end">
 								{% for item in page_primary_nav %}
-									{% set item_children = item.children|default([]) %}
+									{% set item_title = item.title|default(item.text|default('')) %}
+									{% set item_url = item.url|default('#') %}
+									{% set item_children = item.children|default(item.below|default([])) %}
 									{% if item_children %}
 										<li class="sustainability-primary-item dropdown dropdown-end dropdown-hover">
 											<button tabindex="0" class="sustainability-primary-item__link rounded-full px-3.5 py-1 pb-3 text-sm font-medium transition-colors text-[#858585] hover:text-[#757575] flex items-center gap-1">
-												{{ item.title }}
+												{{ item_title }}
 												<svg class="h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/></svg>
 											</button>
 											<ul tabindex="0" class="dropdown-content menu bg-white rounded-lg shadow-xl p-0 w-80 lg:w-auto z-50">
 												<li role="presentation" class="menu-title hidden">
-													<span class="px-3.5 py-2 text-sm font-semibold">{{ item.title }}</span>
+													<span class="px-3.5 py-2 text-sm font-semibold">{{ item_title }}</span>
 												</li>
 												{% for child in item_children %}
+													{% set child_title = child.title|default(child.text|default('')) %}
+													{% set child_url = child.url|default('#') %}
 													<li role="presentation" class="hover:bg-slate-100">
 														{# <a href="{{ child.url }}" class="px-3.5 py-2 text-sm{% if child.active %} active{% endif %}">{{ child.title }}</a> } #}
-														<a href="{{ child.url }}" class="px-3.5 py-2 text-sm text-[#757575]">{{ child.title }}</a>
+														<a href="{{ child_url }}" class="px-3.5 py-2 text-sm text-[#757575]">{{ child_title }}</a>
 													</li>
 												{% endfor %}
 											</ul>
 										</li>
 									{% else %}
 										<li class="sustainability-primary-item">
-											<a href="{{ item.url }}" class="sustainability-primary-item__link rounded-full px-3.5 py-1 pb-3 text-sm font-medium transition-colors text-[#858585] hover:text-[#757575]">{{ item.title }}</a>
+											<a href="{{ item_url }}" class="sustainability-primary-item__link rounded-full px-3.5 py-1 pb-3 text-sm font-medium transition-colors text-[#858585] hover:text-[#757575]">{{ item_title }}</a>
 										</li>
 									{% endif %}
 								{% endfor %}
 							</ul>
 						</nav>
 					{% endif %}
-					<div class="search submit-proposal flex shrink-0 flex-nowrap items-center gap-1.5 lg:justify-end">
-						<form action="{{ research_search_action }}" method="get" role="search" class="relative flex flex-nowrap items-stretch">
-							<label class="sr-only" for="cud-sustainability-search-daisyui">{{ 'Search sustainability'|t }}</label>
-							<input id="cud-sustainability-search-daisyui" type="search" name="q" value="{{ research_search_query|default('') }}" placeholder="{{ 'Search sustainability'|t }}" class="w-36 rounded-md border border-slate-300 bg-white px-2.5 py-1.5 pr-8 text-[11px] leading-tight text-slate-900 placeholder:text-slate-400 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-200 lg:w-36">
-							{% if research_mode == 'secondary' %}
-								<input type="hidden" name="mode" value="secondary">
-							{% endif %}
-							<button type="submit" aria-label="{{ 'Search'|t }}" class="absolute right-1 top-1/2 inline-flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-md text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400">
-								<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewbox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M8.5 3a5.5 5.5 0 013.983 9.294l3.611 3.612a1 1 0 01-1.414 1.414l-3.612-3.611A5.5 5.5 0 118.5 3zm0 2a3.5 3.5 0 100 7 3.5 3.5 0 000-7z" clip-rule="evenodd"/></svg>
-							</button>
-						</form>
-						<a href="{{ research_contact_url }}" class="inline-flex w-[140px] max-w-[160px] items-center justify-between gap-1 whitespace-nowrap rounded-md border border-[#7f1d1d]/35 bg-[#b13634] px-2.5 py-1.5 text-[11px] font-semibold leading-tight tracking-[0.04em] text-[#ffffff] shadow-sm transition-colors hover:bg-[#7f1d1d] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#7f1d1d]/40 focus:ring-offset-2">
-							<span class="min-w-0 truncate">{{ 'Submit Sustainability'|t }}</span>
-							<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewbox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.293 4.293a1 1 0 011.414 0l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414-1.414L13.586 11H4a1 1 0 110-2h9.586l-3.293-3.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
-						</a>
-					</div>
 				</div>
 			</div>
 		</div>

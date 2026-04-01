@@ -13,10 +13,10 @@
 
 ## Utility Navigation
 1. SDG Framework
-2. Policies Library
+2. Policies
 3. Sustainability Team
 4. Contact
-5. Collaborate With Us
+5. Collaborate
 
 ## Footer Navigation
 1. About This Initiative
