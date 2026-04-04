@@ -86,8 +86,8 @@
 			</button>
 
 			<div id="sustainability-nav-panels-daisyui" class="sustainability-nav-panels flex flex-col gap-3 items-end" data-sustainability-nav-panels>
-				<div class="secondary-nav flex items-center gap-4">
-					{% if page_secondary_nav %}
+				<div class="secondary-nav flex items-center gap-4 w-full justify-end">
+					{# % if page_secondary_nav % }
 						<nav class="sustainability-nav-list flex flex-wrap items-center gap-x-1 gap-y-2 rounded-2xl border-none" aria-label="{{ 'CUD Sustainability Secondary'|t }}">
 							{% for item in page_secondary_nav %}
 								{% set item_title = item.title|default(item.text|default('')) %}
@@ -96,7 +96,7 @@
 								<a href="{{ item_url }}" class="rounded-full px-3.5 py-1 text-[12px] font-medium transition-colors{% if item_active %} bg-slate-700 text-[#858585] shadow-sm{% else %} text-[#858585] hover:text-[#757575]{% endif %}">{{ item_title }}</a>
 							{% endfor %}
 						</nav>
-					{% endif %}
+					{ % endif % #}
 					<div id="disability-accessibility-daisyui" class="sustainability-a11y-toolbar" role="toolbar" aria-label="{{ 'Accessibility tools'|t }}">
 						<button type="button" data-sustainability-font="increase" title="{{ 'Increase font size'|t }}" aria-label="{{ 'Increase font size'|t }}">
 							<span aria-hidden="true">A<sup>+</sup>
@@ -130,7 +130,7 @@
 										<li class="sustainability-primary-item dropdown dropdown-end dropdown-hover">
 											<button tabindex="0" class="sustainability-primary-item__link rounded-full px-3.5 py-1 pb-3 text-sm font-medium transition-colors text-[#858585] hover:text-[#757575] flex items-center gap-1">
 												{{ item_title }}
-												<svg class="h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/></svg>
+												<i class="fa-solid fa-chevron-down text-[8px]" aria-hidden="true"></i>
 											</button>
 											<ul tabindex="0" class="dropdown-content menu bg-white rounded-lg shadow-xl p-0 w-80 lg:w-auto z-50">
 												<li role="presentation" class="menu-title hidden">
