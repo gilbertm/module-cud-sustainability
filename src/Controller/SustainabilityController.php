@@ -184,10 +184,13 @@ class SustainabilityController extends ControllerBase {
   /**
    * Renders any sustainability sub-page from the URL slug.
    *
-   * Routing logic:
-   * - Slug matches field_research_slug (with prefix fallbacks) → template
-   *   named after the URL slug, e.g. cud-sustainability--our-commitment-governance.html.twig
-   * - No matching node or empty slug field → cud-sustainability--normal.html.twig
+   * Template selection is purely path-based (Drupal native convention):
+   *   /sustainability                        → cud-sustainability--main.html.twig
+   *   /sustainability/our-commitment/governance → cud-sustainability--our-commitment--governance.html.twig
+   *                                              falling back to cud-sustainability--normal.html.twig
+   *   /sustainability/*                     → cud-sustainability--normal.html.twig
+   *
+   * Node content is still loaded via the slug field (separate concern).
    */
   public function renderPage(string $slug) {
     $slug = trim($slug, '/');
@@ -196,7 +199,8 @@ class SustainabilityController extends ControllerBase {
 
     $node = $this->loadNodeForRouteSlug($slug);
 
-    $variant = $this->resolveVariant($slug, $node !== NULL);
+    // Template variant is derived from the URL path, not the slug field.
+    $variant = $this->resolveVariantFromPath();
 
     $this->trace('renderPage() variant resolved', [
       '@slug' => $slug,
@@ -273,26 +277,29 @@ class SustainabilityController extends ControllerBase {
    * Rules:
    * - No matching node (or its slug field is empty) → 'normal'
    * - URL slug 'main' (index page slug) → 'main'
-   * - Otherwise → URL slug with '/' replaced by '--' (path-segment separator)
+   * Otherwise the sub-path becomes the variant string, with '/' → '--'.
    *
-   * The returned string maps 1-to-1 to a Twig template:
-   *   'our-commitment--governance' → cud-sustainability--our-commitment--governance.html.twig
-   *
-   * In Drupal's convention '--' in template filenames = '__' in suggestion names.
+   * Template convention (mirrors Drupal's page suggestion system):
+   *   path /sustainability                        → variant 'main'
+   *   path /sustainability/our-commitment/governance → variant 'our-commitment--governance'
+   *   path /sustainability/anything               → variant 'anything'
+   * variantToThemeHook() then checks the registry and falls back to 'normal'.
    */
-  protected function resolveVariant(string $routeSlug, bool $hasNode): string {
-    if (!$hasNode) {
-      return 'normal';
-    }
+  protected function resolveVariantFromPath(): string {
+    $request = $this->requestStack->getCurrentRequest();
+    $path = $request ? trim($request->getPathInfo(), '/') : 'sustainability';
 
-    $routeSlug = trim($routeSlug, '/');
-    if ($routeSlug === '' || $routeSlug === 'main') {
+    if ($path === 'sustainability') {
       return 'main';
     }
 
-    // Replace slash (path segment boundary) with '--' to produce a template
-    // name like cud-sustainability--our-commitment--governance.html.twig.
-    return str_replace('/', '--', $routeSlug);
+    if (strpos($path, 'sustainability/') === 0) {
+      $sub = substr($path, strlen('sustainability/'));
+      // Each path segment → separated by '--' in the variant string.
+      return str_replace('/', '--', $sub);
+    }
+
+    return 'normal';
   }
 
   /**
@@ -884,30 +891,35 @@ class SustainabilityController extends ControllerBase {
   /**
    * Converts a variant string to its registered Drupal theme hook name.
    *
-   * Variant format uses '--' as path-segment separator (mirrors template
-   * filenames). Unknown variants fall back to cud_sustainability__normal,
-   * which maps to cud-sustainability--normal.html.twig.
+   * The architecture:
+   *   page--cud-sustainability.html.twig  = page shell (header/nav/footer)
+   *                                         used for ALL /sustainability routes
+   *   cud-sustainability--main.html.twig  = inner content for /sustainability
+   *   cud-sustainability--normal.html.twig = inner content fallback
+   *   cud-sustainability--{path}.html.twig = inner content for specific routes
    *
-   * Examples:
-   *   'main'                    -> cud_sustainability__main
-   *   'normal'                  -> cud_sustainability__normal
-   *   'our-commitment--governance' -> cud_sustainability__our_commitment__governance
+   * Mapping: variant string '--' segments → '__' machine name separators.
+   *   'main'                       → cud_sustainability__main
+   *   'our-commitment--governance' → cud_sustainability__our_commitment__governance
+   *   anything not in hook_theme() → cud_sustainability__normal (fallback)
    */
   protected function variantToThemeHook(string $variant): string {
-    if ($variant === '') {
-      $variant = 'normal';
+    if ($variant === '' || $variant === 'normal') {
+      return 'cud_sustainability__normal';
     }
 
-    // Split on '--' (path-segment separator), sanitise each segment.
+    if ($variant === 'main') {
+      return 'cud_sustainability__main';
+    }
+
+    // Split on '--' (path-segment separator), sanitise each segment to
+    // underscores, then join with '__'. This mirrors Drupal's -- ↔ __ convention.
     $parts = explode('--', strtolower($variant));
     $machine_parts = array_map(static function (string $p): string {
       return preg_replace('/[^a-z0-9]+/', '_', $p);
     }, $parts);
-    $candidate = 'cud_sustainability__' . implode('__', $machine_parts);
 
-    // Verify the candidate is registered; fall back to the normal template.
-    $registry = \Drupal::service('theme.registry')->get();
-    return isset($registry[$candidate]) ? $candidate : 'cud_sustainability__normal';
+    return 'cud_sustainability__' . implode('__', $machine_parts);
   }
 
   /**

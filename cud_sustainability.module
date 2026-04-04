@@ -69,44 +69,55 @@ function cud_sustainability_theme(array $existing, string $type, string $theme, 
 /**
  * Implements hook_theme_suggestions_cud_sustainability().
  *
- * Routing logic for template selection:
- * - variant = 'main'                       → cud-sustainability--main.html.twig
- * - variant = 'normal'                     → cud-sustainability--normal.html.twig
- * - variant = 'our-commitment--governance' → cud-sustainability--our-commitment--governance.html.twig
- *   (with cud-sustainability--normal.html.twig as intermediate fallback)
+ * Template selection follows Drupal's native path-based suggestion convention,
+ * the same principle used for page--node--1.html.twig and page--front.html.twig.
  *
- * Convention: URL path segment separators (/) become -- (double dash) in the
- * template filename, matching Drupal's standard __ (double underscore) pattern
- * in suggestion machine names. Dashes within a segment stay as single dashes.
+ * Rules (evaluated from the current request path):
+ *   /sustainability                          → cud-sustainability--main.html.twig
+ *   /sustainability/our-commitment/governance → cud-sustainability--our-commitment--governance.html.twig
+ *                                               with cud-sustainability--normal.html.twig as fallback
+ *   /sustainability/*                        → cud-sustainability--normal.html.twig
+ *
+ * Suggestion machine name convention:
+ *   Each URL path segment maps to a '__' separator (= '--' in filename).
+ *   Dashes within a segment stay as single underscores (= single dashes).
+ *   e.g. /sustainability/our-commitment/governance
+ *        → cud_sustainability__our_commitment__governance
+ *        → cud-sustainability--our-commitment--governance.html.twig
  */
 function cud_sustainability_theme_suggestions_cud_sustainability(array $variables): array {
-  // Drupal merges hook_theme() variable defaults BEFORE suggestions are called
-  // using $info['variables'] + $element, which means $variables['variant']
-  // holds the hook_theme() default ('normal'), not the caller's value.
-  // The caller's value is preserved under the #-prefixed key '#variant'.
-  $variant = trim((string) ($variables['#variant'] ?? $variables['variant'] ?? 'normal'));
-  if ($variant === '') {
-    $variant = 'normal';
-  }
+  // Derive template from the URL path, exactly as Drupal does for page templates.
+  $request = \Drupal::requestStack()->getCurrentRequest();
+  $path = $request ? trim($request->getPathInfo(), '/') : 'sustainability';
 
   $suggestions = [];
 
-  // For slug-specific variants, insert 'normal' as intermediate fallback so
-  // pages without a dedicated template still render cleanly.
-  if ($variant !== 'normal' && $variant !== 'main') {
-    $suggestions[] = 'cud_sustainability__normal';
+  if ($path === 'sustainability') {
+    $suggestions[] = 'cud_sustainability__main';
+    return $suggestions;
   }
 
-  // $variant uses '--' as path-segment separator and '-' within segments.
-  // Map to Drupal suggestion convention: '--' → '__', '-' within segment → '_'.
-  // e.g. 'our-commitment--governance' → 'our_commitment__governance'
-  $parts = explode('--', strtolower($variant));
-  $machine_parts = array_map(static function (string $part): string {
-    return preg_replace('/[^a-z0-9]+/', '_', $part);
-  }, $parts);
-  $machine = implode('__', $machine_parts);
+  if (strpos($path, 'sustainability/') === 0) {
+    $sub = substr($path, strlen('sustainability/'));
+    // Segments after 'sustainability/' become '__'-joined machine name parts.
+    $segments = explode('/', strtolower($sub));
+    $machine_parts = array_map(static function (string $seg): string {
+      return preg_replace('/[^a-z0-9]+/', '_', $seg);
+    }, $segments);
+    $specific_hook = 'cud_sustainability__' . implode('__', $machine_parts);
 
-  $suggestions[] = 'cud_sustainability__' . $machine;
+    // Always include 'normal' first so it acts as the fallback template;
+    // the specific hook at higher priority wins when its template file exists.
+    $suggestions[] = 'cud_sustainability__normal';
+    if ($specific_hook !== 'cud_sustainability__normal') {
+      $suggestions[] = $specific_hook;
+    }
+
+    return $suggestions;
+  }
+
+  // Any other path under this module: use normal.
+  $suggestions[] = 'cud_sustainability__normal';
 
   return $suggestions;
 }
@@ -243,6 +254,40 @@ function cud_sustainability_preprocess_page(array &$variables): void {
   $variables['research_search_query'] = $request ? trim((string) $request->query->get('q', '')) : '';
   $contact_url = trim((string) \Drupal::config('cud_sustainability.settings')->get('contact_url'));
   $variables['research_contact_url'] = $contact_url !== '' ? $contact_url : '/sustainability/contact';
+
+  // When the /sustainability root URL is served via an aliased Drupal node
+  // (route name entity.node.canonical instead of cud_sustainability.index),
+  // replace page.content with the cud_sustainability__main theme so that
+  // cud-sustainability--main.html.twig is used as the content template.
+  if ($request && $request->getPathInfo() === '/sustainability') {
+    $route_name = \Drupal::routeMatch()->getRouteName();
+    if (!str_starts_with((string) $route_name, 'cud_sustainability.')) {
+      $entity_type_manager = \Drupal::entityTypeManager();
+      $node_storage = $entity_type_manager->getStorage('node');
+      $main_nodes = $node_storage->loadByProperties([
+        'type' => 'sustainability',
+        'field_research_slug' => 'main',
+        'status' => 1,
+      ]);
+      if ($main_nodes) {
+        $main_node = reset($main_nodes);
+        $variables['page']['content'] = [
+          '#theme' => 'cud_sustainability__main',
+          '#title' => $main_node->label(),
+          '#content' => $entity_type_manager->getViewBuilder('node')->view($main_node, 'full'),
+          '#variant' => 'main',
+          '#carousel_items' => [],
+          '#sections' => [],
+          '#primary_nav' => \Drupal\cud_sustainability\Controller\SustainabilityController::getPrimaryMenuOverride(),
+          '#secondary_nav' => \Drupal\cud_sustainability\Controller\SustainabilityController::getSecondaryMenuOverride(),
+          '#cache' => [
+            'tags' => $main_node->getCacheTags(),
+            'contexts' => ['url.path'],
+          ],
+        ];
+      }
+    }
+  }
 }
 
 /**
@@ -352,14 +397,32 @@ function cud_sustainability_js_alter(array &$javascript, \Drupal\Core\Asset\Atta
 
 /**
  * Determines whether the current route is a CUD sustainability route.
+ *
+ * Detects both module-owned routes (by route name) and aliased Drupal content
+ * at /sustainability paths. Path aliases are resolved by PathProcessorAlias
+ * before routing, so an aliased node at e.g. /sustainability/something will
+ * have route name entity.node.canonical, not cud_sustainability.*. We detect
+ * these by checking $request->getPathInfo(), which always returns the original
+ * browser URL regardless of alias resolution.
  */
 function cud_sustainability_is_route(): bool {
   $route_name = \Drupal::routeMatch()->getRouteName();
 
-  return $route_name === 'cud_sustainability.index'
-    || $route_name === 'cud_sustainability.search'
-    || $route_name === 'cud_sustainability.sub_pages'
-    || str_starts_with($route_name, 'cud_sustainability.');
+  if (str_starts_with((string) $route_name, 'cud_sustainability.')) {
+    return TRUE;
+  }
+
+  // Also match aliased content served under /sustainability/* by checking the
+  // original request path (unaffected by PathProcessorAlias).
+  $request = \Drupal::requestStack()->getCurrentRequest();
+  if ($request) {
+    $path = $request->getPathInfo();
+    if ($path === '/sustainability' || str_starts_with($path, '/sustainability/')) {
+      return TRUE;
+    }
+  }
+
+  return FALSE;
 }
 
 /**
