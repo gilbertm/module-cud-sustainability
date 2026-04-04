@@ -92,18 +92,164 @@
 <section class="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12" id="main-content" aria-label="{{ title }}" data-mode="{{ mode }}">
 	<div class="min-w-0">
 		{% if content %}
-			<div class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-sky-700 prose-a:no-underline hover:prose-a:underline">
+			{# <div class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-sky-700 prose-a:no-underline hover:prose-a:underline">
 				{{ content }}
+			</div> #}
+
+			{# ── Board of Trustees ───────────────────────────────────────────────────────── #}
+			{#
+			  Flex wrap + justify-center means any orphan items on the last row
+			  are naturally centred — no special CSS tricks needed.
+			  Column counts: 3 (mobile) → 5 (sm 640px) → 6 (md 768px) → 8 (lg 1024px+)
+			  Each basis = (100% − (cols−1)×gap) / cols  with gap-3 (12px).
+			#}
+			<div class="mt-10 border-t border-slate-100 pt-10">
+				<div class="mb-8 flex items-center gap-3">
+					<span class="h-px flex-1 bg-gradient-to-r from-[#b13634]/30 to-transparent"></span>
+					<h2 class="text-xs font-semibold uppercase tracking-[0.25em] text-[#b13634]">{{ 'Board of Trustees Members'|t }}</h2>
+					<span class="h-px flex-1 bg-gradient-to-l from-[#b13634]/30 to-transparent"></span>
+				</div>
+
+				<div class="flex flex-wrap justify-center gap-3">
+
+					{# ── Mr. Buti Saeed Al Ghandi ── #}
+					<article class="group flex shrink-0 grow-0 flex-col overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-slate-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-md basis-[calc(33.333%-8px)] sm:basis-[calc(20%-10px)] md:basis-[calc(16.667%-10px)] lg:basis-[calc(16.667%-10px)]">
+						<div class="aspect-[3/4] overflow-hidden bg-slate-100">
+							<img src="/sites/default/files/media/about/board-of-trustees/bot-buti.png"
+								alt="Mr. Buti Saeed Al Ghandi"
+								loading="lazy"
+								class="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105">
+						</div>
+						<div class="flex flex-1 flex-col p-2.5">
+							<h3 class="text-[11px] font-semibold leading-snug text-slate-900">Mr. Buti Saeed Al Ghandi</h3>
+							<p class="mt-1 text-[10px] leading-relaxed text-slate-500">Chairman of the Board of Directors<br><span class="text-slate-400">Emirates Investment and Development PSC, UAE</span></p>
+						</div>
+					</article>
+
+					{# ── Mr. Abdulla Mohd Obaidallah ── #}
+					<article class="group flex shrink-0 grow-0 flex-col overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-slate-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-md basis-[calc(33.333%-8px)] sm:basis-[calc(20%-10px)] md:basis-[calc(16.667%-10px)] lg:basis-[calc(16.667%-10px)]">
+						<div class="aspect-[3/4] overflow-hidden bg-slate-100">
+							<img src="/sites/default/files/media/about/board-of-trustees/bot-obaidallah.jpg"
+								alt="Mr. Abdulla Mohd Obaidallah"
+								loading="lazy"
+								class="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105">
+						</div>
+						<div class="flex flex-1 flex-col p-2.5">
+							<h3 class="text-[11px] font-semibold leading-snug text-slate-900">Mr. Abdulla Mohd Obaidallah</h3>
+							<p class="mt-1 text-[10px] leading-relaxed text-slate-500">Board of Directors Member<br><span class="text-slate-400">Emirates Investment and Development PSC, UAE</span></p>
+						</div>
+					</article>
+
+					{# ── Mr. Ali Rashid Al Mazroei ── #}
+					<article class="group flex shrink-0 grow-0 flex-col overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-slate-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-md basis-[calc(33.333%-8px)] sm:basis-[calc(20%-10px)] md:basis-[calc(16.667%-10px)] lg:basis-[calc(16.667%-10px)]">
+						<div class="aspect-[3/4] overflow-hidden bg-slate-100">
+							<img src="/sites/default/files/media/about/board-of-trustees/mr_ali_rashid.jpg"
+								alt="Mr. Ali Rashid Al Mazroei"
+								loading="lazy"
+								class="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105">
+						</div>
+						<div class="flex flex-1 flex-col p-2.5">
+							<h3 class="text-[11px] font-semibold leading-snug text-slate-900">Mr. Ali Rashid Al Mazroei</h3>
+							<p class="mt-1 text-[10px] leading-relaxed text-slate-500">Group Director and Chief Executive Officer<br><span class="text-slate-400">Bahri &amp; Mazroei Group</span></p>
+						</div>
+					</article>
+
+					{# ── Prof. Karim Chelli ── #}
+					<article class="group flex shrink-0 grow-0 flex-col overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-slate-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-md basis-[calc(33.333%-8px)] sm:basis-[calc(20%-10px)] md:basis-[calc(16.667%-10px)] lg:basis-[calc(16.667%-10px)]">
+						<div class="aspect-[3/4] overflow-hidden bg-slate-100">
+							<img src="/sites/default/files/media/about/board-of-trustees/bot-karim.png"
+								alt="Prof. Karim Chelli"
+								loading="lazy"
+								class="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105">
+						</div>
+						<div class="flex flex-1 flex-col p-2.5">
+							<h3 class="text-[11px] font-semibold leading-snug text-slate-900">Prof. Karim Chelli</h3>
+							<p class="mt-1 text-[10px] leading-relaxed text-slate-500">President &amp; Vice-Chancellor<br><span class="text-slate-400">Canadian University Dubai</span></p>
+						</div>
+					</article>
+
+					{# ── Hon. Sheila Copps ── #}
+					<article class="group flex shrink-0 grow-0 flex-col overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-slate-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-md basis-[calc(33.333%-8px)] sm:basis-[calc(20%-10px)] md:basis-[calc(16.667%-10px)] lg:basis-[calc(16.667%-10px)]">
+						<div class="aspect-[3/4] overflow-hidden bg-slate-100">
+							<img src="/sites/default/files/media/about/board-of-trustees/bot-sheila-copps.jpg"
+								alt="Hon. Sheila Copps Pc Oc"
+								loading="lazy"
+								class="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105">
+						</div>
+						<div class="flex flex-1 flex-col p-2.5">
+							<h3 class="text-[11px] font-semibold leading-snug text-slate-900">Hon. Sheila Copps Pc Oc</h3>
+							<p class="mt-1 text-[10px] leading-relaxed text-slate-500">Former Heritage Minister<br><span class="text-slate-400">Environment Minister &amp; Deputy PM of Canada</span></p>
+						</div>
+					</article>
+
+					{# ── Hon. Aldea Landry ── #}
+					<article class="group flex shrink-0 grow-0 flex-col overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-slate-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-md basis-[calc(33.333%-8px)] sm:basis-[calc(20%-10px)] md:basis-[calc(16.667%-10px)] lg:basis-[calc(16.667%-10px)]">
+						<div class="aspect-[3/4] overflow-hidden bg-slate-100">
+							<img src="/sites/default/files/media/about/board-of-trustees/bot-aldea.png"
+								alt="Hon. Aldea Landry"
+								loading="lazy"
+								class="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105">
+						</div>
+						<div class="flex flex-1 flex-col p-2.5">
+							<h3 class="text-[11px] font-semibold leading-snug text-slate-900">Hon. Aldea Landry</h3>
+							<p class="mt-1 text-[10px] leading-relaxed text-slate-500">Former Cabinet Minister and Deputy Premier<br><span class="text-slate-400">Province of New Brunswick, Canada</span></p>
+						</div>
+					</article>
+
+					{# ── Hon. John Baird ── #}
+					<article class="group flex shrink-0 grow-0 flex-col overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-slate-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-md basis-[calc(33.333%-8px)] sm:basis-[calc(20%-10px)] md:basis-[calc(16.667%-10px)] lg:basis-[calc(16.667%-10px)]">
+						<div class="aspect-[3/4] overflow-hidden bg-slate-100">
+							<img src="/sites/default/files/inline-images/bot-honorable-john-baird.jpg"
+								alt="Hon. John Baird"
+								loading="lazy"
+								class="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105">
+						</div>
+						<div class="flex flex-1 flex-col p-2.5">
+							<h3 class="text-[11px] font-semibold leading-snug text-slate-900">Hon. John Baird</h3>
+							<p class="mt-1 text-[10px] leading-relaxed text-slate-500">Former Member<br><span class="text-slate-400">Canadian House of Commons and Minister of Foreign Affairs</span></p>
+						</div>
+					</article>
+
+					{# ── Honourable George J. Furey ── #}
+					<article class="group flex shrink-0 grow-0 flex-col overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-slate-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-md basis-[calc(33.333%-8px)] sm:basis-[calc(20%-10px)] md:basis-[calc(16.667%-10px)] lg:basis-[calc(16.667%-10px)]">
+						<div class="aspect-[3/4] overflow-hidden bg-slate-100">
+							<img src="/sites/default/files/media/about/board-of-trustees/bot_Honourable_George_Furey.png"
+								alt="Honourable George J. Furey"
+								loading="lazy"
+								class="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105">
+						</div>
+						<div class="flex flex-1 flex-col p-2.5">
+							<h3 class="text-[11px] font-semibold leading-snug text-slate-900">Honourable George J. Furey</h3>
+							<p class="mt-1 text-[10px] leading-relaxed text-slate-500">Former 45th Speaker of the Senate of Canada</p>
+						</div>
+					</article>
+
+					{# ── Dr. Denis Lapalme ── #}
+					<article class="group flex shrink-0 grow-0 flex-col overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-slate-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-md basis-[calc(33.333%-8px)] sm:basis-[calc(20%-10px)] md:basis-[calc(16.667%-10px)] lg:basis-[calc(16.667%-10px)]">
+						<div class="aspect-[3/4] overflow-hidden bg-slate-100">
+							<img src="/sites/default/files/media/about/board-of-trustees/dr_denis_lapalme.png"
+								alt="Dr. Denis Lapalme"
+								loading="lazy"
+								class="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105">
+						</div>
+						<div class="flex flex-1 flex-col p-2.5">
+							<h3 class="text-[11px] font-semibold leading-snug text-slate-900">Dr. Denis Lapalme</h3>
+							<p class="mt-1 text-[10px] leading-relaxed text-slate-500">Psychologist<br><span class="text-slate-400">Laurentian University &amp; Ontario Provincial Police</span></p>
+						</div>
+					</article>
+
+				</div>
 			</div>
+
 		{% endif %}
 
-		{% if sections %}
+		{# % if sections %}
 			<div class="mt-8 space-y-6">
 				{% for section in sections %}
 					<div class="prose prose-slate max-w-none">{{ section }}</div>
 				{% endfor %}
 			</div>
-		{% endif %}
+		{% endif % #}
 	</div>
 </section>
 
@@ -129,11 +275,11 @@
 		</div>
 
 		{# Tab strip — always visible on right edge, collapses border-radius on hover #}
-		<div class="flex flex-col items-center justify-center gap-2 bg-white border border-slate-200 rounded-l-2xl group-hover:rounded-l-none shadow-md px-2 py-4 min-w-[2.5rem] transition-all duration-300 cursor-default select-none">
-			<i class="fa-solid fa-layer-group text-[#b13634] text-xs" aria-hidden="true"></i>
-			<div class="w-px h-2 bg-slate-200 rounded-full"></div>
+		<div class="flex flex-col items-center justify-center gap-2.5 bg-[#b13634] rounded-l-2xl group-hover:rounded-l-none shadow-lg shadow-[#b13634]/30 px-2.5 py-5 min-w-[2.75rem] transition-all duration-300 cursor-default select-none">
+			<i class="fa-solid fa-layer-group text-white/90 text-md" aria-hidden="true"></i>
+			<div class="w-px h-2 bg-white/30 rounded-full"></div>
 			{% for sub in sub_items %}
-				<div class="w-1.5 h-1.5 rounded-full transition-colors {% if current_path == sub.url %}bg-[#b13634]{% else %}bg-slate-200{% endif %}" title="{{ sub.label }}"></div>
+				<div class="rounded-full transition-colors {% if current_path == sub.url %}w-2 h-2 bg-white{% else %}w-1.5 h-1.5 bg-white/40 hover:bg-white/70{% endif %}" title="{{ sub.label }}"></div>
 			{% endfor %}
 		</div>
 
