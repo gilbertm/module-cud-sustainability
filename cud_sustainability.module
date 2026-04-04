@@ -36,6 +36,18 @@ function cud_sustainability_theme(array $existing, string $type, string $theme, 
       ],
       'template' => 'cud-sustainability-main',
     ],
+    'cud_sustainability_governance' => [
+      'variables' => [
+        'title' => NULL,
+        'content' => NULL,
+        'mode' => 'main',
+        'carousel_items' => [],
+        'sections' => [],
+        'primary_nav' => [],
+        'secondary_nav' => [],
+      ],
+      'template' => 'cud-sustainability-governance',
+    ],
     'cud_sustainability_secondary' => [
       'variables' => [
         'title' => NULL,
@@ -278,7 +290,10 @@ function cud_sustainability_js_alter(array &$javascript, \Drupal\Core\Asset\Atta
 function cud_sustainability_is_route(): bool {
   $route_name = \Drupal::routeMatch()->getRouteName();
 
-  return in_array($route_name, ['cud_sustainability.index', 'cud_sustainability.search', 'cud_sustainability.sub_pages'], TRUE);
+  return $route_name === 'cud_sustainability.index'
+    || $route_name === 'cud_sustainability.search'
+    || $route_name === 'cud_sustainability.sub_pages'
+    || str_starts_with($route_name, 'cud_sustainability.');
 }
 
 /**

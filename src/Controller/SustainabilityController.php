@@ -12,6 +12,7 @@ use Drupal\Core\Menu\MenuLinkTreeInterface;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -187,15 +188,68 @@ class SustainabilityController extends ControllerBase {
   }
 
   /**
+   * Renders the Governance page at /sustainability/our-commitment/governance.
+   */
+  public function renderGovernancePage(): array {
+    $this->trace('renderGovernancePage() called');
+
+    $node = $this->loadPublishedNodeBySlug('governance')
+      ?? $this->loadPublishedNodeBySlug('our-commitment/governance')
+      ?? $this->loadPublishedNodeBySlug('sustainability/our-commitment/governance')
+      ?? $this->loadPublishedNodeBySlug('/sustainability/our-commitment/governance');
+    $mode = $this->resolveMode();
+
+    if ($node) {
+      $this->trace('Governance node loaded', [
+        '@nid' => (string) $node->id(),
+        '@title' => $node->label(),
+      ]);
+
+      $build = [
+        '#theme' => 'cud_sustainability_governance',
+        '#title' => $node->label(),
+        '#content' => $this->nodeViewBuilder->view($node, 'full'),
+        '#carousel_items' => $this->getCarouselItems($node),
+        '#sections' => $this->getSections($node),
+        '#primary_nav' => static::getPrimaryMenuOverride(),
+        '#secondary_nav' => static::getSecondaryMenuOverride(),
+        '#mode' => $mode,
+        '#cache' => [
+          'contexts' => ['url.query_args:mode', 'url.path'],
+          'tags' => $node->getCacheTags(),
+        ],
+      ];
+
+      return $build;
+    }
+
+    $this->trace('Governance node not found, rendering fallback');
+
+    return [
+      '#theme' => 'cud_sustainability_governance',
+      '#title' => $this->t('Governance')->render(),
+      '#content' => ['#markup' => $this->t('Governance content coming soon.')],
+      '#carousel_items' => [],
+      '#sections' => [],
+      '#primary_nav' => static::getPrimaryMenuOverride(),
+      '#secondary_nav' => static::getSecondaryMenuOverride(),
+      '#mode' => $mode,
+      '#cache' => [
+        'contexts' => ['url.query_args:mode', 'url.path'],
+      ],
+    ];
+  }
+
+  /**
    * Renders a sustainability node from a slug.
    */
-  public function renderPage(string $slug): array {
+  public function renderPage(string $slug) {
     $this->trace('renderPage() called', ['@slug' => $slug]);
 
     $node = $this->loadPublishedNodeBySlug($slug);
     if (!$node) {
-      $this->trace('Node not found for slug', ['@slug' => $slug]);
-      throw new NotFoundHttpException();
+      $this->trace('Node not found for slug, redirecting to /sustainability', ['@slug' => $slug]);
+      return new RedirectResponse('/sustainability', 302);
     }
 
     $mode = $this->resolveMode();
