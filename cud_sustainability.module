@@ -24,43 +24,91 @@ function cud_sustainability_theme(array $existing, string $type, string $theme, 
       'base hook' => 'off_canvas_page_wrapper',
       'template' => 'off-canvas-page-wrapper--cud-sustainability',
     ],
-    'cud_sustainability_main' => [
+    // Base theme hook. All variants below inherit these variables.
+    'cud_sustainability' => [
       'variables' => [
         'title' => NULL,
         'content' => NULL,
-        'mode' => 'main',
+        'variant' => 'normal',
         'carousel_items' => [],
         'sections' => [],
         'primary_nav' => [],
         'secondary_nav' => [],
       ],
-      'template' => 'cud-sustainability-main',
+      'template' => 'cud-sustainability',
     ],
-    'cud_sustainability_governance' => [
-      'variables' => [
-        'title' => NULL,
-        'content' => NULL,
-        'mode' => 'main',
-        'carousel_items' => [],
-        'sections' => [],
-        'primary_nav' => [],
-        'secondary_nav' => [],
-      ],
-      'template' => 'cud-sustainability-governance',
+    // ── Variant templates (suggestion hooks) ──────────────────────────────────
+    // Named *exactly* as Drupal suggestion machine names so the registry can
+    // find them. Template filenames follow the -- double-dash convention:
+    //   hook __part → template --part  (__ ↔ --)
+    //   single _    → single -
+    //
+    // Main landing page: /sustainability (slug = 'main')
+    'cud_sustainability__main' => [
+      'base hook' => 'cud_sustainability',
+      'template' => 'cud-sustainability--main',
     ],
-    'cud_sustainability_secondary' => [
-      'variables' => [
-        'title' => NULL,
-        'content' => NULL,
-        'mode' => 'secondary',
-        'carousel_items' => [],
-        'sections' => [],
-        'primary_nav' => [],
-        'secondary_nav' => [],
-      ],
-      'template' => 'cud-sustainability-secondary',
+    // Generic inner page fallback (empty slug / no dedicated template)
+    'cud_sustainability__normal' => [
+      'base hook' => 'cud_sustainability',
+      'template' => 'cud-sustainability--normal',
+    ],
+    // /sustainability/our-commitment/governance
+    'cud_sustainability__our_commitment__governance' => [
+      'base hook' => 'cud_sustainability',
+      'template' => 'cud-sustainability--our-commitment--governance',
+    ],
+    // Secondary display mode (kept for future use)
+    'cud_sustainability__secondary' => [
+      'base hook' => 'cud_sustainability',
+      'template' => 'cud-sustainability--secondary',
     ],
   ];
+}
+
+/**
+ * Implements hook_theme_suggestions_cud_sustainability().
+ *
+ * Routing logic for template selection:
+ * - variant = 'main'                       → cud-sustainability--main.html.twig
+ * - variant = 'normal'                     → cud-sustainability--normal.html.twig
+ * - variant = 'our-commitment--governance' → cud-sustainability--our-commitment--governance.html.twig
+ *   (with cud-sustainability--normal.html.twig as intermediate fallback)
+ *
+ * Convention: URL path segment separators (/) become -- (double dash) in the
+ * template filename, matching Drupal's standard __ (double underscore) pattern
+ * in suggestion machine names. Dashes within a segment stay as single dashes.
+ */
+function cud_sustainability_theme_suggestions_cud_sustainability(array $variables): array {
+  // Drupal merges hook_theme() variable defaults BEFORE suggestions are called
+  // using $info['variables'] + $element, which means $variables['variant']
+  // holds the hook_theme() default ('normal'), not the caller's value.
+  // The caller's value is preserved under the #-prefixed key '#variant'.
+  $variant = trim((string) ($variables['#variant'] ?? $variables['variant'] ?? 'normal'));
+  if ($variant === '') {
+    $variant = 'normal';
+  }
+
+  $suggestions = [];
+
+  // For slug-specific variants, insert 'normal' as intermediate fallback so
+  // pages without a dedicated template still render cleanly.
+  if ($variant !== 'normal' && $variant !== 'main') {
+    $suggestions[] = 'cud_sustainability__normal';
+  }
+
+  // $variant uses '--' as path-segment separator and '-' within segments.
+  // Map to Drupal suggestion convention: '--' → '__', '-' within segment → '_'.
+  // e.g. 'our-commitment--governance' → 'our_commitment__governance'
+  $parts = explode('--', strtolower($variant));
+  $machine_parts = array_map(static function (string $part): string {
+    return preg_replace('/[^a-z0-9]+/', '_', $part);
+  }, $parts);
+  $machine = implode('__', $machine_parts);
+
+  $suggestions[] = 'cud_sustainability__' . $machine;
+
+  return $suggestions;
 }
 
 /**

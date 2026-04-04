@@ -12,7 +12,6 @@ use Drupal\Core\Menu\MenuLinkTreeInterface;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -119,17 +118,15 @@ class SustainabilityController extends ControllerBase {
 
     $main_node = $this->loadPublishedNodeBySlug('main');
     if ($main_node) {
-      $mode = $this->resolveMode();
       $this->trace('Main node loaded', [
         '@nid' => (string) $main_node->id(),
         '@title' => $main_node->label(),
-        '@mode' => $mode,
       ]);
 
       $build = $this->buildPage(
         $main_node->label(),
         $this->nodeViewBuilder->view($main_node, 'full'),
-        $mode,
+        'main',
         $this->getCarouselItems($main_node),
         $this->getSections($main_node),
         static::getPrimaryMenuOverride(),
@@ -142,14 +139,12 @@ class SustainabilityController extends ControllerBase {
 
     $this->trace('Main node not found, returning fallback overview page');
 
-    $mode = $this->resolveMode();
-
     return $this->buildPage(
       $this->t('Sustainability Overview')->render(),
       [
         '#markup' => $this->t('Welcome to the Sustainability Hub.'),
       ],
-      $mode,
+      'main',
       [],
       [],
       static::getPrimaryMenuOverride(),
@@ -161,15 +156,14 @@ class SustainabilityController extends ControllerBase {
    * Displays sustainability-only search results.
    */
   public function search(): array {
-    $mode = $this->resolveMode();
     $request = $this->requestStack->getCurrentRequest();
     $query = trim((string) ($request ? $request->query->get('q', '') : ''));
     $results = $this->searchResearchNodes($query);
 
     $build = $this->buildPage(
       $this->t('Sustainability Search')->render(),
-      $this->buildSearchResultsContent($query, $results, $mode),
-      $mode,
+      $this->buildSearchResultsContent($query, $results),
+      'normal',
       [],
       [],
       static::getPrimaryMenuOverride(),
@@ -188,82 +182,44 @@ class SustainabilityController extends ControllerBase {
   }
 
   /**
-   * Renders the Governance page at /sustainability/our-commitment/governance.
-   */
-  public function renderGovernancePage(): array {
-    $this->trace('renderGovernancePage() called');
-
-    $node = $this->loadPublishedNodeBySlug('governance')
-      ?? $this->loadPublishedNodeBySlug('our-commitment/governance')
-      ?? $this->loadPublishedNodeBySlug('sustainability/our-commitment/governance')
-      ?? $this->loadPublishedNodeBySlug('/sustainability/our-commitment/governance');
-    $mode = $this->resolveMode();
-
-    if ($node) {
-      $this->trace('Governance node loaded', [
-        '@nid' => (string) $node->id(),
-        '@title' => $node->label(),
-      ]);
-
-      $build = [
-        '#theme' => 'cud_sustainability_governance',
-        '#title' => $node->label(),
-        '#content' => $this->nodeViewBuilder->view($node, 'full'),
-        '#carousel_items' => $this->getCarouselItems($node),
-        '#sections' => $this->getSections($node),
-        '#primary_nav' => static::getPrimaryMenuOverride(),
-        '#secondary_nav' => static::getSecondaryMenuOverride(),
-        '#mode' => $mode,
-        '#cache' => [
-          'contexts' => ['url.query_args:mode', 'url.path'],
-          'tags' => $node->getCacheTags(),
-        ],
-      ];
-
-      return $build;
-    }
-
-    $this->trace('Governance node not found, rendering fallback');
-
-    return [
-      '#theme' => 'cud_sustainability_governance',
-      '#title' => $this->t('Governance')->render(),
-      '#content' => ['#markup' => $this->t('Governance content coming soon.')],
-      '#carousel_items' => [],
-      '#sections' => [],
-      '#primary_nav' => static::getPrimaryMenuOverride(),
-      '#secondary_nav' => static::getSecondaryMenuOverride(),
-      '#mode' => $mode,
-      '#cache' => [
-        'contexts' => ['url.query_args:mode', 'url.path'],
-      ],
-    ];
-  }
-
-  /**
-   * Renders a sustainability node from a slug.
+   * Renders any sustainability sub-page from the URL slug.
+   *
+   * Routing logic:
+   * - Slug matches field_research_slug (with prefix fallbacks) → template
+   *   named after the URL slug, e.g. cud-sustainability--our-commitment-governance.html.twig
+   * - No matching node or empty slug field → cud-sustainability--normal.html.twig
    */
   public function renderPage(string $slug) {
+    $slug = trim($slug, '/');
+
     $this->trace('renderPage() called', ['@slug' => $slug]);
 
-    $node = $this->loadPublishedNodeBySlug($slug);
-    if (!$node) {
-      $this->trace('Node not found for slug, redirecting to /sustainability', ['@slug' => $slug]);
-      return new RedirectResponse('/sustainability', 302);
-    }
+    $node = $this->loadNodeForRouteSlug($slug);
 
-    $mode = $this->resolveMode();
-    $this->trace('Node loaded for slug', [
+    $variant = $this->resolveVariant($slug, $node !== NULL);
+
+    $this->trace('renderPage() variant resolved', [
       '@slug' => $slug,
-      '@nid' => (string) $node->id(),
-      '@title' => $node->label(),
-      '@mode' => $mode,
+      '@variant' => $variant,
+      '@nid' => $node ? (string) $node->id() : 'none',
     ]);
+
+    if (!$node) {
+      return $this->buildPage(
+        $this->t('Sustainability')->render(),
+        ['#markup' => ''],
+        $variant,
+        [],
+        [],
+        static::getPrimaryMenuOverride(),
+        static::getSecondaryMenuOverride()
+      );
+    }
 
     $build = $this->buildPage(
       $node->label(),
       $this->nodeViewBuilder->view($node, 'full'),
-      $mode,
+      $variant,
       $this->getCarouselItems($node),
       $this->getSections($node),
       static::getPrimaryMenuOverride(),
@@ -272,6 +228,71 @@ class SustainabilityController extends ControllerBase {
     $build['#cache']['tags'] = $node->getCacheTags();
 
     return $build;
+  }
+
+  /**
+   * Loads a published sustainability node by trying multiple slug permutations.
+   *
+   * The field_research_slug may be stored with various prefixes
+   * (e.g. 'sustainability/our-commitment/governance' or
+   * 'sample/sustainability/our-commitment/governance'). We try the most
+   * specific variants first so the node is found regardless of how the editor
+   * stored the value.
+   */
+  protected function loadNodeForRouteSlug(string $routeSlug): ?NodeInterface {
+    $routeSlug = trim($routeSlug, '/');
+
+    // Candidates ordered from most-specific to least-specific.
+    $candidates = array_unique(array_filter([
+      $routeSlug,
+      'sustainability/' . $routeSlug,
+      'sample/sustainability/' . $routeSlug,
+      // Last segment only (e.g. 'governance' from 'our-commitment/governance').
+      basename($routeSlug),
+    ]));
+
+    foreach ($candidates as $slug) {
+      $node = $this->loadPublishedNodeBySlug($slug);
+      if ($node) {
+        $this->trace('loadNodeForRouteSlug() matched', [
+          '@route_slug' => $routeSlug,
+          '@matched_slug' => $slug,
+          '@nid' => (string) $node->id(),
+        ]);
+        return $node;
+      }
+    }
+
+    $this->trace('loadNodeForRouteSlug() no match', ['@route_slug' => $routeSlug]);
+    return NULL;
+  }
+
+  /**
+   * Resolves the template variant string from the URL slug and node state.
+   *
+   * Rules:
+   * - No matching node (or its slug field is empty) → 'normal'
+   * - URL slug 'main' (index page slug) → 'main'
+   * - Otherwise → URL slug with '/' replaced by '--' (path-segment separator)
+   *
+   * The returned string maps 1-to-1 to a Twig template:
+   *   'our-commitment--governance' → cud-sustainability--our-commitment--governance.html.twig
+   *
+   * In Drupal's convention '--' in template filenames = '__' in suggestion names.
+   */
+  protected function resolveVariant(string $routeSlug, bool $hasNode): string {
+    if (!$hasNode) {
+      return 'normal';
+    }
+
+    $routeSlug = trim($routeSlug, '/');
+    if ($routeSlug === '' || $routeSlug === 'main') {
+      return 'main';
+    }
+
+    // Replace slash (path segment boundary) with '--' to produce a template
+    // name like cud-sustainability--our-commitment--governance.html.twig.
+    return str_replace('/', '--', $routeSlug);
   }
 
   /**
@@ -684,7 +705,7 @@ class SustainabilityController extends ControllerBase {
    * @param list<\Drupal\node\NodeInterface> $results
    *   Matching sustainability nodes.
    */
-  protected function buildSearchResultsContent(string $query, array $results, string $mode): array {
+  protected function buildSearchResultsContent(string $query, array $results): array {
     $content = [
       '#type' => 'container',
       '#attributes' => [
@@ -739,7 +760,7 @@ class SustainabilityController extends ControllerBase {
         'title' => [
           '#type' => 'link',
           '#title' => $node->label(),
-          '#url' => $this->buildSearchResultUrl($node, $mode),
+          '#url' => $this->buildSearchResultUrl($node),
           '#attributes' => [
             'class' => ['text-lg', 'font-semibold', 'tracking-tight', 'text-slate-900', 'transition-colors', 'hover:text-sky-700'],
           ],
@@ -761,12 +782,11 @@ class SustainabilityController extends ControllerBase {
   /**
    * Builds a search-results link for a sustainability node.
    */
-  protected function buildSearchResultUrl(NodeInterface $node, string $mode): Url {
-    $query = $mode === 'secondary' ? ['mode' => 'secondary'] : [];
+  protected function buildSearchResultUrl(NodeInterface $node): Url {
     $slug = $this->getNodeSlug($node);
 
     if ($slug !== '') {
-      return Url::fromRoute('cud_sustainability.sub_pages', ['slug' => $slug], ['query' => $query]);
+      return Url::fromRoute('cud_sustainability.sub_pages', ['slug' => $slug]);
     }
 
     return $node->toUrl();
@@ -839,20 +859,22 @@ class SustainabilityController extends ControllerBase {
 
   /**
    * Builds the common sustainability page shell.
+   *
+   * Sets #theme directly to the resolved suggestion hook so Drupal selects the
+   * correct template without relying on hook_theme_suggestions timing.
    */
-  protected function buildPage(string $title, array $content, string $mode, array $carousel_items = [], array $sections = [], array $primary_nav = [], array $secondary_nav = []): array {
+  protected function buildPage(string $title, array $content, string $variant, array $carousel_items = [], array $sections = [], array $primary_nav = [], array $secondary_nav = []): array {
     return [
-      '#theme' => $this->resolveThemeHook($mode),
+      '#theme' => $this->variantToThemeHook($variant),
       '#title' => $title,
       '#content' => $content,
+      '#variant' => $variant,
       '#carousel_items' => $carousel_items,
       '#sections' => $sections,
       '#primary_nav' => $primary_nav,
       '#secondary_nav' => $secondary_nav,
-      '#mode' => $mode,
       '#cache' => [
         'contexts' => [
-          'url.query_args:mode',
           'url.path',
         ],
       ],
@@ -860,21 +882,32 @@ class SustainabilityController extends ControllerBase {
   }
 
   /**
-   * Resolves requested display mode from query string.
+   * Converts a variant string to its registered Drupal theme hook name.
+   *
+   * Variant format uses '--' as path-segment separator (mirrors template
+   * filenames). Unknown variants fall back to cud_sustainability__normal,
+   * which maps to cud-sustainability--normal.html.twig.
+   *
+   * Examples:
+   *   'main'                    -> cud_sustainability__main
+   *   'normal'                  -> cud_sustainability__normal
+   *   'our-commitment--governance' -> cud_sustainability__our_commitment__governance
    */
-  protected function resolveMode(): string {
-    $request = $this->requestStack->getCurrentRequest();
-    $mode = $request ? (string) $request->query->get('mode', 'main') : 'main';
-    $mode = strtolower(trim($mode));
+  protected function variantToThemeHook(string $variant): string {
+    if ($variant === '') {
+      $variant = 'normal';
+    }
 
-    return in_array($mode, ['main', 'secondary'], TRUE) ? $mode : 'main';
-  }
+    // Split on '--' (path-segment separator), sanitise each segment.
+    $parts = explode('--', strtolower($variant));
+    $machine_parts = array_map(static function (string $p): string {
+      return preg_replace('/[^a-z0-9]+/', '_', $p);
+    }, $parts);
+    $candidate = 'cud_sustainability__' . implode('__', $machine_parts);
 
-  /**
-   * Maps mode names to Drupal theme hooks.
-   */
-  protected function resolveThemeHook(string $mode): string {
-    return $mode === 'secondary' ? 'cud_sustainability_secondary' : 'cud_sustainability_main';
+    // Verify the candidate is registered; fall back to the normal template.
+    $registry = \Drupal::service('theme.registry')->get();
+    return isset($registry[$candidate]) ? $candidate : 'cud_sustainability__normal';
   }
 
   /**

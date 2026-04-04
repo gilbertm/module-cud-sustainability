@@ -14,14 +14,6 @@ cud_sustainability.search:
   requirements:
     _permission: 'access content'
 
-cud_sustainability.governance:
-  path: '/sustainability/our-commitment/governance'
-  defaults:
-    _controller: 'Drupal\cud_sustainability\Controller\SustainabilityController::renderGovernancePage'
-    _title: 'Governance'
-  requirements:
-    _permission: 'access content'
-
 cud_sustainability.sub_pages:
   path: '/sustainability/{slug}'
   defaults:
