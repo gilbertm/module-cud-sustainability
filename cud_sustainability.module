@@ -209,6 +209,24 @@ function cud_sustainability_preprocess_html(array &$variables): void {
 }
 
 /**
+ * Implements hook_block_access().
+ *
+ * Hides the system breadcrumb block on all CUD Sustainability routes so that
+ * individual page templates can render their own custom breadcrumbs without
+ * a duplicate Drupal-managed breadcrumb appearing in page.content.
+ */
+function cud_sustainability_block_access(\Drupal\block\Entity\Block $block, string $operation, \Drupal\Core\Session\AccountInterface $account): \Drupal\Core\Access\AccessResultInterface {
+  if ($operation === 'view' && cud_sustainability_is_route()) {
+    $plugin_id = $block->getPluginId();
+    if ($plugin_id === 'system_breadcrumb_block') {
+      return \Drupal\Core\Access\AccessResult::forbidden()->addCacheTags($block->getCacheTags())->addCacheContexts(['route']);
+    }
+  }
+
+  return \Drupal\Core\Access\AccessResult::neutral();
+}
+
+/**
  * Implements hook_page_alter().
  *
  * Removes Drupal's off-canvas page wrapper on sustainability routes so output does
