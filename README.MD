@@ -20,7 +20,22 @@ Every sustainability content type supports a hero carousel via `field_research_c
 
 If `field_research_carousel_images` is empty, a placeholder slide is returned by `getFallbackCarouselItemsFromNode()`. All inner-page templates have the carousel block active.
 
-## Chat workflow restrictions for this module
+## Breadcrumb
+
+Breadcrumbs are populated in `cud_sustainability_preprocess_cud_sustainability()` using Drupal's `breadcrumb` service, so they are always route-aware and require no manual maintenance.
+
+Each link is normalised to a plain `['text' => ..., 'url' => ...]` array. A segment is only rendered as a hyperlink when its URL:
+
+1. Is not a non-routable route (`<nolink>`, `<none>`).
+2. Resolves via `path_alias.manager` to a system path matching `/node/{id}` of a published node.
+
+Segments that fail either check are rendered as `<span>` (plain text, not clickable).
+
+## Admin Edit Shortcut
+
+When the current user has `update` access on the route node, an `edit_url` variable is set to the node edit form URL. Both `--normal` and `--our-commitment--governance` templates render a `fa-pen-to-square` icon link beside the `<h1>` when this variable is truthy. It is invisible to anonymous and unprivileged users.
+
+
 
 When using chat/AI assistance for this repository, apply these hard rules:
 

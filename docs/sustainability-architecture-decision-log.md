@@ -41,6 +41,9 @@ Decisions recorded:
   - Templates affected: `cud-sustainability--our-commitment--governance.html.twig` and `cud-sustainability--normal.html.twig` had their carousel blocks incorrectly commented out with broken `{# % ... % #}` syntax; both are now active.
 - Updated tab bar in governance template: responsive sizing (`text-xs`/`text-sm` mobile→desktop), improved icons per tab title (`fa-people-group`, `fa-landmark`, `fa-graduation-cap`, `fa-user-tie`, `fa-scale-balanced`).
 - Mobile sub-nav strip changed from horizontal scroll to `flex-wrap` so labels are always readable.
+- Breadcrumb integrated with Drupal's `breadcrumb` service via `cud_sustainability_preprocess_cud_sustainability()`. Each `Link` object is normalised to a `['text', 'url']` array; segments whose path alias resolves to a published sustainability node retain a hyperlink, all others render as plain `<span>` text.
+- Added `edit_url` template variable: when the current user has `update` access on the route node, a `fa-pen-to-square` edit icon is rendered beside the `<h1>` in both `--normal` and `--our-commitment--governance` templates.
+- Added `edit_url` and `breadcrumb` to the base `cud_sustainability` theme hook variable list.
 
 ### 2026-04-01
 - Created initial sustainability IA baseline package from:
