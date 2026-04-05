@@ -34,6 +34,14 @@ Decisions recorded:
   - Impacted pages or menu items
 
 ## Change Log
+### 2026-04-05
+- Fixed carousel not rendering on inner pages served via Drupal path aliases.
+  - Root cause: `hook_preprocess_page()` in `cud_sustainability.module` was hardcoding `'#carousel_items' => []` instead of calling the controller.
+  - Fix: `SustainabilityController::getCarouselItems()` changed from `protected` to `public`; `hook_preprocess_page()` now instantiates the controller via `\Drupal::classResolver()` and calls `getCarouselItems($matched_node)`.
+  - Templates affected: `cud-sustainability--our-commitment--governance.html.twig` and `cud-sustainability--normal.html.twig` had their carousel blocks incorrectly commented out with broken `{# % ... % #}` syntax; both are now active.
+- Updated tab bar in governance template: responsive sizing (`text-xs`/`text-sm` mobile→desktop), improved icons per tab title (`fa-people-group`, `fa-landmark`, `fa-graduation-cap`, `fa-user-tie`, `fa-scale-balanced`).
+- Mobile sub-nav strip changed from horizontal scroll to `flex-wrap` so labels are always readable.
+
 ### 2026-04-01
 - Created initial sustainability IA baseline package from:
   - INTI ESG reference structure

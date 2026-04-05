@@ -5,8 +5,20 @@
 This module owns the `/sustainability` route family and renders sustainability content through custom Twig templates.
 
 Routes:
-- `/sustainability` -> `ResearchController::index`
-- `/sustainability/{slug}` -> `ResearchController::renderPage`
+- `/sustainability` → `SustainabilityController::index()`
+- `/sustainability/our-commitment/governance` → `SustainabilityController::renderGovernancePage()`
+- `/sustainability/{slug}` → `SustainabilityController::renderPage()`
+- Aliased Drupal nodes at `/sustainability/*` are intercepted by `hook_preprocess_page()` in `cud_sustainability.module`
+
+## Carousel
+
+Every sustainability content type supports a hero carousel via `field_research_carousel_images` and `field_research_carousel_content`.
+
+`SustainabilityController::getCarouselItems()` is a **public** method and is called from two places:
+1. Controller methods (`buildPage()`) for module-owned routes.
+2. `hook_preprocess_page()` in `cud_sustainability.module` for pages served via Drupal path aliases.
+
+If `field_research_carousel_images` is empty, a placeholder slide is returned by `getFallbackCarouselItemsFromNode()`. All inner-page templates have the carousel block active.
 
 ## Chat workflow restrictions for this module
 
@@ -120,8 +132,9 @@ How it works:
   - `templates/html--cud-sustainability.html.twig`
   - `templates/page--cud-sustainability.html.twig`
 - The sustainability page template renders only `page.content` by default, so the visible layout is controlled by:
-  - `templates/cud-sustainability-main.html.twig`
-  - `templates/cud-sustainability-secondary.html.twig`
+  - `templates/cud-sustainability--main.html.twig`
+  - `templates/cud-sustainability--normal.html.twig`
+  - `templates/cud-sustainability--our-commitment--governance.html.twig` (and future variants)
 
 This gives full control over the sustainability layout while keeping Drupal's required internals intact.
 

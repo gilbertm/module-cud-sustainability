@@ -9,14 +9,26 @@ This document explains how URLs, routes, controller methods, Twig templates, and
 ```
 Browser URL
     │
-    ▼
-cud_sustainability.routing.yml  ←── static routes win over {slug} wildcard
+    ├─── Drupal route matches cud_sustainability.* route name
+    │         │
+    │         ▼
+    │    SustainabilityController method
+    │         │  loads node by field_research_slug
+    │         │  calls getCarouselItems($node)  ← public method
+    │         ▼
+    │    buildPage()  →  Twig theme hook  →  templates/*.html.twig
     │
-    ▼
-SustainabilityController method
-    │  loads node by field_research_slug
-    ▼
-Twig theme hook  →  templates/*.html.twig
+    └─── Drupal route resolves as aliased node (entity.node.canonical)
+              │  path starts with /sustainability/*
+              ▼
+         hook_preprocess_page()  in cud_sustainability.module
+              │  loads matching sustainability node by field_research_slug
+              │  calls SustainabilityController::getCarouselItems($node)
+              ▼
+         Injects #theme render element into page[content]
+              │
+              ▼
+         Twig theme hook  →  templates/*.html.twig
 ```
 
 ### Key rule — route priority
@@ -43,15 +55,40 @@ This function controls which routes get the module's page template (`page--cud-s
 
 ## Twig Templates
 
-| Theme hook | Template file | Used by |
+| Theme hook (machine name) | Template file | Used by |
 |---|---|---|
-| `cud_sustainability_main` | `cud-sustainability-main.html.twig` | `index()`, `renderPage()` (mode=main) |
-| `cud_sustainability_secondary` | `cud-sustainability-secondary.html.twig` | `renderPage()` (mode=secondary) |
-| `cud_sustainability_governance` | `cud-sustainability-governance.html.twig` | `renderGovernancePage()` |
+| `cud_sustainability__main` | `cud-sustainability--main.html.twig` | `index()` / aliased landing node |
+| `cud_sustainability__normal` | `cud-sustainability--normal.html.twig` | Generic inner pages / wildcard fallback |
+| `cud_sustainability__our_commitment__governance` | `cud-sustainability--our-commitment--governance.html.twig` | `/sustainability/our-commitment/governance` |
 | `page__cud_sustainability` | `page--cud-sustainability.html.twig` | Page shell wrapper (header/footer/nav) for all routes |
 | `html__cud_sustainability` | `html--cud-sustainability.html.twig` | HTML document wrapper for all routes |
 
+Theme hook naming — Drupal convention:
+- `__` double-underscore in machine name = `--` double-dash in filename
+- e.g. `cud_sustainability__our_commitment__governance` → `cud-sustainability--our-commitment--governance.html.twig`
+
 Theme hooks are registered in `cud_sustainability_theme()` inside `cud_sustainability.module`.
+
+---
+
+## Carousel for Aliased Nodes
+
+When a sustainability page is served via a Drupal path alias rather than a module-owned route (route name `entity.node.canonical` instead of `cud_sustainability.*`), `hook_preprocess_page()` in `cud_sustainability.module` intercepts the request and rebuilds `page[content]` as the correct theme element — including carousel items.
+
+**How it works:**
+
+```php
+// cud_sustainability.module — hook_preprocess_page()
+$controller = \Drupal::classResolver()->getInstanceFromDefinition(
+  \Drupal\cud_sustainability\Controller\SustainabilityController::class
+);
+$carousel_items = $controller->getCarouselItems($matched_node);
+```
+
+- `SustainabilityController::getCarouselItems()` is `public` so it can be called from outside the class.
+- The method reads `field_research_carousel_images` and `field_research_carousel_content` from the node.
+- If those fields are empty it falls back to a single placeholder slide (`getFallbackCarouselItemsFromNode()`).
+- All templates (`--main`, `--normal`, `--our-commitment--governance`) have their carousel block active; no template has it commented out.
 
 ---
 
@@ -117,7 +154,7 @@ public function renderSustainabilityCommitteePage() {
     '#theme' => 'cud_sustainability_governance',  // reuse governance template, or create a new one
     '#title' => $node ? $node->label() : $this->t('Sustainability Committee')->render(),
     '#content' => $node ? $this->nodeViewBuilder->view($node, 'full') : ['#markup' => $this->t('Content coming soon.')],
-    '#carousel_items' => $node ? $this->getCarouselItems($node) : [],
+    '#carousel_items' => $node ? $this->getCarouselItems($node) : [],  // public method — callable externally
     '#sections' => $node ? $this->getSections($node) : [],
     '#primary_nav' => static::getPrimaryMenuOverride(),
     '#secondary_nav' => static::getSecondaryMenuOverride(),
