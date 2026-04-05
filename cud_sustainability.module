@@ -34,6 +34,8 @@ function cud_sustainability_theme(array $existing, string $type, string $theme, 
         'sections' => [],
         'primary_nav' => [],
         'secondary_nav' => [],
+        'breadcrumb' => [],
+        'edit_url' => NULL,
       ],
       'template' => 'cud-sustainability',
     ],
@@ -300,6 +302,19 @@ function cud_sustainability_preprocess_page(array &$variables): void {
         $carousel_items = $controller->getCarouselItems($matched_node);
       }
 
+      // Slug lookup failed — fall back to the node already loaded by Drupal's
+      // entity router (available as a route parameter for entity.node.canonical).
+      if ($title === '') {
+        $route_node = \Drupal::routeMatch()->getParameter('node');
+        if ($route_node instanceof \Drupal\node\NodeInterface) {
+          $title = $route_node->label();
+          if ($content === ['#markup' => '']) {
+            $content = $entity_type_manager->getViewBuilder('node')->view($route_node, 'full');
+            $cache_tags = $route_node->getCacheTags();
+          }
+        }
+      }
+
       $variables['page']['content'] = [
         '#theme' => $theme_hook,
         '#title' => $title,
@@ -314,6 +329,66 @@ function cud_sustainability_preprocess_page(array &$variables): void {
           'contexts' => ['url.path'],
         ],
       ];
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_cud_sustainability().
+ *
+ * Populates the breadcrumb variable using Drupal's breadcrumb service so all
+ * cud_sustainability template variants receive dynamic, route-aware breadcrumb
+ * links instead of hardcoded values.
+ */
+function cud_sustainability_preprocess_cud_sustainability(array &$variables): void {
+  $breadcrumb_obj = \Drupal::service('breadcrumb')->build(\Drupal::routeMatch());
+  // Normalize each Link object to a plain array so templates can simply check
+  // link.url for truthiness. Non-routable links (<nolink>, <none>) and links
+  // whose route cannot be converted to a URL get an empty url so they render
+  // as plain text instead of hyperlinks.
+  $links = [];
+  foreach ($breadcrumb_obj->getLinks() as $link) {
+    $url_obj = $link->getUrl();
+    $href = '';
+    try {
+      $route_name = $url_obj->isRouted() ? $url_obj->getRouteName() : '';
+      if (!in_array($route_name, ['<nolink>', '<none>', ''], TRUE)) {
+        $href = $url_obj->toString();
+      }
+    }
+    catch (\Exception $e) {
+      $href = '';
+    }
+    $links[] = ['text' => (string) $link->getText(), 'url' => $href];
+  }
+  $variables['breadcrumb'] = $links;
+
+  // Provide an edit URL when the current user can edit the node, so templates
+  // can render an admin-only edit shortcut beside the page title.
+  $node = \Drupal::routeMatch()->getParameter('node');
+  if ($node instanceof \Drupal\node\NodeInterface && $node->access('update')) {
+    $variables['edit_url'] = \Drupal\Core\Url::fromRoute('entity.node.edit_form', ['node' => $node->id()])->toString();
+  }
+
+  // Safety net: if #title was not passed or was empty (e.g. slug lookup missed
+  // the node), try to resolve the title from the actual route node or Drupal's
+  // title_resolver so the h1 and breadcrumb trailing crumb are never blank.
+  if (empty($variables['title'])) {
+    $node = \Drupal::routeMatch()->getParameter('node');
+    if ($node instanceof \Drupal\node\NodeInterface) {
+      $variables['title'] = $node->label();
+    }
+    else {
+      $request = \Drupal::requestStack()->getCurrentRequest();
+      $route = \Drupal::routeMatch()->getRouteObject();
+      if ($request && $route) {
+        $resolved = \Drupal::service('title_resolver')->getTitle($request, $route);
+        if (!empty($resolved)) {
+          $variables['title'] = is_array($resolved)
+            ? (string) \Drupal::service('renderer')->renderPlain($resolved)
+            : (string) $resolved;
+        }
+      }
     }
   }
 }
