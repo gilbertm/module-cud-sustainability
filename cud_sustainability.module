@@ -346,6 +346,9 @@ function cud_sustainability_preprocess_cud_sustainability(array &$variables): vo
   // link.url for truthiness. Non-routable links (<nolink>, <none>) and links
   // whose route cannot be converted to a URL get an empty url so they render
   // as plain text instead of hyperlinks.
+  $alias_manager = \Drupal::service('path_alias.manager');
+  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+
   $links = [];
   foreach ($breadcrumb_obj->getLinks() as $link) {
     $url_obj = $link->getUrl();
@@ -359,6 +362,27 @@ function cud_sustainability_preprocess_cud_sustainability(array &$variables): vo
     catch (\Exception $e) {
       $href = '';
     }
+
+    // For /sustainability/* breadcrumb segments, only keep the link when the
+    // path is backed by a real published node. Intermediate path fragments
+    // (e.g. /sustainability/our-commitment) that have no corresponding node
+    // are demoted to plain text so they are not misleadingly clickable.
+    if ($href !== '' && (
+      $href === '/sustainability' || str_starts_with($href, '/sustainability/')
+    )) {
+      $system_path = $alias_manager->getPathByAlias($href);
+      if (preg_match('#^/node/(\d+)$#', $system_path, $m)) {
+        $n = $node_storage->load((int) $m[1]);
+        if (!$n || !$n->isPublished()) {
+          $href = '';
+        }
+      }
+      else {
+        // Path did not resolve to a node — not clickable.
+        $href = '';
+      }
+    }
+
     $links[] = ['text' => (string) $link->getText(), 'url' => $href];
   }
   $variables['breadcrumb'] = $links;
