@@ -84,21 +84,46 @@
 
 {# ── Shared sub-nav data ──────────────────────────────────────────────────────── #}
 {% set current_path = app.request.pathinfo %}
-{% set sub_items = [
-	{url: '/sustainability/our-commitment/governance', label: 'Governance'|t, icon: 'fa-landmark'},
-	{url: '/sustainability/our-commitment/sustainability-committee', label: 'Sustainability Committee'|t, icon: 'fa-users'},
-	{url: '/sustainability/our-commitment/institutional-policies', label: 'Institutional Policies'|t, icon: 'fa-file-lines'},
-	{url: '/sustainability/our-commitment/impact-reporting', label: 'Impact Reporting'|t, icon: 'fa-chart-bar'},
-	{url: '/sustainability/our-commitment/sdgs', label: 'SDGs'|t, icon: 'fa-leaf'}
-] %}
+
+{# Icon map for all seeded primary nav children, keyed by URL #}
+{% set icon_map = {
+	'/sustainability/our-commitment/governance': 'fa-landmark',
+	'/sustainability/our-commitment/sustainability-committee': 'fa-users',
+	'/sustainability/our-commitment/institutional-policies': 'fa-file-lines',
+	'/sustainability/our-commitment/impact-reporting': 'fa-chart-bar',
+	'/sustainability/our-commitment/sdgs': 'fa-leaf',
+	'/sustainability/programs-in-sustainability/sustainability-focused-programs': 'fa-chalkboard',
+	'/sustainability/programs-in-sustainability/student-led-sustainability': 'fa-users-between-lines',
+	'/sustainability/research-in-sustainability/center-for-sustainability-and-innovation': 'fa-flask-vial',
+	'/sustainability/research-in-sustainability/research-projects': 'fa-diagram-project',
+	'/sustainability/researchers-in-sustainability/list-of-researchers': 'fa-id-card',
+	'/sustainability/social-responsibility/edi': 'fa-handshake',
+	'/sustainability/social-responsibility/people-of-determination': 'fa-universal-access',
+	'/sustainability/partnerships-on-sustainability/list-of-institutions': 'fa-building',
+	'/sustainability/campus/health-wellness': 'fa-heart-pulse',
+	'/sustainability/campus/sustainable-infrastructure': 'fa-solar-panel',
+	'/sustainability/campus/path-to-net-zero': 'fa-seedling',
+	'/sustainability/activities-and-news/academia': 'fa-book',
+	'/sustainability/activities-and-news/extracurricular-activities-on-sustainability': 'fa-person-biking',
+	'/sustainability/activities-and-news/news': 'fa-newspaper'
+} %}
+
+{# Derive sub_items from the matching top-level primary nav parent #}
+{% set active_nav_parent = null %}
+{% for item in primary_nav %}
+	{% if item.children and (current_path == item.url or current_path starts with (item.url ~ '/')) %}
+		{% set active_nav_parent = item %}
+	{% endif %}
+{% endfor %}
+{% set sub_items = active_nav_parent ? active_nav_parent.children : [] %}
 
 {# ── Mobile / tablet sub-nav strip (hidden on lg+) ───────────────────────────── #}
 <div class="lg:hidden border-b border-slate-100 bg-white px-4 sm:px-6">
 	<nav class="flex gap-1.5 overflow-x-auto py-2.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" aria-label="{{ 'Our Commitment navigation'|t }}">
 		{% for sub in sub_items %}
 			<a href="{{ sub.url }}" class="inline-flex flex-none items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors{% if current_path == sub.url %} bg-slate-900 text-white{% else %} text-slate-600 hover:bg-slate-100 hover:text-slate-900{% endif %}">
-				<i class="fa-solid {{ sub.icon }}" aria-hidden="true"></i>
-				{{ sub.label }}
+				<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }}" aria-hidden="true"></i>
+				{{ sub.title }}
 			</a>
 		{% endfor %}
 	</nav>
@@ -130,13 +155,13 @@
 		{# Expanded panel — slides in from right edge on hover #}
 		<div class="flex flex-col justify-center overflow-hidden bg-white border-y border-l border-slate-200 rounded-l-2xl shadow-xl w-0 opacity-0 group-hover:w-56 group-hover:opacity-100 transition-all duration-300 ease-out">
 			<div class="min-w-[14rem] px-4 py-5">
-				<p class="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400 whitespace-nowrap">{{ 'Our Commitment'|t }}</p>
+				<p class="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400 whitespace-nowrap">{{ active_nav_parent ? active_nav_parent.title : 'Navigation'|t }}</p>
 				<ul class="space-y-0.5">
 					{% for sub in sub_items %}
 						<li>
 							<a href="{{ sub.url }}" class="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors whitespace-nowrap{% if current_path == sub.url %} bg-slate-100 font-semibold text-slate-900{% else %} text-slate-600 hover:bg-slate-50 hover:text-slate-900{% endif %}">
-								<i class="fa-solid {{ sub.icon }} w-4 text-center text-xs{% if current_path == sub.url %} text-[#b13634]{% else %} text-slate-400{% endif %}" aria-hidden="true"></i>
-								{{ sub.label }}
+						<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }} w-4 text-center text-xs{% if current_path == sub.url %} text-[#b13634]{% else %} text-slate-400{% endif %}" aria-hidden="true"></i>
+						{{ sub.title }}
 							</a>
 						</li>
 					{% endfor %}
@@ -149,7 +174,7 @@
 			<i class="fa-solid fa-layer-group text-white/90 text-md" aria-hidden="true"></i>
 			<div class="w-px h-2 bg-white/30 rounded-full"></div>
 			{% for sub in sub_items %}
-				<div class="rounded-full transition-colors {% if current_path == sub.url %}w-2 h-2 bg-white{% else %}w-1.5 h-1.5 bg-white/40 hover:bg-white/70{% endif %}" title="{{ sub.label }}"></div>
+				<div class="rounded-full transition-colors {% if current_path == sub.url %}w-2 h-2 bg-white{% else %}w-1.5 h-1.5 bg-white/40 hover:bg-white/70{% endif %}" title="{{ sub.title }}"></div>
 			{% endfor %}
 		</div>
 
