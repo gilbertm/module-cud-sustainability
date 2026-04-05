@@ -376,7 +376,7 @@ class SustainabilityController extends ControllerBase {
    *
   * @return list<array{image: array|null, image_url: string, overlay: array|null}>
    */
-  protected function getCarouselItems(NodeInterface $node): array {
+  public function getCarouselItems(NodeInterface $node): array {
     $this->trace('Building carousel items', [
       '@nid' => (string) $node->id(),
       '@has_images_field' => $node->hasField('field_research_carousel_images') ? 'yes' : 'no',

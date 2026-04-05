@@ -290,10 +290,14 @@ function cud_sustainability_preprocess_page(array &$variables): void {
       $cache_tags = ['node_list'];
       $title = '';
       $content = ['#markup' => ''];
+      $carousel_items = [];
       if ($matched_node) {
         $title = $matched_node->label();
         $content = $entity_type_manager->getViewBuilder('node')->view($matched_node, 'full');
         $cache_tags = $matched_node->getCacheTags();
+        /** @var \Drupal\cud_sustainability\Controller\SustainabilityController $controller */
+        $controller = \Drupal::classResolver()->getInstanceFromDefinition(\Drupal\cud_sustainability\Controller\SustainabilityController::class);
+        $carousel_items = $controller->getCarouselItems($matched_node);
       }
 
       $variables['page']['content'] = [
@@ -301,7 +305,7 @@ function cud_sustainability_preprocess_page(array &$variables): void {
         '#title' => $title,
         '#content' => $content,
         '#variant' => cud_sustainability_path_to_variant($path),
-        '#carousel_items' => [],
+        '#carousel_items' => $carousel_items,
         '#sections' => [],
         '#primary_nav' => \Drupal\cud_sustainability\Controller\SustainabilityController::getPrimaryMenuOverride(),
         '#secondary_nav' => \Drupal\cud_sustainability\Controller\SustainabilityController::getSecondaryMenuOverride(),

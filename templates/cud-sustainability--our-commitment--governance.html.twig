@@ -16,7 +16,7 @@
 
 {{ attach_library('cud_sustainability/tabs') }}
 
-{# % set carousel_slides = carousel_items|default([]) %}
+{% set carousel_slides = carousel_items|default([]) %}
 
 {% if carousel_slides %}
 	<section class="carousel group relative mb-8 w-screen max-w-none -translate-x-1/2 left-1/2" data-cud-carousel data-cud-carousel-autoplay="5600" aria-label="{{ 'Governance carousel'|t }}">
@@ -52,7 +52,7 @@
 			{% endif %}
 		</div>
 	</section>
-{% endif % #}
+{% endif %}
 
 {# ── Page Header with Breadcrumb ─────────────────────────────────────────────── #}
 	<section class="bg-white" aria-label="{{ 'Page header'|t }}"> <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
