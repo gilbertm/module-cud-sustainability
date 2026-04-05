@@ -446,14 +446,45 @@ function cud_sustainability_ensure_menus(): void {
 
   $starter_items = [
     'cud-sustainability-primary' => [
-      ['title' => 'Sustainability Home', 'uri' => 'internal:/sustainability'],
-      ['title' => 'Sustainability Topics', 'uri' => 'internal:/sustainability/topics'],
-      ['title' => 'Publications', 'uri' => 'internal:/sustainability/publications'],
+      ['title' => 'Our Commitment',               'uri' => 'internal:/sustainability/our-commitment',               'weight' => 0,  'parent_key' => NULL],
+      ['title' => 'Governance',                   'uri' => 'internal:/sustainability/our-commitment/governance',               'weight' => 0,  'parent_key' => 'Our Commitment'],
+      ['title' => 'Sustainability Committee',     'uri' => 'internal:/sustainability/our-commitment/sustainability-committee', 'weight' => 1,  'parent_key' => 'Our Commitment'],
+      ['title' => 'Institutional Policies',       'uri' => 'internal:/sustainability/our-commitment/institutional-policies',  'weight' => 2,  'parent_key' => 'Our Commitment'],
+      ['title' => 'Impact Reporting',             'uri' => 'internal:/sustainability/our-commitment/impact-reporting',        'weight' => 3,  'parent_key' => 'Our Commitment'],
+      ['title' => 'SDGs',                         'uri' => 'internal:/sustainability/our-commitment/sdgs',                    'weight' => 4,  'parent_key' => 'Our Commitment'],
+
+      ['title' => 'Programs in Sustainability',   'uri' => 'internal:/sustainability/programs-in-sustainability',             'weight' => 1,  'parent_key' => NULL],
+      ['title' => 'Sustainability Focused Programs', 'uri' => 'internal:/sustainability/programs-in-sustainability/sustainability-focused-programs', 'weight' => 0, 'parent_key' => 'Programs in Sustainability'],
+      ['title' => 'Student-Led Sustainability',   'uri' => 'internal:/sustainability/programs-in-sustainability/student-led-sustainability',        'weight' => 1, 'parent_key' => 'Programs in Sustainability'],
+
+      ['title' => 'Research in Sustainability',   'uri' => 'internal:/sustainability/research-in-sustainability',            'weight' => 2,  'parent_key' => NULL],
+      ['title' => 'Center for Sustainability & Innovation', 'uri' => 'internal:/sustainability/research-in-sustainability/center-for-sustainability-and-innovation', 'weight' => 0, 'parent_key' => 'Research in Sustainability'],
+      ['title' => 'Research Projects',            'uri' => 'internal:/sustainability/research-in-sustainability/research-projects',                               'weight' => 1, 'parent_key' => 'Research in Sustainability'],
+
+      ['title' => 'Researchers in Sustainability','uri' => 'internal:/sustainability/researchers-in-sustainability',         'weight' => 3,  'parent_key' => NULL],
+      ['title' => 'List of researchers',          'uri' => 'internal:/sustainability/researchers-in-sustainability/list-of-researchers',                          'weight' => 0, 'parent_key' => 'Researchers in Sustainability'],
+
+      ['title' => 'Social Responsibility',        'uri' => 'internal:/sustainability/social-responsibility',                 'weight' => 4,  'parent_key' => NULL],
+      ['title' => 'EDI @ CUD',                    'uri' => 'internal:/sustainability/social-responsibility/edi',                                                  'weight' => 0, 'parent_key' => 'Social Responsibility'],
+      ['title' => 'People of Determination',      'uri' => 'internal:/sustainability/social-responsibility/people-of-determination',                              'weight' => 1, 'parent_key' => 'Social Responsibility'],
+
+      ['title' => 'Partnerships on Sustainability','uri' => 'internal:/sustainability/partnerships-on-sustainability',        'weight' => 5,  'parent_key' => NULL],
+      ['title' => 'Institutions and Companies',   'uri' => 'internal:/sustainability/partnerships-on-sustainability/list-of-institutions',                        'weight' => 0, 'parent_key' => 'Partnerships on Sustainability'],
+
+      ['title' => 'Campus',                       'uri' => 'internal:/sustainability/campus',                                'weight' => 6,  'parent_key' => NULL],
+      ['title' => 'Health & Wellness',            'uri' => 'internal:/sustainability/campus/health-wellness',                                                     'weight' => 0, 'parent_key' => 'Campus'],
+      ['title' => 'Sustainable Infrastructure',   'uri' => 'internal:/sustainability/campus/sustainable-infrastructure',                                          'weight' => 1, 'parent_key' => 'Campus'],
+      ['title' => 'Path to Net Zero',             'uri' => 'internal:/sustainability/campus/path-to-net-zero',                                                    'weight' => 2, 'parent_key' => 'Campus'],
+
+      ['title' => 'Activities and News',          'uri' => 'internal:/sustainability/activities-and-news',                  'weight' => 7,  'parent_key' => NULL],
+      ['title' => 'Academia',                     'uri' => 'internal:/sustainability/activities-and-news/academia',                                               'weight' => 0, 'parent_key' => 'Activities and News'],
+      ['title' => 'Extracurricular Activities on Sustainability', 'uri' => 'internal:/sustainability/activities-and-news/extracurricular-activities-on-sustainability', 'weight' => 1, 'parent_key' => 'Activities and News'],
+      ['title' => 'News',                         'uri' => 'internal:/sustainability/activities-and-news/news',                                                   'weight' => 2, 'parent_key' => 'Activities and News'],
     ],
     'cud-sustainability-secondary' => [
-      ['title' => 'About Sustainability', 'uri' => 'internal:/sustainability/about'],
-      ['title' => 'Partnerships', 'uri' => 'internal:/sustainability/partnerships'],
-      ['title' => 'Contact', 'uri' => 'internal:/sustainability/contact'],
+      ['title' => 'About Sustainability', 'uri' => 'internal:/sustainability/about',        'weight' => 0, 'parent_key' => NULL],
+      ['title' => 'Partnerships',         'uri' => 'internal:/sustainability/partnerships', 'weight' => 1, 'parent_key' => NULL],
+      ['title' => 'Contact',              'uri' => 'internal:/sustainability/contact',      'weight' => 2, 'parent_key' => NULL],
     ],
   ];
 
@@ -463,12 +494,34 @@ function cud_sustainability_ensure_menus(): void {
     if (!empty($existing)) {
       continue;
     }
-    foreach ($items as $weight => $item) {
+    // First pass: create top-level items and collect their plugin IDs so child
+    // items can reference them as parents.
+    $parent_ids = [];
+    foreach ($items as $item) {
+      if ($item['parent_key'] !== NULL) {
+        continue;
+      }
+      $link = MenuLinkContent::create([
+        'title' => $item['title'],
+        'link' => ['uri' => $item['uri']],
+        'menu_name' => $menu_name,
+        'weight' => $item['weight'],
+        'enabled' => TRUE,
+      ]);
+      $link->save();
+      $parent_ids[$item['title']] = 'menu_link_content:' . $link->uuid();
+    }
+    // Second pass: create child items with parent references.
+    foreach ($items as $item) {
+      if ($item['parent_key'] === NULL) {
+        continue;
+      }
       MenuLinkContent::create([
         'title' => $item['title'],
         'link' => ['uri' => $item['uri']],
         'menu_name' => $menu_name,
-        'weight' => $weight,
+        'weight' => $item['weight'],
+        'parent' => $parent_ids[$item['parent_key']] ?? '',
         'enabled' => TRUE,
       ])->save();
     }

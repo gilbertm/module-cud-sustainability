@@ -241,8 +241,8 @@ function cud_sustainability_preprocess_page(array &$variables): void {
   }
 
   $request = \Drupal::requestStack()->getCurrentRequest();
-  $variables['primary_nav'] = \Drupal\cud_sustainability\Controller\SustainabilityController::getPrimaryMenuOverride();
-  $variables['secondary_nav'] = \Drupal\cud_sustainability\Controller\SustainabilityController::getSecondaryMenuOverride();
+  $variables['primary_nav'] = cud_sustainability_menu_items('cud-sustainability-primary');
+  $variables['secondary_nav'] = cud_sustainability_menu_items('cud-sustainability-secondary');
   $variables['research_mode'] = cud_sustainability_resolve_mode();
   $variables['research_site_name'] = (string) \Drupal::config('system.site')->get('name');
   $variables['research_home_url'] = \Drupal\Core\Url::fromRoute('<front>')->toString();
@@ -322,8 +322,8 @@ function cud_sustainability_preprocess_page(array &$variables): void {
         '#variant' => cud_sustainability_path_to_variant($path),
         '#carousel_items' => $carousel_items,
         '#sections' => [],
-        '#primary_nav' => \Drupal\cud_sustainability\Controller\SustainabilityController::getPrimaryMenuOverride(),
-        '#secondary_nav' => \Drupal\cud_sustainability\Controller\SustainabilityController::getSecondaryMenuOverride(),
+        '#primary_nav' => cud_sustainability_menu_items('cud-sustainability-primary'),
+        '#secondary_nav' => cud_sustainability_menu_items('cud-sustainability-secondary'),
         '#cache' => [
           'tags' => $cache_tags,
           'contexts' => ['url.path'],

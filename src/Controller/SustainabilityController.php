@@ -129,8 +129,8 @@ class SustainabilityController extends ControllerBase {
         'main',
         $this->getCarouselItems($main_node),
         $this->getSections($main_node),
-        static::getPrimaryMenuOverride(),
-        static::getSecondaryMenuOverride()
+        $this->getMenuItems('cud-sustainability-primary'),
+        $this->getMenuItems('cud-sustainability-secondary')
       );
       $build['#cache']['tags'] = $main_node->getCacheTags();
 
@@ -147,8 +147,8 @@ class SustainabilityController extends ControllerBase {
       'main',
       [],
       [],
-      static::getPrimaryMenuOverride(),
-      static::getSecondaryMenuOverride()
+      $this->getMenuItems('cud-sustainability-primary'),
+      $this->getMenuItems('cud-sustainability-secondary')
     );
   }
 
@@ -166,8 +166,8 @@ class SustainabilityController extends ControllerBase {
       'normal',
       [],
       [],
-      static::getPrimaryMenuOverride(),
-      static::getSecondaryMenuOverride()
+      $this->getMenuItems('cud-sustainability-primary'),
+      $this->getMenuItems('cud-sustainability-secondary')
     );
 
     $cache_tags = ['node_list'];
@@ -215,8 +215,8 @@ class SustainabilityController extends ControllerBase {
         $variant,
         [],
         [],
-        static::getPrimaryMenuOverride(),
-        static::getSecondaryMenuOverride()
+        $this->getMenuItems('cud-sustainability-primary'),
+        $this->getMenuItems('cud-sustainability-secondary')
       );
     }
 
@@ -226,8 +226,8 @@ class SustainabilityController extends ControllerBase {
       $variant,
       $this->getCarouselItems($node),
       $this->getSections($node),
-      static::getPrimaryMenuOverride(),
-      static::getSecondaryMenuOverride()
+      $this->getMenuItems('cud-sustainability-primary'),
+      $this->getMenuItems('cud-sustainability-secondary')
     );
     $build['#cache']['tags'] = $node->getCacheTags();
 
@@ -932,104 +932,5 @@ class SustainabilityController extends ControllerBase {
     return $hook;
   }
 
-  /**
-   * Returns overridden primary menu seed for sustainability routes.
-   *
-   * @return list<array{title:string,url:string,active:bool,children:list<array{title:string,url:string,active:bool}>}>
-   */
-  public static function getPrimaryMenuOverride(): array {
-    return [
-      [
-        'title' => 'Our Commitment',
-        'url' => '/sustainability/our-commitment',
-        'active' => FALSE,
-        'children' => [
-          ['title' => 'Governance', 'url' => '/sustainability/our-commitment/governance', 'active' => FALSE],
-          ['title' => 'Sustainability Committee', 'url' => '/sustainability/our-commitment/sustainability-committee', 'active' => FALSE],
-          ['title' => 'Institutional Policies', 'url' => '/sustainability/our-commitment/institutional-policies', 'active' => FALSE],
-          ['title' => 'Impact Reporting', 'url' => '/sustainability/our-commitment/impact-reporting', 'active' => FALSE],
-          ['title' => 'SDGs', 'url' => '/sustainability/our-commitment/sdgs', 'active' => FALSE],
-        ],
-      ],
-      [
-        'title' => 'Programs in Sustainability',
-        'url' => '/sustainability/programs-in-sustainability',
-        'active' => FALSE,
-        'children' => [
-          ['title' => 'Sustainability Focused Programs', 'url' => '/sustainability/programs-in-sustainability/sustainability-focused-programs', 'active' => FALSE],
-          ['title' => 'Student-Led Sustainability', 'url' => '/sustainability/programs-in-sustainability/student-led-sustainability', 'active' => FALSE],
-        ],
-      ],
-      [
-        'title' => 'Research in Sustainability',
-        'url' => '/sustainability/research-in-sustainability',
-        'active' => FALSE,
-        'children' => [
-          ['title' => 'Center for Sustainability & Innovation', 'url' => '/sustainability/research-in-sustainability/center-for-sustainability-and-innovation', 'active' => FALSE],
-          ['title' => 'Research Projects', 'url' => '/sustainability/research-in-sustainability/research-projects', 'active' => FALSE],
-        ],
-      ],
-      [
-        'title' => 'Researchers in Sustainability',
-        'url' => '/sustainability/researchers-in-sustainability',
-        'active' => FALSE,
-        'children' => [
-          ['title' => 'List of researchers', 'url' => '/sustainability/researchers-in-sustainability/list-of-researchers', 'active' => FALSE],
-        ],
-      ],
-      [
-        'title' => 'Social Responsibility',
-        'url' => '/sustainability/social-responsibility',
-        'active' => FALSE,
-        'children' => [
-          ['title' => 'EDI @ CUD', 'url' => '/sustainability/social-responsibility/edi', 'active' => FALSE],
-          ['title' => 'People of Determination', 'url' => '/sustainability/social-responsibility/people-of-determination', 'active' => FALSE],
-        ],
-      ],
-      [
-        'title' => 'Partnerships on Sustainability',
-        'url' => '/sustainability/partnerships-on-sustainability',
-        'active' => FALSE,
-        'children' => [
-          ['title' => 'Institutions and Companies', 'url' => '/sustainability/partnerships-on-sustainability/list-of-institutions', 'active' => FALSE],
-        ],
-      ],
-      [
-        'title' => 'Campus',
-        'url' => '/sustainability/campus',
-        'active' => FALSE,
-        'children' => [
-          ['title' => 'Health & Wellness', 'url' => '/sustainability/campus/health-wellness', 'active' => FALSE],
-          ['title' => 'Sustainable Infrastructure', 'url' => '/sustainability/campus/sustainable-infrastructure', 'active' => FALSE],
-          ['title' => 'Path to Net Zero', 'url' => '/sustainability/campus/path-to-net-zero', 'active' => FALSE],
-        ],
-      ],
-      [
-        'title' => 'Activities and News',
-        'url' => '/sustainability/activities-and-news',
-        'active' => FALSE,
-        'children' => [
-          ['title' => 'Academia', 'url' => '/sustainability/activities-and-news/academia', 'active' => FALSE],
-          ['title' => 'Extracurricular Activities on Sustainability', 'url' => '/sustainability/activities-and-news/extracurricular-activities-on-sustainability', 'active' => FALSE],
-          ['title' => 'News', 'url' => '/sustainability/activities-and-news/news', 'active' => FALSE],
-        ],
-      ]
-    ];
-  }
-
-  /**
-   * Returns overridden secondary menu seed for sustainability routes.
-   *
-   * @return list<array{title:string,url:string,active:bool}>
-   */
-  public static function getSecondaryMenuOverride(): array {
-    return [
-      ['title' => 'SDG Framework', 'url' => '/sustainability/sdg-framework', 'active' => FALSE],
-      ['title' => 'Policies', 'url' => '/sustainability/policies', 'active' => FALSE],
-      ['title' => 'Sustainability Team', 'url' => '/sustainability/team', 'active' => FALSE],
-      ['title' => 'Contact', 'url' => '/sustainability/contact', 'active' => FALSE],
-      ['title' => 'Collaborate', 'url' => '/sustainability/collaborate', 'active' => FALSE],
-    ];
-  }
 
 }
