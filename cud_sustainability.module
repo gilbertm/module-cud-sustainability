@@ -36,6 +36,7 @@ function cud_sustainability_theme(array $existing, string $type, string $theme, 
         'secondary_nav' => [],
         'breadcrumb' => [],
         'edit_url' => NULL,
+        'current_path' => NULL,
       ],
       'template' => 'cud-sustainability',
     ],
@@ -394,6 +395,12 @@ function cud_sustainability_preprocess_cud_sustainability(array &$variables): vo
     $variables['edit_url'] = \Drupal\Core\Url::fromRoute('entity.node.edit_form', ['node' => $node->id()])->toString();
   }
 
+  // Provide the current path as a reliable PHP-sourced variable so templates
+  // can use it for active-state detection without relying on app.request in
+  // Twig, which may return '/' when rendering via sub-requests.
+  $req = \Drupal::requestStack()->getMasterRequest() ?? \Drupal::requestStack()->getCurrentRequest();
+  $variables['current_path'] = $req ? $req->getPathInfo() : '/';
+
   // Safety net: if #title was not passed or was empty (e.g. slug lookup missed
   // the node), try to resolve the title from the actual route node or Drupal's
   // title_resolver so the h1 and breadcrumb trailing crumb are never blank.
@@ -637,7 +644,6 @@ function cud_sustainability_menu_items(string $menu_name): array {
   $menu_tree = \Drupal::service('menu.link_tree');
   $tree = $menu_tree->load($menu_name, $parameters);
   $tree = $menu_tree->transform($tree, [
-    ['callable' => 'menu.default_tree_manipulators:checkAccess'],
     ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
   ]);
 
@@ -646,7 +652,7 @@ function cud_sustainability_menu_items(string $menu_name): array {
   $items = [];
 
   foreach ($tree as $element) {
-    if (!($element->access && $element->access->isAllowed())) {
+    if ($element->access instanceof \Drupal\Core\Access\AccessResultInterface && $element->access->isForbidden()) {
       continue;
     }
 
@@ -654,7 +660,7 @@ function cud_sustainability_menu_items(string $menu_name): array {
     $children = [];
 
     foreach ($element->subtree as $child_element) {
-      if (!($child_element->access && $child_element->access->isAllowed())) {
+      if ($child_element->access instanceof \Drupal\Core\Access\AccessResultInterface && $child_element->access->isForbidden()) {
         continue;
       }
       $child_url = $child_element->link->getUrlObject()->toString();
