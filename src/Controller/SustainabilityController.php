@@ -919,7 +919,17 @@ class SustainabilityController extends ControllerBase {
       return preg_replace('/[^a-z0-9]+/', '_', $p);
     }, $parts);
 
-    return 'cud_sustainability__' . implode('__', $machine_parts);
+    $hook = 'cud_sustainability__' . implode('__', $machine_parts);
+
+    // Fall back to the normal template when no dedicated template is registered
+    // for this specific path. This ensures any /sustainability/* URL that lacks
+    // its own template always renders cud-sustainability--normal.html.twig.
+    $registry = \Drupal::service('theme.registry')->get();
+    if (!isset($registry[$hook])) {
+      return 'cud_sustainability__normal';
+    }
+
+    return $hook;
   }
 
   /**
