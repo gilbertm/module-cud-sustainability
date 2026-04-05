@@ -37,3 +37,10 @@ page:
     - core/drupal
     - cud_sustainability/fonts
     - cud_sustainability/fontawesome
+
+tabs:
+  version: 1.x
+  js:
+    js/cud_sustainability.tabs.js: {}
+  dependencies:
+    - core/drupal

@@ -14,6 +14,8 @@
  */
 #}
 
+{{ attach_library('cud_sustainability/tabs') }}
+
 {# % set carousel_slides = carousel_items|default([]) %}
 
 {% if carousel_slides %}
@@ -53,8 +55,7 @@
 {% endif % #}
 
 {# ── Page Header with Breadcrumb ─────────────────────────────────────────────── #}
-<section class="bg-white" aria-label="{{ 'Page header'|t }}">
-	<div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+	<section class="bg-white" aria-label="{{ 'Page header'|t }}"> <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
 		<nav class="mb-3 flex items-center gap-1.5 text-xs text-slate-500" aria-label="{{ 'Breadcrumb'|t }}">
 			<a href="/sustainability" class="hover:text-slate-700 transition-colors">{{ 'Sustainability'|t }}</a>
 			<i class="fa-solid fa-chevron-right text-[9px] text-slate-400" aria-hidden="true"></i>
@@ -78,10 +79,10 @@
 
 {# ── Mobile / tablet sub-nav strip (hidden on lg+) ───────────────────────────── #}
 <div class="lg:hidden border-b border-slate-100 bg-white px-4 sm:px-6">
-	<nav class="flex gap-1.5 overflow-x-auto py-2.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" aria-label="{{ 'Our Commitment navigation'|t }}">
+	<nav class="flex flex-wrap gap-1.5 py-2.5" aria-label="{{ 'Our Commitment navigation'|t }}">
 		{% for sub in sub_items %}
-			<a href="{{ sub.url }}" class="inline-flex flex-none items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors{% if current_path == sub.url %} bg-slate-900 text-white{% else %} text-slate-600 hover:bg-slate-100 hover:text-slate-900{% endif %}">
-				<i class="fa-solid {{ sub.icon }}" aria-hidden="true"></i>
+			<a href="{{ sub.url }}" class="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors{% if current_path == sub.url %} bg-slate-900 text-white{% else %} text-slate-600 hover:bg-slate-100 hover:text-slate-900{% endif %}">
+				<i class="fa-solid {{ sub.icon }} shrink-0" aria-hidden="true"></i>
 				{{ sub.label }}
 			</a>
 		{% endfor %}
@@ -93,468 +94,516 @@
 	<div class="min-w-0">
 		{% if content %}
 			{# <div class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-sky-700 prose-a:no-underline hover:prose-a:underline">
-				{{ content }}
-			</div> #}
+																						{{ content }}
+																					</div> #}
 
-            <section class="tab-panel-pages">
-            </section>
+			{# ── Tabbed panel ──────────────────────────────────────────────────────────── #}
+				<section
+				class="tab-panel-pages mb-12" data-cud-tabs> {# Tab bar #}
+				<div class="relative flex gap-1 border-b border-slate-200" role="tablist" aria-label="{{ 'Governance panels'|t }}">
 
-			{# ── Board of Trustees ───────────────────────────────────────────────────────── #}
-			{#
-			  Flex wrap + justify-center means any orphan items on the last row
-			  are naturally centred — no special CSS tricks needed.
-			  Column counts: 3 (mobile) → 5 (sm 640px) → 6 (md 768px) → 8 (lg 1024px+)
-			  Each basis = (100% − (cols−1)×gap) / cols  with gap-3 (12px).
-			#}
-            <section class="board-of-trustees mb-12 pb-10">
-                    <div class="mb-8 flex items-center gap-3">
-                        <span class="h-px flex-1 bg-gradient-to-r from-[#b13634]/30 to-transparent"></span>
-                        <h2 class="text-md md:text-lg font-semibold uppercase tracking-[0.25em] text-[#b13634]">{{ 'Board of Trustees Members'|t }}</h2>
-                        <span class="h-px flex-1 bg-gradient-to-l from-[#b13634]/30 to-transparent"></span>
-                    </div>
+					<button role="tab" id="tab-bot" aria-controls="panel-bot" aria-selected="true" data-cud-tab="bot" class="cud-tab-btn group relative flex items-center gap-1.5 lg:gap-2 px-3 py-2.5 lg:px-5 lg:py-3.5 text-xs lg:text-sm font-semibold text-[#b13634] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#b13634]/50 focus-visible:ring-offset-2">
+						<i class="fa-solid fa-people-group text-sm lg:text-xl" aria-hidden="true"></i>
+						{{ 'Board of Trustees'|t }}
+						<span class="absolute inset-x-0 bottom-0 h-0.5 rounded-full bg-[#b13634] transition-opacity"></span>
+					</button>
 
-                    <div class="flex flex-wrap justify-center gap-3">
+					<button role="tab" id="tab-senate" aria-controls="panel-senate" aria-selected="false" data-cud-tab="senate" class="cud-tab-btn group relative flex items-center gap-1.5 lg:gap-2 px-3 py-2.5 lg:px-5 lg:py-3.5 text-xs lg:text-sm font-semibold text-slate-500 transition-colors hover:text-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#b13634]/50 focus-visible:ring-offset-2">
+						<i class="fa-solid fa-landmark text-sm lg:text-xl" aria-hidden="true"></i>
+						{{ 'Senate'|t }}
+						<span class="absolute inset-x-0 bottom-0 h-0.5 rounded-full bg-[#b13634] opacity-0 transition-opacity"></span>
+					</button>
 
-                        {# ── Mr. Buti Saeed Al Ghandi ── #}
-                        <article class="group flex shrink-0 grow-0 flex-col overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-slate-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-md basis-[calc(33.333%-8px)] sm:basis-[calc(20%-10px)] md:basis-[calc(16.667%-10px)] lg:basis-[calc(16.667%-10px)]">
-                            <div class="aspect-[3/4] overflow-hidden bg-slate-100">
-                                <img src="/sites/default/files/media/about/board-of-trustees/bot-buti.png"
-                                    alt="Mr. Buti Saeed Al Ghandi"
-                                    loading="lazy"
-                                    class="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105">
-                            </div>
-                            <div class="flex flex-1 flex-col p-2.5">
-                                <h3 class="text-[11px] font-semibold leading-snug text-slate-900">Mr. Buti Saeed Al Ghandi</h3>
-                                <p class="mt-1 text-[10px] leading-relaxed text-slate-500">Chairman of the Board of Directors<br><span class="text-slate-400">Emirates Investment and Development PSC, UAE</span></p>
-                            </div>
-                        </article>
 
-                        {# ── Mr. Abdulla Mohd Obaidallah ── #}
-                        <article class="group flex shrink-0 grow-0 flex-col overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-slate-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-md basis-[calc(33.333%-8px)] sm:basis-[calc(20%-10px)] md:basis-[calc(16.667%-10px)] lg:basis-[calc(16.667%-10px)]">
-                            <div class="aspect-[3/4] overflow-hidden bg-slate-100">
-                                <img src="/sites/default/files/media/about/board-of-trustees/bot-obaidallah.jpg"
-                                    alt="Mr. Abdulla Mohd Obaidallah"
-                                    loading="lazy"
-                                    class="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105">
-                            </div>
-                            <div class="flex flex-1 flex-col p-2.5">
-                                <h3 class="text-[11px] font-semibold leading-snug text-slate-900">Mr. Abdulla Mohd Obaidallah</h3>
-                                <p class="mt-1 text-[10px] leading-relaxed text-slate-500">Board of Directors Member<br><span class="text-slate-400">Emirates Investment and Development PSC, UAE</span></p>
-                            </div>
-                        </article>
+					<button role="tab" id="tab-academic-council" aria-controls="panel-academic-council" aria-selected="false" data-cud-tab="academic-council" class="cud-tab-btn group relative flex items-center gap-1.5 lg:gap-2 px-3 py-2.5 lg:px-5 lg:py-3.5 text-xs lg:text-sm font-semibold text-slate-500 transition-colors hover:text-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#b13634]/50 focus-visible:ring-offset-2">
+						<i class="fa-solid fa-graduation-cap text-sm lg:text-xl" aria-hidden="true"></i>
+						{{ 'Academic Council'|t }}
+						<span class="absolute inset-x-0 bottom-0 h-0.5 rounded-full bg-[#b13634] opacity-0 transition-opacity"></span>
+					</button>
 
-                        {# ── Mr. Ali Rashid Al Mazroei ── #}
-                        <article class="group flex shrink-0 grow-0 flex-col overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-slate-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-md basis-[calc(33.333%-8px)] sm:basis-[calc(20%-10px)] md:basis-[calc(16.667%-10px)] lg:basis-[calc(16.667%-10px)]">
-                            <div class="aspect-[3/4] overflow-hidden bg-slate-100">
-                                <img src="/sites/default/files/media/about/board-of-trustees/mr_ali_rashid.jpg"
-                                    alt="Mr. Ali Rashid Al Mazroei"
-                                    loading="lazy"
-                                    class="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105">
-                            </div>
-                            <div class="flex flex-1 flex-col p-2.5">
-                                <h3 class="text-[11px] font-semibold leading-snug text-slate-900">Mr. Ali Rashid Al Mazroei</h3>
-                                <p class="mt-1 text-[10px] leading-relaxed text-slate-500">Group Director and Chief Executive Officer<br><span class="text-slate-400">Bahri &amp; Mazroei Group</span></p>
-                            </div>
-                        </article>
+					<button role="tab" id="tab-senior-management" aria-controls="panel-senior-management" aria-selected="false" data-cud-tab="senior-management" class="cud-tab-btn group relative flex items-center gap-1.5 lg:gap-2 px-3 py-2.5 lg:px-5 lg:py-3.5 text-xs lg:text-sm font-semibold text-slate-500 transition-colors hover:text-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#b13634]/50 focus-visible:ring-offset-2">
+						<i class="fa-solid fa-user-tie text-sm lg:text-xl" aria-hidden="true"></i>
+						{{ 'Senior Management'|t }}
+						<span class="absolute inset-x-0 bottom-0 h-0.5 rounded-full bg-[#b13634] opacity-0 transition-opacity"></span>
+					</button>
 
-                        {# ── Prof. Karim Chelli ── #}
-                        <article class="group flex shrink-0 grow-0 flex-col overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-slate-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-md basis-[calc(33.333%-8px)] sm:basis-[calc(20%-10px)] md:basis-[calc(16.667%-10px)] lg:basis-[calc(16.667%-10px)]">
-                            <div class="aspect-[3/4] overflow-hidden bg-slate-100">
-                                <img src="/sites/default/files/media/about/board-of-trustees/bot-karim.png"
-                                    alt="Prof. Karim Chelli"
-                                    loading="lazy"
-                                    class="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105">
-                            </div>
-                            <div class="flex flex-1 flex-col p-2.5">
-                                <h3 class="text-[11px] font-semibold leading-snug text-slate-900">Prof. Karim Chelli</h3>
-                                <p class="mt-1 text-[10px] leading-relaxed text-slate-500">President &amp; Vice-Chancellor<br><span class="text-slate-400">Canadian University Dubai</span></p>
-                            </div>
-                        </article>
 
-                        {# ── Hon. Sheila Copps ── #}
-                        <article class="group flex shrink-0 grow-0 flex-col overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-slate-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-md basis-[calc(33.333%-8px)] sm:basis-[calc(20%-10px)] md:basis-[calc(16.667%-10px)] lg:basis-[calc(16.667%-10px)]">
-                            <div class="aspect-[3/4] overflow-hidden bg-slate-100">
-                                <img src="/sites/default/files/media/about/board-of-trustees/bot-sheila-copps.jpg"
-                                    alt="Hon. Sheila Copps Pc Oc"
-                                    loading="lazy"
-                                    class="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105">
-                            </div>
-                            <div class="flex flex-1 flex-col p-2.5">
-                                <h3 class="text-[11px] font-semibold leading-snug text-slate-900">Hon. Sheila Copps Pc Oc</h3>
-                                <p class="mt-1 text-[10px] leading-relaxed text-slate-500">Former Heritage Minister<br><span class="text-slate-400">Environment Minister &amp; Deputy PM of Canada</span></p>
-                            </div>
-                        </article>
+					<button role="tab" id="tab-governance" aria-controls="panel-governance" aria-selected="false" data-cud-tab="governance" class="cud-tab-btn group relative flex items-center gap-1.5 lg:gap-2 px-3 py-2.5 lg:px-5 lg:py-3.5 text-xs lg:text-sm font-semibold text-slate-500 transition-colors hover:text-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#b13634]/50 focus-visible:ring-offset-2">
+						<i class="fa-solid fa-scale-balanced text-sm lg:text-xl" aria-hidden="true"></i>
+						{{ 'Governance Bodies'|t }}
+						<span class="absolute inset-x-0 bottom-0 h-0.5 rounded-full bg-[#b13634] opacity-0 transition-opacity"></span>
+					</button>
 
-                        {# ── Hon. Aldea Landry ── #}
-                        <article class="group flex shrink-0 grow-0 flex-col overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-slate-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-md basis-[calc(33.333%-8px)] sm:basis-[calc(20%-10px)] md:basis-[calc(16.667%-10px)] lg:basis-[calc(16.667%-10px)]">
-                            <div class="aspect-[3/4] overflow-hidden bg-slate-100">
-                                <img src="/sites/default/files/media/about/board-of-trustees/bot-aldea.png"
-                                    alt="Hon. Aldea Landry"
-                                    loading="lazy"
-                                    class="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105">
-                            </div>
-                            <div class="flex flex-1 flex-col p-2.5">
-                                <h3 class="text-[11px] font-semibold leading-snug text-slate-900">Hon. Aldea Landry</h3>
-                                <p class="mt-1 text-[10px] leading-relaxed text-slate-500">Former Cabinet Minister and Deputy Premier<br><span class="text-slate-400">Province of New Brunswick, Canada</span></p>
-                            </div>
-                        </article>
+				</div>
 
-                        {# ── Hon. John Baird ── #}
-                        <article class="group flex shrink-0 grow-0 flex-col overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-slate-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-md basis-[calc(33.333%-8px)] sm:basis-[calc(20%-10px)] md:basis-[calc(16.667%-10px)] lg:basis-[calc(16.667%-10px)]">
-                            <div class="aspect-[3/4] overflow-hidden bg-slate-100">
-                                <img src="/sites/default/files/inline-images/bot-honorable-john-baird.jpg"
-                                    alt="Hon. John Baird"
-                                    loading="lazy"
-                                    class="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105">
-                            </div>
-                            <div class="flex flex-1 flex-col p-2.5">
-                                <h3 class="text-[11px] font-semibold leading-snug text-slate-900">Hon. John Baird</h3>
-                                <p class="mt-1 text-[10px] leading-relaxed text-slate-500">Former Member<br><span class="text-slate-400">Canadian House of Commons and Minister of Foreign Affairs</span></p>
-                            </div>
-                        </article>
+				{# ── Panel 1 : Board of Trustees ─────────────────────────────────────────── #}
+				<div
+					role="tabpanel" id="panel-bot" aria-labelledby="tab-bot" data-cud-panel="bot" class="pt-8">
+					{# Board of Trustees content #}
+					<section class="board-of-trustees mb-12 pb-10">
+						<div class="mb-8 flex items-center gap-3">
+							<span class="h-px flex-1 bg-gradient-to-r from-[#b13634]/30 to-transparent"></span>
+							<h2 class="text-md md:text-lg font-semibold uppercase tracking-[0.25em] text-[#b13634]">{{ 'Board of Trustees Members'|t }}</h2>
+							<span class="h-px flex-1 bg-gradient-to-l from-[#b13634]/30 to-transparent"></span>
+						</div>
 
-                        {# ── Honourable George J. Furey ── #}
-                        <article class="group flex shrink-0 grow-0 flex-col overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-slate-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-md basis-[calc(33.333%-8px)] sm:basis-[calc(20%-10px)] md:basis-[calc(16.667%-10px)] lg:basis-[calc(16.667%-10px)]">
-                            <div class="aspect-[3/4] overflow-hidden bg-slate-100">
-                                <img src="/sites/default/files/media/about/board-of-trustees/bot_Honourable_George_Furey.png"
-                                    alt="Honourable George J. Furey"
-                                    loading="lazy"
-                                    class="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105">
-                            </div>
-                            <div class="flex flex-1 flex-col p-2.5">
-                                <h3 class="text-[11px] font-semibold leading-snug text-slate-900">Honourable George J. Furey</h3>
-                                <p class="mt-1 text-[10px] leading-relaxed text-slate-500">Former 45th Speaker of the Senate of Canada</p>
-                            </div>
-                        </article>
+						<div
+							class="flex flex-col gap-4">
 
-                        {# ── Dr. Denis Lapalme ── #}
-                        <article class="group flex shrink-0 grow-0 flex-col overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-slate-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-md basis-[calc(33.333%-8px)] sm:basis-[calc(20%-10px)] md:basis-[calc(16.667%-10px)] lg:basis-[calc(16.667%-10px)]">
-                            <div class="aspect-[3/4] overflow-hidden bg-slate-100">
-                                <img src="/sites/default/files/media/about/board-of-trustees/dr_denis_lapalme.png"
-                                    alt="Dr. Denis Lapalme"
-                                    loading="lazy"
-                                    class="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105">
-                            </div>
-                            <div class="flex flex-1 flex-col p-2.5">
-                                <h3 class="text-[11px] font-semibold leading-snug text-slate-900">Dr. Denis Lapalme</h3>
-                                <p class="mt-1 text-[10px] leading-relaxed text-slate-500">Psychologist<br><span class="text-slate-400">Laurentian University &amp; Ontario Provincial Police</span></p>
-                            </div>
-                        </article>
+							{# ── Mr. Buti Saeed Al Ghandi ── #}
+							<article class="group flex w-full flex-col gap-4 rounded-xl bg-slate-50/70 p-4 transition-colors hover:bg-slate-100/80 min-[241px]:flex-row min-[241px]:items-center">
+								<div class="h-48 w-full shrink-0 overflow-hidden rounded-lg bg-slate-200 min-[241px]:h-[150px] min-[241px]:w-[150px] min-[720px]:h-60 min-[720px]:w-60">
+									<img src="/sites/default/files/media/about/board-of-trustees/bot-buti.png" alt="Mr. Buti Saeed Al Ghandi" loading="lazy" class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
+								</div>
+								<div class="min-w-0 flex-1">
+									<p class="text-base font-bold leading-snug text-black lg:text-xl uppercase">Mr. Buti Saeed Al Ghandi</p>
+									<p class="mt-1 text-md font-semibold leading-snug text-slate-700 md:text-lg">Chairman of the Board of Directors</p>
+									<p class="mt-0.5 text-md leading-snug text-slate-700 md:text-md">Emirates Investment and Development PSC, UAE</p>
+								</div>
+							</article>
 
-                    </div>
-            </section>
+							{# ── Mr. Abdulla Mohd Obaidallah ── #}
+							<article class="group flex w-full flex-col gap-4 rounded-xl bg-slate-50/70 p-4 transition-colors hover:bg-slate-100/80 min-[241px]:flex-row min-[241px]:items-center">
+								<div class="h-48 w-full shrink-0 overflow-hidden rounded-lg bg-slate-200 min-[241px]:h-[150px] min-[241px]:w-[150px] min-[720px]:h-60 min-[720px]:w-60">
+									<img src="/sites/default/files/media/about/board-of-trustees/bot-obaidallah.jpg" alt="Mr. Abdulla Mohd Obaidallah" loading="lazy" class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
+								</div>
+								<div class="min-w-0 flex-1">
+									<p class="text-base font-bold leading-snug text-black lg:text-xl uppercase">Mr. Abdulla Mohd Obaidallah</p>
+									<p class="mt-1 text-md font-semibold leading-snug text-slate-700 md:text-lg">Board of Directors Member</p>
+									<p class="mt-0.5 text-md leading-snug text-slate-700 md:text-md">Emirates Investment and Development PSC, UAE</p>
+								</div>
+							</article>
 
-            <section class="senior-management">
-                <div class="mb-12 pb-10">
-                    <div class="mb-6 flex items-center gap-3">
-                        <span class="h-px flex-1 bg-gradient-to-r from-[#b13634]/30 to-transparent"></span>
-                        <h2 class="text-md md:text-lg font-semibold uppercase tracking-[0.25em] text-[#b13634]">{{ 'Senior Management'|t }}</h2>
-                        <span class="h-px flex-1 bg-gradient-to-l from-[#b13634]/30 to-transparent"></span>
-                    </div>
+							{# ── Mr. Ali Rashid Al Mazroei ── #}
+							<article class="group flex w-full flex-col gap-4 rounded-xl bg-slate-50/70 p-4 transition-colors hover:bg-slate-100/80 min-[241px]:flex-row min-[241px]:items-center">
+								<div class="h-48 w-full shrink-0 overflow-hidden rounded-lg bg-slate-200 min-[241px]:h-[150px] min-[241px]:w-[150px] min-[720px]:h-60 min-[720px]:w-60">
+									<img src="/sites/default/files/media/about/board-of-trustees/mr_ali_rashid.jpg" alt="Mr. Ali Rashid Al Mazroei" loading="lazy" class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
+								</div>
+								<div class="min-w-0 flex-1">
+									<p class="text-base font-bold leading-snug text-black lg:text-xl uppercase">Mr. Ali Rashid Al Mazroei</p>
+									<p class="mt-1 text-md font-semibold leading-snug text-slate-700 md:text-lg">Group Director and Chief Executive Officer</p>
+									<p class="mt-0.5 text-md leading-snug text-slate-700 md:text-md">Bahri &amp; Mazroei Group</p>
+								</div>
+							</article>
 
-                    <div class="overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm">
-                        <table class="w-full border-collapse text-sm">
-                            <thead>
-                                <tr class="bg-slate-50 border-b border-slate-200">
-                                    <th class="w-[22%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Department'|t }}</th>
-                                    <th class="w-[35%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Name'|t }}</th>
-                                    <th class="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Position'|t }}</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-100 bg-white">
+							{# ── Prof. Karim Chelli ── #}
+							<article class="group flex w-full flex-col gap-4 rounded-xl bg-slate-50/70 p-4 transition-colors hover:bg-slate-100/80 min-[241px]:flex-row min-[241px]:items-center">
+								<div class="h-48 w-full shrink-0 overflow-hidden rounded-lg bg-slate-200 min-[241px]:h-[150px] min-[241px]:w-[150px] min-[720px]:h-60 min-[720px]:w-60">
+									<img src="/sites/default/files/media/about/board-of-trustees/bot-karim.png" alt="Prof. Karim Chelli" loading="lazy" class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
+								</div>
+								<div class="min-w-0 flex-1">
+									<p class="text-base font-bold leading-snug text-black lg:text-xl uppercase">Prof. Karim Chelli</p>
+									<p class="mt-1 text-md font-semibold leading-snug text-slate-700 md:text-lg">President &amp; Vice-Chancellor</p>
+									<p class="mt-0.5 text-md leading-snug text-slate-700 md:text-md">Canadian University Dubai</p>
+								</div>
+							</article>
 
-                                <tr class="hover:bg-slate-50/70 transition-colors">
-                                    <td class="px-4 py-3.5 align-top" rowspan="1">
-                                        <span class="inline-flex items-center gap-1.5 rounded-md bg-[#b13634]/5 px-2.5 py-1 text-[11px] font-semibold text-[#b13634] whitespace-nowrap ring-1 ring-[#b13634]/15">
-                                            <i class="fa-solid fa-building-columns text-[9px]" aria-hidden="true"></i>
-                                            {{ "President's Office"|t }}
-                                        </span>
-                                    </td>
-                                    <td class="px-4 py-3.5 font-medium text-slate-800">Professor Karim Chelli</td>
-                                    <td class="px-4 py-3.5 text-slate-500">President &amp; Vice-Chancellor</td>
-                                </tr>
+							{# ── Hon. Sheila Copps Pc Oc ── #}
+							<article class="group flex w-full flex-col gap-4 rounded-xl bg-slate-50/70 p-4 transition-colors hover:bg-slate-100/80 min-[241px]:flex-row min-[241px]:items-center">
+								<div class="h-48 w-full shrink-0 overflow-hidden rounded-lg bg-slate-200 min-[241px]:h-[150px] min-[241px]:w-[150px] min-[720px]:h-60 min-[720px]:w-60">
+									<img src="/sites/default/files/media/about/board-of-trustees/bot-sheila-copps.jpg" alt="Hon. Sheila Copps Pc Oc" loading="lazy" class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
+								</div>
+								<div class="min-w-0 flex-1">
+									<p class="text-base font-bold leading-snug text-black lg:text-xl uppercase">Hon. Sheila Copps Pc Oc</p>
+									<p class="mt-1 text-md font-semibold leading-snug text-slate-700 md:text-lg">Former Heritage Minister</p>
+									<p class="mt-0.5 text-md leading-snug text-slate-700 md:text-md">Environment Minister &amp; Deputy PM of Canada</p>
+								</div>
+							</article>
 
-                                <tr class="hover:bg-slate-50/70 transition-colors">
-                                    <td class="px-4 py-3.5 align-top" rowspan="6">
-                                        <span class="inline-flex items-center gap-1.5 rounded-md bg-sky-50 px-2.5 py-1 text-[11px] font-semibold text-sky-700 whitespace-nowrap ring-1 ring-sky-200">
-                                            <i class="fa-solid fa-graduation-cap text-[9px]" aria-hidden="true"></i>
-                                            {{ 'Academic Affairs'|t }}
-                                        </span>
-                                    </td>
-                                    <td class="px-4 py-3.5 font-medium text-slate-800">Dr. Adam Fenech</td>
-                                    <td class="px-4 py-3.5 text-slate-500">Provost of Research</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/70 transition-colors">
-                                    <td class="px-4 py-3.5 font-medium text-slate-800">Dr. Sherif Moussa</td>
-                                    <td class="px-4 py-3.5 text-slate-500">Dean / Professor, School of Engineering, Applied Sciences and Technology</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/70 transition-colors">
-                                    <td class="px-4 py-3.5 font-medium text-slate-800">Mr. Massimo Imparato</td>
-                                    <td class="px-4 py-3.5 text-slate-500">Dean, School of Architecture and Interior Design</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/70 transition-colors">
-                                    <td class="px-4 py-3.5 font-medium text-slate-800">Dr. Aseel Takshe</td>
-                                    <td class="px-4 py-3.5 text-slate-500">Acting Dean / Associate Professor, School of Health Sciences and Psychology</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/70 transition-colors">
-                                    <td class="px-4 py-3.5 font-medium text-slate-800">Dr. Ibrahim Tabche</td>
-                                    <td class="px-4 py-3.5 text-slate-500">Acting Dean / Associate Professor, School of Management</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/70 transition-colors">
-                                    <td class="px-4 py-3.5 font-medium text-slate-800">Dr. Robert McClung</td>
-                                    <td class="px-4 py-3.5 text-slate-500">Dean / Associate Professor, First-Year Students</td>
-                                </tr>
+							{# ── Hon. Aldea Landry ── #}
+							<article class="group flex w-full flex-col gap-4 rounded-xl bg-slate-50/70 p-4 transition-colors hover:bg-slate-100/80 min-[241px]:flex-row min-[241px]:items-center">
+								<div class="h-48 w-full shrink-0 overflow-hidden rounded-lg bg-slate-200 min-[241px]:h-[150px] min-[241px]:w-[150px] min-[720px]:h-60 min-[720px]:w-60">
+									<img src="/sites/default/files/media/about/board-of-trustees/bot-aldea.png" alt="Hon. Aldea Landry" loading="lazy" class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
+								</div>
+								<div class="min-w-0 flex-1">
+									<p class="text-base font-bold leading-snug text-black lg:text-xl uppercase">Hon. Aldea Landry</p>
+									<p class="mt-1 text-md font-semibold leading-snug text-slate-700 md:text-lg">Former Cabinet Minister and Deputy Premier</p>
+									<p class="mt-0.5 text-md leading-snug text-slate-700 md:text-md">Province of New Brunswick, Canada</p>
+								</div>
+							</article>
 
-                                <tr class="hover:bg-slate-50/70 transition-colors">
-                                    <td class="px-4 py-3.5 align-top" rowspan="7">
-                                        <span class="inline-flex items-center gap-1.5 rounded-md bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-600 whitespace-nowrap ring-1 ring-slate-200">
-                                            <i class="fa-solid fa-briefcase text-[9px]" aria-hidden="true"></i>
-                                            {{ 'Administration'|t }}
-                                        </span>
-                                    </td>
-                                    <td class="px-4 py-3.5 font-medium text-slate-800">Dr. Rami El-Khatib</td>
-                                    <td class="px-4 py-3.5 text-slate-500">Vice President Student Affairs</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/70 transition-colors">
-                                    <td class="px-4 py-3.5 font-medium text-slate-800">Dr. Muhammad Abaidullah Anwar</td>
-                                    <td class="px-4 py-3.5 text-slate-500">Dean, Institutional Research and Planning</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/70 transition-colors">
-                                    <td class="px-4 py-3.5 font-medium text-slate-800">Mr. Mohammad Elmoshnib</td>
-                                    <td class="px-4 py-3.5 text-slate-500">Registrar</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/70 transition-colors">
-                                    <td class="px-4 py-3.5 font-medium text-slate-800">Mrs. Menchie Armillo</td>
-                                    <td class="px-4 py-3.5 text-slate-500">Director, Learning Resource Centre</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/70 transition-colors">
-                                    <td class="px-4 py-3.5 font-medium text-slate-800">Mr. Aftab Hameed Khan</td>
-                                    <td class="px-4 py-3.5 text-slate-500">Director, Information and Communication Technology</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/70 transition-colors">
-                                    <td class="px-4 py-3.5 font-medium text-slate-800">Prof. Christopher Hill</td>
-                                    <td class="px-4 py-3.5 text-slate-500">Vice President for Research and Innovation</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/70 transition-colors">
-                                    <td class="px-4 py-3.5 font-medium text-slate-800">Mr. Gustavo Antonio Montero</td>
-                                    <td class="px-4 py-3.5 text-slate-500">Visiting Faculty / Incubator Director</td>
-                                </tr>
+							{# ── Hon. John Baird ── #}
+							<article class="group flex w-full flex-col gap-4 rounded-xl bg-slate-50/70 p-4 transition-colors hover:bg-slate-100/80 min-[241px]:flex-row min-[241px]:items-center">
+								<div class="h-48 w-full shrink-0 overflow-hidden rounded-lg bg-slate-200 min-[241px]:h-[150px] min-[241px]:w-[150px] min-[720px]:h-60 min-[720px]:w-60">
+									<img src="/sites/default/files/inline-images/bot-honorable-john-baird.jpg" alt="Hon. John Baird" loading="lazy" class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
+								</div>
+								<div class="min-w-0 flex-1">
+									<p class="text-base font-bold leading-snug text-black lg:text-xl uppercase">Hon. John Baird</p>
+									<p class="mt-1 text-md font-semibold leading-snug text-slate-700 md:text-lg">Former Member</p>
+									<p class="mt-0.5 text-md leading-snug text-slate-700 md:text-md">Canadian House of Commons &amp; Minister of Foreign Affairs</p>
+								</div>
+							</article>
 
-                            </tbody>
-                        </table>
-                    </div>
+							{# ── Honourable George J. Furey ── #}
+							<article class="group flex w-full flex-col gap-4 rounded-xl bg-slate-50/70 p-4 transition-colors hover:bg-slate-100/80 min-[241px]:flex-row min-[241px]:items-center">
+								<div class="h-48 w-full shrink-0 overflow-hidden rounded-lg bg-slate-200 min-[241px]:h-[150px] min-[241px]:w-[150px] min-[720px]:h-60 min-[720px]:w-60">
+									<img src="/sites/default/files/media/about/board-of-trustees/bot_Honourable_George_Furey.png" alt="Honourable George J. Furey" loading="lazy" class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
+								</div>
+								<div class="min-w-0 flex-1">
+									<p class="text-base font-bold leading-snug text-black lg:text-xl uppercase">Honourable George J. Furey</p>
+									<p class="mt-1 text-md font-semibold leading-snug text-slate-700 md:text-lg">Former 45th Speaker of the Senate of Canada</p>
+								</div>
+							</article>
 
-                    <div class="mt-6">
-                        <a href="/about/organizational-structure" class="inline-flex items-center gap-2 rounded-lg text-slate-900 px-4 py-2.5 text-sm font-medium transition-colors hover:text-[#b13634]">
-                            {{ 'Organizational Structure'|t }}
-                            <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
-                        </a>
-                    </div>
-                </div>
-            </section>
+							{# ── Dr. Denis Lapalme ── #}
+							<article class="group flex w-full flex-col gap-4 rounded-xl bg-slate-50/70 p-4 transition-colors hover:bg-slate-100/80 min-[241px]:flex-row min-[241px]:items-center">
+								<div class="h-48 w-full shrink-0 overflow-hidden rounded-lg bg-slate-200 min-[241px]:h-[150px] min-[241px]:w-[150px] min-[720px]:h-60 min-[720px]:w-60">
+									<img src="/sites/default/files/media/about/board-of-trustees/dr_denis_lapalme.png" alt="Dr. Denis Lapalme" loading="lazy" class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
+								</div>
+								<div class="min-w-0 flex-1">
+									<p class="text-base font-bold leading-snug text-black lg:text-xl uppercase">Dr. Denis Lapalme</p>
+									<p class="mt-1 text-md font-semibold leading-snug text-slate-700 md:text-lg">Psychologist</p>
+									<p class="mt-0.5 text-md leading-snug text-slate-700 md:text-md">Laurentian University &amp; Ontario Provincial Police</p>
+								</div>
+							</article>
 
-            <section class="academic-council">
-                <div class="mb-12 pb-10">
-                    <div class="mb-6 flex items-center gap-3">
-                        <span class="h-px flex-1 bg-gradient-to-r from-[#b13634]/30 to-transparent"></span>
-                        <h2 class="text-md md:text-lg font-semibold uppercase tracking-[0.25em] text-[#b13634]">{{ 'Academic Council'|t }}</h2>
-                        <span class="h-px flex-1 bg-gradient-to-l from-[#b13634]/30 to-transparent"></span>
-                    </div>
+						</div>
+					</section>
 
-                    <div class="overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm">
-                        <table class="w-full border-collapse text-sm">
-                            <thead>
-                                <tr class="bg-slate-50 border-b border-slate-200">
-                                    <th class="w-[22%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Department'|t }}</th>
-                                    <th class="w-[35%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Name'|t }}</th>
-                                    <th class="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Position'|t }}</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-100 bg-white">
+				</div>
 
-                                <tr class="hover:bg-slate-50/70 transition-colors">
-                                    <td class="px-4 py-3.5 align-top" rowspan="1">
-                                        <span class="inline-flex items-center gap-1.5 rounded-md bg-[#b13634]/5 px-2.5 py-1 text-[11px] font-semibold text-[#b13634] whitespace-nowrap ring-1 ring-[#b13634]/15">
-                                            <i class="fa-solid fa-building-columns text-[9px]" aria-hidden="true"></i>
-                                            {{ "President's Office"|t }}
-                                        </span>
-                                    </td>
-                                    <td class="px-4 py-3.5 font-medium text-slate-800">Professor Karim Chelli</td>
-                                    <td class="px-4 py-3.5 text-slate-500">President &amp; Vice-Chancellor</td>
-                                </tr>
+				{# ── Panel 2 : Academic Council  ─────────────────────────────────────────── #}
+				<div role="tabpanel" id="panel-academic-council" aria-labelledby="tab-academic-council" data-cud-panel="academic-council" class="hidden pt-8">
+					<div class="academic-council">
+						<div class="mb-12 pb-10">
+							<div class="mb-6 flex items-center gap-3">
+								<span class="h-px flex-1 bg-gradient-to-r from-[#b13634]/30 to-transparent"></span>
+								<h2 class="text-md md:text-lg font-semibold uppercase tracking-[0.25em] text-[#b13634]">{{ 'Academic Council'|t }}</h2>
+								<span class="h-px flex-1 bg-gradient-to-l from-[#b13634]/30 to-transparent"></span>
+							</div>
 
-                                <tr class="hover:bg-slate-50/70 transition-colors">
-                                    <td class="px-4 py-3.5 align-top" rowspan="6">
-                                        <span class="inline-flex items-center gap-1.5 rounded-md bg-sky-50 px-2.5 py-1 text-[11px] font-semibold text-sky-700 whitespace-nowrap ring-1 ring-sky-200">
-                                            <i class="fa-solid fa-graduation-cap text-[9px]" aria-hidden="true"></i>
-                                            {{ 'Academic Affairs'|t }}
-                                        </span>
-                                    </td>
-                                    <td class="px-4 py-3.5 font-medium text-slate-800">Dr. Adam Fenech</td>
-                                    <td class="px-4 py-3.5 text-slate-500">Provost of Research</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
+							<div class="overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm">
+								<table class="w-full border-collapse text-sm">
+									<thead>
+										<tr class="bg-slate-50 border-b border-slate-200">
+											<th class="w-[22%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Department'|t }}</th>
+											<th class="w-[35%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Name'|t }}</th>
+											<th class="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Position'|t }}</th>
+										</tr>
+									</thead>
+									<tbody class="divide-y divide-slate-100 bg-white">
 
-            <section class="senate">
-                <div class="mb-12 pb-10">
-                    <div class="mb-6 flex items-center gap-3">
-                        <span class="h-px flex-1 bg-gradient-to-r from-[#b13634]/30 to-transparent"></span>
-                        <h2 class="text-md md:text-lg font-semibold uppercase tracking-[0.25em] text-[#b13634]">{{ 'Senate'|t }}</h2>
-                        <span class="h-px flex-1 bg-gradient-to-l from-[#b13634]/30 to-transparent"></span>
-                    </div>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 align-top" rowspan="1">
+												<span class="inline-flex items-center gap-1.5 rounded-md bg-[#b13634]/5 px-2.5 py-1 text-[11px] font-semibold text-[#b13634] whitespace-nowrap ring-1 ring-[#b13634]/15">
+													<i class="fa-solid fa-building-columns text-[9px]" aria-hidden="true"></i>
+													{{ "President's Office"|t }}
+												</span>
+											</td>
+											<td class="px-4 py-3.5 font-medium text-slate-800">Professor Karim Chelli</td>
+											<td class="px-4 py-3.5 text-slate-500">President &amp; Vice-Chancellor</td>
+										</tr>
 
-                    <div class="overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm">
-                        <table class="w-full border-collapse text-sm">
-                            <thead>
-                                <tr class="bg-slate-50 border-b border-slate-200">
-                                    <th class="w-[22%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Department'|t }}</th>
-                                    <th class="w-[35%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Name'|t }}</th>
-                                    <th class="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Position'|t }}</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-100 bg-white">
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 align-top" rowspan="6">
+												<span class="inline-flex items-center gap-1.5 rounded-md bg-sky-50 px-2.5 py-1 text-[11px] font-semibold text-sky-700 whitespace-nowrap ring-1 ring-sky-200">
+													<i class="fa-solid fa-graduation-cap text-[9px]" aria-hidden="true"></i>
+													{{ 'Academic Affairs'|t }}
+												</span>
+											</td>
+											<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Adam Fenech</td>
+											<td class="px-4 py-3.5 text-slate-500">Provost of Research</td>
+										</tr>
 
-                                <tr class="hover:bg-slate-50/70 transition-colors">
-                                    <td class="px-4 py-3.5 align-top" rowspan="1">
-                                        <span class="inline-flex items-center gap-1.5 rounded-md bg-[#b13634]/5 px-2.5 py-1 text-[11px] font-semibold text-[#b13634] whitespace-nowrap ring-1 ring-[#b13634]/15">
-                                            <i class="fa-solid fa-building-columns text-[9px]" aria-hidden="true"></i>
-                                            {{ "President's Office"|t }}
-                                        </span>
-                                    </td>
-                                    <td class="px-4 py-3.5 font-medium text-slate-800">Professor Karim Chelli</td>
-                                    <td class="px-4 py-3.5 text-slate-500">President &amp; Vice-Chancellor</td>
-                                </tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
 
-                                <tr class="hover:bg-slate-50/70 transition-colors">
-                                    <td class="px-4 py-3.5 align-top" rowspan="6">
-                                        <span class="inline-flex items-center gap-1.5 rounded-md bg-sky-50 px-2.5 py-1 text-[11px] font-semibold text-sky-700 whitespace-nowrap ring-1 ring-sky-200">
-                                            <i class="fa-solid fa-graduation-cap text-[9px]" aria-hidden="true"></i>
-                                            {{ 'Academic Affairs'|t }}
-                                        </span>
-                                    </td>
-                                    <td class="px-4 py-3.5 font-medium text-slate-800">Dr. Adam Fenech</td>
-                                    <td class="px-4 py-3.5 text-slate-500">Provost of Research</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
+				{# ── Panel 3 : Senate            ─────────────────────────────────────────── #}
+				<div role="tabpanel" id="panel-senate" aria-labelledby="tab-senate" data-cud-panel="senate" class="hidden pt-8">
 
-            <section class="student-council">
-                <div class="mb-12 pb-10">
-                    <div class="mb-6 flex items-center gap-3">
-                        <span class="h-px flex-1 bg-gradient-to-r from-[#b13634]/30 to-transparent"></span>
-                        <h2 class="text-md md:text-lg font-semibold uppercase tracking-[0.25em] text-[#b13634]">{{ 'Student Council'|t }}</h2>
-                        <span class="h-px flex-1 bg-gradient-to-l from-[#b13634]/30 to-transparent"></span>
-                    </div>
+					<div class="senate">
+						<div class="mb-12 pb-10">
+							<div class="mb-6 flex items-center gap-3">
+								<span class="h-px flex-1 bg-gradient-to-r from-[#b13634]/30 to-transparent"></span>
+								<h2 class="text-md md:text-lg font-semibold uppercase tracking-[0.25em] text-[#b13634]">{{ 'Senate'|t }}</h2>
+								<span class="h-px flex-1 bg-gradient-to-l from-[#b13634]/30 to-transparent"></span>
+							</div>
 
-                    <div class="overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm">
-                        <table class="w-full border-collapse text-sm">
-                            <thead>
-                                <tr class="bg-slate-50 border-b border-slate-200">
-                                    <th class="w-[22%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Department'|t }}</th>
-                                    <th class="w-[35%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Name'|t }}</th>
-                                    <th class="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Position'|t }}</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-100 bg-white">
+							<div class="overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm">
+								<table class="w-full border-collapse text-sm">
+									<thead>
+										<tr class="bg-slate-50 border-b border-slate-200">
+											<th class="w-[22%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Department'|t }}</th>
+											<th class="w-[35%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Name'|t }}</th>
+											<th class="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Position'|t }}</th>
+										</tr>
+									</thead>
+									<tbody class="divide-y divide-slate-100 bg-white">
 
-                                <tr class="hover:bg-slate-50/70 transition-colors">
-                                    <td class="px-4 py-3.5 align-top" rowspan="1">
-                                        <span class="inline-flex items-center gap-1.5 rounded-md bg-[#b13634]/5 px-2.5 py-1 text-[11px] font-semibold text-[#b13634] whitespace-nowrap ring-1 ring-[#b13634]/15">
-                                            <i class="fa-solid fa-building-columns text-[9px]" aria-hidden="true"></i>
-                                            {{ "President's Office"|t }}
-                                        </span>
-                                    </td>
-                                    <td class="px-4 py-3.5 font-medium text-slate-800">Professor Karim Chelli</td>
-                                    <td class="px-4 py-3.5 text-slate-500">President &amp; Vice-Chancellor</td>
-                                </tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 align-top" rowspan="1">
+												<span class="inline-flex items-center gap-1.5 rounded-md bg-[#b13634]/5 px-2.5 py-1 text-[11px] font-semibold text-[#b13634] whitespace-nowrap ring-1 ring-[#b13634]/15">
+													<i class="fa-solid fa-building-columns text-[9px]" aria-hidden="true"></i>
+													{{ "President's Office"|t }}
+												</span>
+											</td>
+											<td class="px-4 py-3.5 font-medium text-slate-800">Professor Karim Chelli</td>
+											<td class="px-4 py-3.5 text-slate-500">President &amp; Vice-Chancellor</td>
+										</tr>
 
-                                <tr class="hover:bg-slate-50/70 transition-colors">
-                                    <td class="px-4 py-3.5 align-top" rowspan="6">
-                                        <span class="inline-flex items-center gap-1.5 rounded-md bg-sky-50 px-2.5 py-1 text-[11px] font-semibold text-sky-700 whitespace-nowrap ring-1 ring-sky-200">
-                                            <i class="fa-solid fa-graduation-cap text-[9px]" aria-hidden="true"></i>
-                                            {{ 'Academic Affairs'|t }}
-                                        </span>
-                                    </td>
-                                    <td class="px-4 py-3.5 font-medium text-slate-800">Dr. Adam Fenech</td>
-                                    <td class="px-4 py-3.5 text-slate-500">Provost of Research</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 align-top" rowspan="6">
+												<span class="inline-flex items-center gap-1.5 rounded-md bg-sky-50 px-2.5 py-1 text-[11px] font-semibold text-sky-700 whitespace-nowrap ring-1 ring-sky-200">
+													<i class="fa-solid fa-graduation-cap text-[9px]" aria-hidden="true"></i>
+													{{ 'Academic Affairs'|t }}
+												</span>
+											</td>
+											<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Adam Fenech</td>
+											<td class="px-4 py-3.5 text-slate-500">Provost of Research</td>
+										</tr>
 
-            <section class="student-representatives">
-                <div class="mb-12 pb-10">
-                    <div class="mb-6 flex items-center gap-3">
-                        <span class="h-px flex-1 bg-gradient-to-r from-[#b13634]/30 to-transparent"></span>
-                        <h2 class="text-md md:text-lg font-semibold uppercase tracking-[0.25em] text-[#b13634]">{{ 'Student Representatives'|t }}</h2>
-                        <span class="h-px flex-1 bg-gradient-to-l from-[#b13634]/30 to-transparent"></span>
-                    </div>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
 
-                    <div class="overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm">
-                        <table class="w-full border-collapse text-sm">
-                            <thead>
-                                <tr class="bg-slate-50 border-b border-slate-200">
-                                    <th class="w-[22%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Department'|t }}</th>
-                                    <th class="w-[35%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Name'|t }}</th>
-                                    <th class="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Position'|t }}</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-100 bg-white">
+				</div>
 
-                                <tr class="hover:bg-slate-50/70 transition-colors">
-                                    <td class="px-4 py-3.5 align-top" rowspan="1">
-                                        <span class="inline-flex items-center gap-1.5 rounded-md bg-[#b13634]/5 px-2.5 py-1 text-[11px] font-semibold text-[#b13634] whitespace-nowrap ring-1 ring-[#b13634]/15">
-                                            <i class="fa-solid fa-building-columns text-[9px]" aria-hidden="true"></i>
-                                            {{ "President's Office"|t }}
-                                        </span>
-                                    </td>
-                                    <td class="px-4 py-3.5 font-medium text-slate-800">Professor Karim Chelli</td>
-                                    <td class="px-4 py-3.5 text-slate-500">President &amp; Vice-Chancellor</td>
-                                </tr>
 
-                                <tr class="hover:bg-slate-50/70 transition-colors">
-                                    <td class="px-4 py-3.5 align-top" rowspan="6">
-                                        <span class="inline-flex items-center gap-1.5 rounded-md bg-sky-50 px-2.5 py-1 text-[11px] font-semibold text-sky-700 whitespace-nowrap ring-1 ring-sky-200">
-                                            <i class="fa-solid fa-graduation-cap text-[9px]" aria-hidden="true"></i>
-                                            {{ 'Academic Affairs'|t }}
-                                        </span>
-                                    </td>
-                                    <td class="px-4 py-3.5 font-medium text-slate-800">Dr. Adam Fenech</td>
-                                    <td class="px-4 py-3.5 text-slate-500">Provost of Research</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
+				{# ── Panel 4 : Senior Management ─────────────────────────────────────────── #}
+				<div role="tabpanel" id="panel-senior-management" aria-labelledby="tab-senior-management" data-cud-panel="senior-management" class="hidden pt-8">
+
+					<div class="senior-management">
+						<div class="mb-12 pb-10">
+							<div class="mb-6 flex items-center gap-3">
+								<span class="h-px flex-1 bg-gradient-to-r from-[#b13634]/30 to-transparent"></span>
+								<h2 class="text-md md:text-lg font-semibold uppercase tracking-[0.25em] text-[#b13634]">{{ 'Senior Management'|t }}</h2>
+								<span class="h-px flex-1 bg-gradient-to-l from-[#b13634]/30 to-transparent"></span>
+							</div>
+
+							<div class="overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm">
+								<table class="w-full border-collapse text-sm">
+									<thead>
+										<tr class="bg-slate-50 border-b border-slate-200">
+											<th class="w-[22%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Department'|t }}</th>
+											<th class="w-[35%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Name'|t }}</th>
+											<th class="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Position'|t }}</th>
+										</tr>
+									</thead>
+									<tbody class="divide-y divide-slate-100 bg-white">
+
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 align-top" rowspan="1">
+												<span class="inline-flex items-center gap-1.5 rounded-md bg-[#b13634]/5 px-2.5 py-1 text-[11px] font-semibold text-[#b13634] whitespace-nowrap ring-1 ring-[#b13634]/15">
+													<i class="fa-solid fa-building-columns text-[9px]" aria-hidden="true"></i>
+													{{ "President's Office"|t }}
+												</span>
+											</td>
+											<td class="px-4 py-3.5 font-medium text-slate-800">Professor Karim Chelli</td>
+											<td class="px-4 py-3.5 text-slate-500">President &amp; Vice-Chancellor</td>
+										</tr>
+
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 align-top" rowspan="6">
+												<span class="inline-flex items-center gap-1.5 rounded-md bg-sky-50 px-2.5 py-1 text-[11px] font-semibold text-sky-700 whitespace-nowrap ring-1 ring-sky-200">
+													<i class="fa-solid fa-graduation-cap text-[9px]" aria-hidden="true"></i>
+													{{ 'Academic Affairs'|t }}
+												</span>
+											</td>
+											<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Adam Fenech</td>
+											<td class="px-4 py-3.5 text-slate-500">Provost of Research</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Sherif Moussa</td>
+											<td class="px-4 py-3.5 text-slate-500">Dean / Professor, School of Engineering, Applied Sciences and Technology</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Mr. Massimo Imparato</td>
+											<td class="px-4 py-3.5 text-slate-500">Dean, School of Architecture and Interior Design</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Aseel Takshe</td>
+											<td class="px-4 py-3.5 text-slate-500">Acting Dean / Associate Professor, School of Health Sciences and Psychology</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Ibrahim Tabche</td>
+											<td class="px-4 py-3.5 text-slate-500">Acting Dean / Associate Professor, School of Management</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Robert McClung</td>
+											<td class="px-4 py-3.5 text-slate-500">Dean / Associate Professor, First-Year Students</td>
+										</tr>
+
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 align-top" rowspan="7">
+												<span class="inline-flex items-center gap-1.5 rounded-md bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-600 whitespace-nowrap ring-1 ring-slate-200">
+													<i class="fa-solid fa-briefcase text-[9px]" aria-hidden="true"></i>
+													{{ 'Administration'|t }}
+												</span>
+											</td>
+											<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Rami El-Khatib</td>
+											<td class="px-4 py-3.5 text-slate-500">Vice President Student Affairs</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Muhammad Abaidullah Anwar</td>
+											<td class="px-4 py-3.5 text-slate-500">Dean, Institutional Research and Planning</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Mr. Mohammad Elmoshnib</td>
+											<td class="px-4 py-3.5 text-slate-500">Registrar</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Mrs. Menchie Armillo</td>
+											<td class="px-4 py-3.5 text-slate-500">Director, Learning Resource Centre</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Mr. Aftab Hameed Khan</td>
+											<td class="px-4 py-3.5 text-slate-500">Director, Information and Communication Technology</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Prof. Christopher Hill</td>
+											<td class="px-4 py-3.5 text-slate-500">Vice President for Research and Innovation</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Mr. Gustavo Antonio Montero</td>
+											<td class="px-4 py-3.5 text-slate-500">Visiting Faculty / Incubator Director</td>
+										</tr>
+
+									</tbody>
+								</table>
+							</div>
+
+							<div class="mt-6">
+								<a href="/about/organizational-structure" class="inline-flex items-center gap-2 rounded-lg text-slate-900 px-4 py-2.5 text-sm font-medium transition-colors hover:text-[#b13634]">
+									{{ 'Organizational Structure'|t }}
+									<i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
+								</a>
+							</div>
+						</div>
+					</div>
+
+
+				</div>
+
+
+				{# ── Panel 5 : Governance Bodies ─────────────────────────────────────────── #}
+				<div
+					role="tabpanel" id="panel-governance" aria-labelledby="tab-governance" data-cud-panel="governance" class="hidden pt-8">
+					{# Senior Management / Academic Council / Senate / Student bodies – coming soon #}
+					<div class="rounded-xl border border-dashed border-slate-200 bg-slate-50/60 px-6 py-10 text-center text-sm text-slate-400">
+						<i class="fa-solid fa-sitemap mb-3 text-2xl text-slate-300" aria-hidden="true"></i>
+						<p class="font-medium text-slate-500">{{ 'Governance Bodies'|t }}</p>
+						<p class="mt-1">{{ 'Student Council · Student Representatives'|t }}</p>
+					</div>
+					<div class="student-council">
+						<div class="mb-12 pb-10">
+							<div class="mb-6 flex items-center gap-3">
+								<span class="h-px flex-1 bg-gradient-to-r from-[#b13634]/30 to-transparent"></span>
+								<h2 class="text-md md:text-lg font-semibold uppercase tracking-[0.25em] text-[#b13634]">{{ 'Student Council'|t }}</h2>
+								<span class="h-px flex-1 bg-gradient-to-l from-[#b13634]/30 to-transparent"></span>
+							</div>
+
+							<div class="overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm">
+								<table class="w-full border-collapse text-sm">
+									<thead>
+										<tr class="bg-slate-50 border-b border-slate-200">
+											<th class="w-[22%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Department'|t }}</th>
+											<th class="w-[35%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Name'|t }}</th>
+											<th class="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Position'|t }}</th>
+										</tr>
+									</thead>
+									<tbody class="divide-y divide-slate-100 bg-white">
+
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 align-top" rowspan="1">
+												<span class="inline-flex items-center gap-1.5 rounded-md bg-[#b13634]/5 px-2.5 py-1 text-[11px] font-semibold text-[#b13634] whitespace-nowrap ring-1 ring-[#b13634]/15">
+													<i class="fa-solid fa-building-columns text-[9px]" aria-hidden="true"></i>
+													{{ "President's Office"|t }}
+												</span>
+											</td>
+											<td class="px-4 py-3.5 font-medium text-slate-800">Professor Karim Chelli</td>
+											<td class="px-4 py-3.5 text-slate-500">President &amp; Vice-Chancellor</td>
+										</tr>
+
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 align-top" rowspan="6">
+												<span class="inline-flex items-center gap-1.5 rounded-md bg-sky-50 px-2.5 py-1 text-[11px] font-semibold text-sky-700 whitespace-nowrap ring-1 ring-sky-200">
+													<i class="fa-solid fa-graduation-cap text-[9px]" aria-hidden="true"></i>
+													{{ 'Academic Affairs'|t }}
+												</span>
+											</td>
+											<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Adam Fenech</td>
+											<td class="px-4 py-3.5 text-slate-500">Provost of Research</td>
+										</tr>
+
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+
+					<div class="student-representatives">
+						<div class="mb-12 pb-10">
+							<div class="mb-6 flex items-center gap-3">
+								<span class="h-px flex-1 bg-gradient-to-r from-[#b13634]/30 to-transparent"></span>
+								<h2 class="text-md md:text-lg font-semibold uppercase tracking-[0.25em] text-[#b13634]">{{ 'Student Representatives'|t }}</h2>
+								<span class="h-px flex-1 bg-gradient-to-l from-[#b13634]/30 to-transparent"></span>
+							</div>
+
+							<div class="overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm">
+								<table class="w-full border-collapse text-sm">
+									<thead>
+										<tr class="bg-slate-50 border-b border-slate-200">
+											<th class="w-[22%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Department'|t }}</th>
+											<th class="w-[35%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Name'|t }}</th>
+											<th class="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Position'|t }}</th>
+										</tr>
+									</thead>
+									<tbody class="divide-y divide-slate-100 bg-white">
+
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 align-top" rowspan="1">
+												<span class="inline-flex items-center gap-1.5 rounded-md bg-[#b13634]/5 px-2.5 py-1 text-[11px] font-semibold text-[#b13634] whitespace-nowrap ring-1 ring-[#b13634]/15">
+													<i class="fa-solid fa-building-columns text-[9px]" aria-hidden="true"></i>
+													{{ "President's Office"|t }}
+												</span>
+											</td>
+											<td class="px-4 py-3.5 font-medium text-slate-800">Professor Karim Chelli</td>
+											<td class="px-4 py-3.5 text-slate-500">President &amp; Vice-Chancellor</td>
+										</tr>
+
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 align-top" rowspan="6">
+												<span class="inline-flex items-center gap-1.5 rounded-md bg-sky-50 px-2.5 py-1 text-[11px] font-semibold text-sky-700 whitespace-nowrap ring-1 ring-sky-200">
+													<i class="fa-solid fa-graduation-cap text-[9px]" aria-hidden="true"></i>
+													{{ 'Academic Affairs'|t }}
+												</span>
+											</td>
+											<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Adam Fenech</td>
+											<td class="px-4 py-3.5 text-slate-500">Provost of Research</td>
+										</tr>
+
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+			</section>
+			{# ── /Tabbed panel ─────────────────────────────────────────────────────────── #}
 		{% endif %}
 
 		{# % if sections %}
-			<div class="mt-8 space-y-6">
-				{% for section in sections %}
-					<div class="prose prose-slate max-w-none">{{ section }}</div>
-				{% endfor %}
-			</div>
-		{% endif % #}
+															<div class="mt-8 space-y-6">
+																{% for section in sections %}
+																	<div class="prose prose-slate max-w-none">{{ section }}</div>
+																{% endfor %}
+															</div>
+														{% endif % #}
 	</div>
 </section>
 
 {# ── Desktop floating contextual nav (hidden on mobile/tablet) ───────────────── #}
 <div class="hidden lg:block fixed right-0 top-1/2 -translate-y-1/2 z-40 group" aria-label="{{ 'Our Commitment navigation'|t }}">
-	<div class="flex items-stretch">
+	<div
+		class="flex items-stretch">
 
 		{# Expanded panel — slides in from right edge on hover #}
 		<div class="flex flex-col justify-center overflow-hidden bg-white border-y border-l border-slate-200 rounded-l-2xl shadow-xl w-0 opacity-0 group-hover:w-56 group-hover:opacity-100 transition-all duration-300 ease-out">
