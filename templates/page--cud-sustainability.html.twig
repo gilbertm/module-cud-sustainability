@@ -33,33 +33,33 @@
 {% set page_secondary_nav = secondary_nav|default([]) %}
 <script type="application/ld+json">
 	{
-			  "@context": "https://schema.org",
-			  "@type": "EducationalOrganization",
-			  "name": "Canadian University Dubai",
-			  "url": "https://www.cud.ac.ae",
-			  "logo": "https://www.cud.ac.ae/themes/indicud/media/logo/bigger/logo.png",
-				"description": "CUD holds the prestigious Five-Star status as per the Quacquarelli Symonds (QS) Star University Rating System. The QS ranking system is recognized among the world's most respected university rankings.",
-			  "address": {
-			    "@type": "PostalAddress",
-			    "addressLocality": "Dubai",
-			    "addressCountry": "UAE"
-			  },
-			  "knowsAbout": [
-			    "Sustainable Urban Systems",
-			    "Secure & Ethical AI",
-			    "Next-Gen Health Equity",
-			    "Quantum Information Science"
-			  ],
-				"award": [
-					"QS World University 5 Star Rating",
-					"#1 Ranked University in Dubai for the fifth consecutive year (QS World University Rankings 2026)",
-					"#4 for International Faculty Worldwide (QS World University Rankings 2025)",
-					"#6 for International Students Worldwide (QS World University Rankings 2025)",
-					"#21 in the Arab Region (QS Arab Region Rankings 2026)",
-					"#22 among Private Universities Across Asia (AppliedHE ALL ASIA Private University Ranking 2026)",
-					"#523 University Worldwide (QS World University Rankings 2025)"
-				]
-			}
+				  "@context": "https://schema.org",
+				  "@type": "EducationalOrganization",
+				  "name": "Canadian University Dubai",
+				  "url": "https://www.cud.ac.ae",
+				  "logo": "https://www.cud.ac.ae/themes/indicud/media/logo/bigger/logo.png",
+					"description": "CUD holds the prestigious Five-Star status as per the Quacquarelli Symonds (QS) Star University Rating System. The QS ranking system is recognized among the world's most respected university rankings.",
+				  "address": {
+				    "@type": "PostalAddress",
+				    "addressLocality": "Dubai",
+				    "addressCountry": "UAE"
+				  },
+				  "knowsAbout": [
+				    "Sustainable Urban Systems",
+				    "Secure & Ethical AI",
+				    "Next-Gen Health Equity",
+				    "Quantum Information Science"
+				  ],
+					"award": [
+						"QS World University 5 Star Rating",
+						"#1 Ranked University in Dubai for the fifth consecutive year (QS World University Rankings 2026)",
+						"#4 for International Faculty Worldwide (QS World University Rankings 2025)",
+						"#6 for International Students Worldwide (QS World University Rankings 2025)",
+						"#21 in the Arab Region (QS Arab Region Rankings 2026)",
+						"#22 among Private Universities Across Asia (AppliedHE ALL ASIA Private University Ranking 2026)",
+						"#523 University Worldwide (QS World University Rankings 2025)"
+					]
+				}
 </script>
 
 <div class="cud-sustainability-page-layout min-h-screen {{ accent_bg }} text-slate-900">
@@ -86,17 +86,18 @@
 			</button>
 
 			<div id="sustainability-nav-panels-daisyui" class="sustainability-nav-panels flex flex-col gap-3 items-end" data-sustainability-nav-panels>
-				<div class="secondary-nav flex items-center gap-4 w-full justify-end">
+				<div
+					class="secondary-nav flex items-center gap-4 w-full justify-end">
 					{# % if page_secondary_nav % }
-						<nav class="sustainability-nav-list flex flex-wrap items-center gap-x-1 gap-y-2 rounded-2xl border-none" aria-label="{{ 'CUD Sustainability Secondary'|t }}">
-							{% for item in page_secondary_nav %}
-								{% set item_title = item.title|default(item.text|default('')) %}
-								{% set item_url = item.url|default('#') %}
-								{% set item_active = item.active|default(false) %}
-								<a href="{{ item_url }}" class="rounded-full px-3.5 py-1 text-[12px] font-medium transition-colors{% if item_active %} bg-slate-700 text-[#858585] shadow-sm{% else %} text-[#858585] hover:text-[#757575]{% endif %}">{{ item_title }}</a>
-							{% endfor %}
-						</nav>
-					{ % endif % #}
+											<nav class="sustainability-nav-list flex flex-wrap items-center gap-x-1 gap-y-2 rounded-2xl border-none" aria-label="{{ 'CUD Sustainability Secondary'|t }}">
+												{% for item in page_secondary_nav %}
+													{% set item_title = item.title|default(item.text|default('')) %}
+													{% set item_url = item.url|default('#') %}
+													{% set item_active = item.active|default(false) %}
+													<a href="{{ item_url }}" class="rounded-full px-3.5 py-1 text-[12px] font-medium transition-colors{% if item_active %} bg-slate-700 text-[#858585] shadow-sm{% else %} text-[#858585] hover:text-[#757575]{% endif %}">{{ item_title }}</a>
+												{% endfor %}
+											</nav>
+										{ % endif % #}
 					<div id="disability-accessibility-daisyui" class="sustainability-a11y-toolbar" role="toolbar" aria-label="{{ 'Accessibility tools'|t }}">
 						<button type="button" data-sustainability-font="increase" title="{{ 'Increase font size'|t }}" aria-label="{{ 'Increase font size'|t }}">
 							<span aria-hidden="true">A<sup>+</sup>
@@ -139,7 +140,8 @@
 												{% for child in item_children %}
 													{% set child_title = child.title|default(child.text|default('')) %}
 													{% set child_url = child.url|default('#') %}
-													<li role="presentation" class="hover:bg-slate-100">
+													<li
+														role="presentation" class="hover:bg-slate-100">
 														{# <a href="{{ child.url }}" class="px-3.5 py-2 text-sm{% if child.active %} active{% endif %}">{{ child.title }}</a> } #}
 														<a href="{{ child_url }}" class="px-3.5 py-2 text-sm text-[#757575]">{{ child_title }}</a>
 													</li>
@@ -160,9 +162,9 @@
 		</div>
 	</header>
 
-	<section>
+	<main class="sustainability-main-content" id="main-content">
 		{{ page.content }}
-	</section>
+	</main>
 
 	<footer class="border-t border-slate-800/70 {{ footer_bg }}">
 		<div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-12">
@@ -173,7 +175,7 @@
 					</a>
 					<a class="inline-flex items-center rounded-full border-2 border-[#d5202a] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#d5202a]" href="https://cudportal.cud.ac.ae/apply?utm_source=Organic_channel&amp;utm_medium=search_engine&amp;utm_campaign=not_applicable" target="_blank" rel="noopener noreferrer">Apply online</a>
 
-<ul class="flex flex-wrap gap-3 mt-1">
+					<ul class="flex flex-wrap gap-3 mt-1">
 						<li>
 							<a href="http://www.youtube.com/user/webcud" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="flex h-8 w-8 items-center justify-center rounded-full text-slate-300 transition-colors hover:bg-white/10 hover:text-white">
 								<i class="fa-brands fa-youtube text-lg" aria-hidden="true"></i>
