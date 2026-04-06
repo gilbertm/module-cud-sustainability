@@ -247,9 +247,12 @@ class SustainabilityController extends ControllerBase {
     $routeSlug = trim($routeSlug, '/');
 
     // Candidates ordered from most-specific to least-specific.
+    // Also include leading-slash variants, as slugs may be stored as full
+    // paths (e.g. '/sustainability/our-commitment/sustainability-committee').
     $candidates = array_unique(array_filter([
       $routeSlug,
       'sustainability/' . $routeSlug,
+      '/sustainability/' . $routeSlug,
       'sample/sustainability/' . $routeSlug,
       // Last segment only (e.g. 'governance' from 'our-commitment/governance').
       basename($routeSlug),

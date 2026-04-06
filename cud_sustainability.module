@@ -9,9 +9,16 @@ declare(strict_types=1);
 
 /**
  * Implements hook_theme().
+ *
+ * The page-shell hooks (html, page, off_canvas_page_wrapper) are registered
+ * explicitly. The content variant hooks (cud_sustainability__*) are
+ * auto-discovered: every cud-sustainability--*.html.twig file found in the
+ * module's templates/ directory is registered automatically, so adding a new
+ * content template requires no PHP changes — just drop the file in place and
+ * run `drush cr`.
  */
 function cud_sustainability_theme(array $existing, string $type, string $theme, string $path): array {
-  return [
+  $hooks = [
     'html__cud_sustainability' => [
       'base hook' => 'html',
       'template' => 'html--cud-sustainability',
@@ -24,7 +31,7 @@ function cud_sustainability_theme(array $existing, string $type, string $theme, 
       'base hook' => 'off_canvas_page_wrapper',
       'template' => 'off-canvas-page-wrapper--cud-sustainability',
     ],
-    // Base theme hook. All variants below inherit these variables.
+    // Base theme hook — defines all available variables inherited by variants.
     'cud_sustainability' => [
       'variables' => [
         'title' => NULL,
@@ -40,28 +47,33 @@ function cud_sustainability_theme(array $existing, string $type, string $theme, 
       ],
       'template' => 'cud-sustainability',
     ],
-    // ── Variant templates (suggestion hooks) ──────────────────────────────────
-    // Named *exactly* as Drupal suggestion machine names so the registry can
-    // find them. Template filenames follow the -- double-dash convention:
-    //   hook __part → template --part  (__ ↔ --)
-    //   single _    → single -
-    //
-    // Main landing page: /sustainability (slug = 'main')
-    'cud_sustainability__main' => [
-      'base hook' => 'cud_sustainability',
-      'template' => 'cud-sustainability--main',
-    ],
-    // Generic inner page fallback (empty slug / no dedicated template)
-    'cud_sustainability__normal' => [
-      'base hook' => 'cud_sustainability',
-      'template' => 'cud-sustainability--normal',
-    ],
-    // /sustainability/our-commitment/governance
-    'cud_sustainability__our_commitment__governance' => [
-      'base hook' => 'cud_sustainability',
-      'template' => 'cud-sustainability--our-commitment--governance',
-    ]
   ];
+
+  // ── Auto-discover content variant templates ──────────────────────────────
+  // Scan templates/ for cud-sustainability--*.html.twig and register each one.
+  // Naming convention (mirrors Drupal core's -- ↔ __ rule):
+  //   cud-sustainability--{a}--{b}.html.twig
+  //   → hook:     cud_sustainability__{a_underscored}__{b_underscored}
+  //   → template: cud-sustainability--{a}--{b}  (without .html.twig)
+  $templates_dir = $path . '/templates';
+  foreach (glob($templates_dir . '/cud-sustainability--*.html.twig') as $file) {
+    $basename = basename($file, '.html.twig');   // e.g. cud-sustainability--our-commitment--governance
+    $suffix = substr($basename, strlen('cud-sustainability--'));  // e.g. our-commitment--governance
+
+    // '--' is the path-segment separator → '__' in hook names.
+    // '-' within a segment → '_'. Order matters: do '--' first.
+    $hook_suffix = strtolower($suffix);
+    $hook_suffix = str_replace('--', '__', $hook_suffix);
+    $hook_suffix = str_replace('-', '_', $hook_suffix);
+    $hook = 'cud_sustainability__' . $hook_suffix;
+
+    $hooks[$hook] = [
+      'base hook' => 'cud_sustainability',
+      'template' => $basename,
+    ];
+  }
+
+  return $hooks;
 }
 
 /**
@@ -272,9 +284,12 @@ function cud_sustainability_preprocess_page(array &$variables): void {
 
       // Try slug candidates from most-specific to least-specific, mirroring
       // the controller's loadNodeForRouteSlug() strategy.
+      // Also include leading-slash variants, as slugs may be stored as full
+      // paths (e.g. '/sustainability/our-commitment/sustainability-committee').
       $candidates = array_unique(array_filter([
         $slug,
         'sustainability/' . $slug,
+        '/sustainability/' . $slug,
         'sample/sustainability/' . $slug,
         $slug !== '' ? basename($slug) : '',
       ]));
