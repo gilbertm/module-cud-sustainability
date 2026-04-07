@@ -346,11 +346,11 @@ class SustainabilityController extends ControllerBase {
     }
 
     usort($candidates, function (NodeInterface $a, NodeInterface $b): int {
-      $a_count = ($a->hasField('field_research_carousel_images') && !$a->get('field_research_carousel_images')->isEmpty())
-        ? $a->get('field_research_carousel_images')->count()
+      $a_count = ($a->hasField('field_sust_carousel_images') && !$a->get('field_sust_carousel_images')->isEmpty())
+        ? $a->get('field_sust_carousel_images')->count()
         : 0;
-      $b_count = ($b->hasField('field_research_carousel_images') && !$b->get('field_research_carousel_images')->isEmpty())
-        ? $b->get('field_research_carousel_images')->count()
+      $b_count = ($b->hasField('field_sust_carousel_images') && !$b->get('field_sust_carousel_images')->isEmpty())
+        ? $b->get('field_sust_carousel_images')->count()
         : 0;
 
       if ($a_count !== $b_count) {
@@ -362,8 +362,8 @@ class SustainabilityController extends ControllerBase {
 
     $selected = $candidates[0] ?? NULL;
     if ($selected) {
-      $selected_count = ($selected->hasField('field_research_carousel_images') && !$selected->get('field_research_carousel_images')->isEmpty())
-        ? $selected->get('field_research_carousel_images')->count()
+      $selected_count = ($selected->hasField('field_sust_carousel_images') && !$selected->get('field_sust_carousel_images')->isEmpty())
+        ? $selected->get('field_sust_carousel_images')->count()
         : 0;
       $this->trace('Selected best slug candidate', [
         '@nid' => (string) $selected->id(),
@@ -378,7 +378,7 @@ class SustainabilityController extends ControllerBase {
   /**
    * Extracts carousel slides from a node's carousel fields.
    *
-   * Pairs field_research_carousel_images and field_research_carousel_content
+   * Pairs field_sust_carousel_images and field_sust_carousel_content
    * by delta index, returning a structured array for Twig consumption.
    *
   * @return list<array{image: array|null, image_url: string, overlay: array|null}>
@@ -386,11 +386,11 @@ class SustainabilityController extends ControllerBase {
   public function getCarouselItems(NodeInterface $node): array {
     $this->trace('Building carousel items', [
       '@nid' => (string) $node->id(),
-      '@has_images_field' => $node->hasField('field_research_carousel_images') ? 'yes' : 'no',
+      '@has_images_field' => $node->hasField('field_sust_carousel_images') ? 'yes' : 'no',
     ]);
 
-    if (!$node->hasField('field_research_carousel_images')
-      || $node->get('field_research_carousel_images')->isEmpty()) {
+    if (!$node->hasField('field_sust_carousel_images')
+      || $node->get('field_sust_carousel_images')->isEmpty()) {
       $this->trace('Carousel image field missing/empty, using node-content fallback', [
         '@nid' => (string) $node->id(),
       ]);
@@ -399,17 +399,17 @@ class SustainabilityController extends ControllerBase {
 
     $items = [];
     $images = [];
-    foreach ($node->get('field_research_carousel_images') as $image_item) {
+    foreach ($node->get('field_sust_carousel_images') as $image_item) {
       if (!empty($image_item->entity)) {
         $images[] = $image_item->entity;
       }
     }
-    $overlays = $node->hasField('field_research_carousel_content') ? $node->get('field_research_carousel_content') : NULL;
+    $overlays = $node->hasField('field_sust_carousel_content') ? $node->get('field_sust_carousel_content') : NULL;
 
     $this->trace('Carousel source fields detected', [
       '@nid' => (string) $node->id(),
       '@images_count' => (string) count($images),
-      '@has_overlay_field' => $node->hasField('field_research_carousel_content') ? 'yes' : 'no',
+      '@has_overlay_field' => $node->hasField('field_sust_carousel_content') ? 'yes' : 'no',
     ]);
 
     foreach ($images as $delta => $media) {
@@ -539,18 +539,18 @@ class SustainabilityController extends ControllerBase {
   }
 
   /**
-   * Extracts ordered sections from field_research_sections as processed HTML.
+   * Extracts ordered sections from field_sust_sections as processed HTML.
    *
    * @return list<array>
    */
   protected function getSections(NodeInterface $node): array {
-    if (!$node->hasField('field_research_sections')
-      || $node->get('field_research_sections')->isEmpty()) {
+    if (!$node->hasField('field_sust_sections')
+      || $node->get('field_sust_sections')->isEmpty()) {
       return [];
     }
 
     $sections = [];
-    foreach ($node->get('field_research_sections') as $item) {
+    foreach ($node->get('field_sust_sections') as $item) {
       if (!$item->isEmpty()) {
         $sections[] = [
           '#type' => 'processed_text',
@@ -668,14 +668,8 @@ class SustainabilityController extends ControllerBase {
     $or = $entity_query->orConditionGroup()
       ->condition('title', $pattern, 'LIKE');
 
-    if (isset($field_definitions[static::RESEARCH_SLUG_FIELD])) {
-      $or->condition(static::RESEARCH_SLUG_FIELD . '.value', $pattern, 'LIKE');
-    }
-    if (isset($field_definitions['field_research_body'])) {
-      $or->condition('field_research_body.value', $pattern, 'LIKE');
-    }
-    if (isset($field_definitions['field_research_sections'])) {
-      $or->condition('field_research_sections.value', $pattern, 'LIKE');
+    if (isset($field_definitions['field_sust_sections'])) {
+      $or->condition('field_sust_sections.value', $pattern, 'LIKE');
     }
     if (isset($field_definitions['body'])) {
       $or->condition('body.value', $pattern, 'LIKE');
@@ -808,13 +802,21 @@ class SustainabilityController extends ControllerBase {
 
   /**
    * Returns the configured sustainability slug for a node.
+   *
+   * @deprecated The slug field has been removed. Returns the URL alias path
+   *   segment derived from the node's path alias instead.
    */
   protected function getNodeSlug(NodeInterface $node): string {
-    if (!$node->hasField(static::RESEARCH_SLUG_FIELD) || $node->get(static::RESEARCH_SLUG_FIELD)->isEmpty()) {
-      return '';
+    $alias_manager = \Drupal::service('path_alias.manager');
+    $alias = $alias_manager->getAliasByPath('/node/' . $node->id());
+    // Strip the /sustainability/ prefix and return the remainder as the slug.
+    if (strpos($alias, '/sustainability/') === 0) {
+      return substr($alias, strlen('/sustainability/'));
     }
-
-    return trim((string) $node->get(static::RESEARCH_SLUG_FIELD)->value);
+    if ($alias === '/sustainability') {
+      return 'main';
+    }
+    return '';
   }
 
   /**
@@ -833,8 +835,8 @@ class SustainabilityController extends ControllerBase {
       }
     }
 
-    if ($node->hasField('field_research_sections') && !$node->get('field_research_sections')->isEmpty()) {
-      foreach ($node->get('field_research_sections') as $item) {
+    if ($node->hasField('field_sust_sections') && !$node->get('field_sust_sections')->isEmpty()) {
+      foreach ($node->get('field_sust_sections') as $item) {
         $parts[] = trim((string) preg_replace('/\s+/u', ' ', strip_tags((string) ($item->value ?? ''))));
       }
     }

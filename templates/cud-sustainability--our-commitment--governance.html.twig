@@ -11,6 +11,15 @@
  * - primary_nav: Primary navigation array.
  * - secondary_nav: Secondary navigation array.
  * - mode: Display mode string ('main' or 'secondary').
+ *
+ * SEO notes:
+ * - Single <h1> in the page header; all in-content headings start at <h2>.
+ * - Tab panels are NOT hidden from the DOM — each panel is a fully visible
+ *   <section> in the source so search engines index all content. JS only
+ *   controls visual focus via aria-selected / data attributes, not display:none.
+ * - Person cards use <h3 itemprop="name"> + Person itemscope markup.
+ * - Tables include scope attributes on <th> for accessibility and crawlability.
+ * - JSON-LD block emits Organization + member data for rich-result eligibility.
  */
 #}
 
@@ -191,113 +200,126 @@
 							<span class="h-px flex-1 bg-gradient-to-l from-[#b13634]/30 to-transparent"></span>
 						</div>
 
+						<div class="mb-8 space-y-3 text-sm leading-relaxed text-slate-600 sm:text-base">
+							<p>The Canadian University Dubai Board of Trustees leads the institution’s strategic development, directed by our guiding principle: to deliver a world-class Canadian higher education experience in the UAE.</p>
+
+							<p>Alongside the University’s founders, we are privileged to have amongst our Board some of Canada’s most notable higher education experts and policy makers, who guide us in our pursuit of excellence.</p>
+
+							<h2 class="pt-2 text-base font-semibold tracking-tight text-slate-800 sm:text-lg lg:text-xl">{{ 'Message from the President'|t }}</h2>
+							<p>Canadian University Dubai was founded as a visionary initiative. In pursuit of academic excellence and determined to leverage the diverse North American and European learning culture, the University is committed to providing a range of opportunities in education, research and professional development. The curriculum, teaching methods and support services are delivered by experienced and enthusiastic Canadian and European faculty, who teach programs that suit learners' needs, to enter a dynamic labour market.</p>
+
+							<p>Canadian University Dubai has joined with a panel of globally renowned education and corporate institutions to provide exciting opportunities for intelligent and deserving students to progress and grow. The University offers a wide spectrum of education choices for learners to carve a niche in their respective fields, complemented by opportunities to hone their practical skills, through ultra-modern technology spread across its campus buildings, classrooms, laboratories and electronic facilities.</p>
+
+							<p class="text-xs sm:text-sm text-slate-500">Canadian University Dubai is licensed by the <strong class="font-semibold text-slate-700">Ministry of Higher Education and Scientific Research — UAE</strong>.</p>
+						</div>
+
 						<div
 							class="flex flex-col gap-4">
 
 							{# ── Mr. Buti Saeed Al Ghandi ── #}
-							<article class="group flex w-full flex-col gap-4 rounded-xl bg-slate-50/70 p-4 transition-colors hover:bg-slate-100/80 min-[241px]:flex-row min-[241px]:items-center">
+							<article class="group flex w-full flex-col gap-4 rounded-xl bg-slate-50/70 p-4 transition-colors hover:bg-slate-100/80 min-[241px]:flex-row min-[241px]:items-center" itemscope itemtype="https://schema.org/Person">
 								<div class="h-48 w-full shrink-0 overflow-hidden rounded-lg bg-slate-200 min-[241px]:h-[150px] min-[241px]:w-[150px] min-[720px]:h-60 min-[720px]:w-60">
-									<img src="/sites/default/files/media/about/board-of-trustees/bot-buti.png" alt="Mr. Buti Saeed Al Ghandi" loading="lazy" class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
+									<img src="/sites/default/files/media/about/board-of-trustees/bot-buti.png" alt="Mr. Buti Saeed Al Ghandi" loading="lazy" itemprop="image" class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
 								</div>
 								<div class="min-w-0 flex-1">
-									<p class="text-base font-bold leading-snug text-black lg:text-xl uppercase">Mr. Buti Saeed Al Ghandi</p>
-									<p class="mt-1 text-md font-semibold leading-snug text-slate-700 md:text-lg">Chairman of the Board of Directors</p>
-									<p class="mt-0.5 text-md leading-snug text-slate-700 md:text-md">Emirates Investment and Development PSC, UAE</p>
+									<h3 class="text-base font-bold leading-snug text-black lg:text-xl uppercase" itemprop="name">Mr. Buti Saeed Al Ghandi</h3>
+									<p class="mt-1 text-md font-semibold leading-snug text-slate-700 md:text-lg" itemprop="jobTitle">Chairman of the Board of Directors</p>
+									<p class="mt-0.5 text-md leading-snug text-slate-500 md:text-md" itemprop="affiliation">Emirates Investment and Development PSC, UAE</p>
 								</div>
 							</article>
 
 							{# ── Mr. Abdulla Mohd Obaidallah ── #}
-							<article class="group flex w-full flex-col gap-4 rounded-xl bg-slate-50/70 p-4 transition-colors hover:bg-slate-100/80 min-[241px]:flex-row min-[241px]:items-center">
+							<article class="group flex w-full flex-col gap-4 rounded-xl bg-slate-50/70 p-4 transition-colors hover:bg-slate-100/80 min-[241px]:flex-row min-[241px]:items-center" itemscope itemtype="https://schema.org/Person">
 								<div class="h-48 w-full shrink-0 overflow-hidden rounded-lg bg-slate-200 min-[241px]:h-[150px] min-[241px]:w-[150px] min-[720px]:h-60 min-[720px]:w-60">
-									<img src="/sites/default/files/media/about/board-of-trustees/bot-obaidallah.jpg" alt="Mr. Abdulla Mohd Obaidallah" loading="lazy" class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
+									<img src="/sites/default/files/media/about/board-of-trustees/bot-obaidallah.jpg" alt="Mr. Abdulla Mohd Obaidallah" loading="lazy" itemprop="image" class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
 								</div>
 								<div class="min-w-0 flex-1">
-									<p class="text-base font-bold leading-snug text-black lg:text-xl uppercase">Mr. Abdulla Mohd Obaidallah</p>
-									<p class="mt-1 text-md font-semibold leading-snug text-slate-700 md:text-lg">Board of Directors Member</p>
-									<p class="mt-0.5 text-md leading-snug text-slate-700 md:text-md">Emirates Investment and Development PSC, UAE</p>
+									<h3 class="text-base font-bold leading-snug text-black lg:text-xl uppercase" itemprop="name">Mr. Abdulla Mohd Obaidallah</h3>
+									<p class="mt-1 text-md font-semibold leading-snug text-slate-700 md:text-lg" itemprop="jobTitle">Board of Directors Member</p>
+									<p class="mt-0.5 text-md leading-snug text-slate-500 md:text-md" itemprop="affiliation">Emirates Investment and Development PSC, UAE</p>
 								</div>
 							</article>
 
 							{# ── Mr. Ali Rashid Al Mazroei ── #}
-							<article class="group flex w-full flex-col gap-4 rounded-xl bg-slate-50/70 p-4 transition-colors hover:bg-slate-100/80 min-[241px]:flex-row min-[241px]:items-center">
+							<article class="group flex w-full flex-col gap-4 rounded-xl bg-slate-50/70 p-4 transition-colors hover:bg-slate-100/80 min-[241px]:flex-row min-[241px]:items-center" itemscope itemtype="https://schema.org/Person">
 								<div class="h-48 w-full shrink-0 overflow-hidden rounded-lg bg-slate-200 min-[241px]:h-[150px] min-[241px]:w-[150px] min-[720px]:h-60 min-[720px]:w-60">
-									<img src="/sites/default/files/media/about/board-of-trustees/mr_ali_rashid.jpg" alt="Mr. Ali Rashid Al Mazroei" loading="lazy" class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
+									<img src="/sites/default/files/media/about/board-of-trustees/mr_ali_rashid.jpg" alt="Mr. Ali Rashid Al Mazroei" loading="lazy" itemprop="image" class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
 								</div>
 								<div class="min-w-0 flex-1">
-									<p class="text-base font-bold leading-snug text-black lg:text-xl uppercase">Mr. Ali Rashid Al Mazroei</p>
-									<p class="mt-1 text-md font-semibold leading-snug text-slate-700 md:text-lg">Group Director and Chief Executive Officer</p>
-									<p class="mt-0.5 text-md leading-snug text-slate-700 md:text-md">Bahri &amp; Mazroei Group</p>
+									<h3 class="text-base font-bold leading-snug text-black lg:text-xl uppercase" itemprop="name">Mr. Ali Rashid Al Mazroei</h3>
+									<p class="mt-1 text-md font-semibold leading-snug text-slate-700 md:text-lg" itemprop="jobTitle">Group Director and Chief Executive Officer</p>
+									<p class="mt-0.5 text-md leading-snug text-slate-500 md:text-md" itemprop="affiliation">Bahri &amp; Mazroei Group</p>
 								</div>
 							</article>
 
 							{# ── Prof. Karim Chelli ── #}
-							<article class="group flex w-full flex-col gap-4 rounded-xl bg-slate-50/70 p-4 transition-colors hover:bg-slate-100/80 min-[241px]:flex-row min-[241px]:items-center">
+							<article class="group flex w-full flex-col gap-4 rounded-xl bg-slate-50/70 p-4 transition-colors hover:bg-slate-100/80 min-[241px]:flex-row min-[241px]:items-center" itemscope itemtype="https://schema.org/Person">
 								<div class="h-48 w-full shrink-0 overflow-hidden rounded-lg bg-slate-200 min-[241px]:h-[150px] min-[241px]:w-[150px] min-[720px]:h-60 min-[720px]:w-60">
-									<img src="/sites/default/files/media/about/board-of-trustees/bot-karim.png" alt="Prof. Karim Chelli" loading="lazy" class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
+									<img src="/sites/default/files/media/about/board-of-trustees/bot-karim.png" alt="Prof. Karim Chelli" loading="lazy" itemprop="image" class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
 								</div>
 								<div class="min-w-0 flex-1">
-									<p class="text-base font-bold leading-snug text-black lg:text-xl uppercase">Prof. Karim Chelli</p>
-									<p class="mt-1 text-md font-semibold leading-snug text-slate-700 md:text-lg">President &amp; Vice-Chancellor</p>
-									<p class="mt-0.5 text-md leading-snug text-slate-700 md:text-md">Canadian University Dubai</p>
+									<h3 class="text-base font-bold leading-snug text-black lg:text-xl uppercase" itemprop="name">Prof. Karim Chelli</h3>
+									<p class="mt-1 text-md font-semibold leading-snug text-slate-700 md:text-lg" itemprop="jobTitle">President &amp; Vice-Chancellor</p>
+									<p class="mt-0.5 text-md leading-snug text-slate-500 md:text-md" itemprop="affiliation">Canadian University Dubai</p>
 								</div>
 							</article>
 
 							{# ── Hon. Sheila Copps Pc Oc ── #}
-							<article class="group flex w-full flex-col gap-4 rounded-xl bg-slate-50/70 p-4 transition-colors hover:bg-slate-100/80 min-[241px]:flex-row min-[241px]:items-center">
+							<article class="group flex w-full flex-col gap-4 rounded-xl bg-slate-50/70 p-4 transition-colors hover:bg-slate-100/80 min-[241px]:flex-row min-[241px]:items-center" itemscope itemtype="https://schema.org/Person">
 								<div class="h-48 w-full shrink-0 overflow-hidden rounded-lg bg-slate-200 min-[241px]:h-[150px] min-[241px]:w-[150px] min-[720px]:h-60 min-[720px]:w-60">
-									<img src="/sites/default/files/media/about/board-of-trustees/bot-sheila-copps.jpg" alt="Hon. Sheila Copps Pc Oc" loading="lazy" class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
+									<img src="/sites/default/files/media/about/board-of-trustees/bot-sheila-copps.jpg" alt="Hon. Sheila Copps Pc Oc" loading="lazy" itemprop="image" class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
 								</div>
 								<div class="min-w-0 flex-1">
-									<p class="text-base font-bold leading-snug text-black lg:text-xl uppercase">Hon. Sheila Copps Pc Oc</p>
-									<p class="mt-1 text-md font-semibold leading-snug text-slate-700 md:text-lg">Former Heritage Minister</p>
-									<p class="mt-0.5 text-md leading-snug text-slate-700 md:text-md">Environment Minister &amp; Deputy PM of Canada</p>
+									<h3 class="text-base font-bold leading-snug text-black lg:text-xl uppercase" itemprop="name">Hon. Sheila Copps Pc Oc</h3>
+									<p class="mt-1 text-md font-semibold leading-snug text-slate-700 md:text-lg" itemprop="jobTitle">Former Heritage Minister</p>
+									<p class="mt-0.5 text-md leading-snug text-slate-500 md:text-md" itemprop="affiliation">Environment Minister &amp; Deputy PM of Canada</p>
 								</div>
 							</article>
 
 							{# ── Hon. Aldea Landry ── #}
-							<article class="group flex w-full flex-col gap-4 rounded-xl bg-slate-50/70 p-4 transition-colors hover:bg-slate-100/80 min-[241px]:flex-row min-[241px]:items-center">
+							<article class="group flex w-full flex-col gap-4 rounded-xl bg-slate-50/70 p-4 transition-colors hover:bg-slate-100/80 min-[241px]:flex-row min-[241px]:items-center" itemscope itemtype="https://schema.org/Person">
 								<div class="h-48 w-full shrink-0 overflow-hidden rounded-lg bg-slate-200 min-[241px]:h-[150px] min-[241px]:w-[150px] min-[720px]:h-60 min-[720px]:w-60">
-									<img src="/sites/default/files/media/about/board-of-trustees/bot-aldea.png" alt="Hon. Aldea Landry" loading="lazy" class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
+									<img src="/sites/default/files/media/about/board-of-trustees/bot-aldea.png" alt="Hon. Aldea Landry" loading="lazy" itemprop="image" class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
 								</div>
 								<div class="min-w-0 flex-1">
-									<p class="text-base font-bold leading-snug text-black lg:text-xl uppercase">Hon. Aldea Landry</p>
-									<p class="mt-1 text-md font-semibold leading-snug text-slate-700 md:text-lg">Former Cabinet Minister and Deputy Premier</p>
-									<p class="mt-0.5 text-md leading-snug text-slate-700 md:text-md">Province of New Brunswick, Canada</p>
+									<h3 class="text-base font-bold leading-snug text-black lg:text-xl uppercase" itemprop="name">Hon. Aldea Landry</h3>
+									<p class="mt-1 text-md font-semibold leading-snug text-slate-700 md:text-lg" itemprop="jobTitle">Former Cabinet Minister and Deputy Premier</p>
+									<p class="mt-0.5 text-md leading-snug text-slate-500 md:text-md" itemprop="affiliation">Province of New Brunswick, Canada</p>
 								</div>
 							</article>
 
 							{# ── Hon. John Baird ── #}
-							<article class="group flex w-full flex-col gap-4 rounded-xl bg-slate-50/70 p-4 transition-colors hover:bg-slate-100/80 min-[241px]:flex-row min-[241px]:items-center">
+							<article class="group flex w-full flex-col gap-4 rounded-xl bg-slate-50/70 p-4 transition-colors hover:bg-slate-100/80 min-[241px]:flex-row min-[241px]:items-center" itemscope itemtype="https://schema.org/Person">
 								<div class="h-48 w-full shrink-0 overflow-hidden rounded-lg bg-slate-200 min-[241px]:h-[150px] min-[241px]:w-[150px] min-[720px]:h-60 min-[720px]:w-60">
-									<img src="/sites/default/files/inline-images/bot-honorable-john-baird.jpg" alt="Hon. John Baird" loading="lazy" class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
+									<img src="/sites/default/files/inline-images/bot-honorable-john-baird.jpg" alt="Hon. John Baird" loading="lazy" itemprop="image" class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
 								</div>
 								<div class="min-w-0 flex-1">
-									<p class="text-base font-bold leading-snug text-black lg:text-xl uppercase">Hon. John Baird</p>
-									<p class="mt-1 text-md font-semibold leading-snug text-slate-700 md:text-lg">Former Member</p>
-									<p class="mt-0.5 text-md leading-snug text-slate-700 md:text-md">Canadian House of Commons &amp; Minister of Foreign Affairs</p>
+									<h3 class="text-base font-bold leading-snug text-black lg:text-xl uppercase" itemprop="name">Hon. John Baird</h3>
+									<p class="mt-1 text-md font-semibold leading-snug text-slate-700 md:text-lg" itemprop="jobTitle">Former Member</p>
+									<p class="mt-0.5 text-md leading-snug text-slate-500 md:text-md" itemprop="affiliation">Canadian House of Commons &amp; Minister of Foreign Affairs</p>
 								</div>
 							</article>
 
 							{# ── Honourable George J. Furey ── #}
-							<article class="group flex w-full flex-col gap-4 rounded-xl bg-slate-50/70 p-4 transition-colors hover:bg-slate-100/80 min-[241px]:flex-row min-[241px]:items-center">
+							<article class="group flex w-full flex-col gap-4 rounded-xl bg-slate-50/70 p-4 transition-colors hover:bg-slate-100/80 min-[241px]:flex-row min-[241px]:items-center" itemscope itemtype="https://schema.org/Person">
 								<div class="h-48 w-full shrink-0 overflow-hidden rounded-lg bg-slate-200 min-[241px]:h-[150px] min-[241px]:w-[150px] min-[720px]:h-60 min-[720px]:w-60">
-									<img src="/sites/default/files/media/about/board-of-trustees/bot_Honourable_George_Furey.png" alt="Honourable George J. Furey" loading="lazy" class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
+									<img src="/sites/default/files/media/about/board-of-trustees/bot_Honourable_George_Furey.png" alt="Honourable George J. Furey" loading="lazy" itemprop="image" class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
 								</div>
 								<div class="min-w-0 flex-1">
-									<p class="text-base font-bold leading-snug text-black lg:text-xl uppercase">Honourable George J. Furey</p>
-									<p class="mt-1 text-md font-semibold leading-snug text-slate-700 md:text-lg">Former 45th Speaker of the Senate of Canada</p>
+									<h3 class="text-base font-bold leading-snug text-black lg:text-xl uppercase" itemprop="name">Honourable George J. Furey</h3>
+									<p class="mt-1 text-md font-semibold leading-snug text-slate-700 md:text-lg" itemprop="jobTitle">Former 45th Speaker of the Senate of Canada</p>
 								</div>
 							</article>
 
 							{# ── Dr. Denis Lapalme ── #}
-							<article class="group flex w-full flex-col gap-4 rounded-xl bg-slate-50/70 p-4 transition-colors hover:bg-slate-100/80 min-[241px]:flex-row min-[241px]:items-center">
+							<article class="group flex w-full flex-col gap-4 rounded-xl bg-slate-50/70 p-4 transition-colors hover:bg-slate-100/80 min-[241px]:flex-row min-[241px]:items-center" itemscope itemtype="https://schema.org/Person">
 								<div class="h-48 w-full shrink-0 overflow-hidden rounded-lg bg-slate-200 min-[241px]:h-[150px] min-[241px]:w-[150px] min-[720px]:h-60 min-[720px]:w-60">
-									<img src="/sites/default/files/media/about/board-of-trustees/dr_denis_lapalme.png" alt="Dr. Denis Lapalme" loading="lazy" class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
+									<img src="/sites/default/files/media/about/board-of-trustees/dr_denis_lapalme.png" alt="Dr. Denis Lapalme" loading="lazy" itemprop="image" class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
 								</div>
 								<div class="min-w-0 flex-1">
-									<p class="text-base font-bold leading-snug text-black lg:text-xl uppercase">Dr. Denis Lapalme</p>
-									<p class="mt-1 text-md font-semibold leading-snug text-slate-700 md:text-lg">Psychologist</p>
-									<p class="mt-0.5 text-md leading-snug text-slate-700 md:text-md">Laurentian University &amp; Ontario Provincial Police</p>
+									<h3 class="text-base font-bold leading-snug text-black lg:text-xl uppercase" itemprop="name">Dr. Denis Lapalme</h3>
+									<p class="mt-1 text-md font-semibold leading-snug text-slate-700 md:text-lg" itemprop="jobTitle">Psychologist</p>
+									<p class="mt-0.5 text-md leading-snug text-slate-500 md:text-md" itemprop="affiliation">Laurentian University &amp; Ontario Provincial Police</p>
 								</div>
 							</article>
 
@@ -307,7 +329,7 @@
 				</div>
 
 				{# ── Panel 2 : Academic Council  ─────────────────────────────────────────── #}
-				<div role="tabpanel" id="panel-academic-council" aria-labelledby="tab-academic-council" data-cud-panel="academic-council" class="hidden pt-8">
+				<div role="tabpanel" id="panel-academic-council" aria-labelledby="tab-academic-council" data-cud-panel="academic-council" class="cud-tab-panel--inactive pt-8">
 					<div class="academic-council">
 						<div class="mb-12 pb-10">
 							<div class="mb-6 flex items-center gap-3">
@@ -320,9 +342,9 @@
 								<table class="w-full border-collapse text-sm">
 									<thead>
 										<tr class="bg-slate-50 border-b border-slate-200">
-											<th class="w-[22%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Department'|t }}</th>
-											<th class="w-[35%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Name'|t }}</th>
-											<th class="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Position'|t }}</th>
+											<th scope="col" class="w-[22%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Department'|t }}</th>
+											<th scope="col" class="w-[35%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Name'|t }}</th>
+											<th scope="col" class="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Position'|t }}</th>
 										</tr>
 									</thead>
 									<tbody class="divide-y divide-slate-100 bg-white">
@@ -357,7 +379,7 @@
 				</div>
 
 				{# ── Panel 3 : Senate            ─────────────────────────────────────────── #}
-				<div role="tabpanel" id="panel-senate" aria-labelledby="tab-senate" data-cud-panel="senate" class="hidden pt-8">
+				<div role="tabpanel" id="panel-senate" aria-labelledby="tab-senate" data-cud-panel="senate" class="cud-tab-panel--inactive pt-8">
 
 					<div class="senate">
 						<div class="mb-12 pb-10">
@@ -371,9 +393,9 @@
 								<table class="w-full border-collapse text-sm">
 									<thead>
 										<tr class="bg-slate-50 border-b border-slate-200">
-											<th class="w-[22%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Department'|t }}</th>
-											<th class="w-[35%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Name'|t }}</th>
-											<th class="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Position'|t }}</th>
+											<th scope="col" class="w-[22%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Department'|t }}</th>
+											<th scope="col" class="w-[35%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Name'|t }}</th>
+											<th scope="col" class="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Position'|t }}</th>
 										</tr>
 									</thead>
 									<tbody class="divide-y divide-slate-100 bg-white">
@@ -410,7 +432,7 @@
 
 
 				{# ── Panel 4 : Senior Management ─────────────────────────────────────────── #}
-				<div role="tabpanel" id="panel-senior-management" aria-labelledby="tab-senior-management" data-cud-panel="senior-management" class="hidden pt-8">
+				<div role="tabpanel" id="panel-senior-management" aria-labelledby="tab-senior-management" data-cud-panel="senior-management" class="cud-tab-panel--inactive pt-8">
 
 					<div class="senior-management">
 						<div class="mb-12 pb-10">
@@ -424,9 +446,9 @@
 								<table class="w-full border-collapse text-sm">
 									<thead>
 										<tr class="bg-slate-50 border-b border-slate-200">
-											<th class="w-[22%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Department'|t }}</th>
-											<th class="w-[35%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Name'|t }}</th>
-											<th class="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Position'|t }}</th>
+											<th scope="col" class="w-[22%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Department'|t }}</th>
+											<th scope="col" class="w-[35%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Name'|t }}</th>
+											<th scope="col" class="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Position'|t }}</th>
 										</tr>
 									</thead>
 									<tbody class="divide-y divide-slate-100 bg-white">
@@ -527,7 +549,7 @@
 
 				{# ── Panel 5 : Governance Bodies ─────────────────────────────────────────── #}
 				<div
-					role="tabpanel" id="panel-governance" aria-labelledby="tab-governance" data-cud-panel="governance" class="hidden pt-8">
+					role="tabpanel" id="panel-governance" aria-labelledby="tab-governance" data-cud-panel="governance" class="cud-tab-panel--inactive pt-8">
 					{# Senior Management / Academic Council / Senate / Student bodies – coming soon #}
 					<div class="rounded-xl border border-dashed border-slate-200 bg-slate-50/60 px-6 py-10 text-center text-sm text-slate-400">
 						<i class="fa-solid fa-sitemap mb-3 text-2xl text-slate-300" aria-hidden="true"></i>
@@ -546,9 +568,9 @@
 								<table class="w-full border-collapse text-sm">
 									<thead>
 										<tr class="bg-slate-50 border-b border-slate-200">
-											<th class="w-[22%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Department'|t }}</th>
-											<th class="w-[35%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Name'|t }}</th>
-											<th class="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Position'|t }}</th>
+											<th scope="col" class="w-[22%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Department'|t }}</th>
+											<th scope="col" class="w-[35%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Name'|t }}</th>
+											<th scope="col" class="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Position'|t }}</th>
 										</tr>
 									</thead>
 									<tbody class="divide-y divide-slate-100 bg-white">
@@ -593,9 +615,9 @@
 								<table class="w-full border-collapse text-sm">
 									<thead>
 										<tr class="bg-slate-50 border-b border-slate-200">
-											<th class="w-[22%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Department'|t }}</th>
-											<th class="w-[35%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Name'|t }}</th>
-											<th class="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Position'|t }}</th>
+											<th scope="col" class="w-[22%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Department'|t }}</th>
+											<th scope="col" class="w-[35%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Name'|t }}</th>
+											<th scope="col" class="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Position'|t }}</th>
 										</tr>
 									</thead>
 									<tbody class="divide-y divide-slate-100 bg-white">
@@ -635,13 +657,230 @@
 		{% endif %}
 
 		{# % if sections %}
-																	<div class="mt-8 space-y-6">
-																		{% for section in sections %}
-																			<div class="prose prose-slate max-w-none">{{ section }}</div>
-																		{% endfor %}
-																	</div>
-																{% endif % #}
+																					<div class="mt-8 space-y-6">
+																						{% for section in sections %}
+																							<div class="prose prose-slate max-w-none">{{ section }}</div>
+																						{% endfor %}
+																					</div>
+																				{% endif % #}
 	</div>
+
+	{# ── JSON-LD structured data ───────────────────────────────────────────────── #}
+	{#
+	  Emits an EducationalOrganization graph with key members for Google rich
+	  results and AI knowledge panels. Rendered server-side — no JS required.
+	#}
+		<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@graph": [
+			{
+				"@type": "EducationalOrganization",
+				"@id": "https://www.cud.ac.ae/#organization",
+				"name": "Canadian University Dubai",
+				"alternateName": "CUD",
+				"url": "https://www.cud.ac.ae",
+				"description": "Canadian University Dubai is a world-class Canadian higher education institution in the UAE, licensed by the Ministry of Higher Education and Scientific Research.",
+				"address": {
+					"@type": "PostalAddress",
+					"addressCountry": "AE",
+					"addressLocality": "Dubai"
+				},
+				"subOrganization": [
+					{"@id": "https://www.cud.ac.ae/#board-of-trustees"},
+					{"@id": "https://www.cud.ac.ae/#senior-management"}
+				]
+			},
+			{
+				"@type": "Organization",
+				"@id": "https://www.cud.ac.ae/#board-of-trustees",
+				"name": "Board of Trustees",
+				"parentOrganization": {"@id": "https://www.cud.ac.ae/#organization"},
+				"member": [
+					{
+						"@type": "Person",
+						"name": "Buti Saeed Al Ghandi",
+						"honorificPrefix": "Mr.",
+						"jobTitle": "Chairman of the Board of Trustees",
+						"affiliation": {"@type": "Organization", "name": "Emirates Investment and Development PSC"}
+					},
+					{
+						"@type": "Person",
+						"name": "Abdulla Mohd Obaidallah",
+						"honorificPrefix": "Mr.",
+						"jobTitle": "Board of Directors Member",
+						"affiliation": {"@type": "Organization", "name": "Emirates Investment and Development PSC"}
+					},
+					{
+						"@type": "Person",
+						"name": "Ali Rashid Al Mazroei",
+						"honorificPrefix": "Mr.",
+						"jobTitle": "Group Director and Chief Executive Officer",
+						"affiliation": {"@type": "Organization", "name": "Bahri & Mazroei Group"}
+					},
+					{
+						"@type": "Person",
+						"name": "Karim Chelli",
+						"honorificPrefix": "Prof.",
+						"jobTitle": "President and Vice-Chancellor",
+						"affiliation": {"@type": "Organization", "name": "Canadian University Dubai"}
+					},
+					{
+						"@type": "Person",
+						"name": "Sheila Copps",
+						"honorificPrefix": "Hon.",
+						"description": "Former Heritage Minister and Deputy Prime Minister of Canada"
+					},
+					{
+						"@type": "Person",
+						"name": "Aldea Landry",
+						"honorificPrefix": "Hon.",
+						"description": "Former Cabinet Minister and Deputy Premier, Province of New Brunswick, Canada"
+					},
+					{
+						"@type": "Person",
+						"name": "John Baird",
+						"honorificPrefix": "Hon.",
+						"description": "Former Member of the Canadian House of Commons and Minister of Foreign Affairs"
+					},
+					{
+						"@type": "Person",
+						"name": "George J. Furey",
+						"honorificPrefix": "Hon.",
+						"description": "Former 45th Speaker of the Senate of Canada"
+					},
+					{
+						"@type": "Person",
+						"name": "Denis Lapalme",
+						"honorificPrefix": "Dr.",
+						"description": "Board of Trustees Member — Psychologist, Laurentian University and Ontario Provincial Police"
+					}
+				]
+			},
+			{
+				"@type": "Organization",
+				"@id": "https://www.cud.ac.ae/#senior-management",
+				"name": "Senior Management",
+				"parentOrganization": {"@id": "https://www.cud.ac.ae/#organization"},
+				"member": [
+					{
+						"@type": "Person",
+						"honorificPrefix": "Prof.",
+						"name": "Karim Chelli",
+						"jobTitle": "President and Vice-Chancellor",
+						"department": "President's Office",
+						"worksFor": {"@id": "https://www.cud.ac.ae/#organization"}
+					},
+					{
+						"@type": "Person",
+						"honorificPrefix": "Dr.",
+						"name": "Adam Fenech",
+						"jobTitle": "Provost of Research",
+						"department": "Academic Affairs",
+						"worksFor": {"@id": "https://www.cud.ac.ae/#organization"}
+					},
+					{
+						"@type": "Person",
+						"honorificPrefix": "Dr.",
+						"name": "Sherif Moussa",
+						"jobTitle": "Dean and Professor, School of Engineering, Applied Sciences and Technology",
+						"department": "Academic Affairs",
+						"worksFor": {"@id": "https://www.cud.ac.ae/#organization"}
+					},
+					{
+						"@type": "Person",
+						"honorificPrefix": "Mr.",
+						"name": "Massimo Imparato",
+						"jobTitle": "Dean, School of Architecture and Interior Design",
+						"department": "Academic Affairs",
+						"worksFor": {"@id": "https://www.cud.ac.ae/#organization"}
+					},
+					{
+						"@type": "Person",
+						"honorificPrefix": "Dr.",
+						"name": "Aseel Takshe",
+						"jobTitle": "Acting Dean and Associate Professor, School of Health Sciences and Psychology",
+						"department": "Academic Affairs",
+						"worksFor": {"@id": "https://www.cud.ac.ae/#organization"}
+					},
+					{
+						"@type": "Person",
+						"honorificPrefix": "Dr.",
+						"name": "Ibrahim Tabche",
+						"jobTitle": "Acting Dean and Associate Professor, School of Management",
+						"department": "Academic Affairs",
+						"worksFor": {"@id": "https://www.cud.ac.ae/#organization"}
+					},
+					{
+						"@type": "Person",
+						"honorificPrefix": "Dr.",
+						"name": "Robert McClung",
+						"jobTitle": "Dean and Associate Professor, First-Year Students",
+						"department": "Academic Affairs",
+						"worksFor": {"@id": "https://www.cud.ac.ae/#organization"}
+					},
+					{
+						"@type": "Person",
+						"honorificPrefix": "Dr.",
+						"name": "Rami El-Khatib",
+						"jobTitle": "Vice President Student Affairs",
+						"department": "Administration",
+						"worksFor": {"@id": "https://www.cud.ac.ae/#organization"}
+					},
+					{
+						"@type": "Person",
+						"honorificPrefix": "Dr.",
+						"name": "Muhammad Abaidullah Anwar",
+						"jobTitle": "Dean, Institutional Research and Planning",
+						"department": "Administration",
+						"worksFor": {"@id": "https://www.cud.ac.ae/#organization"}
+					},
+					{
+						"@type": "Person",
+						"honorificPrefix": "Mr.",
+						"name": "Mohammad Elmoshnib",
+						"jobTitle": "Registrar",
+						"department": "Administration",
+						"worksFor": {"@id": "https://www.cud.ac.ae/#organization"}
+					},
+					{
+						"@type": "Person",
+						"honorificPrefix": "Mrs.",
+						"name": "Menchie Armillo",
+						"jobTitle": "Director, Learning Resource Centre",
+						"department": "Administration",
+						"worksFor": {"@id": "https://www.cud.ac.ae/#organization"}
+					},
+					{
+						"@type": "Person",
+						"honorificPrefix": "Mr.",
+						"name": "Aftab Hameed Khan",
+						"jobTitle": "Director, Information and Communication Technology",
+						"department": "Administration",
+						"worksFor": {"@id": "https://www.cud.ac.ae/#organization"}
+					},
+					{
+						"@type": "Person",
+						"honorificPrefix": "Prof.",
+						"name": "Christopher Hill",
+						"jobTitle": "Vice President for Research and Innovation",
+						"department": "Administration",
+						"worksFor": {"@id": "https://www.cud.ac.ae/#organization"}
+					},
+					{
+						"@type": "Person",
+						"honorificPrefix": "Mr.",
+						"name": "Gustavo Antonio Montero",
+						"jobTitle": "Visiting Faculty and Incubator Director",
+						"department": "Administration",
+						"worksFor": {"@id": "https://www.cud.ac.ae/#organization"}
+					}
+				]
+			}
+		]
+	}
+	</script>
+
 </section>
 
 {# ── Desktop floating contextual nav (hidden on mobile/tablet) ───────────────── #}

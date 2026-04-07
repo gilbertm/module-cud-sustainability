@@ -23,6 +23,12 @@ function cud_sustainability_install(): void {
  * Implements hook_uninstall().
  */
 function cud_sustainability_uninstall(): void {
+  // DEACTIVATED: content and field cleanup intentionally disabled.
+  // Sustainability nodes, fields, menus, and the bundle are preserved so that
+  // content remains accessible via Drupal admin after the module is uninstalled.
+  // Re-enable the blocks below only after a deliberate decision to purge data.
+
+  /*
   $type_id = 'sustainability';
   $entity_type_manager = \Drupal::entityTypeManager();
 
@@ -40,9 +46,9 @@ function cud_sustainability_uninstall(): void {
 
   // 2. Delete field instances then field storage for each field.
   $fields_to_remove = [
-    'field_research_carousel_images',
-    'field_research_carousel_content',
-    'field_research_sections',
+    'field_sust_carousel_images',
+    'field_sust_carousel_content',
+    'field_sust_sections',
   ];
 
   foreach ($fields_to_remove as $field_name) {
@@ -87,6 +93,7 @@ function cud_sustainability_uninstall(): void {
   if ($type) {
     $type->delete();
   }
+  */
 }
 
 /**
@@ -132,6 +139,13 @@ function cud_sustainability_update_8006(): void {
 }
 
 /**
+ * Renames carousel/sections fields from field_research_* to field_sustainability_*.
+ */
+function cud_sustainability_update_8007(): void {
+  cud_sustainability_update_10007();
+}
+
+/**
  * Adds the CUD Sustainability content type and slug field for existing installs.
  */
 function cud_sustainability_update_9001(): void {
@@ -171,6 +185,13 @@ function cud_sustainability_update_9005(): void {
  */
 function cud_sustainability_update_9006(): void {
   cud_sustainability_update_10006();
+}
+
+/**
+ * Renames carousel/sections fields from field_research_* to field_sustainability_*.
+ */
+function cud_sustainability_update_9007(): void {
+  cud_sustainability_update_10007();
 }
 
 /**
@@ -230,9 +251,9 @@ function cud_sustainability_ensure_research_bundle(): void {
 function cud_sustainability_ensure_carousel_fields(): void {
   $type_id = 'sustainability';
 
-  if (!FieldStorageConfig::loadByName('node', 'field_research_carousel_images')) {
+  if (!FieldStorageConfig::loadByName('node', 'field_sust_carousel_images')) {
     FieldStorageConfig::create([
-      'field_name' => 'field_research_carousel_images',
+      'field_name' => 'field_sust_carousel_images',
       'entity_type' => 'node',
       'type' => 'entity_reference',
       'cardinality' => FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED,
@@ -240,9 +261,9 @@ function cud_sustainability_ensure_carousel_fields(): void {
     ])->save();
   }
 
-  if (!FieldConfig::loadByName('node', $type_id, 'field_research_carousel_images')) {
+  if (!FieldConfig::loadByName('node', $type_id, 'field_sust_carousel_images')) {
     FieldConfig::create([
-      'field_name' => 'field_research_carousel_images',
+      'field_name' => 'field_sust_carousel_images',
       'entity_type' => 'node',
       'bundle' => $type_id,
       'label' => 'Carousel images',
@@ -254,18 +275,18 @@ function cud_sustainability_ensure_carousel_fields(): void {
     ])->save();
   }
 
-  if (!FieldStorageConfig::loadByName('node', 'field_research_carousel_content')) {
+  if (!FieldStorageConfig::loadByName('node', 'field_sust_carousel_content')) {
     FieldStorageConfig::create([
-      'field_name' => 'field_research_carousel_content',
+      'field_name' => 'field_sust_carousel_content',
       'entity_type' => 'node',
       'type' => 'text_long',
       'cardinality' => FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED,
     ])->save();
   }
 
-  if (!FieldConfig::loadByName('node', $type_id, 'field_research_carousel_content')) {
+  if (!FieldConfig::loadByName('node', $type_id, 'field_sust_carousel_content')) {
     FieldConfig::create([
-      'field_name' => 'field_research_carousel_content',
+      'field_name' => 'field_sust_carousel_content',
       'entity_type' => 'node',
       'bundle' => $type_id,
       'label' => 'Carousel slide overlays',
@@ -279,16 +300,16 @@ function cud_sustainability_ensure_carousel_fields(): void {
     ->getFormDisplay('node', $type_id, 'default');
   $needs_save = FALSE;
 
-  if (!$form_display->getComponent('field_research_carousel_images')) {
-    $form_display->setComponent('field_research_carousel_images', [
+  if (!$form_display->getComponent('field_sust_carousel_images')) {
+    $form_display->setComponent('field_sust_carousel_images', [
       'type' => 'media_library_widget',
       'weight' => 5,
     ]);
     $needs_save = TRUE;
   }
 
-  if (!$form_display->getComponent('field_research_carousel_content')) {
-    $form_display->setComponent('field_research_carousel_content', [
+  if (!$form_display->getComponent('field_sust_carousel_content')) {
+    $form_display->setComponent('field_sust_carousel_content', [
       'type' => 'text_textarea',
       'weight' => 6,
       'settings' => ['rows' => 3],
@@ -306,7 +327,7 @@ function cud_sustainability_ensure_carousel_fields(): void {
  */
 function cud_sustainability_ensure_sections_field(): void {
   $type_id = 'sustainability';
-  $field_name = 'field_research_sections';
+  $field_name = 'field_sust_sections';
 
   if (!FieldStorageConfig::loadByName('node', $field_name)) {
     FieldStorageConfig::create([
@@ -462,6 +483,92 @@ function cud_sustainability_update_10006(): void {
       $storage->delete();
       field_purge_batch(100);
     }
+  }
+}
+
+/**
+ * Migrates carousel/sections data from field_research_* to field_sustainability_*
+ * on the sustainability bundle, then removes the old field instances.
+ *
+ * The field_research_* storage tables are NOT dropped because the research
+ * bundle also uses them. Only the sustainability-bundle instances are removed.
+ */
+function cud_sustainability_update_10007(): void {
+  $type_id = 'sustainability';
+  $entity_type_manager = \Drupal::entityTypeManager();
+  $node_storage = $entity_type_manager->getStorage('node');
+
+  // 1. Ensure the new field_sustainability_* fields exist on this bundle.
+  cud_sustainability_ensure_carousel_fields();
+  cud_sustainability_ensure_sections_field();
+
+  // 2. Migrate data node-by-node.
+  $nids = \Drupal::entityQuery('node')
+    ->condition('type', $type_id)
+    ->accessCheck(FALSE)
+    ->execute();
+
+  foreach ($nids as $nid) {
+    $node = $node_storage->load($nid);
+    if (!$node) {
+      continue;
+    }
+
+    $changed = FALSE;
+
+    // Carousel images (entity_reference).
+    if ($node->hasField('field_research_carousel_images')
+      && !$node->get('field_research_carousel_images')->isEmpty()
+      && $node->hasField('field_sust_carousel_images')
+      && $node->get('field_sust_carousel_images')->isEmpty()) {
+      $node->set('field_sust_carousel_images', $node->get('field_research_carousel_images')->getValue());
+      $changed = TRUE;
+    }
+
+    // Carousel content (text_long).
+    if ($node->hasField('field_research_carousel_content')
+      && !$node->get('field_research_carousel_content')->isEmpty()
+      && $node->hasField('field_sust_carousel_content')
+      && $node->get('field_sust_carousel_content')->isEmpty()) {
+      $node->set('field_sust_carousel_content', $node->get('field_research_carousel_content')->getValue());
+      $changed = TRUE;
+    }
+
+    // Sections (text_long).
+    if ($node->hasField('field_research_sections')
+      && !$node->get('field_research_sections')->isEmpty()
+      && $node->hasField('field_sust_sections')
+      && $node->get('field_sust_sections')->isEmpty()) {
+      $node->set('field_sust_sections', $node->get('field_research_sections')->getValue());
+      $changed = TRUE;
+    }
+
+    if ($changed) {
+      $node->save();
+    }
+  }
+
+  // 3. Remove old field_research_* instances from sustainability bundle only.
+  $display_repo = \Drupal::service('entity_display.repository');
+  $old_fields = [
+    'field_research_carousel_images',
+    'field_research_carousel_content',
+    'field_research_sections',
+  ];
+  foreach ($old_fields as $field_name) {
+    $form_display = $display_repo->getFormDisplay('node', $type_id, 'default');
+    if ($form_display->getComponent($field_name)) {
+      $form_display->removeComponent($field_name)->save();
+    }
+    $view_display = $display_repo->getViewDisplay('node', $type_id, 'default');
+    if ($view_display->getComponent($field_name)) {
+      $view_display->removeComponent($field_name)->save();
+    }
+    $instance = FieldConfig::loadByName('node', $type_id, $field_name);
+    if ($instance) {
+      $instance->delete();
+    }
+    // Do NOT delete the field storage — research bundle still uses it.
   }
 }
 
