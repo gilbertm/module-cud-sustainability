@@ -40,7 +40,6 @@ function cud_sustainability_uninstall(): void {
 
   // 2. Delete field instances then field storage for each field.
   $fields_to_remove = [
-    'field_research_slug',
     'field_research_carousel_images',
     'field_research_carousel_content',
     'field_research_sections',
@@ -126,6 +125,13 @@ function cud_sustainability_update_8005(): void {
 }
 
 /**
+ * Migrates field_research_slug to path aliases and removes the field.
+ */
+function cud_sustainability_update_8006(): void {
+  cud_sustainability_update_10006();
+}
+
+/**
  * Adds the CUD Sustainability content type and slug field for existing installs.
  */
 function cud_sustainability_update_9001(): void {
@@ -158,6 +164,13 @@ function cud_sustainability_update_9004(): void {
  */
 function cud_sustainability_update_9005(): void {
   cud_sustainability_update_10005();
+}
+
+/**
+ * Migrates field_research_slug to path aliases and removes the field.
+ */
+function cud_sustainability_update_9006(): void {
+  cud_sustainability_update_10006();
 }
 
 /**
@@ -205,58 +218,6 @@ function cud_sustainability_ensure_research_bundle(): void {
       'display_submitted' => FALSE,
     ]);
     $type->save();
-  }
-
-  if (!FieldStorageConfig::loadByName('node', 'field_research_slug')) {
-    FieldStorageConfig::create([
-      'field_name' => 'field_research_slug',
-      'entity_type' => 'node',
-      'type' => 'string',
-      'cardinality' => 1,
-      'settings' => [
-        'max_length' => 128,
-        'is_ascii' => TRUE,
-        'case_sensitive' => FALSE,
-      ],
-      'translatable' => FALSE,
-    ])->save();
-  }
-
-  if (!FieldConfig::loadByName('node', $type_id, 'field_research_slug')) {
-    FieldConfig::create([
-      'field_name' => 'field_research_slug',
-      'entity_type' => 'node',
-      'bundle' => $type_id,
-      'label' => 'Sustainability slug',
-      'description' => 'Use "main" for /sustainability and unique values for /sustainability/{slug}.',
-      'required' => TRUE,
-      'settings' => [],
-    ])->save();
-  }
-
-  $form_display = \Drupal::service('entity_display.repository')
-    ->getFormDisplay('node', $type_id, 'default');
-  if (!$form_display->getComponent('field_research_slug')) {
-    $form_display->setComponent('field_research_slug', [
-      'type' => 'string_textfield',
-      'weight' => -4,
-      'settings' => [
-        'size' => 64,
-        'placeholder' => 'main',
-      ],
-    ]);
-    $form_display->save();
-  }
-
-  $view_display = \Drupal::service('entity_display.repository')
-    ->getViewDisplay('node', $type_id, 'default');
-  if (!$view_display->getComponent('field_research_slug')) {
-    $view_display->setComponent('field_research_slug', [
-      'label' => 'hidden',
-      'type' => 'string',
-      'weight' => 98,
-    ]);
-    $view_display->save();
   }
 
   cud_sustainability_ensure_carousel_fields();
@@ -395,23 +356,31 @@ function cud_sustainability_ensure_sections_field(): void {
  * Creates a starter published sustainability entry for /sustainability.
  */
 function cud_sustainability_create_main_entry(): void {
-  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
-  $existing = $node_storage->loadByProperties([
-    'type' => 'sustainability',
-    'field_research_slug' => 'main',
-  ]);
-
-  if (!empty($existing)) {
-    return;
+  // Check whether a sustainability node is already aliased at /sustainability.
+  $alias_manager = \Drupal::service('path_alias.manager');
+  $system_path = $alias_manager->getPathByAlias('/sustainability');
+  if (preg_match('#^/node/(\d+)$#', $system_path, $m)) {
+    $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+    $existing = $node_storage->load((int) $m[1]);
+    if ($existing && $existing->bundle() === 'sustainability' && $existing->isPublished()) {
+      return;
+    }
   }
 
+  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
   $node = Node::create([
     'type' => 'sustainability',
     'title' => 'Sustainability Overview',
     'status' => 1,
-    'field_research_slug' => 'main',
   ]);
   $node->save();
+
+  // Create the canonical path alias /sustainability → /node/{nid}.
+  \Drupal::entityTypeManager()->getStorage('path_alias')->create([
+    'path' => '/node/' . $node->id(),
+    'alias' => '/sustainability',
+    'langcode' => 'und',
+  ])->save();
 }
 
 /**
@@ -419,6 +388,81 @@ function cud_sustainability_create_main_entry(): void {
  */
 function cud_sustainability_update_10005(): void {
   cud_sustainability_ensure_menus();
+}
+
+/**
+ * Migrates field_research_slug values to path aliases then removes the field.
+ *
+ * For every published sustainability node that has a field_research_slug value,
+ * a path alias is created (/sustainability for slug "main", /sustainability/{slug}
+ * for all others) unless one already exists. The field instance and storage are
+ * then deleted so they no longer appear on the content edit form.
+ */
+function cud_sustainability_update_10006(): void {
+  $entity_type_manager = \Drupal::entityTypeManager();
+  $node_storage = $entity_type_manager->getStorage('node');
+  $alias_storage = $entity_type_manager->getStorage('path_alias');
+
+  $query = \Drupal::entityQuery('node')
+    ->condition('type', 'sustainability')
+    ->accessCheck(FALSE);
+  $nids = $query->execute();
+
+  foreach ($nids as $nid) {
+    $node = $node_storage->load($nid);
+    if (!$node || !$node->hasField('field_research_slug') || $node->get('field_research_slug')->isEmpty()) {
+      continue;
+    }
+
+    $slug = trim((string) $node->get('field_research_slug')->value);
+    if ($slug === '') {
+      continue;
+    }
+
+    $url_alias = ($slug === 'main') ? '/sustainability' : '/sustainability/' . ltrim($slug, '/');
+    $system_path = '/node/' . $nid;
+
+    // Only create the alias when one for this exact alias string is absent.
+    $existing = $alias_storage->loadByProperties(['alias' => $url_alias]);
+    if (empty($existing)) {
+      $alias_storage->create([
+        'path' => $system_path,
+        'alias' => $url_alias,
+        'langcode' => 'und',
+      ])->save();
+    }
+  }
+
+  // Remove field instance from the sustainability bundle.
+  $type_id = 'sustainability';
+  $instance = FieldConfig::loadByName('node', $type_id, 'field_research_slug');
+  if ($instance) {
+    // Remove from form/view displays first to avoid orphaned component entries.
+    $display_repo = \Drupal::service('entity_display.repository');
+    foreach (['default'] as $mode) {
+      $form_display = $display_repo->getFormDisplay('node', $type_id, $mode);
+      if ($form_display->getComponent('field_research_slug')) {
+        $form_display->removeComponent('field_research_slug')->save();
+      }
+      $view_display = $display_repo->getViewDisplay('node', $type_id, $mode);
+      if ($view_display->getComponent('field_research_slug')) {
+        $view_display->removeComponent('field_research_slug')->save();
+      }
+    }
+    $instance->delete();
+  }
+
+  // Remove the field storage when no other bundles reference it.
+  $remaining = $entity_type_manager
+    ->getStorage('field_config')
+    ->loadByProperties(['entity_type' => 'node', 'field_name' => 'field_research_slug']);
+  if (empty($remaining)) {
+    $storage = FieldStorageConfig::loadByName('node', 'field_research_slug');
+    if ($storage) {
+      $storage->delete();
+      field_purge_batch(100);
+    }
+  }
 }
 
 /**

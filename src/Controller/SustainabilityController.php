@@ -27,11 +27,6 @@ class SustainabilityController extends ControllerBase {
   protected const RESEARCH_BUNDLE = 'sustainability';
 
   /**
-   * Slug field machine name.
-   */
-  protected const RESEARCH_SLUG_FIELD = 'field_research_slug';
-
-  /**
    * Node storage instance.
    *
    * @var \Drupal\Core\Entity\EntityStorageInterface
@@ -116,7 +111,7 @@ class SustainabilityController extends ControllerBase {
       '@path' => $request ? $request->getPathInfo() : '/',
     ]);
 
-    $main_node = $this->loadPublishedNodeBySlug('main');
+    $main_node = $this->loadPublishedNodeByAlias('/sustainability');
     if ($main_node) {
       $this->trace('Main node loaded', [
         '@nid' => (string) $main_node->id(),
@@ -235,35 +230,26 @@ class SustainabilityController extends ControllerBase {
   }
 
   /**
-   * Loads a published sustainability node by trying multiple slug permutations.
+   * Loads a published sustainability node by resolving the URL path alias.
    *
-   * The field_research_slug may be stored with various prefixes
-   * (e.g. 'sustainability/our-commitment/governance' or
-   * 'sample/sustainability/our-commitment/governance'). We try the most
-   * specific variants first so the node is found regardless of how the editor
-   * stored the value.
+   * Constructs the full /sustainability/{slug} URL, resolves it via the path
+   * alias manager to a system path, and loads the resulting node when it
+   * belongs to the sustainability bundle and is published.
    */
   protected function loadNodeForRouteSlug(string $routeSlug): ?NodeInterface {
     $routeSlug = trim($routeSlug, '/');
+    $url_path = '/sustainability/' . $routeSlug;
 
-    // Candidates ordered from most-specific to least-specific.
-    // Also include leading-slash variants, as slugs may be stored as full
-    // paths (e.g. '/sustainability/our-commitment/sustainability-committee').
-    $candidates = array_unique(array_filter([
-      $routeSlug,
-      'sustainability/' . $routeSlug,
-      '/sustainability/' . $routeSlug,
-      'sample/sustainability/' . $routeSlug,
-      // Last segment only (e.g. 'governance' from 'our-commitment/governance').
-      basename($routeSlug),
-    ]));
+    $alias_manager = \Drupal::service('path_alias.manager');
+    $system_path = $alias_manager->getPathByAlias($url_path);
 
-    foreach ($candidates as $slug) {
-      $node = $this->loadPublishedNodeBySlug($slug);
-      if ($node) {
-        $this->trace('loadNodeForRouteSlug() matched', [
+    if (preg_match('#^/node/(\d+)$#', $system_path, $m)) {
+      $node = $this->nodeStorage->load((int) $m[1]);
+      if ($node instanceof NodeInterface
+        && $node->bundle() === static::RESEARCH_BUNDLE
+        && $node->isPublished()) {
+        $this->trace('loadNodeForRouteSlug() matched via alias', [
           '@route_slug' => $routeSlug,
-          '@matched_slug' => $slug,
           '@nid' => (string) $node->id(),
         ]);
         return $node;
@@ -306,23 +292,41 @@ class SustainabilityController extends ControllerBase {
   }
 
   /**
-   * Loads a published sustainability node by configured slug value.
+   * Loads a published sustainability node by resolving a full URL path alias.
+   *
+   * Uses path_alias.manager to convert a URL like /sustainability (or
+   * /sustainability/{slug}) into the system path /node/{nid}, then loads and
+   * returns the node when it is a published sustainability bundle member.
    */
-  protected function loadPublishedNodeBySlug(string $slug) {
-    $this->trace('Loading published node by slug', ['@slug' => $slug]);
+  protected function loadPublishedNodeByAlias(string $urlPath): ?NodeInterface {
+    $this->trace('Loading published node by alias', ['@path' => $urlPath]);
 
-    $nodes = $this->nodeStorage->loadByProperties([
+    $alias_manager = \Drupal::service('path_alias.manager');
+    $system_path = $alias_manager->getPathByAlias($urlPath);
+
+    if (preg_match('#^/node/(\d+)$#', $system_path, $m)) {
+      $node = $this->nodeStorage->load((int) $m[1]);
+      if ($node instanceof NodeInterface
+        && $node->bundle() === static::RESEARCH_BUNDLE
+        && $node->isPublished()) {
+        $this->trace('Node lookup via alias matched', [
+          '@path' => $urlPath,
+          '@nid' => (string) $node->id(),
+        ]);
+        return $node;
+      }
+    }
+
+    // Fallback: first published sustainability node (e.g. fresh installs).
+    $all = $this->nodeStorage->loadByProperties([
       'type' => static::RESEARCH_BUNDLE,
-      static::RESEARCH_SLUG_FIELD => trim($slug),
       'status' => 1,
     ]);
-
-    $candidates = array_values($nodes);
+    $candidates = array_values($all);
     $node = $this->selectBestNodeCandidate($candidates);
 
-    $this->trace('Node lookup result', [
-      '@slug' => $slug,
-      '@count' => (string) count($nodes),
+    $this->trace('Node lookup fallback result', [
+      '@path' => $urlPath,
       '@found' => $node ? 'yes' : 'no',
     ]);
 

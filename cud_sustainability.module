@@ -277,31 +277,29 @@ function cud_sustainability_preprocess_page(array &$variables): void {
     $path = $request->getPathInfo();
     $theme_hook = cud_sustainability_path_to_theme_hook($path);
     if ($theme_hook !== NULL) {
-      $slug = cud_sustainability_path_to_slug($path);
       $entity_type_manager = \Drupal::entityTypeManager();
       $node_storage = $entity_type_manager->getStorage('node');
       $matched_node = NULL;
 
-      // Try slug candidates from most-specific to least-specific, mirroring
-      // the controller's loadNodeForRouteSlug() strategy.
-      // Also include leading-slash variants, as slugs may be stored as full
-      // paths (e.g. '/sustainability/our-commitment/sustainability-committee').
-      $candidates = array_unique(array_filter([
-        $slug,
-        'sustainability/' . $slug,
-        '/sustainability/' . $slug,
-        'sample/sustainability/' . $slug,
-        $slug !== '' ? basename($slug) : '',
-      ]));
-      foreach ($candidates as $candidate) {
-        $nodes = $node_storage->loadByProperties([
-          'type' => 'sustainability',
-          'field_research_slug' => $candidate,
-          'status' => 1,
-        ]);
-        if ($nodes) {
-          $matched_node = reset($nodes);
-          break;
+      // For entity.node.canonical routes (aliased nodes), the node is already
+      // a route parameter — use it directly without any field lookup.
+      $route_node_candidate = \Drupal::routeMatch()->getParameter('node');
+      if ($route_node_candidate instanceof \Drupal\node\NodeInterface
+        && $route_node_candidate->bundle() === 'sustainability'
+        && $route_node_candidate->isPublished()) {
+        $matched_node = $route_node_candidate;
+      }
+      else {
+        // Fall back to resolving the current path via the alias manager.
+        $alias_manager = \Drupal::service('path_alias.manager');
+        $system_path = $alias_manager->getPathByAlias($path);
+        if (preg_match('#^/node/(\d+)$#', $system_path, $m)) {
+          $alias_candidate = $node_storage->load((int) $m[1]);
+          if ($alias_candidate instanceof \Drupal\node\NodeInterface
+            && $alias_candidate->bundle() === 'sustainability'
+            && $alias_candidate->isPublished()) {
+            $matched_node = $alias_candidate;
+          }
         }
       }
 
@@ -318,8 +316,9 @@ function cud_sustainability_preprocess_page(array &$variables): void {
         $carousel_items = $controller->getCarouselItems($matched_node);
       }
 
-      // Slug lookup failed — fall back to the node already loaded by Drupal's
-      // entity router (available as a route parameter for entity.node.canonical).
+      // Fallback: if matched_node is still NULL, try the route parameter
+      // directly (handles unpublished previews or edge cases where the node
+      // is not yet published but the editor is previewing the page).
       if ($title === '') {
         $route_node = \Drupal::routeMatch()->getParameter('node');
         if ($route_node instanceof \Drupal\node\NodeInterface) {
