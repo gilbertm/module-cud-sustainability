@@ -34,20 +34,12 @@
 							</div>
 						{% endif %}
 						<div class="carousel-content-overlay absolute inset-0 mx-auto h-full w-full max-w-none">
-							{# % if item.overlay %}{{ item.overlay }}{% endif % #}
-							<div class="flex items-center justify-center h-full px-6 sm:px-12">
-								<div class="max-w-2xl text-center text-white">
-									<h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 drop-shadow-lg">{{ item.title|default('') }}</h2>
-									{% if item.description %}
-										<p class="text-lg sm:text-xl drop-shadow-md opacity-95">{{ item.description }}</p>
-									{% endif %}
-									{% if item.cta_text and item.cta_url %}
-										<a href="{{ item.cta_url }}" class="inline-block mt-6 px-8 py-3 bg-white text-slate-900 font-semibold rounded-lg hover:bg-slate-100 transition-colors shadow-lg">
-											{{ item.cta_text }}
-										</a>
-									{% endif %}
-								</div>
-							</div>
+							<div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/65 via-black/25 to-transparent"></div>
+							{% if item.overlay %}
+								{{ item.overlay }}
+							{% endif %}
+							{# Gradient backdrop — keeps text legible over any image #}
+
 						</div>
 					</article>
 				{% endfor %}
@@ -68,7 +60,8 @@
 {% endif %}
 
 {# ── Page Header with Breadcrumb ─────────────────────────────────────────────── #}
-	<section class="bg-white" aria-label="{{ 'Page header'|t }}"> <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+<section class="bg-white" aria-label="{{ 'Page header'|t }}">
+	<div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
 		<nav class="mb-3 flex items-center gap-1.5 text-xs text-slate-500" aria-label="{{ 'Breadcrumb'|t }}">
 			{% for link in breadcrumb %}
 				{% if not loop.first %}
@@ -152,12 +145,12 @@
 		{% endif %}
 
 		{# % if sections %}
-															<div class="mt-8 space-y-6">
-																{% for section in sections %}
-																	<div class="prose prose-slate max-w-none">{{ section }}</div>
-																{% endfor %}
-															</div>
-														{% endif % #}
+																			<div class="mt-8 space-y-6">
+																				{% for section in sections %}
+																					<div class="prose prose-slate max-w-none">{{ section }}</div>
+																				{% endfor %}
+																			</div>
+																		{% endif % #}
 	</div>
 </section>
 
@@ -174,8 +167,8 @@
 					{% for sub in sub_items %}
 						<li>
 							<a href="{{ sub.url }}" class="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors whitespace-nowrap{% if current_path == sub.url %} bg-slate-100 font-semibold text-slate-900{% else %} text-slate-600 hover:bg-slate-50 hover:text-slate-900{% endif %}">
-						<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }} w-4 text-center text-xs{% if current_path == sub.url %} text-[#b13634]{% else %} text-slate-400{% endif %}" aria-hidden="true"></i>
-						{{ sub.title }}
+								<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }} w-4 text-center text-xs{% if current_path == sub.url %} text-[#b13634]{% else %} text-slate-400{% endif %}" aria-hidden="true"></i>
+								{{ sub.title }}
 							</a>
 						</li>
 					{% endfor %}

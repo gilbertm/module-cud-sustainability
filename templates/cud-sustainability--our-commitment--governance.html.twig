@@ -34,7 +34,9 @@
 							</div>
 						{% endif %}
 						<div class="carousel-content-overlay absolute inset-0 mx-auto h-full w-full max-w-none">
-							{% if item.overlay %}{{ item.overlay }}{% endif %}
+							{% if item.overlay %}
+								{{ item.overlay }}
+							{% endif %}
 						</div>
 					</article>
 				{% endfor %}
@@ -55,7 +57,8 @@
 {% endif %}
 
 {# ── Page Header with Breadcrumb ─────────────────────────────────────────────── #}
-	<section class="bg-white" aria-label="{{ 'Page header'|t }}"> <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+<section class="bg-white" aria-label="{{ 'Page header'|t }}">
+	<div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
 		<nav class="mb-3 flex items-center gap-1.5 text-xs text-slate-500" aria-label="{{ 'Breadcrumb'|t }}">
 			{% for link in breadcrumb %}
 				{% if not loop.first %}
@@ -133,13 +136,14 @@
 <section class="mx-auto max-w-7xl px-4 py-4 sm:px-6 sm:py-10 lg:px-8" id="main-content" aria-label="{{ title }}" data-mode="{{ mode }}">
 	<div class="min-w-0">
 		{% if content %}
-			{# <div class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-sky-700 prose-a:no-underline hover:prose-a:underline">
-																						{{ content }}
-																					</div> #}
+			<div class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-sky-700 prose-a:no-underline hover:prose-a:underline">
+				{{ content }}
+			</div>
 
 			{# ── Tabbed panel ──────────────────────────────────────────────────────────── #}
-				<section
-				class="tab-panel-pages mb-12" data-cud-tabs> {# Tab bar #}
+			<section
+				class="tab-panel-pages mb-12" data-cud-tabs>
+				{# Tab bar #}
 				<div class="relative flex gap-1 border-b border-slate-200" role="tablist" aria-label="{{ 'Governance panels'|t }}">
 
 					<button role="tab" id="tab-bot" aria-controls="panel-bot" aria-selected="true" data-cud-tab="bot" class="cud-tab-btn group relative flex items-center gap-1.5 lg:gap-2 px-3 py-2.5 lg:px-5 lg:py-3.5 text-xs lg:text-sm font-semibold text-[#b13634] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#b13634]/50 focus-visible:ring-offset-2">
@@ -631,12 +635,12 @@
 		{% endif %}
 
 		{# % if sections %}
-															<div class="mt-8 space-y-6">
-																{% for section in sections %}
-																	<div class="prose prose-slate max-w-none">{{ section }}</div>
-																{% endfor %}
-															</div>
-														{% endif % #}
+																	<div class="mt-8 space-y-6">
+																		{% for section in sections %}
+																			<div class="prose prose-slate max-w-none">{{ section }}</div>
+																		{% endfor %}
+																	</div>
+																{% endif % #}
 	</div>
 </section>
 
@@ -653,8 +657,8 @@
 					{% for sub in sub_items %}
 						<li>
 							<a href="{{ sub.url }}" class="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors whitespace-nowrap{% if current_path == sub.url %} bg-slate-100 font-semibold text-slate-900{% else %} text-slate-600 hover:bg-slate-50 hover:text-slate-900{% endif %}">
-						<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }} w-4 text-center text-xs{% if current_path == sub.url %} text-[#b13634]{% else %} text-slate-400{% endif %}" aria-hidden="true"></i>
-						{{ sub.title }}
+								<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }} w-4 text-center text-xs{% if current_path == sub.url %} text-[#b13634]{% else %} text-slate-400{% endif %}" aria-hidden="true"></i>
+								{{ sub.title }}
 							</a>
 						</li>
 					{% endfor %}
