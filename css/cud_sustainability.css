@@ -533,7 +533,7 @@ body.toolbar-horizontal.toolbar-fixed.toolbar-tray-open .cud-sustainability-page
   /* Use natural wrapping for primary nav to avoid overlap with logo/branding. */
   #logo-navigation-daisyui .sustainability-primary-nav > ul {
     display: flex;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
     justify-content: flex-end;
     align-items: center;
     row-gap: 0.15rem;
@@ -547,9 +547,9 @@ body.toolbar-horizontal.toolbar-fixed.toolbar-tray-open .cud-sustainability-page
   #logo-navigation-daisyui .sustainability-primary-item__link {
     white-space: nowrap;
     text-align: left;
-    padding: 0.25rem 0.6rem 0.3rem;
+    /* padding: 0.25rem 0.6rem 0.3rem; */
     font-size: 0.82rem;
-    line-height: 1.1;
+    /* line-height: 1.1; */
     color: #334155;
   }
 
