@@ -142,7 +142,7 @@
 </div>
 
 {# ── Main Content (full-width) ────────────────────────────────────────────────── #}
-<section class="mx-auto max-w-7xl px-4 py-4 sm:px-6 sm:py-10 lg:px-8" id="main-content" !bg-white aria-label="{{ title }}" data-mode="{{ mode }}">
+<section class="mx-auto max-w-7xl px-4 py-4 sm:px-6 sm:py-10 lg:px-8 !bg-white" id="main-content" aria-label="{{ title }}" data-mode="{{ mode }}">
 	<div class="governance min-w-0">
 		{% if content %}
 			<div class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-sky-700 prose-a:no-underline hover:prose-a:underline">
@@ -1014,6 +1014,44 @@
 						</p>
 					</li>
 				</ul>
+			</div>
+			{# ── Suggestion Box Gallery ── #}
+			<div class="mt-8" aria-label="{{ 'Suggestion Box Gallery'|t }}">
+				<div class="grid grid-cols-2 gap-4 sm:gap-6 max-w-2xl mx-auto">
+
+					<figure class="group overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm bg-white">
+						<div class="overflow-hidden">
+							<img
+								src="/modules/custom/cud_sustainability/assets/images/suggestion-box-hub-for-ethicalcompliance-section.jpg"
+								alt="{{ 'Suggestion Box at the HUB Campus'|t }}"
+								class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
+								loading="lazy"
+								width="400"
+								height="256"
+							>
+						</div>
+						<figcaption class="px-4 py-3 text-center text-xs font-medium text-slate-500 uppercase tracking-wide border-t border-slate-100">
+							{{ 'HUB Campus'|t }}
+						</figcaption>
+					</figure>
+
+					<figure class="group overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm bg-white">
+						<div class="overflow-hidden">
+							<img
+								src="/modules/custom/cud_sustainability/assets/images/suggestion-box-som-for-ethical-compliance-section.jpg"
+								alt="{{ 'Suggestion Box at the SOM Campus'|t }}"
+								class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
+								loading="lazy"
+								width="400"
+								height="256"
+							>
+						</div>
+						<figcaption class="px-4 py-3 text-center text-xs font-medium text-slate-500 uppercase tracking-wide border-t border-slate-100">
+							{{ 'SOM Campus'|t }}
+						</figcaption>
+					</figure>
+
+				</div>
 			</div>
 		</section>
 
