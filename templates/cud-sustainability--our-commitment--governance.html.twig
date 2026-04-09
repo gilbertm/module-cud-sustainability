@@ -142,8 +142,8 @@
 </div>
 
 {# ── Main Content (full-width) ────────────────────────────────────────────────── #}
-<section class="mx-auto max-w-7xl px-4 py-4 sm:px-6 sm:py-10 lg:px-8" id="main-content" aria-label="{{ title }}" data-mode="{{ mode }}">
-	<div class="min-w-0">
+<section class="mx-auto max-w-7xl px-4 py-4 sm:px-6 sm:py-10 lg:px-8" id="main-content" !bg-white aria-label="{{ title }}" data-mode="{{ mode }}">
+	<div class="governance min-w-0">
 		{% if content %}
 			<div class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-sky-700 prose-a:no-underline hover:prose-a:underline">
 				{{ content }}
@@ -329,7 +329,7 @@
 				</div>
 
 				{# ── Panel 2 : Academic Council  ─────────────────────────────────────────── #}
-				<div role="tabpanel" id="panel-academic-council" aria-labelledby="tab-academic-council" data-cud-panel="academic-council" class="cud-tab-panel--inactive pt-8">
+				<div role="tabpanel" id="panel-academic-council" aria-labelledby="tab-academic-council" data-cud-panel="academic-council" class="cud-tab-panel--inactive pt-8 hidden">
 					<div class="academic-council">
 						<div class="mb-12 pb-10">
 							<div class="mb-6 flex items-center gap-3">
@@ -453,7 +453,7 @@
 				</div>
 
 				{# ── Panel 3 : Senate            ─────────────────────────────────────────── #}
-				<div role="tabpanel" id="panel-senate" aria-labelledby="tab-senate" data-cud-panel="senate" class="cud-tab-panel--inactive pt-8">
+				<div role="tabpanel" id="panel-senate" aria-labelledby="tab-senate" data-cud-panel="senate" class="cud-tab-panel--inactive pt-8 hidden">
 
 					<div class="senate">
 						<div class="mb-12 pb-10">
@@ -628,7 +628,7 @@
 
 
 				{# ── Panel 4 : Senior Management ─────────────────────────────────────────── #}
-				<div role="tabpanel" id="panel-senior-management" aria-labelledby="tab-senior-management" data-cud-panel="senior-management" class="cud-tab-panel--inactive pt-8">
+				<div role="tabpanel" id="panel-senior-management" aria-labelledby="tab-senior-management" data-cud-panel="senior-management" class="cud-tab-panel--inactive pt-8 hidden">
 
 					<div class="senior-management">
 						<div class="mb-12 pb-10">
@@ -746,20 +746,16 @@
 				</div>
 
 
-				{# ── Panel 5 : Governance Bodies ─────────────────────────────────────────── #}
+			{# ── Panel 5 : Governance Bodies ─────────────────────────────────────────── #}
 				<div
-					role="tabpanel" id="panel-governance" aria-labelledby="tab-governance" data-cud-panel="governance" class="cud-tab-panel--inactive pt-8">
-					{# Senior Management / Academic Council / Senate / Student bodies – coming soon #}
-					<div class="rounded-xl border border-dashed border-slate-200 bg-slate-50/60 px-6 py-10 text-center text-sm text-slate-400">
-						<i class="fa-solid fa-sitemap mb-3 text-2xl text-slate-300" aria-hidden="true"></i>
-						<p class="font-medium text-slate-500">{{ 'Governance Bodies'|t }}</p>
-						<p class="mt-1">{{ 'Student Council · Student Representatives'|t }}</p>
-					</div>
+					role="tabpanel" id="panel-governance" aria-labelledby="tab-governance" data-cud-panel="governance" class="cud-tab-panel--inactive pt-8 hidden">
+
+					{# ── Members of Student Council ── #}
 					<div class="student-council">
 						<div class="mb-12 pb-10">
 							<div class="mb-6 flex items-center gap-3">
 								<span class="h-px flex-1 bg-gradient-to-r from-[#b13634]/30 to-transparent"></span>
-								<h2 class="text-md md:text-lg font-semibold uppercase tracking-[0.25em] text-[#b13634]">{{ 'Student Council'|t }}</h2>
+								<h2 class="text-md md:text-lg font-semibold uppercase tracking-[0.25em] text-[#b13634]">{{ 'Members of Student Council'|t }}</h2>
 								<span class="h-px flex-1 bg-gradient-to-l from-[#b13634]/30 to-transparent"></span>
 							</div>
 
@@ -767,33 +763,34 @@
 								<table class="w-full border-collapse text-sm">
 									<thead>
 										<tr class="bg-slate-50 border-b border-slate-200">
-											<th scope="col" class="w-[22%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Department'|t }}</th>
-											<th scope="col" class="w-[35%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Name'|t }}</th>
-											<th scope="col" class="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Position'|t }}</th>
+											<th scope="col" class="w-[40%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Name'|t }}</th>
+											<th scope="col" class="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Title'|t }}</th>
 										</tr>
 									</thead>
 									<tbody class="divide-y divide-slate-100 bg-white">
-
 										<tr class="hover:bg-slate-50/70 transition-colors">
-											<td class="px-4 py-3.5 align-top" rowspan="1">
-												<span class="inline-flex items-center gap-1.5 rounded-md bg-[#b13634]/5 px-2.5 py-1 text-[11px] font-semibold text-[#b13634] whitespace-nowrap ring-1 ring-[#b13634]/15">
-													<i class="fa-solid fa-building-columns text-[9px]" aria-hidden="true"></i>
-													{{ "President's Office"|t }}
-												</span>
-											</td>
-											<td class="px-4 py-3.5 font-medium text-slate-800">Professor Karim Chelli</td>
-											<td class="px-4 py-3.5 text-slate-500">President &amp; Vice-Chancellor</td>
+											<td class="px-4 py-3.5 font-medium text-slate-800">Shaima Alhai</td>
+											<td class="px-4 py-3.5 text-slate-500">President</td>
 										</tr>
-
 										<tr class="hover:bg-slate-50/70 transition-colors">
-											<td class="px-4 py-3.5 align-top" rowspan="6">
-												<span class="inline-flex items-center gap-1.5 rounded-md bg-sky-50 px-2.5 py-1 text-[11px] font-semibold text-sky-700 whitespace-nowrap ring-1 ring-sky-200">
-													<i class="fa-solid fa-graduation-cap text-[9px]" aria-hidden="true"></i>
-													{{ 'Academic Affairs'|t }}
-												</span>
-											</td>
-											<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Adam Fenech</td>
-											<td class="px-4 py-3.5 text-slate-500">Provost of Research</td>
+											<td class="px-4 py-3.5 font-medium text-slate-800">Mariane Abi Daoud</td>
+											<td class="px-4 py-3.5 text-slate-500">Vice-President</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Ramisha Zaman</td>
+											<td class="px-4 py-3.5 text-slate-500">Secretary</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Sania Rahman</td>
+											<td class="px-4 py-3.5 text-slate-500">Treasurer</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Sophia El Alami</td>
+											<td class="px-4 py-3.5 text-slate-500">Media Officer</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Nitisha Thakwani</td>
+											<td class="px-4 py-3.5 text-slate-500">Public Relations Officer</td>
 										</tr>
 
 									</tbody>
@@ -802,11 +799,12 @@
 						</div>
 					</div>
 
-					<div class="student-representatives">
+					{# ── Social Clubs ── #}
+					<div class="student-social-clubs">
 						<div class="mb-12 pb-10">
 							<div class="mb-6 flex items-center gap-3">
 								<span class="h-px flex-1 bg-gradient-to-r from-[#b13634]/30 to-transparent"></span>
-								<h2 class="text-md md:text-lg font-semibold uppercase tracking-[0.25em] text-[#b13634]">{{ 'Student Representatives'|t }}</h2>
+								<h2 class="text-md md:text-lg font-semibold uppercase tracking-[0.25em] text-[#b13634]">{{ 'Social Clubs'|t }}</h2>
 								<span class="h-px flex-1 bg-gradient-to-l from-[#b13634]/30 to-transparent"></span>
 							</div>
 
@@ -814,33 +812,122 @@
 								<table class="w-full border-collapse text-sm">
 									<thead>
 										<tr class="bg-slate-50 border-b border-slate-200">
-											<th scope="col" class="w-[22%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Department'|t }}</th>
-											<th scope="col" class="w-[35%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Name'|t }}</th>
-											<th scope="col" class="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Position'|t }}</th>
+											<th scope="col" class="w-[40%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Name'|t }}</th>
+											<th scope="col" class="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Title'|t }}</th>
 										</tr>
 									</thead>
 									<tbody class="divide-y divide-slate-100 bg-white">
-
 										<tr class="hover:bg-slate-50/70 transition-colors">
-											<td class="px-4 py-3.5 align-top" rowspan="1">
-												<span class="inline-flex items-center gap-1.5 rounded-md bg-[#b13634]/5 px-2.5 py-1 text-[11px] font-semibold text-[#b13634] whitespace-nowrap ring-1 ring-[#b13634]/15">
-													<i class="fa-solid fa-building-columns text-[9px]" aria-hidden="true"></i>
-													{{ "President's Office"|t }}
-												</span>
-											</td>
-											<td class="px-4 py-3.5 font-medium text-slate-800">Professor Karim Chelli</td>
-											<td class="px-4 py-3.5 text-slate-500">President &amp; Vice-Chancellor</td>
+											<td class="px-4 py-3.5 font-medium text-slate-800">Hanan Akram</td>
+											<td class="px-4 py-3.5 text-slate-500">President, CUD Cares</td>
 										</tr>
-
 										<tr class="hover:bg-slate-50/70 transition-colors">
-											<td class="px-4 py-3.5 align-top" rowspan="6">
-												<span class="inline-flex items-center gap-1.5 rounded-md bg-sky-50 px-2.5 py-1 text-[11px] font-semibold text-sky-700 whitespace-nowrap ring-1 ring-sky-200">
-													<i class="fa-solid fa-graduation-cap text-[9px]" aria-hidden="true"></i>
-													{{ 'Academic Affairs'|t }}
-												</span>
-											</td>
-											<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Adam Fenech</td>
-											<td class="px-4 py-3.5 text-slate-500">Provost of Research</td>
+											<td class="px-4 py-3.5 font-medium text-slate-800">Annette Thomas</td>
+											<td class="px-4 py-3.5 text-slate-500">President, Student Volunteers</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Sania Rahman</td>
+											<td class="px-4 py-3.5 text-slate-500">President, Wellness</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Neil Jhaveri</td>
+											<td class="px-4 py-3.5 text-slate-500">President, CMUN</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Riddhi Kapadia</td>
+											<td class="px-4 py-3.5 text-slate-500">President, Dance</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Dwayne Menezes</td>
+											<td class="px-4 py-3.5 text-slate-500">President, Music</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Reem Alzeyoudi</td>
+											<td class="px-4 py-3.5 text-slate-500">President, Art</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Mohammed Alinejad</td>
+											<td class="px-4 py-3.5 text-slate-500">President, Drama</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Satvika Appikonda</td>
+											<td class="px-4 py-3.5 text-slate-500">President, Philosophy</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Bianca Sengco</td>
+											<td class="px-4 py-3.5 text-slate-500">President, Photography</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Sukhroop Kaur</td>
+											<td class="px-4 py-3.5 text-slate-500">President, Women in STEM</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Riddhi Kissinger</td>
+											<td class="px-4 py-3.5 text-slate-500">President, Fashion Club- Couture &amp; Culture</td>
+										</tr>										
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+
+										{# ── Academic Societies ── #}
+					<div class="student-academic-societies">
+						<div class="mb-12 pb-10">
+							<div class="mb-6 flex items-center gap-3">
+								<span class="h-px flex-1 bg-gradient-to-r from-[#b13634]/30 to-transparent"></span>
+								<h2 class="text-md md:text-lg font-semibold uppercase tracking-[0.25em] text-[#b13634]">{{ 'Academic Societies'|t }}</h2>
+								<span class="h-px flex-1 bg-gradient-to-l from-[#b13634]/30 to-transparent"></span>
+							</div>
+
+							<div class="overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm">
+								<table class="w-full border-collapse text-sm">
+									<thead>
+										<tr class="bg-slate-50 border-b border-slate-200">
+											<th scope="col" class="w-[40%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Name'|t }}</th>
+											<th scope="col" class="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Title'|t }}</th>
+										</tr>
+									</thead>
+									<tbody class="divide-y divide-slate-100 bg-white">
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Aaliyah Nizam</td>
+											<td class="px-4 py-3.5 text-slate-500">President, Psychology</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Lillian Husam</td>
+											<td class="px-4 py-3.5 text-slate-500">President, Eco-Lution</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Danica Chloe Reyes</td>
+											<td class="px-4 py-3.5 text-slate-500">President, IEEE</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Habiba Kapadia</td>
+											<td class="px-4 py-3.5 text-slate-500">President, Communication</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Riddhi Kapadia</td>
+											<td class="px-4 py-3.5 text-slate-500">President, Business</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Nathan Kahsay Kidanu</td>
+											<td class="px-4 py-3.5 text-slate-500">President, AI</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Ishaan Rai</td>
+											<td class="px-4 py-3.5 text-slate-500">President, Finance</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Khrystyna Kramchanina</td>
+											<td class="px-4 py-3.5 text-slate-500">President, Case Study Lab</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Nazla Chy</td>
+											<td class="px-4 py-3.5 text-slate-500">President, CoLab</td>
+										</tr>
+										<tr class="hover:bg-slate-50/70 transition-colors">
+											<td class="px-4 py-3.5 font-medium text-slate-800">Anas Altaweel</td>
+											<td class="px-4 py-3.5 text-slate-500">President, EcoRise innovation hub</td>
 										</tr>
 
 									</tbody>
@@ -863,6 +950,75 @@
 																					</div>
 																				{% endif % #}
 	</div>
+	{# ── Office for Ethical Compliance ────────────────────────────────────────── #}
+	<div class="post-contents mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+
+		<section class="mb-12" aria-labelledby="heading-ethical-compliance">
+			<div class="mb-6 flex items-center gap-3">
+				<span class="h-px flex-1 bg-gradient-to-r from-[#b13634]/30 to-transparent"></span>
+				<h2 id="heading-ethical-compliance" class="text-md md:text-lg font-semibold uppercase tracking-[0.25em] text-[#b13634]">{{ 'Office for Ethical Compliance'|t }}</h2>
+				<span class="h-px flex-1 bg-gradient-to-l from-[#b13634]/30 to-transparent"></span>
+			</div>
+
+			<div class="overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm bg-white p-6 sm:p-8">
+				<p class="text-sm leading-relaxed text-slate-700">
+					{{ 'All faculty, staff, and students have a responsibility to be aware of all policies that cover items related to ethics. The university is a safe environment for individuals to report suspected unethical behaviour. If you are subject to an unethical behaviour, you should report it to your immediate supervisor (Dean of your school for students) and the Director of Human Resources if that supervisor is not a party to the concern which you raised. If the supervisor is a party to the suspect behaviour, the behaviour should be reported to the Senior Administration Manager of Human Resources and Administration'|t }}
+					(<a href="mailto:yusri@cud.ac.ae" class="font-medium text-[#b13634] hover:underline">yusri@cud.ac.ae</a>).
+					{{ 'The Human Resources Department must ensure that all employees and students are aware that this kind of disclosure is guaranteed by the university to be possible without fear of reprisal.'|t }}
+				</p>
+			</div>
+		</section>
+
+		<section class="mb-12" aria-labelledby="heading-suggestion-box">
+			<div class="mb-6 flex items-center gap-3">
+				<span class="h-px flex-1 bg-gradient-to-r from-[#b13634]/30 to-transparent"></span>
+				<h2 id="heading-suggestion-box" class="text-md md:text-lg font-semibold uppercase tracking-[0.25em] text-[#b13634]">{{ 'How to Raise a Concern: Our Suggestion Box'|t }}</h2>
+				<span class="h-px flex-1 bg-gradient-to-l from-[#b13634]/30 to-transparent"></span>
+			</div>
+
+			<div class="overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm bg-white p-6 sm:p-8">
+				<p class="mb-6 text-sm leading-relaxed text-slate-700">
+					{{ 'To ensure that every member of our community feels safe and supported, we provide multiple avenues for communication, including a physical'|t }}
+					<strong class="font-semibold text-slate-800">{{ 'Suggestion Box'|t }}</strong>
+					{{ 'located on both campuses.'|t }}
+				</p>
+
+				<p class="mb-4 text-sm font-medium text-slate-700">{{ 'This service is designed to:'|t }}</p>
+
+				<ul class="mb-0 space-y-4" role="list">
+					<li class="flex gap-3">
+						<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+							<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+						</span>
+						<p class="text-sm leading-relaxed text-slate-700">
+							<strong class="font-semibold text-slate-800">{{ 'Promote Anonymity:'|t }}</strong>
+							{{ 'The Suggestion Boxes offer a completely anonymous way to share feedback, report "grave concerns," or act as a whistleblower without the pressure of a face-to-face meeting.'|t }}
+						</p>
+					</li>
+					<li class="flex gap-3">
+						<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+							<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+						</span>
+						<p class="text-sm leading-relaxed text-slate-700">
+							<strong class="font-semibold text-slate-800">{{ 'Support Inclusivity:'|t }}</strong>
+							{{ 'We recognize that some individuals may feel shy or hesitant to come forward through digital or formal channels; these boxes provide a low-barrier, accessible alternative for everyone.'|t }}
+						</p>
+					</li>
+					<li class="flex gap-3">
+						<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+							<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+						</span>
+						<p class="text-sm leading-relaxed text-slate-700">
+							<strong class="font-semibold text-slate-800">{{ 'Ensure Confidentiality:'|t }}</strong>
+							{{ 'All submissions are treated with the utmost seriousness and are reviewed by authorized personnel to ensure that every voice is heard and every concern is addressed with integrity.'|t }}
+						</p>
+					</li>
+				</ul>
+			</div>
+		</section>
+
+	</div>
+	{# ── /Office for Ethical Compliance ───────────────────────────────────────── #}
 
 	{# ── JSON-LD structured data ───────────────────────────────────────────────── #}
 	{#
@@ -887,7 +1043,10 @@
 				},
 				"subOrganization": [
 					{"@id": "https://www.cud.ac.ae/#board-of-trustees"},
-					{"@id": "https://www.cud.ac.ae/#senior-management"}
+					{"@id": "https://www.cud.ac.ae/#senior-management"},
+					{"@id": "https://www.cud.ac.ae/#academic-council"},
+					{"@id": "https://www.cud.ac.ae/#university-senate"},
+					{"@id": "https://www.cud.ac.ae/#student-council"}
 				]
 			},
 			{
@@ -900,7 +1059,7 @@
 						"@type": "Person",
 						"name": "Buti Saeed Al Ghandi",
 						"honorificPrefix": "Mr.",
-						"jobTitle": "Chairman of the Board of Trustees",
+						"jobTitle": "Chairman of the Board of Directors",
 						"affiliation": {"@type": "Organization", "name": "Emirates Investment and Development PSC"}
 					},
 					{
@@ -921,159 +1080,180 @@
 						"@type": "Person",
 						"name": "Karim Chelli",
 						"honorificPrefix": "Prof.",
-						"jobTitle": "President and Vice-Chancellor",
+						"jobTitle": "President & Vice-Chancellor",
 						"affiliation": {"@type": "Organization", "name": "Canadian University Dubai"}
 					},
 					{
 						"@type": "Person",
 						"name": "Sheila Copps",
 						"honorificPrefix": "Hon.",
-						"description": "Former Heritage Minister and Deputy Prime Minister of Canada"
+						"jobTitle": "Former Heritage Minister, Environment Minister & Deputy PM of Canada"
 					},
 					{
 						"@type": "Person",
 						"name": "Aldea Landry",
 						"honorificPrefix": "Hon.",
-						"description": "Former Cabinet Minister and Deputy Premier, Province of New Brunswick, Canada"
+						"jobTitle": "Former Cabinet Minister and Deputy Premier, Province of New Brunswick, Canada"
 					},
 					{
 						"@type": "Person",
 						"name": "John Baird",
 						"honorificPrefix": "Hon.",
-						"description": "Former Member of the Canadian House of Commons and Minister of Foreign Affairs"
+						"jobTitle": "Former Member, Canadian House of Commons & Minister of Foreign Affairs"
 					},
 					{
 						"@type": "Person",
 						"name": "George J. Furey",
 						"honorificPrefix": "Hon.",
-						"description": "Former 45th Speaker of the Senate of Canada"
+						"jobTitle": "Former 45th Speaker of the Senate of Canada"
 					},
 					{
 						"@type": "Person",
 						"name": "Denis Lapalme",
 						"honorificPrefix": "Dr.",
-						"description": "Board of Trustees Member — Psychologist, Laurentian University and Ontario Provincial Police"
+						"jobTitle": "Psychologist",
+						"affiliation": {"@type": "Organization", "name": "Laurentian University & Ontario Provincial Police"}
 					}
 				]
 			},
 			{
 				"@type": "Organization",
 				"@id": "https://www.cud.ac.ae/#senior-management",
-				"name": "Senior Management",
+				"name": "Senior Manager Members",
 				"parentOrganization": {"@id": "https://www.cud.ac.ae/#organization"},
 				"member": [
-					{
-						"@type": "Person",
-						"honorificPrefix": "Prof.",
-						"name": "Karim Chelli",
-						"jobTitle": "President and Vice-Chancellor",
-						"department": "President's Office",
-						"worksFor": {"@id": "https://www.cud.ac.ae/#organization"}
-					},
-					{
-						"@type": "Person",
-						"honorificPrefix": "Dr.",
-						"name": "Adam Fenech",
-						"jobTitle": "Provost of Research",
-						"department": "Academic Affairs",
-						"worksFor": {"@id": "https://www.cud.ac.ae/#organization"}
-					},
-					{
-						"@type": "Person",
-						"honorificPrefix": "Dr.",
-						"name": "Sherif Moussa",
-						"jobTitle": "Dean and Professor, School of Engineering, Applied Sciences and Technology",
-						"department": "Academic Affairs",
-						"worksFor": {"@id": "https://www.cud.ac.ae/#organization"}
-					},
-					{
-						"@type": "Person",
-						"honorificPrefix": "Mr.",
-						"name": "Massimo Imparato",
-						"jobTitle": "Dean, School of Architecture and Interior Design",
-						"department": "Academic Affairs",
-						"worksFor": {"@id": "https://www.cud.ac.ae/#organization"}
-					},
-					{
-						"@type": "Person",
-						"honorificPrefix": "Dr.",
-						"name": "Aseel Takshe",
-						"jobTitle": "Acting Dean and Associate Professor, School of Health Sciences and Psychology",
-						"department": "Academic Affairs",
-						"worksFor": {"@id": "https://www.cud.ac.ae/#organization"}
-					},
-					{
-						"@type": "Person",
-						"honorificPrefix": "Dr.",
-						"name": "Ibrahim Tabche",
-						"jobTitle": "Acting Dean and Associate Professor, School of Management",
-						"department": "Academic Affairs",
-						"worksFor": {"@id": "https://www.cud.ac.ae/#organization"}
-					},
-					{
-						"@type": "Person",
-						"honorificPrefix": "Dr.",
-						"name": "Robert McClung",
-						"jobTitle": "Dean and Associate Professor, First-Year Students",
-						"department": "Academic Affairs",
-						"worksFor": {"@id": "https://www.cud.ac.ae/#organization"}
-					},
-					{
-						"@type": "Person",
-						"honorificPrefix": "Dr.",
-						"name": "Rami El-Khatib",
-						"jobTitle": "Vice President Student Affairs",
-						"department": "Administration",
-						"worksFor": {"@id": "https://www.cud.ac.ae/#organization"}
-					},
-					{
-						"@type": "Person",
-						"honorificPrefix": "Dr.",
-						"name": "Muhammad Abaidullah Anwar",
-						"jobTitle": "Dean, Institutional Research and Planning",
-						"department": "Administration",
-						"worksFor": {"@id": "https://www.cud.ac.ae/#organization"}
-					},
-					{
-						"@type": "Person",
-						"honorificPrefix": "Mr.",
-						"name": "Mohammad Elmoshnib",
-						"jobTitle": "Registrar",
-						"department": "Administration",
-						"worksFor": {"@id": "https://www.cud.ac.ae/#organization"}
-					},
-					{
-						"@type": "Person",
-						"honorificPrefix": "Mrs.",
-						"name": "Menchie Armillo",
-						"jobTitle": "Director, Learning Resource Centre",
-						"department": "Administration",
-						"worksFor": {"@id": "https://www.cud.ac.ae/#organization"}
-					},
-					{
-						"@type": "Person",
-						"honorificPrefix": "Mr.",
-						"name": "Aftab Hameed Khan",
-						"jobTitle": "Director, Information and Communication Technology",
-						"department": "Administration",
-						"worksFor": {"@id": "https://www.cud.ac.ae/#organization"}
-					},
-					{
-						"@type": "Person",
-						"honorificPrefix": "Prof.",
-						"name": "Christopher Hill",
-						"jobTitle": "Vice President for Research and Innovation",
-						"department": "Administration",
-						"worksFor": {"@id": "https://www.cud.ac.ae/#organization"}
-					},
-					{
-						"@type": "Person",
-						"honorificPrefix": "Mr.",
-						"name": "Gustavo Antonio Montero",
-						"jobTitle": "Visiting Faculty and Incubator Director",
-						"department": "Administration",
-						"worksFor": {"@id": "https://www.cud.ac.ae/#organization"}
-					}
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Abdelkrim Chelli", "jobTitle": "President and Vice-Chancellor/Chairperson"},
+					{"@type": "Person", "honorificPrefix": "Ms.", "name": "Fatima Al-Sakkaf", "jobTitle": "Legal Counsel"},
+					{"@type": "Person", "honorificPrefix": "Mr.", "name": "Mohammed Elmoshnib", "jobTitle": "Registrar"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Mohammed Djeddi", "jobTitle": "Academic Chief Strategy Officer (Corporate Office)"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Sherif Moussa", "jobTitle": "Dean, School of Engineering, Applied Sciences and Technology"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Ibrahim Tabche", "jobTitle": "Dean, School of Management"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Aseel Takshe", "jobTitle": "Dean, School of Health Sciences and Psychology"},
+					{"@type": "Person", "honorificPrefix": "Ms.", "name": "Chloe Bennett", "jobTitle": "Chair of Creative Industries"},
+					{"@type": "Person", "honorificPrefix": "Mr.", "name": "Joseph Aninias", "jobTitle": "Director of Enterprise Architecture"},
+					{"@type": "Person", "honorificPrefix": "Mr.", "name": "Raman Malpani", "jobTitle": "Manager -- Treasury and MIS"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Robert McClung", "jobTitle": "Dean, First Year Students"},
+					{"@type": "Person", "honorificPrefix": "Mr.", "name": "Massimo Imparato", "jobTitle": "Dean, School of Architecture and Interior Design"},
+					{"@type": "Person", "honorificPrefix": "Mr.", "name": "Quraish Alharahsheh", "jobTitle": "Director of Facilities and Administration"},
+					{"@type": "Person", "honorificPrefix": "Mr.", "name": "Yusri Ibrahim", "jobTitle": "Senior Administration Manager of Human Resources and Administration"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Anwar Muhammad Abaidallah", "jobTitle": "Dean, Institutional Research & Planning/Acting Managing Director of Information and Communication Technology"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Adam Fenech", "jobTitle": "Canada Research Chair, Culture of Work Committee Member"},
+					{"@type": "Person", "honorificPrefix": "Ms.", "name": "Menchie Armillo", "jobTitle": "Director of Learning Resource Centre"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Rami El Khatib", "jobTitle": "Vice President, Student Services"},
+					{"@type": "Person", "honorificPrefix": "Professor", "name": "Christopher Hill", "jobTitle": "Vice President, Global Engagement"},
+					{"@type": "Person", "honorificPrefix": "Mr.", "name": "Aftab Hameed Khan", "jobTitle": "Director of Information and Communication Technology"}
+				]
+			},
+			{
+				"@type": "Organization",
+				"@id": "https://www.cud.ac.ae/#academic-council",
+				"name": "Academic Council Members",
+				"parentOrganization": {"@id": "https://www.cud.ac.ae/#organization"},
+				"member": [
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Karim Chelli", "jobTitle": "President and Vice-Chancellor/Acting VPAA"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Sherif Moussa", "jobTitle": "Dean of School of Engineering, Applied Sciences and Technology"},
+					{"@type": "Person", "honorificPrefix": "Mr.", "name": "Massimo Imparato", "jobTitle": "Dean of School of Architecture and Interior Design"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Aseel Takshe", "jobTitle": "Dean of School of Health Sciences and Psychology"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Kiray Khoury", "jobTitle": "Program Coordinator, Communication department"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Ibrahim Tabche", "jobTitle": "Acting Dean of School of Management"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Robert McClung", "jobTitle": "Dean of First Year Students/Acting Dean of School of Communication and Creative Industries"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Yasir Faheem", "jobTitle": "Associate Professor and Program Coordinator of Cyber Security"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Haytham El Messiry", "jobTitle": "Associate Professor and Program Director of MSc AI"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Tamer Mohamed Abdellatif Mohamed", "jobTitle": "Assistant Professor and Chair of Cyber Security"},
+					{"@type": "Person", "honorificPrefix": "Ms.", "name": "Chloe Bennet", "jobTitle": "Chair of Creative Industries Department"},
+					{"@type": "Person", "honorificPrefix": "Ms.", "name": "Sophie Johnson", "jobTitle": "Senior Lecturer and Head of Department of Interior Design"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Soumaya Askri", "jobTitle": "Assistant Professor and Program Coordinator of Marketing and International Business"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Mohammed Abdulhakim Nuruldeen", "jobTitle": "Professor and Program Coordinator of E-Business and MITM"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Osama Atayah", "jobTitle": "Associate Professor and Program Director of MBA"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Ikhlaas Gurrib", "jobTitle": "Professor and Program Coordinator of Finance"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Ossama Khassawneh", "jobTitle": "Assistant Professor and Program Coordinator of HR and Caretaker of Entrepreneurship and Management"},
+					{"@type": "Person", "honorificPrefix": "Mr.", "name": "Mohammad Elmoshnib", "jobTitle": "Registrar"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Anwar Muhammad Abaidullah", "jobTitle": "Dean of IRP and Acting Managing Director of ICT"},
+					{"@type": "Person", "honorificPrefix": "Mrs.", "name": "Menchie Armillo", "jobTitle": "Director, LRC"},
+					{"@type": "Person", "honorificPrefix": "Mr.", "name": "Aftab Khan", "jobTitle": "Director, ICT"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Rami El Khatib", "jobTitle": "Vice President Student Services"},
+					{"@type": "Person", "honorificPrefix": "Pr.", "name": "Christopher Hill", "jobTitle": "Vice President, Global Engagement"},
+					{"@type": "Person", "honorificPrefix": "Ms.", "name": "Shaima Alhai", "jobTitle": "Student Council President/Vice President"}
+				]
+			},
+			{
+				"@type": "Organization",
+				"@id": "https://www.cud.ac.ae/#university-senate",
+				"name": "University Senate Members",
+				"parentOrganization": {"@id": "https://www.cud.ac.ae/#organization"},
+				"member": [
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Karim Chelli", "jobTitle": "President and Vice-Chancellor/Acting VPAA"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Ibrahim Tabche", "jobTitle": "Acting Dean of School of Management"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Osama Atayah", "jobTitle": "Associate Professor and Program Director of MBA"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Ossama Khassawneh", "jobTitle": "Assistant Professor and Program Coordinator of HR and Caretaker of Entrepreneurship and Management"},
+					{"@type": "Person", "honorificPrefix": "Prof.", "name": "Farooq Haq FH", "jobTitle": "School Representative, School of Management"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Mohamed Abdelhakim", "jobTitle": "Program Coordinator for e-Business & Business Analytics Programs"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Agata Stachowicz-Stanusch", "jobTitle": "School Representative, School of Management"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Ikhlaas Gurrib", "jobTitle": "Professor and Program Coordinator of Finance"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Soumaya Askri", "jobTitle": "Assistant Professor and Program Coordinator of Marketing and International Business"},
+					{"@type": "Person", "honorificPrefix": "Dr", "name": "Syed Ahmad Zamberi", "jobTitle": "DBA Program Director"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Aseel Takshe", "jobTitle": "Dean of School of Health Sciences and Psychology"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Wissam Ghach", "jobTitle": "Associate Professor, School of Health Sciences and Psychology"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Efthymios Papatzikis", "jobTitle": "Professor, School of Health Sciences and Psychology"},
+					{"@type": "Person", "honorificPrefix": "Mr.", "name": "Massimo Imparato", "jobTitle": "Dean of School of Architecture and Interior Design"},
+					{"@type": "Person", "honorificPrefix": "Ms.", "name": "Sophie Johnson", "jobTitle": "Senior Lecturer and Head of Department of Interior Design"},
+					{"@type": "Person", "honorificPrefix": "Ms.", "name": "Simona Azzali", "jobTitle": "Acting Head of Department, Architecture"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Maha Salman", "jobTitle": "School Representative, School of Architecture and Interior Design"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Sherif Moussa", "jobTitle": "Dean of School of Engineering, Applied Sciences and Technology"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Tamer Mohamed Abdellatif Mohamed", "jobTitle": "Assistant Professor and Chair of Cyber Security"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Khaled Goher", "jobTitle": "Chair of Electrical Engineering"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Yasir Faheem", "jobTitle": "Coordinator of MSc. In Artificial Intelligence Program"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Robert McClung", "jobTitle": "Dean of First Year Students/Acting Dean of School of Communication and Creative Industries"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Khouloud Alnounoukh", "jobTitle": "School Representative, First Year, University Level & General Education"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Taghreed Masri", "jobTitle": "School Representative, First Year, University Level & General Education"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Kiray Khoury", "jobTitle": "Program Coordinator, Communication department"},
+					{"@type": "Person", "honorificPrefix": "Ms.", "name": "Chloe Bennet", "jobTitle": "Chair of Creative Industries Department"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Adam Fenech", "jobTitle": "Canada Research Chair, Culture of Work Committee Member"},
+					{"@type": "Person", "honorificPrefix": "Pr.", "name": "Christopher Hill", "jobTitle": "Vice President, Global Engagement"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Rami El Khatib", "jobTitle": "Vice President Student Services"},
+					{"@type": "Person", "name": "Shaima Alhai", "jobTitle": "President, Student Council"},
+					{"@type": "Person", "honorificPrefix": "Mr.", "name": "Yusri Ibrahim", "jobTitle": "Senior Administration Manager of Human Resources and Administration"},
+					{"@type": "Person", "honorificPrefix": "Mr.", "name": "Quraish Alharahsheh", "jobTitle": "Director of Facilities and Administration"},
+					{"@type": "Person", "honorificPrefix": "Mr.", "name": "Aftab Khan", "jobTitle": "Director, ICT"},
+					{"@type": "Person", "honorificPrefix": "Mr.", "name": "Joseph Aninias", "jobTitle": "Director of Enterprise Architecture"},
+					{"@type": "Person", "honorificPrefix": "Mr.", "name": "Raman Malpani", "jobTitle": "Manager -- Treasury and MIS"},
+					{"@type": "Person", "honorificPrefix": "Mr.", "name": "Mohammad Elmoshnib", "jobTitle": "Registrar"}
+				]
+			},
+			{
+				"@type": "Organization",
+				"@id": "https://www.cud.ac.ae/#student-council",
+				"name": "Student Council Members",
+				"parentOrganization": {"@id": "https://www.cud.ac.ae/#organization"},
+				"member": [
+					{"@type": "Person", "name": "Shaima Alhai", "jobTitle": "President"},
+					{"@type": "Person", "name": "Mariane Abi Daoud", "jobTitle": "Vice-President"},
+					{"@type": "Person", "name": "Ramisha Zaman", "jobTitle": "Secretary"},
+					{"@type": "Person", "name": "Sania Rahman", "jobTitle": "Treasurer"},
+					{"@type": "Person", "name": "Sophia El Alami", "jobTitle": "Media Officer"},
+					{"@type": "Person", "name": "Nitisha Thakwani", "jobTitle": "Public Relations Officer"},
+					{"@type": "Person", "name": "Hanan Akram", "jobTitle": "President, CUD Cares"},
+					{"@type": "Person", "name": "Annette Thomas", "jobTitle": "President, Student Volunteers"},
+					{"@type": "Person", "name": "Sania Rahman", "jobTitle": "President, Wellness"},
+					{"@type": "Person", "name": "Neil Jhaveri", "jobTitle": "President, CMUN"},
+					{"@type": "Person", "name": "Riddhi Kapadia", "jobTitle": "President, Dance"},
+					{"@type": "Person", "name": "Dwayne Menezes", "jobTitle": "President, Music"},
+					{"@type": "Person", "name": "Reem Alzeyoudi", "jobTitle": "President, Art"},
+					{"@type": "Person", "name": "Mohammed Alinejad", "jobTitle": "President, Drama"},
+					{"@type": "Person", "name": "Satvika Appikonda", "jobTitle": "President, Philosophy"},
+					{"@type": "Person", "name": "Bianca Sengco", "jobTitle": "President, Photography"},
+					{"@type": "Person", "name": "Sukhroop Kaur", "jobTitle": "President, Women in STEM"},
+					{"@type": "Person", "name": "Riddhi Kissinger", "jobTitle": "President, Fashion Club- Couture & Culture"},
+					{"@type": "Person", "name": "Aaliyah Nizam", "jobTitle": "President, Psychology"},
+					{"@type": "Person", "name": "Lillian Husam", "jobTitle": "President, Eco-Lution"},
+					{"@type": "Person", "name": "Danica Chloe Reyes", "jobTitle": "President, IEEE"},
+					{"@type": "Person", "name": "Habiba Kapadia", "jobTitle": "President, Communication"},
+					{"@type": "Person", "name": "Riddhi Kapadia", "jobTitle": "President, Business"},
+					{"@type": "Person", "name": "Nathan Kahsay Kidanu", "jobTitle": "President, AI"},
+					{"@type": "Person", "name": "Ishaan Rai", "jobTitle": "President, Finance"},
+					{"@type": "Person", "name": "Khrystyna Kramchanina", "jobTitle": "President, Case Study Lab"},
+					{"@type": "Person", "name": "Nazla Chy", "jobTitle": "President, CoLab"},
+					{"@type": "Person", "name": "Anas Altaweel", "jobTitle": "President, EcoRise innovation hub"}
 				]
 			}
 		]
