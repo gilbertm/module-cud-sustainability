@@ -130,13 +130,230 @@
 </div>
 
 {# ── Main Content (full-width) ────────────────────────────────────────────────── #}
-<section class="mx-auto max-w-7xl px-4 py-4 sm:px-6 sm:py-10 lg:px-8" id="main-content" aria-label="{{ title }}" data-mode="{{ mode }}">
+<section class="mx-auto max-w-7xl px-4 py-4 sm:px-6 sm:py-10 lg:px-8 !bg-white" id="main-content" aria-label="{{ title }}" data-mode="{{ mode }}">
 	<div class="min-w-0">
 		{% if content %}
 			<div class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-sky-700 prose-a:no-underline hover:prose-a:underline">
 				{{ content }}
 			</div>
 		{% endif %}
+
+		{# ── Role of the Committee ─────────────────────────────────────────────── #}
+		<div class="mt-8 space-y-10">
+
+			{# ── Purpose ── #}
+			<div class="block-common-content" aria-labelledby="heading-purpose">
+				<h2 id="heading-purpose" class="text-md md:text-xl font-semibold cud-color-blue">{{ 'Role of the Committee'|t }}</h2>
+				<h3 id="subheading-purpose" class="mb-2 text-md md:text-lg cud-color-blue">{{ 'Purpose'|t }}</h3>
+				<p class="text-slate-700">The CUD Sustainability Committee supports Canadian University Dubai's efforts to improve how sustainability is considered across the institution. It provides guidance and input on initiatives related to campus operations, academic activities, and community engagement, with the aim of encouraging responsible use of resources and increased awareness of sustainability practices. The Committee also helps ensure alignment with UAE sustainability priorities, including Net Zero 2050, as well as relevant international frameworks.</p>
+			</div>
+			
+			{# ── Term of Reference ── #}
+			<section aria-labelledby="heading-tor">
+				<div class="block-common-content" aria-labelledby="heading-tor">
+					<h2 id="heading-tor" class="text-md md:text-xl font-semibold cud-color-blue">{{ 'Term of Reference'|t }}</h2>
+					<p class="text-slate-700">The CUD Sustainability Committee shall:</p>
+				</div>
+
+				<div class="overflow-hidden">
+					<ul class="space-y-1.5" role="list">
+						<li class="flex gap-3">
+							<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+								<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+							</span>
+							<p class="text-sm leading-relaxed text-slate-700">Provide advice on aligning university practices with UAE sustainability priorities (including Net Zero 2050) and relevant international standards.</p>
+						</li>
+						<li class="flex gap-3">
+							<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+								<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+							</span>
+							<p class="text-sm leading-relaxed text-slate-700">Recommend practical initiatives to improve sustainability across campus operations, including areas such as energy use, water consumption, and waste management.</p>
+						</li>
+						<li class="flex gap-3">
+							<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+								<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+							</span>
+							<p class="text-sm leading-relaxed text-slate-700">Contribute to the development of sustainability-related policies, guidelines, and action plans where needed.</p>
+						</li>
+						<li class="flex gap-3">
+							<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+								<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+							</span>
+							<p class="text-sm leading-relaxed text-slate-700">Review available data on resource use and suggest areas where improvements can be made.</p>
+						</li>
+						<li class="flex gap-3">
+							<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+								<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+							</span>
+							<p class="text-sm leading-relaxed text-slate-700">Provide input on how sustainability concepts can be incorporated into academic programs, research activities, and student projects.</p>
+						</li>
+						<li class="flex gap-3">
+							<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+								<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+							</span>
+							<p class="text-sm leading-relaxed text-slate-700">Encourage collaboration between departments on sustainability-related activities and projects.</p>
+						</li>
+						<li class="flex gap-3">
+							<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+								<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+							</span>
+							<p class="text-sm leading-relaxed text-slate-700">Support awareness campaigns, events, and student-led initiatives that encourage more sustainable practices within the university community.</p>
+						</li>
+						<li class="flex gap-3">
+							<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+								<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+							</span>
+							<p class="text-sm leading-relaxed text-slate-700">Help strengthen connections with external stakeholders, including industry, government entities, and community partners.</p>
+						</li>
+						<li class="flex gap-3">
+							<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+								<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+							</span>
+							<p class="text-sm leading-relaxed text-slate-700">Attend meetings regularly, review shared materials in advance, and provide constructive input.</p>
+						</li>
+						<li class="flex gap-3">
+							<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+								<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+							</span>
+							<p class="text-sm leading-relaxed text-slate-700">Ensure that quorum includes representation from both academic and administration units.</p>
+						</li>
+						<li class="flex gap-3">
+							<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+								<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+							</span>
+							<p class="text-sm leading-relaxed text-slate-700">Maintain confidentiality of discussions and any sensitive information shared within the Committee.</p>
+						</li>
+						<li class="flex gap-3">
+							<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+								<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+							</span>
+							<p class="text-sm leading-relaxed text-slate-700">Members must disclose any conflict of interest and recuse themselves from related discussions or decisions.</p>
+						</li>
+					</ul>
+				</div>
+			</section>
+
+			{# ── Frequency of Meetings ── #}
+			<div class="block-common-content" aria-labelledby="heading-meetings">
+				<h2 id="heading-meetings" class="text-md md:text-xl font-semibold cud-color-blue">{{ 'Frequency of Meetings'|t }}</h2>
+				<p class="text-slate-700">The CUD Sustainability Committee shall meet at least once per semester, with additional meetings convened as required. The Chair is responsible for ensuring the meetings are scheduled. An agenda shall be circulated in advance, and minutes shall be recorded, approved, and maintained. A copy of the minutes shall be submitted to the Dean of Institutional Research and Planning for record-keeping and reference.</p>
+			</div>
+
+			{# ── Committee Members ── #}
+			<section aria-labelledby="heading-members">
+
+				<div class="block-common-content" aria-labelledby="heading-members">
+					<h2 id="heading-members" class="text-md md:text-xl font-semibold cud-color-blue">{{ 'Committee Members'|t }}</h2>
+					<p class="text-slate-700">The membership of the CUD Sustainability Committee includes representatives from across the university:</p>
+				</div>
+
+				<div class="overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm">
+					<table class="w-full border-collapse text-sm">
+						<thead>
+							<tr class="bg-slate-50 border-b border-slate-200">
+								<th scope="col" class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 w-[40%]">{{ 'Name'|t }}</th>
+								<th scope="col" class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">{{ 'Role / Position'|t }}</th>
+							</tr>
+						</thead>
+						<tbody class="divide-y divide-slate-100 bg-white">
+
+							<tr class="bg-[#b13634]/5 hover:bg-[#b13634]/10 transition-colors">
+								<td class="px-4 py-3.5 font-semibold text-slate-800">
+									Dr. Aseel Takshe
+									<span class="ml-2 inline-flex items-center rounded-full bg-[#b13634] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white">{{ 'Chair'|t }}</span>
+								</td>
+								<td class="px-4 py-3.5 text-slate-500">Acting Dean, School of Health Sciences and Psychology</td>
+							</tr>
+							<tr class="hover:bg-slate-50/70 transition-colors">
+								<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Adam Fenech</td>
+								<td class="px-4 py-3.5 text-slate-500">Canada Research Chair, Culture of Work Committee Member</td>
+							</tr>
+							<tr class="hover:bg-slate-50/70 transition-colors">
+								<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Abir Hamze</td>
+								<td class="px-4 py-3.5 text-slate-500">Assistant Professor, School of Health Sciences and Psychology</td>
+							</tr>
+							<tr class="hover:bg-slate-50/70 transition-colors">
+								<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Rafik Belarbi</td>
+								<td class="px-4 py-3.5 text-slate-500">Professor, School of Architecture and Interior Design</td>
+							</tr>
+							<tr class="hover:bg-slate-50/70 transition-colors">
+								<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Maha Salman</td>
+								<td class="px-4 py-3.5 text-slate-500">Associate Professor, School of Architecture and Interior Design</td>
+							</tr>
+							<tr class="hover:bg-slate-50/70 transition-colors">
+								<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Tatjana Karabegovic</td>
+								<td class="px-4 py-3.5 text-slate-500">Visiting Assistant Professor, School of Architecture and Interior Design</td>
+							</tr>
+							<tr class="hover:bg-slate-50/70 transition-colors">
+								<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Ammar Yahia</td>
+								<td class="px-4 py-3.5 text-slate-500">Faculty, School of Engineering, Applied Science and Technology</td>
+							</tr>
+							<tr class="hover:bg-slate-50/70 transition-colors">
+								<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Tamer Mohamed</td>
+								<td class="px-4 py-3.5 text-slate-500">Assistant Professor, Faculty of Engineering, Applied Sciences and Technology</td>
+							</tr>
+							<tr class="hover:bg-slate-50/70 transition-colors">
+								<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Khaled Goher</td>
+								<td class="px-4 py-3.5 text-slate-500">Associate Professor, Faculty of Engineering, Applied Sciences and Technology</td>
+							</tr>
+							<tr class="hover:bg-slate-50/70 transition-colors">
+								<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Agata Stachowicz-Stanusch</td>
+								<td class="px-4 py-3.5 text-slate-500">Professor, School of Management</td>
+							</tr>
+							<tr class="hover:bg-slate-50/70 transition-colors">
+								<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Zakariya Chabani</td>
+								<td class="px-4 py-3.5 text-slate-500">Associate Professor, School of Management</td>
+							</tr>
+							<tr class="hover:bg-slate-50/70 transition-colors">
+								<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Kweh Qian Long</td>
+								<td class="px-4 py-3.5 text-slate-500">Professor, School of Management</td>
+							</tr>
+							<tr class="hover:bg-slate-50/70 transition-colors">
+								<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Lauren Khan</td>
+								<td class="px-4 py-3.5 text-slate-500">Assistant Professor, Faculty of Communication, Arts and Sciences</td>
+							</tr>
+							<tr class="hover:bg-slate-50/70 transition-colors">
+								<td class="px-4 py-3.5 font-medium text-slate-800">Chloe Bennett</td>
+								<td class="px-4 py-3.5 text-slate-500">Assistant Professor of Practice, Faculty of Communication, Arts and Sciences</td>
+							</tr>
+							<tr class="hover:bg-slate-50/70 transition-colors">
+								<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Chureerat Haq</td>
+								<td class="px-4 py-3.5 text-slate-500">Manager, Center for Sustainability and Innovation</td>
+							</tr>
+							<tr class="hover:bg-slate-50/70 transition-colors">
+								<td class="px-4 py-3.5 font-medium text-slate-800">Aftab Hameed Khan</td>
+								<td class="px-4 py-3.5 text-slate-500">ICT Director, Information and Communication Technology</td>
+							</tr>
+							<tr class="hover:bg-slate-50/70 transition-colors">
+								<td class="px-4 py-3.5 font-medium text-slate-800">Quraish Alharahsheh</td>
+								<td class="px-4 py-3.5 text-slate-500">Director of Administration, Corporate Office</td>
+							</tr>
+							<tr class="hover:bg-slate-50/70 transition-colors">
+								<td class="px-4 py-3.5 font-medium text-slate-800">Yusri Ibrahim</td>
+								<td class="px-4 py-3.5 text-slate-500">Senior Administration Manager, Human Resources and Administration</td>
+							</tr>
+							<tr class="hover:bg-slate-50/70 transition-colors">
+								<td class="px-4 py-3.5 font-medium text-slate-800">Simran Siddiqui</td>
+								<td class="px-4 py-3.5 text-slate-500">Student Counselor, Student Affairs</td>
+							</tr>
+							<tr class="hover:bg-slate-50/70 transition-colors">
+								<td class="px-4 py-3.5 font-medium text-slate-800">Olga Beck</td>
+								<td class="px-4 py-3.5 text-slate-500">Registration Manager, Admission and Registration</td>
+							</tr>
+							<tr class="hover:bg-slate-50/70 transition-colors">
+								<td class="px-4 py-3.5 font-medium text-slate-800">Maryam Farahmand</td>
+								<td class="px-4 py-3.5 text-slate-500">Student Life Officer</td>
+							</tr>
+
+						</tbody>
+					</table>
+				</div>
+
+				<p class="mt-6 text-sm leading-relaxed text-slate-500">{{ 'The tenure of each appointed member shall be three years, renewable upon mutual agreement.'|t }}</p>
+			</section>
+
+		</div>
+		{# ── /Role of the Committee ────────────────────────────────────────────── #}
 
 		{# % if sections %}
 															<div class="mt-8 space-y-6">
@@ -181,3 +398,63 @@
 
 	</div>
 </div>
+
+{# ── JSON-LD structured data ───────────────────────────────────────────────── #}
+{#
+  Emits an EducationalOrganization graph for the Sustainability Committee page.
+  Rendered server-side — no JS required.
+#}
+<script type="application/ld+json">
+{
+	"@context": "https://schema.org",
+	"@graph": [
+		{
+			"@type": "EducationalOrganization",
+			"@id": "https://www.cud.ac.ae/#organization",
+			"name": "Canadian University Dubai",
+			"alternateName": "CUD",
+			"url": "https://www.cud.ac.ae",
+			"subOrganization": [
+				{"@id": "https://www.cud.ac.ae/#sustainability-committee"}
+			]
+		},
+		{
+			"@type": "Organization",
+			"@id": "https://www.cud.ac.ae/#sustainability-committee",
+			"name": "CUD Sustainability Committee",
+			"url": "https://www.cud.ac.ae/sustainability/our-commitment/sustainability-committee",
+			"description": "The CUD Sustainability Committee supports Canadian University Dubai's efforts to improve how sustainability is considered across the institution. It provides guidance and input on initiatives related to campus operations, academic activities, and community engagement.",
+			"parentOrganization": {"@id": "https://www.cud.ac.ae/#organization"},
+			"member": [
+				{
+					"@type": "Person",
+					"honorificPrefix": "Dr.",
+					"name": "Aseel Takshe",
+					"jobTitle": "Acting Dean, School of Health Sciences and Psychology",
+					"roleName": "Chair"
+				},
+				{"@type": "Person", "honorificPrefix": "Dr.", "name": "Adam Fenech", "jobTitle": "Canada Research Chair, Culture of Work Committee Member"},
+				{"@type": "Person", "honorificPrefix": "Dr.", "name": "Abir Hamze", "jobTitle": "Assistant Professor, School of Health Sciences and Psychology"},
+				{"@type": "Person", "honorificPrefix": "Dr.", "name": "Rafik Belarbi", "jobTitle": "Professor, School of Architecture and Interior Design"},
+				{"@type": "Person", "honorificPrefix": "Dr.", "name": "Maha Salman", "jobTitle": "Associate Professor, School of Architecture and Interior Design"},
+				{"@type": "Person", "honorificPrefix": "Dr.", "name": "Tatjana Karabegovic", "jobTitle": "Visiting Assistant Professor, School of Architecture and Interior Design"},
+				{"@type": "Person", "honorificPrefix": "Dr.", "name": "Ammar Yahia", "jobTitle": "Faculty, School of Engineering, Applied Science and Technology"},
+				{"@type": "Person", "honorificPrefix": "Dr.", "name": "Tamer Mohamed", "jobTitle": "Assistant Professor, Faculty of Engineering, Applied Sciences and Technology"},
+				{"@type": "Person", "honorificPrefix": "Dr.", "name": "Khaled Goher", "jobTitle": "Associate Professor, Faculty of Engineering, Applied Sciences and Technology"},
+				{"@type": "Person", "honorificPrefix": "Dr.", "name": "Agata Stachowicz-Stanusch", "jobTitle": "Professor, School of Management"},
+				{"@type": "Person", "honorificPrefix": "Dr.", "name": "Zakariya Chabani", "jobTitle": "Associate Professor, School of Management"},
+				{"@type": "Person", "honorificPrefix": "Dr.", "name": "Kweh Qian Long", "jobTitle": "Professor, School of Management"},
+				{"@type": "Person", "honorificPrefix": "Dr.", "name": "Lauren Khan", "jobTitle": "Assistant Professor, Faculty of Communication, Arts and Sciences"},
+				{"@type": "Person", "name": "Chloe Bennett", "jobTitle": "Assistant Professor of Practice, Faculty of Communication, Arts and Sciences"},
+				{"@type": "Person", "honorificPrefix": "Dr.", "name": "Chureerat Haq", "jobTitle": "Manager, Center for Sustainability and Innovation"},
+				{"@type": "Person", "name": "Aftab Hameed Khan", "jobTitle": "ICT Director, Information and Communication Technology"},
+				{"@type": "Person", "name": "Quraish Alharahsheh", "jobTitle": "Director of Administration, Corporate Office"},
+				{"@type": "Person", "name": "Yusri Ibrahim", "jobTitle": "Senior Administration Manager, Human Resources and Administration"},
+				{"@type": "Person", "name": "Simran Siddiqui", "jobTitle": "Student Counselor, Student Affairs"},
+				{"@type": "Person", "name": "Olga Beck", "jobTitle": "Registration Manager, Admission and Registration"},
+				{"@type": "Person", "name": "Maryam Farahmand", "jobTitle": "Student Life Officer"}
+			]
+		}
+	]
+}
+</script>
