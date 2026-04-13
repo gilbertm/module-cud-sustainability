@@ -14,8 +14,6 @@
  */
 #}
 
-{{ attach_library('cud_sustainability/tabs') }}
-
 {% set carousel_slides = carousel_items|default([]) %}
 
 {% if carousel_slides %}
@@ -34,7 +32,9 @@
 							</div>
 						{% endif %}
 						<div class="carousel-content-overlay absolute inset-0 mx-auto h-full w-full max-w-none">
-							{% if item.overlay %}{{ item.overlay }}{% endif %}
+							{% if item.overlay %}
+								{{ item.overlay }}
+							{% endif %}
 						</div>
 					</article>
 				{% endfor %}
@@ -55,7 +55,8 @@
 {% endif %}
 
 {# ── Page Header with Breadcrumb ─────────────────────────────────────────────── #}
-	<section class="bg-white" aria-label="{{ 'Page header'|t }}"> <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+<section class="bg-white" aria-label="{{ 'Page header'|t }}">
+	<div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
 		<nav class="mb-3 flex items-center gap-1.5 text-xs text-slate-500" aria-label="{{ 'Breadcrumb'|t }}">
 			{% for link in breadcrumb %}
 				{% if not loop.first %}
@@ -131,15 +132,11 @@
 
 {# ── Main Content (full-width) ────────────────────────────────────────────────── #}
 <section class="mx-auto max-w-7xl px-4 py-4 sm:px-6 sm:py-10 lg:px-8 !bg-white" id="main-content" aria-label="{{ title }}" data-mode="{{ mode }}">
-	<div class="min-w-0">
-		{% if content %}
-			<div class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-sky-700 prose-a:no-underline hover:prose-a:underline">
-				{{ content }}
-			</div>
-		{% endif %}
-
+	<div
+		class="min-w-0">
 		{# ── Role of the Committee ─────────────────────────────────────────────── #}
-		<div class="mt-8 space-y-10">
+		<div
+			class="mt-8 space-y-10">
 
 			{# ── Purpose ── #}
 			<div class="block-common-content" aria-labelledby="heading-purpose">
@@ -147,7 +144,7 @@
 				<h3 id="subheading-purpose" class="mb-2 text-md md:text-lg cud-color-blue">{{ 'Purpose'|t }}</h3>
 				<p class="text-slate-700">The CUD Sustainability Committee supports Canadian University Dubai's efforts to improve how sustainability is considered across the institution. It provides guidance and input on initiatives related to campus operations, academic activities, and community engagement, with the aim of encouraging responsible use of resources and increased awareness of sustainability practices. The Committee also helps ensure alignment with UAE sustainability priorities, including Net Zero 2050, as well as relevant international frameworks.</p>
 			</div>
-			
+
 			{# ── Term of Reference ── #}
 			<section aria-labelledby="heading-tor">
 				<div class="block-common-content" aria-labelledby="heading-tor">
@@ -355,13 +352,19 @@
 		</div>
 		{# ── /Role of the Committee ────────────────────────────────────────────── #}
 
-		{# % if sections %}
-															<div class="mt-8 space-y-6">
-																{% for section in sections %}
-																	<div class="prose prose-slate max-w-none">{{ section }}</div>
-																{% endfor %}
-															</div>
-														{% endif % #}
+		{% if sections %}
+			<div class="mt-8 space-y-6">
+				{% for section in sections %}
+					<div class="prose prose-slate max-w-none">{{ section }}</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+		
+		{% if content %}
+			<div class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-sky-700 prose-a:no-underline hover:prose-a:underline">
+				{{ content }}
+			</div>
+		{% endif %}
 	</div>
 </section>
 
@@ -378,8 +381,8 @@
 					{% for sub in sub_items %}
 						<li>
 							<a href="{{ sub.url }}" class="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors whitespace-nowrap{% if current_path == sub.url %} bg-slate-100 font-semibold text-slate-900{% else %} text-slate-600 hover:bg-slate-50 hover:text-slate-900{% endif %}">
-						<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }} w-4 text-center text-xs{% if current_path == sub.url %} text-[#b13634]{% else %} text-slate-400{% endif %}" aria-hidden="true"></i>
-						{{ sub.title }}
+								<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }} w-4 text-center text-xs{% if current_path == sub.url %} text-[#b13634]{% else %} text-slate-400{% endif %}" aria-hidden="true"></i>
+								{{ sub.title }}
 							</a>
 						</li>
 					{% endfor %}
@@ -405,56 +408,56 @@
   Rendered server-side — no JS required.
 #}
 <script type="application/ld+json">
-{
-	"@context": "https://schema.org",
-	"@graph": [
-		{
-			"@type": "EducationalOrganization",
-			"@id": "https://www.cud.ac.ae/#organization",
-			"name": "Canadian University Dubai",
-			"alternateName": "CUD",
-			"url": "https://www.cud.ac.ae",
-			"subOrganization": [
-				{"@id": "https://www.cud.ac.ae/#sustainability-committee"}
-			]
-		},
-		{
-			"@type": "Organization",
-			"@id": "https://www.cud.ac.ae/#sustainability-committee",
-			"name": "CUD Sustainability Committee",
-			"url": "https://www.cud.ac.ae/sustainability/our-commitment/sustainability-committee",
-			"description": "The CUD Sustainability Committee supports Canadian University Dubai's efforts to improve how sustainability is considered across the institution. It provides guidance and input on initiatives related to campus operations, academic activities, and community engagement.",
-			"parentOrganization": {"@id": "https://www.cud.ac.ae/#organization"},
-			"member": [
-				{
-					"@type": "Person",
-					"honorificPrefix": "Dr.",
-					"name": "Aseel Takshe",
-					"jobTitle": "Acting Dean, School of Health Sciences and Psychology",
-					"roleName": "Chair"
-				},
-				{"@type": "Person", "honorificPrefix": "Dr.", "name": "Adam Fenech", "jobTitle": "Canada Research Chair, Culture of Work Committee Member"},
-				{"@type": "Person", "honorificPrefix": "Dr.", "name": "Abir Hamze", "jobTitle": "Assistant Professor, School of Health Sciences and Psychology"},
-				{"@type": "Person", "honorificPrefix": "Dr.", "name": "Rafik Belarbi", "jobTitle": "Professor, School of Architecture and Interior Design"},
-				{"@type": "Person", "honorificPrefix": "Dr.", "name": "Maha Salman", "jobTitle": "Associate Professor, School of Architecture and Interior Design"},
-				{"@type": "Person", "honorificPrefix": "Dr.", "name": "Tatjana Karabegovic", "jobTitle": "Visiting Assistant Professor, School of Architecture and Interior Design"},
-				{"@type": "Person", "honorificPrefix": "Dr.", "name": "Ammar Yahia", "jobTitle": "Faculty, School of Engineering, Applied Science and Technology"},
-				{"@type": "Person", "honorificPrefix": "Dr.", "name": "Tamer Mohamed", "jobTitle": "Assistant Professor, Faculty of Engineering, Applied Sciences and Technology"},
-				{"@type": "Person", "honorificPrefix": "Dr.", "name": "Khaled Goher", "jobTitle": "Associate Professor, Faculty of Engineering, Applied Sciences and Technology"},
-				{"@type": "Person", "honorificPrefix": "Dr.", "name": "Agata Stachowicz-Stanusch", "jobTitle": "Professor, School of Management"},
-				{"@type": "Person", "honorificPrefix": "Dr.", "name": "Zakariya Chabani", "jobTitle": "Associate Professor, School of Management"},
-				{"@type": "Person", "honorificPrefix": "Dr.", "name": "Kweh Qian Long", "jobTitle": "Professor, School of Management"},
-				{"@type": "Person", "honorificPrefix": "Dr.", "name": "Lauren Khan", "jobTitle": "Assistant Professor, Faculty of Communication, Arts and Sciences"},
-				{"@type": "Person", "name": "Chloe Bennett", "jobTitle": "Assistant Professor of Practice, Faculty of Communication, Arts and Sciences"},
-				{"@type": "Person", "honorificPrefix": "Dr.", "name": "Chureerat Haq", "jobTitle": "Manager, Center for Sustainability and Innovation"},
-				{"@type": "Person", "name": "Aftab Hameed Khan", "jobTitle": "ICT Director, Information and Communication Technology"},
-				{"@type": "Person", "name": "Quraish Alharahsheh", "jobTitle": "Director of Administration, Corporate Office"},
-				{"@type": "Person", "name": "Yusri Ibrahim", "jobTitle": "Senior Administration Manager, Human Resources and Administration"},
-				{"@type": "Person", "name": "Simran Siddiqui", "jobTitle": "Student Counselor, Student Affairs"},
-				{"@type": "Person", "name": "Olga Beck", "jobTitle": "Registration Manager, Admission and Registration"},
-				{"@type": "Person", "name": "Maryam Farahmand", "jobTitle": "Student Life Officer"}
-			]
-		}
-	]
-}
+	{
+		"@context": "https://schema.org",
+		"@graph": [
+			{
+				"@type": "EducationalOrganization",
+				"@id": "https://www.cud.ac.ae/#organization",
+				"name": "Canadian University Dubai",
+				"alternateName": "CUD",
+				"url": "https://www.cud.ac.ae",
+				"subOrganization": [
+					{"@id": "https://www.cud.ac.ae/#sustainability-committee"}
+				]
+			},
+			{
+				"@type": "Organization",
+				"@id": "https://www.cud.ac.ae/#sustainability-committee",
+				"name": "CUD Sustainability Committee",
+				"url": "https://www.cud.ac.ae/sustainability/our-commitment/sustainability-committee",
+				"description": "The CUD Sustainability Committee supports Canadian University Dubai's efforts to improve how sustainability is considered across the institution. It provides guidance and input on initiatives related to campus operations, academic activities, and community engagement.",
+				"parentOrganization": {"@id": "https://www.cud.ac.ae/#organization"},
+				"member": [
+					{
+						"@type": "Person",
+						"honorificPrefix": "Dr.",
+						"name": "Aseel Takshe",
+						"jobTitle": "Acting Dean, School of Health Sciences and Psychology",
+						"roleName": "Chair"
+					},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Adam Fenech", "jobTitle": "Canada Research Chair, Culture of Work Committee Member"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Abir Hamze", "jobTitle": "Assistant Professor, School of Health Sciences and Psychology"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Rafik Belarbi", "jobTitle": "Professor, School of Architecture and Interior Design"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Maha Salman", "jobTitle": "Associate Professor, School of Architecture and Interior Design"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Tatjana Karabegovic", "jobTitle": "Visiting Assistant Professor, School of Architecture and Interior Design"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Ammar Yahia", "jobTitle": "Faculty, School of Engineering, Applied Science and Technology"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Tamer Mohamed", "jobTitle": "Assistant Professor, Faculty of Engineering, Applied Sciences and Technology"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Khaled Goher", "jobTitle": "Associate Professor, Faculty of Engineering, Applied Sciences and Technology"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Agata Stachowicz-Stanusch", "jobTitle": "Professor, School of Management"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Zakariya Chabani", "jobTitle": "Associate Professor, School of Management"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Kweh Qian Long", "jobTitle": "Professor, School of Management"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Lauren Khan", "jobTitle": "Assistant Professor, Faculty of Communication, Arts and Sciences"},
+					{"@type": "Person", "name": "Chloe Bennett", "jobTitle": "Assistant Professor of Practice, Faculty of Communication, Arts and Sciences"},
+					{"@type": "Person", "honorificPrefix": "Dr.", "name": "Chureerat Haq", "jobTitle": "Manager, Center for Sustainability and Innovation"},
+					{"@type": "Person", "name": "Aftab Hameed Khan", "jobTitle": "ICT Director, Information and Communication Technology"},
+					{"@type": "Person", "name": "Quraish Alharahsheh", "jobTitle": "Director of Administration, Corporate Office"},
+					{"@type": "Person", "name": "Yusri Ibrahim", "jobTitle": "Senior Administration Manager, Human Resources and Administration"},
+					{"@type": "Person", "name": "Simran Siddiqui", "jobTitle": "Student Counselor, Student Affairs"},
+					{"@type": "Person", "name": "Olga Beck", "jobTitle": "Registration Manager, Admission and Registration"},
+					{"@type": "Person", "name": "Maryam Farahmand", "jobTitle": "Student Life Officer"}
+				]
+			}
+		]
+	}
 </script>

@@ -305,10 +305,10 @@ body.toolbar-horizontal.toolbar-fixed.toolbar-tray-open .cud-sustainability-page
   #logo-navigation-daisyui .sustainability-nav-panels {
     position: fixed;
     /* 7rem ≈ header height (80px logo + 32px py-4 padding) */
-    top: 7rem;
+    top: 5rem;
     left: 0;
     width: 100vw;
-    height: calc(100dvh - 7rem);
+    height: calc(100dvh - 5rem);
     overflow-y: auto;
     padding: 1.25rem 1rem 2rem;
     border-top: 0;
@@ -1219,4 +1219,88 @@ body.toolbar-horizontal.toolbar-fixed.toolbar-tray-open .cud-sustainability-page
   background: #e0f2fe;
   color: #0c4a6e;
   font-weight: 600;
+}
+
+/* Impact reporting tags block */
+.field--tags {
+  margin-top: 2rem;
+}
+
+.field--tags .field-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.9rem;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.field--tags .field-tags > div:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-right: 0.2rem;
+  color: #475569;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.field--tags .field-tags > div:first-child::before {
+  content: "";
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: #b13634;
+  box-shadow: 0 0 0 4px rgba(177, 54, 52, 0.14);
+}
+
+.field--tags .field-tags > div:last-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.field--tags .field-tags .item {
+  margin: 0;
+}
+
+.field--tags .field-tags .item a {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #cbd5e1;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #334155;
+  padding: 0.28rem 0.72rem;
+  font-size: 0.79rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-transform: lowercase;
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease, box-shadow 160ms ease, transform 140ms ease;
+}
+
+.field--tags .field-tags .item a:hover,
+.field--tags .field-tags .item a:focus-visible {
+  background: #b13634;
+  border-color: #b13634;
+  color: #ffffff;
+  box-shadow: 0 6px 14px rgba(177, 54, 52, 0.25);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+@media (max-width: 639px) {
+  .field--tags .field-tags {
+    align-items: flex-start;
+    padding: 0.75rem 0.85rem;
+  }
+
+  .field--tags .field-tags .item a {
+    font-size: 0.75rem;
+  }
 }

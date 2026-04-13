@@ -389,13 +389,13 @@ class SustainabilityController extends ControllerBase {
       '@has_images_field' => $node->hasField('field_sust_carousel_images') ? 'yes' : 'no',
     ]);
 
-    if (!$node->hasField('field_sust_carousel_images')
+    /* if (!$node->hasField('field_sust_carousel_images')
       || $node->get('field_sust_carousel_images')->isEmpty()) {
       $this->trace('Carousel image field missing/empty, using node-content fallback', [
         '@nid' => (string) $node->id(),
       ]);
       return $this->getFallbackCarouselItemsFromNode($node);
-    }
+    } */
 
     $items = [];
     $images = [];
