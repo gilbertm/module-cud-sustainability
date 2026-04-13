@@ -312,11 +312,24 @@
           if (!isOpen) {
             closeAllDaisyDropdowns();
           }
+          var overlay = document.querySelector('[data-sustainability-nav-overlay]');
+          if (overlay) {
+            overlay.classList.toggle('is-active', isOpen);
+            overlay.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+          }
         }
 
         toggleBtn.addEventListener('click', function () {
           setOpenState(!navContainer.classList.contains('is-nav-open'));
         });
+
+        var navOverlay = document.querySelector('[data-sustainability-nav-overlay]');
+        if (navOverlay && !navOverlay.dataset.cudOverlayInit) {
+          navOverlay.dataset.cudOverlayInit = '1';
+          navOverlay.addEventListener('click', function () {
+            setOpenState(false);
+          });
+        }
 
         navPanels.querySelectorAll('a').forEach(function (link) {
           link.addEventListener('click', function () {

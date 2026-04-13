@@ -25,7 +25,7 @@
 .cud-sustainability-page-layout [data-sustainability-sticky] {
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 1300;
   overflow: visible;
 }
 
@@ -302,6 +302,68 @@ body.toolbar-horizontal.toolbar-fixed.toolbar-tray-open .cud-sustainability-page
   align-items: stretch;
   gap: 0.75rem;
   padding-top: 0.5rem;
+}
+
+/* ── Mobile nav overlay ──────────────────────────────────────────────────── */
+@media (max-width: 1023.98px) {
+  #logo-navigation-daisyui {
+    position: relative;
+  }
+
+  #logo-navigation-daisyui .sustainability-nav-panels {
+    position: fixed;
+    /* 7rem ≈ header height (80px logo + 32px py-4 padding) */
+    top: 7rem;
+    left: 0;
+    width: 100vw;
+    height: calc(100dvh - 7rem);
+    overflow-y: auto;
+    padding: 1.25rem 1rem 2rem;
+    border-top: 0;
+    background: #ffffff;
+    box-shadow: none;
+    z-index: 1200;
+  }
+
+  /* Account for Drupal admin toolbar pushing the sticky header down */
+  body.toolbar-fixed #logo-navigation-daisyui .sustainability-nav-panels {
+    top: calc(7rem + 39px);
+    height: calc(100dvh - 7rem - 39px);
+  }
+
+  body.toolbar-horizontal.toolbar-fixed.toolbar-tray-open #logo-navigation-daisyui .sustainability-nav-panels {
+    top: calc(7rem + 79px);
+    height: calc(100dvh - 7rem - 79px);
+  }
+
+  #logo-navigation-daisyui .sustainability-primary-item.dropdown {
+    position: static;
+  }
+
+  #logo-navigation-daisyui .dropdown-content {
+    position: static !important;
+    inset: auto !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    transform: none !important;
+    width: 100%;
+    max-width: 100%;
+    margin-top: 0.25rem;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  #logo-navigation-daisyui .sustainability-primary-item.dropdown.is-dropdown-open > .dropdown-content,
+  #logo-navigation-daisyui .sustainability-primary-item.dropdown:focus-within > .dropdown-content {
+    display: block;
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+  }
 }
 
 #logo-navigation-daisyui.is-nav-open .sustainability-nav-panels {
