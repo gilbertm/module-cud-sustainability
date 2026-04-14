@@ -129,10 +129,17 @@
 									{% set item_children = item.children|default(item.below|default([])) %}
 									{% if item_children %}
 										<li class="sustainability-primary-item dropdown dropdown-end dropdown-hover">
-										<button tabindex="0" class="sustainability-primary-item__link rounded-full px-1 py-1 pb-3 text-sm font-medium transition-colors text-[#858585] hover:text-[#757575] flex flex-wrap items-center justify-center gap-x-1 !leading-5 whitespace-normal lg:w-[7rem] text-center lg:text-xs">
-											<span class="whitespace-normal text-center">{{ item_title }}</span>
-												<i class="fa-solid fa-chevron-down text-[8px]" aria-hidden="true"></i>
-											</button>
+											{% if item_url and item_url != '#' %}
+												<a href="{{ item_url }}" tabindex="0" class="sustainability-primary-item__link rounded-full px-1 py-1 pb-3 text-sm font-medium transition-colors text-[#858585] hover:text-[#757575] flex flex-wrap items-center justify-center gap-x-1 !leading-5 whitespace-normal lg:w-[7rem] text-center lg:text-xs">
+													<span class="whitespace-normal text-center">{{ item_title }}</span>
+													<i class="fa-solid fa-chevron-down text-[8px]" aria-hidden="true"></i>
+												</a>
+											{% else %}
+												<button tabindex="0" class="sustainability-primary-item__link rounded-full px-1 py-1 pb-3 text-sm font-medium transition-colors text-[#858585] hover:text-[#757575] flex flex-wrap items-center justify-center gap-x-1 !leading-5 whitespace-normal lg:w-[7rem] text-center lg:text-xs">
+													<span class="whitespace-normal text-center">{{ item_title }}</span>
+													<i class="fa-solid fa-chevron-down text-[8px]" aria-hidden="true"></i>
+												</button>
+											{% endif %}
 											<ul tabindex="0" class="dropdown-content menu bg-white rounded-lg shadow-xl p-0 w-80 lg:w-auto z-50">
 												<li role="presentation" class="menu-title hidden">
 													<span class="px-3.5 py-2 text-sm font-semibold">{{ item_title }}</span>
@@ -140,9 +147,7 @@
 												{% for child in item_children %}
 													{% set child_title = child.title|default(child.text|default('')) %}
 													{% set child_url = child.url|default('#') %}
-													<li
-														role="presentation" class="hover:bg-slate-100">
-														{# <a href="{{ child.url }}" class="px-3.5 py-2 text-sm{% if child.active %} active{% endif %}">{{ child.title }}</a> } #}
+													<li role="presentation" class="hover:bg-slate-100">
 														<a href="{{ child_url }}" class="px-3.5 py-2 text-sm text-[#757575]">{{ child_title }}</a>
 													</li>
 												{% endfor %}
