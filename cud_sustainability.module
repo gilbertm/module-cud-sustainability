@@ -282,6 +282,9 @@ function cud_sustainability_preprocess_page(array &$variables): void {
   $contact_url = trim((string) \Drupal::config('cud_sustainability.settings')->get('contact_url'));
   $variables['research_contact_url'] = $contact_url !== '' ? $contact_url : '/sustainability/contact';
 
+  // Expose module asset path for Twig portability.
+  $variables['cud_sustainability_asset_path'] = base_path() . drupal_get_path('module', 'cud_sustainability') . '/assets/';
+
   // When any /sustainability or /sustainability/* URL is served via an aliased
   // Drupal node (route name entity.node.canonical instead of cud_sustainability.*),
   // replace page.content with the path-specific cud_sustainability theme so that
@@ -431,6 +434,9 @@ function cud_sustainability_preprocess_cud_sustainability(array &$variables): vo
   // Twig, which may return '/' when rendering via sub-requests.
   $req = \Drupal::requestStack()->getMasterRequest() ?? \Drupal::requestStack()->getCurrentRequest();
   $variables['current_path'] = $req ? $req->getPathInfo() : '/';
+
+  // Expose module asset path for Twig portability.
+  $variables['cud_sustainability_asset_path'] = base_path() . drupal_get_path('module', 'cud_sustainability') . '/assets/';
 
   // Safety net: if #title was not passed or was empty (e.g. slug lookup missed
   // the node), try to resolve the title from the actual route node or Drupal's

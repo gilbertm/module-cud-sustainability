@@ -1,0 +1,360 @@
+{#
+/**
+ * @file
+ * Inner-page template for /sustainability/our-commitment/governance.
+ *
+ * Variables:
+ * - title: Page title string.
+ * - content: Rendered node content (full view mode).
+ * - carousel_items: Optional list of carousel slides.
+ * - sections: Optional list of processed-text sections.
+ * - primary_nav: Primary navigation array.
+ * - secondary_nav: Secondary navigation array.
+ * - mode: Display mode string ('main' or 'secondary').
+ */
+#}
+
+{% set carousel_slides = carousel_items|default([]) %}
+
+{% if carousel_slides %}
+	<section class="carousel group relative mb-8 w-screen max-w-none -translate-x-1/2 left-1/2" data-cud-carousel data-cud-carousel-autoplay="5600" aria-label="{{ 'Governance carousel'|t }}">
+		<div class="w-full relative overflow-hidden">
+			<div class="w-full flex transition-transform duration-700 ease-out will-change-transform" data-cud-carousel-track>
+				{% for item in carousel_slides %}
+					<article class="relative min-w-full" data-cud-carousel-slide>
+						{% if item.image %}
+							<div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[280px] overflow-hidden sm:min-h-[340px] lg:min-h-[420px]">
+								{{ item.image }}
+							</div>
+						{% elseif item.image_url %}
+							<div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[280px] overflow-hidden sm:min-h-[340px] lg:min-h-[420px]">
+								<img src="{{ item.image_url }}" alt="{{ item.title|default('Governance') }}" loading="lazy" class="h-full w-full object-cover">
+							</div>
+						{% endif %}
+						<div class="carousel-content-overlay absolute inset-0 mx-auto h-full w-full max-w-none">
+							{% if item.overlay %}
+								{{ item.overlay }}
+							{% endif %}
+						</div>
+					</article>
+				{% endfor %}
+			</div>
+
+			{% if carousel_slides|length > 1 %}
+				<div class="carousel-content-controls">
+					<button class="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-md bg-slate-950/80 p-2.5 text-slate-100 opacity-0 shadow-xl backdrop-blur-md transition-all duration-500 ease-in-out group-hover:opacity-100 hover:bg-slate-800/90 hover:text-white focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-sky-400 sm:left-6" data-cud-carousel-prev aria-label="{{ 'Previous slide'|t }}">
+						<i class="fa-solid fa-chevron-left h-5 w-5" aria-hidden="true"></i>
+					</button>
+					<button class="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-md bg-slate-950/80 p-2.5 text-slate-100 opacity-0 shadow-xl backdrop-blur-md transition-all duration-500 ease-in-out group-hover:opacity-100 hover:bg-slate-800/90 hover:text-white focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-sky-400 sm:right-6" data-cud-carousel-next aria-label="{{ 'Next slide'|t }}">
+						<i class="fa-solid fa-chevron-right h-5 w-5" aria-hidden="true"></i>
+					</button>
+				</div>
+			{% endif %}
+		</div>
+	</section>
+{% endif %}
+
+{# ── Page Header with Breadcrumb ─────────────────────────────────────────────── #}
+<section class="border-b border-slate-200 bg-white" aria-label="{{ 'Page header'|t }}">
+	<div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+		<nav class="mb-3 flex items-center gap-1.5 text-xs text-slate-500" aria-label="{{ 'Breadcrumb'|t }}">
+			{% for link in breadcrumb %}
+				{% if not loop.first %}
+					<i class="fa-solid fa-chevron-right text-[9px] text-slate-400" aria-hidden="true"></i>
+				{% endif %}
+				{% if link.url %}
+					<a href="{{ link.url }}" class="hover:text-slate-700 transition-colors">{{ link.text }}</a>
+				{% else %}
+					<span>{{ link.text }}</span>
+				{% endif %}
+			{% endfor %}
+			{% if breadcrumb is not empty %}
+				<i class="fa-solid fa-chevron-right text-[9px] text-slate-400" aria-hidden="true"></i>
+			{% endif %}
+			<span class="font-medium text-slate-700">{{ title }}</span>
+		</nav>
+		<div class="flex items-center gap-3">
+			<h1 class="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">{{ title }}</h1>
+			{% if edit_url %}
+				<a href="{{ edit_url }}" class="shrink-0 rounded-md p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700" title="{{ 'Edit node'|t }}" aria-label="{{ 'Edit'|t }}">
+					<i class="fa-solid fa-pen-to-square text-sm" aria-hidden="true"></i>
+				</a>
+			{% endif %}
+		</div>
+	</div>
+</section>
+
+{# ── Shared sub-nav data ──────────────────────────────────────────────────────── #}
+
+{# Icon map for all seeded primary nav children, keyed by URL #}
+{% set icon_map = {
+	'/sustainability/our-commitment/governance': 'fa-landmark',
+	'/sustainability/our-commitment/sustainability-committee': 'fa-users',
+	'/sustainability/our-commitment/institutional-policies': 'fa-file-lines',
+	'/sustainability/our-commitment/impact-reporting': 'fa-chart-bar',
+	'/sustainability/our-commitment/sdgs': 'fa-leaf',
+	'/sustainability/programs-in-sustainability/sustainability-focused-programs': 'fa-chalkboard',
+	'/sustainability/programs-in-sustainability/student-led-sustainability': 'fa-users-between-lines',
+	'/sustainability/research-in-sustainability/center-for-sustainability-and-innovation': 'fa-flask-vial',
+	'/sustainability/research-in-sustainability/research-projects': 'fa-diagram-project',
+	'/sustainability/researchers-in-sustainability/list-of-researchers': 'fa-id-card',
+	'/sustainability/social-responsibility/edi': 'fa-handshake',
+	'/sustainability/social-responsibility/people-of-determination': 'fa-universal-access',
+	'/sustainability/partnerships-on-sustainability/list-of-institutions': 'fa-building',
+	'/sustainability/campus/health-wellness': 'fa-heart-pulse',
+	'/sustainability/campus/sustainable-infrastructure': 'fa-solar-panel',
+	'/sustainability/campus/path-to-net-zero': 'fa-seedling',
+	'/sustainability/activities-and-news/academia': 'fa-book',
+	'/sustainability/activities-and-news/extracurricular-activities-on-sustainability': 'fa-person-biking',
+	'/sustainability/activities-and-news/news': 'fa-newspaper'
+} %}
+
+{# Derive sub_items from the matching top-level primary nav parent #}
+{% set active_nav_parent = null %}
+{% for item in primary_nav %}
+	{% if item.children and (current_path == item.url or current_path starts with (item.url ~ '/')) %}
+		{% set active_nav_parent = item %}
+	{% endif %}
+{% endfor %}
+{% set sub_items = active_nav_parent ? active_nav_parent.children : [] %}
+
+{# ── Mobile / tablet sub-nav strip (hidden on lg+) ───────────────────────────── #}
+<div class="lg:hidden border-b border-slate-100 bg-white px-4 sm:px-6">
+	<nav class="flex gap-1.5 overflow-x-auto py-2.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" aria-label="{{ 'Our Commitment navigation'|t }}">
+		{% for sub in sub_items %}
+			<a href="{{ sub.url }}" class="inline-flex flex-none items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors{% if current_path == sub.url %} bg-slate-900 text-white{% else %} text-slate-600 hover:bg-slate-100 hover:text-slate-900{% endif %}">
+				<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }}" aria-hidden="true"></i>
+				{{ sub.title }}
+			</a>
+		{% endfor %}
+	</nav>
+</div>
+
+{# ── Main Content (full-width) ────────────────────────────────────────────────── #}
+<section class="mx-auto max-w-7xl px-4 py-4 sm:px-6 sm:py-10 lg:px-8 !bg-white" id="main-content" aria-label="{{ title }}" data-mode="{{ mode }}">
+	<div class="min-w-0 space-y-6 lg:space-y-10">
+
+		<div class="student-clubs">
+			<div class="mb-12 pb-10">
+				<div class="mb-6 flex items-center gap-3">
+					<span class="h-px flex-1 bg-gradient-to-r from-[#b13634]/30 to-transparent"></span>
+					<h2 class="text-md md:text-lg font-semibold uppercase tracking-[0.25em] text-[#b13634]">{{ 'CUD Student Clubs and Societies'|t }}</h2>
+					<span class="h-px flex-1 bg-gradient-to-l from-[#b13634]/30 to-transparent"></span>
+				</div>
+
+				<div class="overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm">
+
+					<table class="min-w-full border border-slate-200 text-sm mb-8">
+						<thead class="bg-slate-50">
+							<tr>
+								<th class="px-4 py-2 text-left font-semibold text-slate-700">{{ 'Type'|t }}</th>
+								<th class="px-4 py-2 text-left font-semibold text-slate-700">{{ 'Club / Society'|t }}</th>
+								<th class="px-4 py-2 text-left font-semibold text-slate-700">{{ 'President'|t }}</th>
+							</tr>
+						</thead>
+						<tbody class="bg-white divide-y divide-slate-100">
+							<tr>
+								<td class="px-4 py-2 align-middle" rowspan="12">{{ 'Social Club'|t }}</td>
+								<td class="px-4 py-2">{{ 'CUD Cares'|t }}</td>
+								<td class="px-4 py-2">Hanan Akram</td>
+							</tr>
+							<tr>
+								<td class="px-4 py-2">{{ 'Student Volunteers'|t }}</td>
+								<td class="px-4 py-2">Annette Thomas</td>
+							</tr>
+							<tr>
+								<td class="px-4 py-2">{{ 'Wellness'|t }}</td>
+								<td class="px-4 py-2">Sania Rahman</td>
+							</tr>
+							<tr>
+								<td class="px-4 py-2">{{ 'CMUN'|t }}</td>
+								<td class="px-4 py-2">Neil Jhaveri</td>
+							</tr>
+							<tr>
+								<td class="px-4 py-2">{{ 'Dance'|t }}</td>
+								<td class="px-4 py-2">Riddhi Kapadia</td>
+							</tr>
+							<tr>
+								<td class="px-4 py-2">{{ 'Music'|t }}</td>
+								<td class="px-4 py-2">Dwayne Menezes</td>
+							</tr>
+							<tr>
+								<td class="px-4 py-2">{{ 'Art'|t }}</td>
+								<td class="px-4 py-2">Reem Alzeyoudi</td>
+							</tr>
+							<tr>
+								<td class="px-4 py-2">{{ 'Drama'|t }}</td>
+								<td class="px-4 py-2">Mohammed Alinejad</td>
+							</tr>
+							<tr>
+								<td class="px-4 py-2">{{ 'Philosophy'|t }}</td>
+								<td class="px-4 py-2">Satvika Appikonda</td>
+							</tr>
+							<tr>
+								<td class="px-4 py-2">{{ 'Photography'|t }}</td>
+								<td class="px-4 py-2">Bianca Sengco</td>
+							</tr>
+							<tr>
+								<td class="px-4 py-2">{{ 'Women in STEM'|t }}</td>
+								<td class="px-4 py-2">Sukhroop Kaur</td>
+							</tr>
+							<tr>
+								<td class="px-4 py-2">{{ 'Fashion Club- Couture & Culture'|t }}</td>
+								<td class="px-4 py-2">Riddhi Kissinger</td>
+							</tr>
+							<tr>
+								<td class="px-4 py-2 align-middle" rowspan="11">{{ 'Academic Society'|t }}</td>
+								<td class="px-4 py-2">{{ 'Psychology'|t }}</td>
+								<td class="px-4 py-2">Aaliyah Nizam</td>
+							</tr>
+							<tr>
+								<td class="px-4 py-2">{{ 'Eco-Lution'|t }}</td>
+								<td class="px-4 py-2">Lillian Husam</td>
+							</tr>
+							<tr>
+								<td class="px-4 py-2">{{ 'IEEE'|t }}</td>
+								<td class="px-4 py-2">Danica Chloe Reyes</td>
+							</tr>
+							<tr>
+								<td class="px-4 py-2">{{ 'Communication'|t }}</td>
+								<td class="px-4 py-2">Habiba Kapadia</td>
+							</tr>
+							<tr>
+								<td class="px-4 py-2">{{ 'Business'|t }}</td>
+								<td class="px-4 py-2">Riddhi Kapadia</td>
+							</tr>
+							<tr>
+								<td class="px-4 py-2">{{ 'AI'|t }}</td>
+								<td class="px-4 py-2">Nathan Kahsay Kidanu</td>
+							</tr>
+							<tr>
+								<td class="px-4 py-2">{{ 'Finance'|t }}</td>
+								<td class="px-4 py-2">Ishaan Rai</td>
+							</tr>
+							<tr>
+								<td class="px-4 py-2">{{ 'Case Study Lab'|t }}</td>
+								<td class="px-4 py-2">Khrystyna Kramchanina</td>
+							</tr>
+							<tr>
+								<td class="px-4 py-2">{{ 'CoLab'|t }}</td>
+								<td class="px-4 py-2">Nazla Chy</td>
+							</tr>
+							<tr>
+								<td class="px-4 py-2">{{ 'EcoRise innovation hub'|t }}</td>
+								<td class="px-4 py-2">Anas Altaweel</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+
+		{# ── Eco-lution Club Section ── #}
+		<div class="block-common-content" aria-labelledby="heading-ecolution">
+			<div class="flex flex-col md:flex-row md:items-center gap-6">
+				<div class="md:w-2/3 w-full">
+					<img src="{{ cud_sustainability_asset_path ~ 'images/programs-in-sustainability/eco-lution-club.jpg' }}" alt="Eco-lution Club" class="w-full h-auto object-cover"/>
+				</div>
+				<div class="md:w-1/3 w-full flex flex-col justify-center">
+					<h2 id="heading-ecolution" class="text-md md:text-xl font-semibold cud-color-blue">{{ 'Eco-lution Club'|t }}</h2>
+					<p class="text-slate-700 mt-2">The Eco-lution Club is Canadian University Dubai's active student body for environmental stewardship and sustainable action. Our mission is to foster a culture of responsibility through education and hands-on engagement. Members participate in a diverse range of activities, including community cleanups to protect local marine biodiversity and immersive learning experiences to understand vital conservation efforts. Eco-lution provides a platform for students to connect with like-minded peers, apply their knowledge to real-world challenges, and become leaders in the movement for a sustainable future.</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="grid gap-6 sm:grid-cols-2">
+			<div class="flex flex-col items-center gap-3 rounded-xl border border-slate-200 p-6 shadow-sm">
+				<img src="{{ cud_sustainability_asset_path ~ 'images/programs-in-sustainability/eco-lution-club-02.jpg' }}" alt="Eco-lution Club Beach Cleanup" class="w-full h-auto max-h-80 rounded-lg object-contain aspect-video"/>
+				<span class="text-sm text-slate-500">Depicted above, in November 2024, the CUD Eco-lution Club participated in the "AnHourwithCleaner" initiative, in coordination with Dubai Municipality. The activity aimed to raise awareness about the importance of maintaining clean beaches to protect marine biodiversity and promote a healthier environment.</span>
+			</div>
+			<div class="flex flex-col items-center gap-3 rounded-xl border border-slate-200 p-6 shadow-sm">
+				<img src="{{ cud_sustainability_asset_path ~ 'images/programs-in-sustainability/eco-lution-club-03.jpg' }}" alt="Nestle Factory Field Trip" class="w-full h-auto max-h-80 rounded-lg object-contain aspect-video"/>
+				<span class="text-sm text-slate-500">In October 2024, Public Health students at Canadian University Dubai embarked on an exciting field trip to the Nestle Factory. They gained invaluable insights into health, safety, and food safety practices within a leading global company. This hands-on experience was instrumental in bridging the gap between classroom learning and real-world applications.</span>
+			</div>
+		</div>
+
+		<div class="grid gap-6 sm:grid-cols-2 mt-6">
+			<div class="flex flex-col items-center gap-3 rounded-xl border border-slate-200 p-6 shadow-sm">
+				<img src="{{ cud_sustainability_asset_path ~ 'images/programs-in-sustainability/eco-lution-club-04.jpg' }}" alt="World Green Economy Summit" class="w-full h-auto max-h-80 rounded-lg object-contain aspect-video"/>
+				<span class="text-sm text-slate-500">Environmental Health Management students Mahshid Sadeghi and AbdulAziz AlKhalaf represented Canadian University Dubai in a focus group session hosted by the Global Compact Network UAE and the UN Resident Coordinator Office (RCO) at the World Green Economy Summit (WGES) 2024. The session aimed to gather valuable insights from UAE youth as they worked to bridge the gap between education and employment, particularly in the sustainability sector.</span>
+			</div>
+			<div class="flex flex-col items-center gap-3 rounded-xl border border-slate-200 p-6 shadow-sm">
+				<img src="{{ cud_sustainability_asset_path ~ 'images/programs-in-sustainability/eco-lution-club-05.jpg' }}" alt="Yas SeaWorld Research & Rescue Center" class="w-full h-auto max-h-80 rounded-lg object-contain aspect-video"/>
+				<span class="text-sm text-slate-500">Public Health students visited the Yas SeaWorld Research & Rescue Center in Abu Dhabi, where they explored the Center's vital role in marine conservation. As the region's largest facility of its kind, the Center focuses on rescuing and rehabilitating injured marine animals with a commitment to returning them to their natural habitats. Students learned about innovative initiatives and extensive research on the Arabian Gulf's unique ecosystems, aimed at developing methodologies for their restoration and conservation. Through hands-on experiences and educational programs, students gained a deeper understanding of marine life and the importance of protecting these fragile environments. This visit reinforced the Center's mission to inspire future generations to champion marine conservation efforts.</span>
+			</div>
+		</div>
+
+		<div class="grid gap-6 sm:grid-cols-2 mt-6">
+			<div class="flex flex-col items-center gap-3 rounded-xl border border-slate-200 p-6 shadow-sm">
+				<img src="{{ cud_sustainability_asset_path ~ 'images/programs-in-sustainability/eco-lution-club-06.jpg' }}" alt="CoP29 Mock Conference" class="w-full h-auto max-h-80 rounded-lg object-contain aspect-video"/>
+				<span class="text-sm text-slate-500">As part of ongoing efforts to enhance the visibility of the Environmental Health Management Program and its commitment to the UN Sustainable Development Goals (SDGs), climate change initiatives, and environmental protection, Lillian Husam and Saad Naz from the Environmental Health Management Program were selected to attend the CoP29 Mock Conference held in Egypt in October 2024. At the conference, students simulated roles as country delegates, chief negotiators, and non-state actors, discussing and voting on research-based resolutions.</span>
+			</div>
+			<div class="flex flex-col items-center gap-3 rounded-xl border border-slate-200 p-6 shadow-sm">
+				<img src="{{ cud_sustainability_asset_path ~ 'images/programs-in-sustainability/eco-lution-club-07.jpg' }}" alt="Eco-lution Club Icebreaker" class="w-full h-auto max-h-80 rounded-lg object-contain aspect-video"/>
+				<span class="text-sm text-slate-500">The Eco-lution Club recently hosted its icebreaker event for the 2024-2025 academic year, welcoming new students from the Public Health Department. This engaging event aimed to foster connections among students while promoting sustainable practices and environmental awareness. It served as an introduction to the Eco-lution Club and the Public Health program, encouraging students to engage with their peers and learn about sustainability initiatives. Activities included interactive games and discussions on environmental topics, emphasizing the importance of sustainability in public health. Participants enjoyed a mix of fun and educational experiences designed to enhance their understanding of eco-friendly practices.</span>
+			</div>
+		</div>
+
+		<div class="mt-5 rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-4 sm:p-5">
+			<div class="flex items-start gap-4">
+				<div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#b13634]/10 text-[#b13634]">
+					<i class="fa-solid fa-hands-helping text-xl" aria-hidden="true"></i>
+				</div>
+				<div class="min-w-0 flex-1">
+					<p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">{{ 'Get Involved'|t }}</p>
+					<p class="mt-1 text-sm leading-relaxed text-slate-700">Get in touch with the Student Success Center (SSC) to guide and support you through your personal and academic journey at CUD. The SSC is a place where you can receive personal and academic support, attend valuable workshops, work on your assignments, find resources, prepare for exams, get to know and be involved in extracurricular activities, mentoring, and more.</p>
+					<p class="mt-2 text-sm font-semibold text-[#b13634]">Email: <a href="mailto:StudentSuccess@cud.ac.ae" class="underline hover:text-[#922c2a]">StudentSuccess@cud.ac.ae</a></p>
+				</div>
+			</div>
+		</div>
+
+		{% if content %}
+			<div class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-sky-700 prose-a:no-underline hover:prose-a:underline">
+				{{ content }}
+			</div>
+		{% endif %}
+
+		{% if sections %}
+			<div class="mt-8 space-y-6">
+				{% for section in sections %}
+					<div class="prose prose-slate max-w-none">{{ section }}</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+	</div>
+
+</section>
+{# ── Desktop floating contextual nav (hidden on mobile/tablet) ───────────────── #}
+
+<div class="hidden lg:block fixed right-0 top-1/2 -translate-y-1/2 z-40 group" aria-label="{{ 'Our Commitment navigation'|t }}">
+	<div
+		class="flex items-stretch">
+
+		{# Expanded panel — slides in from right edge on hover #}
+		<div class="flex flex-col justify-center overflow-hidden bg-white border-y border-l border-slate-200 rounded-l-2xl shadow-xl w-0 opacity-0 group-hover:w-56 group-hover:opacity-100 transition-all duration-300 ease-out">
+			<div class="min-w-[14rem] px-4 py-5">
+				<p class="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400 whitespace-nowrap">{{ active_nav_parent ? active_nav_parent.title : 'Navigation'|t }}</p>
+				<ul class="space-y-0.5">
+					{% for sub in sub_items %}
+						<li>
+							<a href="{{ sub.url }}" class="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors whitespace-nowrap{% if current_path == sub.url %} bg-slate-100 font-semibold text-slate-900{% else %} text-slate-600 hover:bg-slate-50 hover:text-slate-900{% endif %}">
+								<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }} w-4 text-center text-xs{% if current_path == sub.url %} text-[#b13634]{% else %} text-slate-400{% endif %}" aria-hidden="true"></i>
+								{{ sub.title }}
+							</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+
+		{# Tab strip — always visible on right edge, collapses border-radius on hover #}
+		<div class="flex flex-col items-center justify-center gap-2.5 bg-[#b13634] rounded-l-2xl group-hover:rounded-l-none shadow-lg shadow-[#b13634]/30 px-2.5 py-5 min-w-[2.75rem] transition-all duration-300 cursor-default select-none">
+			<i class="fa-solid fa-layer-group text-white/90 text-md" aria-hidden="true"></i>
+			<div class="w-px h-2 bg-white/30 rounded-full"></div>
+			{% for sub in sub_items %}
+				<div class="rounded-full transition-colors {% if current_path == sub.url %}w-2 h-2 bg-white{% else %}w-1.5 h-1.5 bg-white/40 hover:bg-white/70{% endif %}" title="{{ sub.title }}"></div>
+			{% endfor %}
+		</div>
+	</div>
+</div></p></p>
