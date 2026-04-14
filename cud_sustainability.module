@@ -73,6 +73,13 @@ function cud_sustainability_theme(array $existing, string $type, string $theme, 
     ];
   }
 
+  // Debug: log all registered hooks and their template files.
+  $debug_hooks = [];
+  foreach ($hooks as $hook_name => $info) {
+    $debug_hooks[$hook_name] = isset($info['template']) ? $info['template'] : null;
+  }
+  \Drupal::logger('cud_sustainability')->debug('<pre>' . print_r(['registered_hooks' => $debug_hooks], TRUE) . '</pre>');
+
   return $hooks;
 }
 
@@ -102,33 +109,43 @@ function cud_sustainability_theme_suggestions_cud_sustainability(array $variable
 
   $suggestions = [];
 
+  // Debug info array
+  $debug = [];
+  $debug['path'] = $path;
+
   if ($path === 'sustainability') {
     $suggestions[] = 'cud_sustainability__main';
+    $debug['suggestions'] = $suggestions;
+    \Drupal::logger('cud_sustainability')->debug('<pre>' . print_r($debug, TRUE) . '</pre>');
     return $suggestions;
   }
 
   if (strpos($path, 'sustainability/') === 0) {
     $sub = substr($path, strlen('sustainability/'));
-    // Segments after 'sustainability/' become '__'-joined machine name parts.
     $segments = explode('/', strtolower($sub));
-    $machine_parts = array_map(static function (string $seg): string {
-      return preg_replace('/[^a-z0-9]+/', '_', $seg);
-    }, $segments);
-    $specific_hook = 'cud_sustainability__' . implode('__', $machine_parts);
-
-    // Always include 'normal' first so it acts as the fallback template;
-    // the specific hook at higher priority wins when its template file exists.
-    $suggestions[] = 'cud_sustainability__normal';
-    if ($specific_hook !== 'cud_sustainability__normal') {
-      $suggestions[] = $specific_hook;
+    $hooks = [];
+    // Build hooks from most specific to least specific (parent, grandparent, etc.)
+    for ($i = count($segments); $i > 0; $i--) {
+      $parent_segments = array_slice($segments, 0, $i);
+      $machine_parts = array_map(static function (string $seg): string {
+        return preg_replace('/[^a-z0-9]+/', '_', $seg);
+      }, $parent_segments);
+      $hook = 'cud_sustainability__' . implode('__', $machine_parts);
+      $hooks[] = $hook;
     }
-
+    // Always include 'normal' as the final fallback.
+    $hooks[] = 'cud_sustainability__normal';
+    $suggestions = $hooks;
+    $debug['hooks'] = $hooks;
+    $debug['suggestions'] = $suggestions;
+    \Drupal::logger('cud_sustainability')->debug('<pre>' . print_r($debug, TRUE) . '</pre>');
     return $suggestions;
   }
 
   // Any other path under this module: use normal.
   $suggestions[] = 'cud_sustainability__normal';
-
+  $debug['suggestions'] = $suggestions;
+  \Drupal::logger('cud_sustainability')->debug('<pre>' . print_r($debug, TRUE) . '</pre>');
   return $suggestions;
 }
 
@@ -714,20 +731,37 @@ function cud_sustainability_menu_items(string $menu_name): array {
  * /sustainability/foo                    → 'foo'
  * anything else                         → 'normal'
  */
-function cud_sustainability_path_to_variant(string $path): string {
+function cud_sustainability_path_to_variant(string $path, bool $as_array = FALSE) {
   $path = trim($path, '/');
 
+  // If exactly /sustainability, only 'main' variant.
   if ($path === 'sustainability') {
+    if ($as_array) {
+      return ['main'];
+    }
     return 'main';
   }
 
+  // If under /sustainability, return all parent/grandparent variants.
   if (strpos($path, 'sustainability/') === 0) {
     $sub = substr($path, strlen('sustainability/'));
-    // Each URL path segment separator becomes '--' in the variant, exactly as
-    // the controller's resolveVariantFromPath() does.
-    return str_replace('/', '--', $sub);
+    $segments = explode('/', strtolower($sub));
+    $variants = [];
+    for ($i = count($segments); $i > 0; $i--) {
+      $parent_segments = array_slice($segments, 0, $i);
+      $variants[] = implode('--', $parent_segments);
+    }
+    if ($as_array) {
+      return $variants;
+    }
+    // Return most specific variant as string for legacy usage.
+    return $variants[0] ?? 'normal';
   }
 
+  // Fallback: only 'normal'.
+  if ($as_array) {
+    return ['normal'];
+  }
   return 'normal';
 }
 
@@ -754,42 +788,71 @@ function cud_sustainability_path_to_slug(string $path): string {
 /**
  * Converts a /sustainability request path to its registered theme hook name.
  *
- * Mirrors variantToThemeHook() in SustainabilityController:
- *   variant 'main'                       → cud_sustainability__main
- *   variant 'our-commitment--governance' → cud_sustainability__our_commitment__governance
- *   variant 'normal'                     → cud_sustainability__normal
+ * Fallback logic:
+ *   - For a path like /sustainability/a/b/c, generates hooks for all parent/grandparent variants:
+ *       1. cud_sustainability__a__b__c (most specific)
+ *       2. cud_sustainability__a__b
+ *       3. cud_sustainability__a
+ *   - Returns the first hook that exists in the theme registry.
+ *   - Falls back to cud_sustainability__normal if no parent hooks exist.
  *
- * Returns NULL when the path is not under /sustainability.
+ * Special cases:
+ *   - /sustainability → cud_sustainability__main
+ *   - Anything else not under /sustainability → cud_sustainability__normal
+ *
+ * Mirrors variantToThemeHook() in SustainabilityController.
+ *
+ * @param string $path
+ *   The request path (e.g., /sustainability/our-commitment/governance).
+ *
+ * @return string|null
+ *   The theme hook name to use, or NULL if not under /sustainability.
  */
 function cud_sustainability_path_to_theme_hook(string $path): ?string {
-  $variant = cud_sustainability_path_to_variant(trim($path, '/'));
+  $variant = cud_sustainability_path_to_variant(trim($path, '/'), TRUE);
 
-  if ($variant === 'main') {
+  // Debug info array
+  $debug = [];
+  $debug['path'] = $path;
+  $debug['variants'] = $variant;
+
+  // Always check for 'main' and 'normal' as special cases.
+  if (is_array($variant) && count($variant) && $variant[0] === 'main') {
+    $debug['hook'] = 'cud_sustainability__main';
+    $debug['reason'] = 'variant is main';
+    \Drupal::logger('cud_sustainability')->debug('<pre>' . print_r($debug, TRUE) . '</pre>');
     return 'cud_sustainability__main';
   }
 
-  if ($variant === 'normal') {
-    return 'cud_sustainability__normal';
-  }
-
-  // Split on '--' (path-segment separators), sanitise each part to underscores,
-  // then join with '__' — the standard Drupal hook name convention.
-  $parts = explode('--', strtolower($variant));
-  $machine_parts = array_map(static function (string $p): string {
-    return preg_replace('/[^a-z0-9]+/', '_', $p);
-  }, $parts);
-
-  $hook = 'cud_sustainability__' . implode('__', $machine_parts);
-
-  // Fall back to the normal template when no dedicated template is registered
-  // for this specific path. This ensures any /sustainability/* URL that lacks
-  // its own template always renders cud-sustainability--normal.html.twig.
   $registry = \Drupal::service('theme.registry')->get();
-  if (!isset($registry[$hook])) {
-    return 'cud_sustainability__normal';
+  $hooks_tried = [];
+  if (is_array($variant)) {
+    foreach ($variant as $v) {
+      if ($v === 'normal') {
+        continue;
+      }
+      $parts = explode('--', strtolower($v));
+      $machine_parts = array_map(static function (string $p): string {
+        return preg_replace('/[^a-z0-9]+/', '_', $p);
+      }, $parts);
+      $hook = 'cud_sustainability__' . implode('__', $machine_parts);
+      $hooks_tried[] = $hook;
+      if (isset($registry[$hook])) {
+        $debug['hook'] = $hook;
+        $debug['reason'] = 'using fallback parent hook';
+        $debug['hooks_tried'] = $hooks_tried;
+        \Drupal::logger('cud_sustainability')->debug('<pre>' . print_r($debug, TRUE) . '</pre>');
+        return $hook;
+      }
+    }
   }
 
-  return $hook;
+  // Fallback to normal if no parent hooks exist.
+  $debug['hook'] = 'cud_sustainability__normal';
+  $debug['reason'] = 'no parent hooks found, falling back to normal';
+  $debug['hooks_tried'] = $hooks_tried;
+  \Drupal::logger('cud_sustainability')->debug('<pre>' . print_r($debug, TRUE) . '</pre>');
+  return 'cud_sustainability__normal';
 }
 
 /**
