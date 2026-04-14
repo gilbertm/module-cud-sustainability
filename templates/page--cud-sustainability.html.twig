@@ -92,10 +92,11 @@
 											<nav class="sustainability-nav-list flex flex-wrap items-center gap-x-1 gap-y-2 rounded-2xl border-none" aria-label="{{ 'CUD Sustainability Secondary'|t }}">
 												{% for item in page_secondary_nav %}
 													{% set item_title = item.title|default(item.text|default('')) %}
-													{% set item_url = item.url|default('#') %}
+													{# Only set item_url if it exists, is not empty, and item is published (status == 1) # }
+													{% set item_url = (item.url is defined and item.url and (item.status is not defined or item.status == 1)) ? item.url : '#' % }
 													{% set item_active = item.active|default(false) %}
 													<a href="{{ item_url }}" class="rounded-full px-3.5 py-1 text-[12px] font-medium transition-colors{% if item_active %} bg-slate-700 text-[#858585] shadow-sm{% else %} text-[#858585] hover:text-[#757575]{% endif %}">{{ item_title }}</a>
-												{% endfor %}
+												{% endfor % # }
 											</nav>
 										{ % endif % #}
 					<div id="disability-accessibility-daisyui" class="sustainability-a11y-toolbar" role="toolbar" aria-label="{{ 'Accessibility tools'|t }}">
@@ -125,7 +126,8 @@
 							<ul class="flex w-full flex-col gap-x-0.5 gap-y-2 rounded-2xl border-0 p-0 lg:flex-row lg:items-start lg:justify-end lg:flex-nowrap">
 								{% for item in page_primary_nav %}
 									{% set item_title = item.title|default(item.text|default('')) %}
-									{% set item_url = item.url|default('#') %}
+									{# % set item_url = item.url|default('#') % #}
+									{% set item_url = (item.url is defined and item.active is defined and item.active == true) ? item.url : '#' %}
 									{% set item_children = item.children|default(item.below|default([])) %}
 									{% if item_children %}
 										<li class="sustainability-primary-item dropdown dropdown-end dropdown-hover">
