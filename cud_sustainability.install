@@ -461,10 +461,15 @@ function cud_sustainability_ensure_menus(): void {
   }
 
   foreach ($by_menu as $menu_name => $items) {
-    $existing = $mlc_storage->loadByProperties(['menu_name' => $menu_name]);
-    if (!empty($existing)) {
-      continue;
+    // Build a set of URIs already present in this menu so we can skip
+    // individual links that exist while still creating any that are missing.
+    // This is per-link idempotent (matches the per-alias guard in seed_nodes).
+    $existing_uris = [];
+    foreach ($mlc_storage->loadByProperties(['menu_name' => $menu_name]) as $link) {
+      /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $link */
+      $existing_uris[$link->link->uri] = 'menu_link_content:' . $link->uuid();
     }
+
     // First pass: create top-level items and collect their plugin IDs so child
     // items can reference them as parents.
     $parent_ids = [];
@@ -472,9 +477,15 @@ function cud_sustainability_ensure_menus(): void {
       if ($item['parent_key'] !== NULL) {
         continue;
       }
+      $uri = 'internal:' . $item['alias'];
+      if (isset($existing_uris[$uri])) {
+        // Already exists — capture its plugin ID for child items.
+        $parent_ids[$item['title']] = $existing_uris[$uri];
+        continue;
+      }
       $link = MenuLinkContent::create([
         'title'     => $item['title'],
-        'link'      => ['uri' => 'internal:' . $item['alias']],
+        'link'      => ['uri' => $uri],
         'menu_name' => $menu_name,
         'weight'    => $item['weight'],
         'enabled'   => FALSE,
@@ -487,9 +498,13 @@ function cud_sustainability_ensure_menus(): void {
       if ($item['parent_key'] === NULL) {
         continue;
       }
+      $uri = 'internal:' . $item['alias'];
+      if (isset($existing_uris[$uri])) {
+        continue;
+      }
       MenuLinkContent::create([
         'title'     => $item['title'],
-        'link'      => ['uri' => 'internal:' . $item['alias']],
+        'link'      => ['uri' => $uri],
         'menu_name' => $menu_name,
         'weight'    => $item['weight'],
         'parent'    => $parent_ids[$item['parent_key']] ?? '',
