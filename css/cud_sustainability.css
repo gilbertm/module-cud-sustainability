@@ -1,6 +1,40 @@
+/* basic carousel */
+#tc-carousel {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  scroll-snap-type: x mandatory;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  padding-bottom: 4px
+}
+
+#tc-carousel::-webkit-scrollbar {
+  display: none
+}
+
+#tc-carousel>.tc-item {
+  flex: 0 0 100%;
+  scroll-snap-align: start
+}
+
+@media(min-width:768px) {
+  #tc-carousel>.tc-item {
+    flex: 0 0 calc(50% - 8px)
+  }
+}
+
+@media(min-width:1024px) {
+  #tc-carousel>.tc-item {
+    flex: 0 0 calc(33.333% - 11px)
+  }
+}
+
+/* /basic carousel */
+
 #block-indicud-page-title,
 .visually-hidden {
-  display:none !important;
+  display: none !important;
 }
 
 .cud-sustainability-page {
@@ -38,8 +72,8 @@ body.toolbar-horizontal.toolbar-fixed.toolbar-tray-open .cud-sustainability-page
 }
 
 /* Prevent main content from blocking header mega-panel */
-.cud-sustainability-page-layout > main,
-.cud-sustainability-page-layout > .site-content,
+.cud-sustainability-page-layout>main,
+.cud-sustainability-page-layout>.site-content,
 .cud-sustainability-page main,
 .cud-sustainability-page .site-content {
   position: relative;
@@ -128,6 +162,7 @@ body.toolbar-horizontal.toolbar-fixed.toolbar-tray-open .cud-sustainability-page
 }
 
 @supports not (-webkit-text-stroke: 1px #fff) {
+
   .cud-carousel-title,
   .cud-carousel-text :is(h1, h2, h3, h4, h5, h6) {
     /* text-shadow:
@@ -154,6 +189,7 @@ body.toolbar-horizontal.toolbar-fixed.toolbar-tray-open .cud-sustainability-page
 }
 
 @media (min-width: 1024px) {
+
   .cud-carousel-title,
   .cud-carousel-text :is(h1, h2, h3, h4, h5, h6) {
     font-size: 67px;
@@ -349,8 +385,8 @@ body.toolbar-horizontal.toolbar-fixed.toolbar-tray-open .cud-sustainability-page
     background: transparent;
   }
 
-  #logo-navigation-daisyui .sustainability-primary-item.dropdown.is-dropdown-open > .dropdown-content,
-  #logo-navigation-daisyui .sustainability-primary-item.dropdown:focus-within > .dropdown-content {
+  #logo-navigation-daisyui .sustainability-primary-item.dropdown.is-dropdown-open>.dropdown-content,
+  #logo-navigation-daisyui .sustainability-primary-item.dropdown:focus-within>.dropdown-content {
     display: block;
     visibility: visible;
     opacity: 1;
@@ -403,19 +439,19 @@ body.toolbar-horizontal.toolbar-fixed.toolbar-tray-open .cud-sustainability-page
 }
 
 #logo-navigation-daisyui .sustainability-primary-item__link,
-#logo-navigation-daisyui .sustainability-primary-item > a.sustainability-primary-item__link {
+#logo-navigation-daisyui .sustainability-primary-item>a.sustainability-primary-item__link {
   color: #475569;
 }
 
 #logo-navigation-daisyui .sustainability-primary-nav:hover .sustainability-primary-item__link,
-#logo-navigation-daisyui .sustainability-primary-nav:hover .sustainability-primary-item > a.sustainability-primary-item__link {
+#logo-navigation-daisyui .sustainability-primary-nav:hover .sustainability-primary-item>a.sustainability-primary-item__link {
   color: #94a3b8;
 }
 
 #logo-navigation-daisyui .sustainability-primary-nav .sustainability-primary-item:hover .sustainability-primary-item__link,
 #logo-navigation-daisyui .sustainability-primary-nav .sustainability-primary-item:focus-within .sustainability-primary-item__link,
-#logo-navigation-daisyui .sustainability-primary-nav .sustainability-primary-item:hover > a.sustainability-primary-item__link,
-#logo-navigation-daisyui .sustainability-primary-nav .sustainability-primary-item:focus-within > a.sustainability-primary-item__link {
+#logo-navigation-daisyui .sustainability-primary-nav .sustainability-primary-item:hover>a.sustainability-primary-item__link,
+#logo-navigation-daisyui .sustainability-primary-nav .sustainability-primary-item:focus-within>a.sustainability-primary-item__link {
   color: #0f172a;
 }
 
@@ -428,8 +464,8 @@ body.toolbar-horizontal.toolbar-fixed.toolbar-tray-open .cud-sustainability-page
   opacity: 1;
 }
 
-#logo-navigation-daisyui .sustainability-primary-item.dropdown.is-dropdown-open > .dropdown-content,
-#logo-navigation-daisyui .sustainability-primary-item.dropdown:focus-within > .dropdown-content {
+#logo-navigation-daisyui .sustainability-primary-item.dropdown.is-dropdown-open>.dropdown-content,
+#logo-navigation-daisyui .sustainability-primary-item.dropdown:focus-within>.dropdown-content {
   display: block;
   visibility: visible;
   opacity: 1;
@@ -585,7 +621,7 @@ body.toolbar-horizontal.toolbar-fixed.toolbar-tray-open .cud-sustainability-page
   }
 
   /* Use natural wrapping for primary nav to avoid overlap with logo/branding. */
-  #logo-navigation-daisyui .sustainability-primary-nav > ul {
+  #logo-navigation-daisyui .sustainability-primary-nav>ul {
     display: flex;
     /* flex-wrap: wrap; */
     justify-content: flex-end;
@@ -594,7 +630,7 @@ body.toolbar-horizontal.toolbar-fixed.toolbar-tray-open .cud-sustainability-page
     column-gap: 0.25rem;
   }
 
-  #logo-navigation-daisyui .sustainability-primary-nav > ul > li {
+  #logo-navigation-daisyui .sustainability-primary-nav>ul>li {
     flex: 0 0 auto;
   }
 
@@ -615,9 +651,9 @@ body.toolbar-horizontal.toolbar-fixed.toolbar-tray-open .cud-sustainability-page
     box-shadow: 0 14px 30px rgba(15, 23, 42, 0.10);
   }
 
-  #logo-navigation-daisyui .sustainability-primary-item.dropdown.dropdown-hover:hover > .dropdown-content,
-  #logo-navigation-daisyui .sustainability-primary-item.dropdown.dropdown-hover:focus-within > .dropdown-content,
-  #logo-navigation-daisyui .sustainability-primary-item.dropdown.is-dropdown-open > .dropdown-content {
+  #logo-navigation-daisyui .sustainability-primary-item.dropdown.dropdown-hover:hover>.dropdown-content,
+  #logo-navigation-daisyui .sustainability-primary-item.dropdown.dropdown-hover:focus-within>.dropdown-content,
+  #logo-navigation-daisyui .sustainability-primary-item.dropdown.is-dropdown-open>.dropdown-content {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
@@ -716,7 +752,7 @@ body.toolbar-horizontal.toolbar-fixed.toolbar-tray-open .cud-sustainability-page
     width: 100%;
   }
 
-  #logo-navigation-daisyui .sustainability-primary-nav > ul {
+  #logo-navigation-daisyui .sustainability-primary-nav>ul {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-end;
@@ -724,19 +760,19 @@ body.toolbar-horizontal.toolbar-fixed.toolbar-tray-open .cud-sustainability-page
     column-gap: 0.35rem;
   }
 
-  #logo-navigation-daisyui .sustainability-primary-nav > ul > li {
+  #logo-navigation-daisyui .sustainability-primary-nav>ul>li {
     flex: 0 1 auto;
   }
 
   #logo-navigation-daisyui .sustainability-primary-item__link,
-  #logo-navigation-daisyui .sustainability-primary-item > a.sustainability-primary-item__link {
+  #logo-navigation-daisyui .sustainability-primary-item>a.sustainability-primary-item__link {
     width: auto !important;
     min-width: 0;
   }
 }
 
 @media (min-width: 768px) and (max-width: 1023.98px) {
-  #logo-navigation-daisyui .sustainability-primary-nav > ul {
+  #logo-navigation-daisyui .sustainability-primary-nav>ul {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -745,7 +781,7 @@ body.toolbar-horizontal.toolbar-fixed.toolbar-tray-open .cud-sustainability-page
     column-gap: 0.3rem;
   }
 
-  #logo-navigation-daisyui .sustainability-primary-nav > ul > li {
+  #logo-navigation-daisyui .sustainability-primary-nav>ul>li {
     flex: 0 0 auto;
   }
 
@@ -949,6 +985,7 @@ body.toolbar-horizontal.toolbar-fixed.toolbar-tray-open .cud-sustainability-page
     opacity: 0;
     transform: translateY(-6px) scale(0.985);
   }
+
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -972,7 +1009,7 @@ body.toolbar-horizontal.toolbar-fixed.toolbar-tray-open .cud-sustainability-page
 #logo-navigation .sustainability-nav-panels,
 #logo-navigation .primary-nav,
 #logo-navigation .sustainability-primary-nav,
-#logo-navigation .sustainability-primary-nav > ul {
+#logo-navigation .sustainability-primary-nav>ul {
   overflow: visible;
 }
 
@@ -986,8 +1023,8 @@ body.toolbar-horizontal.toolbar-fixed.toolbar-tray-open .cud-sustainability-page
   padding: 0;
 }
 
-.cud-sustainability-mega-menu > ul > li > a,
-.cud-sustainability-mega-menu > ul > li > span {
+.cud-sustainability-mega-menu>ul>li>a,
+.cud-sustainability-mega-menu>ul>li>span {
   display: inline-flex;
   align-items: center;
   min-height: 3rem;
@@ -1001,10 +1038,10 @@ body.toolbar-horizontal.toolbar-fixed.toolbar-tray-open .cud-sustainability-page
   transition: background-color 160ms ease, color 160ms ease, box-shadow 160ms ease;
 }
 
-.cud-sustainability-mega-menu > ul > li > a:hover,
-.cud-sustainability-mega-menu > ul > li > a:focus,
-.cud-sustainability-mega-menu > ul > li > span:hover,
-.cud-sustainability-mega-menu > ul > li > span:focus {
+.cud-sustainability-mega-menu>ul>li>a:hover,
+.cud-sustainability-mega-menu>ul>li>a:focus,
+.cud-sustainability-mega-menu>ul>li>span:hover,
+.cud-sustainability-mega-menu>ul>li>span:focus {
   background: rgba(14, 165, 233, 0.12);
   color: #0369a1;
 }
@@ -1045,8 +1082,8 @@ body.toolbar-horizontal.toolbar-fixed.toolbar-tray-open .cud-sustainability-page
   color: #0369a1;
 }
 
-.cud-sustainability-mega-menu li:hover > ul,
-.cud-sustainability-mega-menu li:focus-within > ul {
+.cud-sustainability-mega-menu li:hover>ul,
+.cud-sustainability-mega-menu li:focus-within>ul {
   display: block;
 }
 
@@ -1057,8 +1094,8 @@ body.toolbar-horizontal.toolbar-fixed.toolbar-tray-open .cud-sustainability-page
   max-width: 100%;
 }
 
-#main .node > *:first-child,
-#main article > *:first-child {
+#main .node>*:first-child,
+#main article>*:first-child {
   margin-top: 0;
 }
 
@@ -1238,7 +1275,7 @@ body.toolbar-horizontal.toolbar-fixed.toolbar-tray-open .cud-sustainability-page
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
 }
 
-.field--tags .field-tags > div:first-child {
+.field--tags .field-tags>div:first-child {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
@@ -1250,7 +1287,7 @@ body.toolbar-horizontal.toolbar-fixed.toolbar-tray-open .cud-sustainability-page
   text-transform: uppercase;
 }
 
-.field--tags .field-tags > div:first-child::before {
+.field--tags .field-tags>div:first-child::before {
   content: "";
   width: 0.45rem;
   height: 0.45rem;
@@ -1259,7 +1296,7 @@ body.toolbar-horizontal.toolbar-fixed.toolbar-tray-open .cud-sustainability-page
   box-shadow: 0 0 0 4px rgba(177, 54, 52, 0.14);
 }
 
-.field--tags .field-tags > div:last-child {
+.field--tags .field-tags>div:last-child {
   display: flex;
   flex-wrap: wrap;
   gap: 0.45rem;

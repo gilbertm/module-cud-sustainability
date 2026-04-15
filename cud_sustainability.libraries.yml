@@ -31,6 +31,7 @@ page:
       css/cud_sustainability.tailwind.css: {}
       css/cud_sustainability.css: {}
   js:
+    js/cud_sustainability.common.js: {}
     js/cud_sustainability.carousel.js: {}
     js/cud_sustainability.accessibility.js: {}
   dependencies:
