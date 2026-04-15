@@ -1,0 +1,444 @@
+{#
+/**
+ * @file
+ * Inner-page template for /sustainability/activities-and-news.
+ *
+ * Variables:
+ * - title: Page title string.
+ * - content: Rendered node content (full view mode).
+ * - carousel_items: Optional list of carousel slides.
+ * - sections: Optional list of processed-text sections.
+ * - primary_nav: Primary navigation array.
+ * - secondary_nav: Secondary navigation array.
+ * - mode: Display mode string ('main' or 'secondary').
+ */
+#}
+
+{% set carousel_slides = carousel_items|default([]) %}
+
+{% if carousel_slides %}
+	<section class="carousel group relative mb-8 w-screen max-w-none -translate-x-1/2 left-1/2" data-cud-carousel data-cud-carousel-autoplay="5600" aria-label="{{ 'Governance carousel'|t }}">
+		<div class="w-full relative overflow-hidden">
+			<div class="w-full flex transition-transform duration-700 ease-out will-change-transform" data-cud-carousel-track>
+				{% for item in carousel_slides %}
+					<article class="relative min-w-full" data-cud-carousel-slide>
+						{% if item.image %}
+							<div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[280px] overflow-hidden sm:min-h-[340px] lg:min-h-[420px]">
+								{{ item.image }}
+							</div>
+						{% elseif item.image_url %}
+							<div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[280px] overflow-hidden sm:min-h-[340px] lg:min-h-[420px]">
+								<img src="{{ item.image_url }}" alt="{{ item.title|default('Governance') }}" loading="lazy" class="h-full w-full object-cover">
+							</div>
+						{% endif %}
+						<div class="carousel-content-overlay absolute inset-0 mx-auto h-full w-full max-w-none">
+							{% if item.overlay %}
+								{{ item.overlay }}
+							{% endif %}
+						</div>
+					</article>
+				{% endfor %}
+			</div>
+
+			{% if carousel_slides|length > 1 %}
+				<div class="carousel-content-controls">
+					<button class="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-md bg-slate-950/80 p-2.5 text-slate-100 opacity-0 shadow-xl backdrop-blur-md transition-all duration-500 ease-in-out group-hover:opacity-100 hover:bg-slate-800/90 hover:text-white focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-sky-400 sm:left-6" data-cud-carousel-prev aria-label="{{ 'Previous slide'|t }}">
+						<i class="fa-solid fa-chevron-left h-5 w-5" aria-hidden="true"></i>
+					</button>
+					<button class="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-md bg-slate-950/80 p-2.5 text-slate-100 opacity-0 shadow-xl backdrop-blur-md transition-all duration-500 ease-in-out group-hover:opacity-100 hover:bg-slate-800/90 hover:text-white focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-sky-400 sm:right-6" data-cud-carousel-next aria-label="{{ 'Next slide'|t }}">
+						<i class="fa-solid fa-chevron-right h-5 w-5" aria-hidden="true"></i>
+					</button>
+				</div>
+			{% endif %}
+		</div>
+	</section>
+{% endif %}
+
+{# ── Page Header with Breadcrumb ─────────────────────────────────────────────── #}
+<section class="bg-white" aria-label="{{ 'Page header'|t }}">
+	<div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+		<nav class="mb-3 flex items-center gap-1.5 text-xs text-slate-500" aria-label="{{ 'Breadcrumb'|t }}">
+			{% for link in breadcrumb %}
+				{% if not loop.first %}
+					<i class="fa-solid fa-chevron-right text-[9px] text-slate-400" aria-hidden="true"></i>
+				{% endif %}
+				{% if link.url %}
+					<a href="{{ link.url }}" class="hover:text-slate-700 transition-colors">{{ link.text }}</a>
+				{% else %}
+					<span>{{ link.text }}</span>
+				{% endif %}
+			{% endfor %}
+			{% if breadcrumb is not empty %}
+				<i class="fa-solid fa-chevron-right text-[9px] text-slate-400" aria-hidden="true"></i>
+			{% endif %}
+			<span class="font-medium text-slate-700">{{ title }}</span>
+		</nav>
+		<div class="flex items-center gap-3">
+			<h1 class="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">{{ title }}</h1>
+			{% if edit_url %}
+				<a href="{{ edit_url }}" class="shrink-0 rounded-md p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700" title="{{ 'Edit node'|t }}" aria-label="{{ 'Edit'|t }}">
+					<i class="fa-solid fa-pen-to-square text-sm" aria-hidden="true"></i>
+				</a>
+			{% endif %}
+		</div>
+	</div>
+</section>
+
+{# ── Shared sub-nav data ──────────────────────────────────────────────────────── #}
+
+{# Icon map for all seeded primary nav children, keyed by URL #}
+{% set icon_map = {
+	'/sustainability/activities-and-news': 'fa-newspaper',
+} %}
+
+{# Derive sub_items from the matching top-level primary nav parent #}
+{% set active_nav_parent = null %}
+{% for item in primary_nav %}
+	{% if item.children and (current_path == item.url or current_path starts with (item.url ~ '/')) %}
+		{% set active_nav_parent = item %}
+	{% endif %}
+{% endfor %}
+{% set sub_items = active_nav_parent ? active_nav_parent.children : [] %}
+
+{# ── Mobile / tablet sub-nav strip (hidden on lg+) ───────────────────────────── #}
+<div class="lg:hidden border-b border-slate-100 bg-white px-4 sm:px-6">
+	<nav class="flex gap-1.5 overflow-x-auto py-2.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" aria-label="{{ 'Our Commitment navigation'|t }}">
+		{% for sub in sub_items %}
+			<a href="{{ sub.url }}" class="inline-flex flex-none items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors{% if current_path == sub.url %} bg-slate-900 text-white{% else %} text-slate-600 hover:bg-slate-100 hover:text-slate-900{% endif %}">
+				<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }}" aria-hidden="true"></i>
+				{{ sub.title }}
+			</a>
+		{% endfor %}
+	</nav>
+</div>
+
+{# ── Main Content (full-width) ────────────────────────────────────────────────── #}
+<section class="mx-auto max-w-7xl px-4 lg:px-8 !bg-white" id="main-content" aria-label="{{ title }}" data-mode="{{ mode }}">
+	<div
+		class="min-w-0 space-y-5">
+
+		{# ── Activities & News Intro ──────────────────────────────────────────── #}
+		<div class="block-common-content">
+			<p class="text-slate-700 text-sm leading-relaxed">{{ 'Canadian University Dubai actively drives sustainability through a vibrant programme of events, research milestones, institutional partnerships, and student-led initiatives. Explore our latest activities and news — from landmark MoU signings and award-winning student innovations to campus sustainability programmes and global research contributions.'|t }}</p>
+		</div>
+
+		{# ── Upcoming Events ─────────────────────────────────────────────────── #}
+		<div class="block-common-content" aria-labelledby="heading-events">
+			<h2 id="heading-events" class="text-md md:text-xl font-semibold cud-color-blue mb-4 flex items-center gap-2">
+				<i class="fa-solid fa-calendar-days text-[#b13634] text-base shrink-0" aria-hidden="true"></i>
+				{{ 'Sustainability Activities &amp; Events'|t }}
+			</h2>
+			{% set events_list = [
+				{ title: 'Design(ed) Visions of Tomorrow | The Future of Human Condition'|t, url: 'https://www.cud.ac.ae/events/designed-visions-tomorrow-future-human-condition', icon: 'fa-lightbulb' },
+				{ title: 'Towards a Sustainable Built Environment: Challenges and Opportunities in the UAE'|t, url: 'https://www.linkedin.com/posts/canadian-university-dubai_canadian-university-dubai-recently-hosted-activity-7430129127413911552-YU1-/', icon: 'fa-building' },
+				{ title: 'AI for Sustainability Hackathon 2026 | Canadian University Dubai'|t, url: 'https://www.cud.ac.ae/events/ai-sustainability-hackathon-2026', icon: 'fa-robot' },
+				{ title: 'AI and Human Health Symposium'|t, url: 'https://www.cud.ac.ae/events/ai-human-health-symposium', icon: 'fa-heart-pulse' },
+				{ title: 'Breast Cancer Awareness'|t, url: 'https://www.cud.ac.ae/events/breast-cancer-awareness-0', icon: 'fa-ribbon' },
+				{ title: 'Climate Summit 2025'|t, url: 'https://www.cud.ac.ae/events/climate-summit-2025-june-3-4-2025', icon: 'fa-cloud-sun' },
+				{ title: 'Launch of CUD Incubator Hub for Entrepreneurship and Innovation'|t, url: 'https://www.cud.ac.ae/events/launch-cud-incubator-hub-entrepreneurship-and-innovation', icon: 'fa-rocket' },
+				{ title: 'Sustainability Quest: How to Become a Hero in Saving the Earth!'|t, url: 'https://www.cud.ac.ae/events/sustainability-quest-how-become-hero-saving-earth', icon: 'fa-earth-americas' },
+				{ title: 'Climate Change and Tourism Conference'|t, url: 'https://www.cud.ac.ae/events/climate-change-and-tourism-conference', icon: 'fa-mountain-sun' },
+			] %}
+			<ul class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3" role="list">
+				{% for event in events_list %}
+					<li>
+						<a href="{{ event.url }}" rel="noopener noreferrer" target="_blank" class="flex items-start gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-all hover:border-[#b13634]/40 hover:shadow-md group">
+							<span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#b13634]/10 text-[#b13634] text-sm mt-0.5">
+								<i class="fa-solid {{ event.icon }}" aria-hidden="true"></i>
+							</span>
+							<span class="text-sm font-medium text-slate-700 group-hover:text-slate-900 leading-snug">{{ event.title }}</span>
+						</a>
+					</li>
+				{% endfor %}
+			</ul>
+			<div class="mt-5 rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-4 sm:p-5">
+				<div class="flex items-start gap-4">
+					<div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#b13634]/10 text-[#b13634]">
+						<i class="fa-solid fa-newspaper text-xl" aria-hidden="true"></i>
+					</div>
+					<div class="min-w-0 flex-1">
+						<p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">{{ 'All CUD Events &amp; News'|t }}</p>
+						<p class="mt-1 text-sm leading-relaxed text-slate-700">{{ 'Explore the full listing of CUD sustainability events, activities, and institutional news at the official CUD website.'|t }}</p>
+						<a href="https://www.cud.ac.ae/news" class="mt-3 inline-flex items-center gap-2 rounded-lg border border-[#b13634] bg-white px-4 py-2 text-sm font-semibold text-[#b13634] transition-colors hover:bg-[#b13634] hover:text-white" target="_blank" rel="noopener noreferrer">
+							{{ 'Visit www.cud.ac.ae/news'|t }}
+							<i class="fa-solid fa-arrow-up-right-from-square text-xs" aria-hidden="true"></i>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{# ── Sustainability News ──────────────────────────────────────────────── #}
+		<div class="block-common-content" aria-labelledby="heading-news">
+			<h2 id="heading-news" class="text-md md:text-xl font-semibold cud-color-blue mb-4 flex items-center gap-2">
+				<i class="fa-solid fa-newspaper text-[#b13634] text-base shrink-0" aria-hidden="true"></i>
+				{{ 'Sustainability News'|t }}
+			</h2>
+			{% set news_items = [
+				{
+					date: 'December 2025'|t,
+					datetime: '2025-12',
+					url: 'https://www.cud.ac.ae/news',
+					image: 'activities-news-forbes-purehealth-healthcare-leaders-summit.jpeg',
+					alt: 'Panel discussion at the Forbes Middle East Healthcare Leaders Summit in Abu Dhabi, with CUD representatives contributing'|t,
+					title: 'CUD Knowledge Partner at Forbes Middle East Healthcare Leaders Summit'|t,
+					body: 'Canadian University Dubai was a Knowledge Partner at the Forbes Middle East Healthcare Leaders Summit in Abu Dhabi. Acting Dean Aseel A. Takshe, PhD, contributed to the panel &ldquo;From Expertise to Excellence &mdash; Building a Future-Ready Workforce,&rdquo; sharing insights on the UAE&rsquo;s evolving health ecosystem and talent development. CUD&rsquo;s participation advanced UN SDGs 3, 4, and 17.'|t,
+					tag: 'Partnership'|t,
+				},
+				{
+					date: 'December 8, 2025'|t,
+					datetime: '2025-12-08',
+					url: 'https://www.cud.ac.ae/news/sustainable-innovation-mena-region-conversation-dr-soumaya-askri',
+					image: 'activities-news-sustainable-innovation-mena-book-launch.jpeg',
+					alt: 'Book launch panel for Sustainable Innovation in the MENA Region, co-edited by CUD School of Management faculty'|t,
+					title: 'CUD Faculty Co-Edits Scholarly Volume on Sustainable Innovation in the MENA Region'|t,
+					body: 'Dr. Soumaya Askri, Assistant Professor at CUD&rsquo;s School of Management, co-edited &ldquo;Sustainable Innovation in the MENA Region,&rdquo; a scholarly volume exploring how the Middle East and North Africa can transform its challenges into strategic opportunities for sustainable growth and innovation.'|t,
+					tag: 'Research'|t,
+				},
+				{
+					date: 'November 20, 2025'|t,
+					datetime: '2025-11-20',
+					url: 'https://www.cud.ac.ae/news/canadian-university-dubai-and-dubai-municipality-sign-mou-advance-environment-health-safety',
+					image: 'activities-news-cud-dubai-municipality-mou-signing-difsc.png',
+					alt: 'MoU signing ceremony between CUD and Dubai Municipality at the Dubai International Food Safety Conference'|t,
+					title: 'CUD and Dubai Municipality Sign MoU to Advance Environment, Health and Safety Research'|t,
+					body: 'CUD Chancellor Mr. Buti Saeed Al Ghandi, President Prof. Karim Chelli, and Dubai Municipality Acting CEO Dr. Naseem Abdulla signed an MoU on the sidelines of the 19th Dubai International Food Safety Conference, marking a collaboration to advance research and innovation in environment, health and safety, and to empower youth and foster community engagement.'|t,
+					tag: 'MoU'|t,
+				},
+				{
+					date: 'November 19, 2025'|t,
+					datetime: '2025-11-19',
+					url: 'https://www.cud.ac.ae/news/canadian-university-dubai-students-unveil-dome-inclusion-during-dubai-design-week',
+					image: 'activities-news-dome-of-inclusion-installation-dubai-design-week.jpeg',
+					alt: 'The Dome of Inclusion installation at Dubai Design Week, created by CUD in collaboration with Dubai Holding Entertainment and ImInclusive'|t,
+					title: 'CUD Champions Inclusion with Dome of Inclusion at Dubai Design Week 2025'|t,
+					body: 'For the second consecutive year, CUD joined forces with Dubai Holding Entertainment and ImInclusive to champion equality and accessibility through the Dome of Inclusion installation at Dubai Design Week. The installation was visited by HH Sheikha Latifa bint Mohammed bin Rashid Al Maktoum during the opening ceremony.'|t,
+					tag: 'Inclusion'|t,
+				},
+				{
+					date: 'November 19, 2025'|t,
+					datetime: '2025-11-19',
+					url: 'https://www.cud.ac.ae/news/cud-showcases-award-winning-engineering-innovations-dubai-knowledge-summit-2025',
+					image: 'activities-news-cud-gitex-exhibition-booth.jpeg',
+					alt: 'CUD School of Engineering interactive booth at the Dubai Knowledge Summit 2025, showcasing sustainability-driven engineering solutions'|t,
+					title: 'CUD School of Engineering Shines at Dubai Knowledge Summit 2025'|t,
+					body: 'CUD made a noteworthy impact at the Dubai Knowledge Summit 2025, where the School of Engineering&rsquo;s interactive booth attracted exceptional interest from visitors and industry leaders. Students and faculty presented sustainability-driven engineering solutions from the Power &amp; Renewable Energy Engineering and Mechatronics programs.'|t,
+					tag: 'Innovation'|t,
+				},
+				{
+					date: 'November 7, 2025'|t,
+					datetime: '2025-11-07',
+					url: 'https://www.cud.ac.ae/news/canadian-university-dubai-incubator-launches-first-innovation-start',
+					image: 'activities-news-fireside-chat-trustpaper-cud-incubator.jpeg',
+					alt: 'Fireside chat presenting TrustPaper, the first patented business venture to emerge from the CUD Incubator'|t,
+					title: 'TrustPaper: First Patented Business Venture Launches from CUD Incubator'|t,
+					body: 'CUD announced the launch of TrustPaper, the first business venture with a filed patent from its Incubator. Powered by ZipTrust blockchain technology, TrustPaper enables secure, automatic document verification in seconds. 25% of royalties will be dedicated to an endowment supporting equality in education.'|t,
+					tag: 'Innovation'|t,
+				},
+				{
+					date: 'October 31, 2025'|t,
+					datetime: '2025-10-31',
+					url: 'https://www.cud.ac.ae/news/cud-communication-and-media-students-drive-social-impact-sanad-body-project',
+					image: 'activities-news-cud-new-campus-masterplan-render.jpeg',
+					alt: 'Architectural aerial render of the new CUD campus masterplan in Dubai'|t,
+					title: 'CUD Launches Sanad Body Project: Industry Engagement for Social Good'|t,
+					body: 'CUD launched the Sanad Body Project, empowering senior Communication and Media students to apply their marketing and PR skills to a significant social cause. The initiative directly supports UN SDGs on good health and well-being and reducing inequalities, setting a new standard for experiential learning.'|t,
+					tag: 'Community'|t,
+				},
+				{
+					date: 'September 2025'|t,
+					datetime: '2025-09',
+					url: 'https://www.cud.ac.ae/news',
+					image: 'activities-news-cud-yas-seaworld-mou-signing.jpeg',
+					alt: 'MoU signing ceremony between CUD, Miral, and SeaWorld Yas Island formalising a three-year strategic research and conservation partnership'|t,
+					title: 'CUD, Miral, and SeaWorld Yas Island Forge Three-Year Strategic Partnership'|t,
+					body: 'Miral, SeaWorld&reg; Yas Island, and CUD formalized a landmark three-year strategic tripartite MoU. CUD students will access unparalleled volunteering, internship, and hands-on research opportunities across SeaWorld Yas Island, advancing environmental stewardship, experiential learning, and sustainable innovation.'|t,
+					tag: 'MoU'|t,
+				},
+				{
+					date: 'August 28, 2025'|t,
+					datetime: '2025-08-28',
+					url: 'https://www.cud.ac.ae/news/her-campus-her-community-emirati-women-leading-change-cud',
+					image: 'activities-news-student-speaker-cud-podium.jpeg',
+					alt: 'Female student speaking at a CUD podium, representing Emirati women leading change at the university on Emirati Women&rsquo;s Day 2025'|t,
+					title: 'Emirati Women Leading Change at CUD on Emirati Women&rsquo;s Day 2025'|t,
+					body: 'As the UAE marks Emirati Women&rsquo;s Day, CUD celebrates female faculty and students leading innovation and inclusivity. Shaima Al Hai made history as CUD&rsquo;s first female President of the Student Council, while Dr. Khulood Shebib Khansaheb promotes student entrepreneurship as Assistant Professor and Manager of the CUD Incubator.'|t,
+					tag: 'Community'|t,
+				},
+				{
+					date: 'August 4, 2025'|t,
+					datetime: '2025-08-04',
+					url: 'https://www.cud.ac.ae/news/canadian-university-dubai-architecture-students-pioneer-climate-responsive-designs',
+					image: 'activities-news-students-receiving-academic-awards.jpeg',
+					alt: 'CUD architecture students receiving recognition for their sustainability-focused design projects at Ghaf Woods, Dubai'|t,
+					title: 'CUD Architecture Students Unveil Sustainability-Focused Designs at Ghaf Woods'|t,
+					body: 'CUD architecture students unveiled innovative, sustainability-focused design projects responding to Dubai&rsquo;s unique environmental and climatic conditions at Ghaf Woods. Stand-out designs featured biomimicry-inspired canopies, climate-responsive recharge facilities, and pavilions harmoniously embedded in the natural landscape.'|t,
+					tag: 'Education'|t,
+				},
+				{
+					date: 'July 18, 2025'|t,
+					datetime: '2025-07-18',
+					url: 'https://www.cud.ac.ae/news/canadian-university-dubai-lead-three-dff-funded-projects-advance-healthcare-innovation',
+					image: 'activities-news-student-researcher-lab-microscope.jpeg',
+					alt: 'CUD student researcher in a lab coat using a microscope, representing applied health research supported by Dubai Future Foundation grants'|t,
+					title: 'CUD Researchers Awarded Three Dubai Future Foundation RDI Grants'|t,
+					body: 'CUD researchers were awarded three separate grants from the Dubai Future Foundation (DFF) Research, Development &amp; Innovation Program to develop technology-driven tools improving health outcomes in the UAE. Each project contributes to the UAE&rsquo;s strategic vision of becoming a world leader in healthcare and wellbeing.'|t,
+					tag: 'Research'|t,
+				},
+				{
+					date: 'June 2, 2025'|t,
+					datetime: '2025-06-02',
+					url: 'https://www.cud.ac.ae/news/canadian-university-dubai-launches-msc-design-innovation-circular-economy',
+					image: 'activities-news-mscdice-program-launch-banner.png',
+					alt: 'Launch banner for the MSc in Design Innovation for Circular Economy (MScDICE) at Canadian University Dubai'|t,
+					title: 'CUD Launches MSc in Design Innovation for Circular Economy &mdash; A UAE First'|t,
+					body: 'CUD launched the Master of Science in Design Innovation for Circular Economy (MSc DICE) &mdash; the first of its kind in the UAE &mdash; preparing graduates to lead the transition towards sustainable innovation. The program directly supports the UAE Circular Economy Policy 2021&ndash;2031 and Centennial 2071 strategy.'|t,
+					tag: 'Education'|t,
+				},
+				{
+					date: 'February 20, 2025'|t,
+					datetime: '2025-02-20',
+					url: 'https://www.cud.ac.ae/news/cud-celebrates-international-cultural-day-0',
+					image: 'activities-news-cultural-night-dance-performance.jpeg',
+					alt: 'Cultural dance performance during CUD International Cultural Day, with students from over 30 nations participating'|t,
+					title: 'CUD Celebrates International Cultural Day with Students from Over 30 Nations'|t,
+					body: 'CUD transformed its campus into a vibrant stage for International Cultural Day, where students representing over 30 nations showcased heritage, music, dance, and authentic cuisine. The heartfelt celebration reflected CUD&rsquo;s commitment to building a diverse, inclusive, and welcoming community.'|t,
+					tag: 'Community'|t,
+				},
+				{
+					date: 'February 26, 2025'|t,
+					datetime: '2025-02-26',
+					url: 'https://www.cud.ac.ae/news/canadian-university-dubai-students-create-innovations-tackle-sustainability-challenges',
+					image: 'activities-news-cud-hogent-hackathon-group-photo.jpeg',
+					alt: 'Group photo of CUD and HOGENT University Belgium students at the cross-border sustainability hackathon on SDG 11'|t,
+					title: 'CUD and HOGENT University Collaborate on Cross-Border SDG 11 Hackathon'|t,
+					body: 'CUD students and HOGENT University (Belgium) tackled food waste, traffic congestion, and accessible public transportation in a cross-border Hackathon focused on SDG 11: Sustainable Cities and Communities, developing solutions for Dubai and Ghent. The initiative demonstrated CUD&rsquo;s ongoing commitment to global academia&ndash;industry collaboration.'|t,
+					tag: 'Innovation'|t,
+				},
+				{
+					date: 'January 25, 2025'|t,
+					datetime: '2025-01-25',
+					url: 'https://www.cud.ac.ae/news/canadian-university-dubai-students-develop-award-winning-taxi-management-system',
+					image: 'activities-news-uae-genai-hackathon-2024-award-ceremony.jpeg',
+					alt: 'Award ceremony at the UAE GenAI Hackathon 2024 at GITEX, where CUD&rsquo;s SmartTranspo team won Best Implementation Champion'|t,
+					title: 'CUD Engineering Team Wins &ldquo;Best Implementation Champion&rdquo; at UAE GenAI Hackathon 2024'|t,
+					body: 'A CUD engineering team won &ldquo;Best Implementation Champion&rdquo; at the Alibaba Cloud/AI and RTA GenAI Hackathon 2024 at GITEX with SmartTranspo &mdash; an AI-powered management system enhancing the efficiency and safety of taxi services in Dubai.'|t,
+					tag: 'Award'|t,
+				},
+				{
+					date: 'January 8, 2025'|t,
+					datetime: '2025-01-08',
+					url: 'https://www.cud.ac.ae/news/canadian-university-dubai-convenes-conference-climate-change-and-tourism',
+					image: 'activities-news-climate-summit-temperature-records-presentation.jpeg',
+					alt: 'Presenter at the CUD Conference on Climate Change and Tourism showing global temperature records data'|t,
+					title: 'CUD Hosts Conference on Climate Change and Tourism'|t,
+					body: 'CUD convened academic experts, industry practitioners, and thought leaders for the Conference on Climate Change and Tourism, exploring how the UAE can promote sustainable tourism. The conference examined how combining the country&rsquo;s diverse visitor attractions can build a more sustainable, one-stop destination.'|t,
+					tag: 'Research'|t,
+				},
+				{
+					date: 'December 16, 2024'|t,
+					datetime: '2024-12-16',
+					url: 'https://www.cud.ac.ae/news/celebrating-cultural-diversity-and-sustainability-through-music-canadian-university-dubai',
+					image: 'activities-news-canada-uae-50th-anniversary-bilateral-relations.jpeg',
+					alt: 'Canada&ndash;UAE 50th anniversary bilateral relations cultural evening at CUD HUB with the Embassies of Canada and Germany, Emaar, and Berklee Abu Dhabi'|t,
+					title: 'CUD Hosts Cultural Evening Celebrating Canada&ndash;UAE Bilateral Relations'|t,
+					body: 'CUD, together with the Embassies of Canada and Germany, the Arabic Music Institute by Emaar, and Berklee Abu Dhabi, hosted an evening celebrating cultural diversity, unity, and sustainability through the transformative power of music &mdash; showcasing CUD&rsquo;s commitment to global inclusivity and partnership.'|t,
+					tag: 'Community'|t,
+				},
+				{
+					date: 'November 5, 2024'|t,
+					datetime: '2024-11-05',
+					url: 'https://www.cud.ac.ae/news/dubai-holding-entertainment-partnership-canadian-university-dubai-unveils-shelter-inclusivity',
+					image: 'activities-news-all-in-installation-cud-campus.jpeg',
+					alt: 'The All In public art installation on the CUD campus exterior, created in collaboration with Dubai Holding Entertainment celebrating People of Determination'|t,
+					title: 'CUD Presents Shelter of Inclusivity Installation at Dubai Design Week 2024'|t,
+					body: 'Dubai Holding Entertainment introduced the Shelter of Inclusivity installation at Dubai Design Week 2024, created in collaboration with CUD and supported by ImInclusive. The interactive art installation champions accessibility and celebrates the unique contributions of the People of Determination community &mdash; the only inclusion-themed installation at the event.'|t,
+					tag: 'Inclusion'|t,
+				},
+				{
+					date: 'August 28, 2024'|t,
+					datetime: '2024-08-28',
+					url: 'https://www.cud.ac.ae/news/canadian-university-dubai-showcases-emirati-women-leading-way-sustainability',
+					image: 'activities-news-speaker-portrait-headshot.png',
+					alt: 'Dr. Naseem Abdulla, CUD Associate Professor and Acting CEO of EHS at Dubai Municipality, representing Emirati Women&rsquo;s Day 2024'|t,
+					title: 'CUD&rsquo;s Dr. Naseem Abdulla Inspires Emerging Women Leaders on Emirati Women&rsquo;s Day'|t,
+					body: 'CUD Associate Professor Dr. Naseem Abdulla and Environmental Health Management graduate Maisa Alzayyani exemplify the crucial role females in the public sector play in achieving the UAE&rsquo;s Vision 2031. As Acting CEO of EHS at Dubai Municipality, Dr. Abdulla inspires women to build a sustainable future through leadership and innovation.'|t,
+					tag: 'Community'|t,
+				},
+			] %}
+			<div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3" itemscope itemtype="https://schema.org/ItemList">
+				<meta itemprop="name" content="CUD Sustainability News"/>
+				{% for item in news_items %}
+					<article class="flex flex-col rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden transition-shadow hover:shadow-md" itemscope itemtype="https://schema.org/NewsArticle" itemprop="itemListElement">
+						<div class="overflow-hidden aspect-video">
+							<img src="{{ cud_sustainability_asset_path ~ 'images/activities-news/' ~ item.image }}" alt="{{ item.alt }}" loading="lazy" class="w-full h-full object-cover" itemprop="image"/>
+						</div>
+						<div class="flex flex-col flex-1 p-4 gap-2">
+							<div class="flex items-center justify-between gap-2">
+								<time datetime="{{ item.datetime }}" class="text-[10px] text-slate-400 tabular-nums" itemprop="datePublished">{{ item.date }}</time>
+								<span class="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600">{{ item.tag }}</span>
+							</div>
+						<h3 class="text-sm font-semibold text-slate-800 leading-snug" itemprop="headline"><a href="{{ item.url }}" rel="noopener noreferrer" target="_blank" class="hover:text-[#b13634] transition-colors">{{ item.title }}</a></h3>
+						<p class="text-xs text-slate-500 leading-relaxed flex-1" itemprop="description">{{ item.body }}</p>
+						<meta itemprop="publisher" content="Canadian University Dubai"/>
+						<meta itemprop="url" content="{{ item.url }}"/>
+						<a href="{{ item.url }}" rel="noopener noreferrer" target="_blank" class="mt-1 inline-flex items-center gap-1.5 text-xs font-medium text-sky-700 hover:text-[#b13634] transition-colors">
+								{{ 'Read more at CUD News'|t }}
+								<i class="fa-solid fa-arrow-up-right-from-square text-[10px]" aria-hidden="true"></i>
+							</a>
+						</div>
+					</article>
+				{% endfor %}
+			</div>
+		</div>
+	
+		{% if content %}
+			<div class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-sky-700 prose-a:no-underline hover:prose-a:underline">
+				{{ content }}
+			</div>
+		{% endif %}
+
+		{% if sections %}
+			<div class="mt-8 space-y-6">
+				{% for section in sections %}
+					<div class="prose prose-slate max-w-none">{{ section }}</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+		
+	</div>
+</section>
+
+{# ── Desktop floating contextual nav (hidden on mobile/tablet) ───────────────── #}
+<section class="hidden lg:block fixed right-0 top-1/2 -translate-y-1/2 z-40 group" aria-label="{{ 'Our Commitment navigation'|t }}">
+	<div
+		class="flex items-stretch">
+
+		{# Expanded panel — slides in from right edge on hover #}
+		<div class="flex flex-col justify-center overflow-hidden bg-white border-y border-l border-slate-200 rounded-l-2xl shadow-xl w-0 opacity-0 group-hover:w-56 group-hover:opacity-100 transition-all duration-300 ease-out">
+			<div class="min-w-[14rem] px-4 py-5">
+				<p class="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400 whitespace-nowrap">{{ active_nav_parent ? active_nav_parent.title : 'Navigation'|t }}</p>
+				<ul class="space-y-0.5">
+					{% for sub in sub_items %}
+						<li>
+							<a href="{{ sub.url }}" class="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors whitespace-nowrap{% if current_path == sub.url %} bg-slate-100 font-semibold text-slate-900{% else %} text-slate-600 hover:bg-slate-50 hover:text-slate-900{% endif %}">
+								<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }} w-4 text-center text-xs{% if current_path == sub.url %} text-[#b13634]{% else %} text-slate-400{% endif %}" aria-hidden="true"></i>
+								{{ sub.title }}
+							</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+
+		{# Tab strip — always visible on right edge, collapses border-radius on hover #}
+		<div class="flex flex-col items-center justify-center gap-2.5 bg-[#b13634] rounded-l-2xl group-hover:rounded-l-none shadow-lg shadow-[#b13634]/30 px-2.5 py-5 min-w-[2.75rem] transition-all duration-300 cursor-default select-none">
+			<i class="fa-solid fa-layer-group text-white/90 text-md" aria-hidden="true"></i>
+			<div class="w-px h-2 bg-white/30 rounded-full"></div>
+			{% for sub in sub_items %}
+				<div class="rounded-full transition-colors {% if current_path == sub.url %}w-2 h-2 bg-white{% else %}w-1.5 h-1.5 bg-white/40 hover:bg-white/70{% endif %}" title="{{ sub.title }}"></div>
+			{% endfor %}
+		</div>
+
+	</div>
+</section>
