@@ -14,8 +14,9 @@ use Drupal\system\Entity\Menu;
  * Implements hook_install().
  */
 function cud_sustainability_install(): void {
-  cud_sustainability_ensure_research_bundle();
+  cud_sustainability_ensure_sustainability_bundle();
   cud_sustainability_create_main_entry();
+  cud_sustainability_seed_nodes();
   cud_sustainability_ensure_menus();
 }
 
@@ -23,210 +24,49 @@ function cud_sustainability_install(): void {
  * Implements hook_uninstall().
  */
 function cud_sustainability_uninstall(): void {
-  // DEACTIVATED: content and field cleanup intentionally disabled.
-  // Sustainability nodes, fields, menus, and the bundle are preserved so that
-  // content remains accessible via Drupal admin after the module is uninstalled.
-  // Re-enable the blocks below only after a deliberate decision to purge data.
+  // Soft-delete all sustainability nodes: unpublish and transfer ownership to
+  // user 1 so content is preserved and recoverable via Drupal admin.
+  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
 
-  /*
-  $type_id = 'sustainability';
-  $entity_type_manager = \Drupal::entityTypeManager();
-
-  // 1. Delete all sustainability nodes so no orphaned rows remain in node* tables.
-  $node_storage = $entity_type_manager->getStorage('node');
   $query = \Drupal::entityQuery('node')
-    ->condition('type', $type_id);
-  if (method_exists($query, 'accessCheck')) {
-    $query->accessCheck(FALSE);
-  }
+    ->condition('type', 'sustainability')
+    ->accessCheck(FALSE);
   $nids = $query->execute();
-  if ($nids) {
-    $node_storage->delete($node_storage->loadMultiple($nids));
-  }
 
-  // 2. Delete field instances then field storage for each field.
-  $fields_to_remove = [
-    'field_sust_carousel_images',
-    'field_sust_carousel_content',
-    'field_sust_sections',
-  ];
-
-  foreach ($fields_to_remove as $field_name) {
-    $instance = FieldConfig::loadByName('node', $type_id, $field_name);
-    if ($instance) {
-      $instance->delete();
+  foreach ($nids as $nid) {
+    $node = $node_storage->load($nid);
+    if (!$node) {
+      continue;
     }
-
-    // Only drop the storage table when no other bundles use this field.
-    $remaining = $entity_type_manager
-      ->getStorage('field_config')
-      ->loadByProperties(['entity_type' => 'node', 'field_name' => $field_name]);
-    if (empty($remaining)) {
-      $storage = FieldStorageConfig::loadByName('node', $field_name);
-      if ($storage) {
-        $storage->delete();
-        // Purge any residual field data rows the delete may have queued.
-        field_purge_batch(100);
-      }
-    }
+    $node->setUnpublished();
+    $node->setOwnerId(1);
+    $node->setRevisionUserId(1);
+    $node->setNewRevision(FALSE);
+    $node->save();
   }
 
-  // 3. Delete navigation menu items and menus.
-  if (\Drupal::moduleHandler()->moduleExists('menu_link_content')) {
-    $mlc_storage = $entity_type_manager->getStorage('menu_link_content');
-    foreach (['cud-sustainability-primary', 'cud-sustainability-secondary'] as $menu_name) {
-      $links = $mlc_storage->loadByProperties(['menu_name' => $menu_name]);
-      if (!empty($links)) {
-        $mlc_storage->delete($links);
-      }
-    }
-  }
-  foreach (['cud-sustainability-primary', 'cud-sustainability-secondary'] as $menu_name) {
-    $menu = Menu::load($menu_name);
-    if ($menu) {
-      $menu->delete();
-    }
-  }
-
-  // 4. Delete the node type itself.
-  $type = NodeType::load($type_id);
-  if ($type) {
-    $type->delete();
-  }
-  */
+  // Fields, menus, and the bundle are intentionally left in place so that
+  // content remains accessible and the module can be re-enabled cleanly.
 }
 
 /**
- * Adds the CUD Sustainability content type and slug field for existing installs.
- */
-function cud_sustainability_update_8001(): void {
-  cud_sustainability_update_10001();
-}
-
-/**
- * Creates a starter "main" sustainability node when missing.
- */
-function cud_sustainability_update_8002(): void {
-  cud_sustainability_update_10002();
-}
-
-/**
- * Adds carousel image and overlay fields to the sustainability bundle.
- */
-function cud_sustainability_update_8003(): void {
-  cud_sustainability_update_10003();
-}
-
-/**
- * Adds the sections field to the sustainability bundle.
- */
-function cud_sustainability_update_8004(): void {
-  cud_sustainability_update_10004();
-}
-
-/**
- * Creates the CUD Sustainability navigation menus with starter link items.
- */
-function cud_sustainability_update_8005(): void {
-  cud_sustainability_update_10005();
-}
-
-/**
- * Migrates field_research_slug to path aliases and removes the field.
- */
-function cud_sustainability_update_8006(): void {
-  cud_sustainability_update_10006();
-}
-
-/**
- * Renames carousel/sections fields from field_research_* to field_sustainability_*.
- */
-function cud_sustainability_update_8007(): void {
-  cud_sustainability_update_10007();
-}
-
-/**
- * Adds the CUD Sustainability content type and slug field for existing installs.
- */
-function cud_sustainability_update_9001(): void {
-  cud_sustainability_update_10001();
-}
-
-/**
- * Creates a starter "main" sustainability node when missing.
- */
-function cud_sustainability_update_9002(): void {
-  cud_sustainability_update_10002();
-}
-
-/**
- * Adds carousel image and overlay fields to the sustainability bundle.
- */
-function cud_sustainability_update_9003(): void {
-  cud_sustainability_update_10003();
-}
-
-/**
- * Adds the sections field to the sustainability bundle.
- */
-function cud_sustainability_update_9004(): void {
-  cud_sustainability_update_10004();
-}
-
-/**
- * Creates the CUD Sustainability navigation menus with starter link items.
- */
-function cud_sustainability_update_9005(): void {
-  cud_sustainability_update_10005();
-}
-
-/**
- * Migrates field_research_slug to path aliases and removes the field.
- */
-function cud_sustainability_update_9006(): void {
-  cud_sustainability_update_10006();
-}
-
-/**
- * Renames carousel/sections fields from field_research_* to field_sustainability_*.
- */
-function cud_sustainability_update_9007(): void {
-  cud_sustainability_update_10007();
-}
-
-/**
- * Adds the CUD Sustainability content type and slug field for existing installs.
+ * Ensures the full module setup is in sync for existing installs.
+ *
+ * Idempotent: safe to run multiple times. Covers bundle, fields, main node,
+ * and navigation menus in one pass.
  */
 function cud_sustainability_update_10001(): void {
-  cud_sustainability_ensure_research_bundle();
-}
-
-/**
- * Creates a starter "main" sustainability node when missing.
- */
-function cud_sustainability_update_10002(): void {
-  cud_sustainability_ensure_research_bundle();
+  cud_sustainability_ensure_sustainability_bundle();
+  cud_sustainability_ensure_extra_fields();
   cud_sustainability_create_main_entry();
-}
-
-/**
- * Adds carousel image and overlay fields to the sustainability bundle.
- */
-function cud_sustainability_update_10003(): void {
-  cud_sustainability_ensure_carousel_fields();
-}
-
-/**
- * Adds the sections field to the sustainability bundle.
- */
-function cud_sustainability_update_10004(): void {
-  cud_sustainability_ensure_sections_field();
+  cud_sustainability_seed_nodes();
+  cud_sustainability_ensure_menus();
 }
 
 /**
  * Ensures the sustainability bundle and slug field exist.
  */
-function cud_sustainability_ensure_research_bundle(): void {
+function cud_sustainability_ensure_sustainability_bundle(): void {
   $type_id = 'sustainability';
 
   if (!NodeType::load($type_id)) {
@@ -242,7 +82,125 @@ function cud_sustainability_ensure_research_bundle(): void {
   }
 
   cud_sustainability_ensure_carousel_fields();
-  cud_sustainability_ensure_sections_field();
+  cud_sustainability_ensure_extra_fields();
+
+  // Enable the standard body field on the sustainability bundle.
+  $node_type = NodeType::load($type_id);
+  if ($node_type && !FieldConfig::loadByName('node', $type_id, 'body')) {
+    node_add_body_field($node_type);
+  }
+}
+
+/**
+ * Enables tags, image, and file attachment fields on the sustainability bundle.
+ */
+function cud_sustainability_ensure_extra_fields(): void {
+  $type_id     = 'sustainability';
+  $display_repo = \Drupal::service('entity_display.repository');
+
+  // ── 1. Tags (standard field_tags → tags vocabulary) ──────────────────────
+  if (!FieldStorageConfig::loadByName('node', 'field_tags')) {
+    FieldStorageConfig::create([
+      'field_name'  => 'field_tags',
+      'entity_type' => 'node',
+      'type'        => 'entity_reference',
+      'cardinality' => FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED,
+      'settings'    => ['target_type' => 'taxonomy_term'],
+    ])->save();
+  }
+  if (!FieldConfig::loadByName('node', $type_id, 'field_tags')) {
+    FieldConfig::create([
+      'field_name'  => 'field_tags',
+      'entity_type' => 'node',
+      'bundle'      => $type_id,
+      'label'       => 'Tags',
+      'required'    => FALSE,
+      'settings'    => [
+        'handler'          => 'default:taxonomy_term',
+        'handler_settings' => ['target_bundles' => ['tags' => 'tags']],
+      ],
+    ])->save();
+  }
+
+  // ── 2. Image (standard field_image) ──────────────────────────────────────
+  if (!FieldStorageConfig::loadByName('node', 'field_image')) {
+    FieldStorageConfig::create([
+      'field_name'  => 'field_image',
+      'entity_type' => 'node',
+      'type'        => 'image',
+      'cardinality' => 1,
+    ])->save();
+  }
+  if (!FieldConfig::loadByName('node', $type_id, 'field_image')) {
+    FieldConfig::create([
+      'field_name'  => 'field_image',
+      'entity_type' => 'node',
+      'bundle'      => $type_id,
+      'label'       => 'Image',
+      'required'    => FALSE,
+      'settings'    => [
+        'file_extensions'    => 'png gif jpg jpeg webp',
+        'file_directory'     => 'sustainability/images',
+        'alt_field'          => TRUE,
+        'alt_field_required' => FALSE,
+        'title_field'        => FALSE,
+      ],
+    ])->save();
+  }
+
+  // ── 3. File attachments (PDF/doc, field_sust_files) ───────────────────────
+  if (!FieldStorageConfig::loadByName('node', 'field_sust_files')) {
+    FieldStorageConfig::create([
+      'field_name'  => 'field_sust_files',
+      'entity_type' => 'node',
+      'type'        => 'file',
+      'cardinality' => FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED,
+    ])->save();
+  }
+  if (!FieldConfig::loadByName('node', $type_id, 'field_sust_files')) {
+    FieldConfig::create([
+      'field_name'  => 'field_sust_files',
+      'entity_type' => 'node',
+      'bundle'      => $type_id,
+      'label'       => 'Attachments',
+      'required'    => FALSE,
+      'description' => 'Upload PDFs or documents to link from the body.',
+      'settings'    => [
+        'file_extensions'   => 'pdf doc docx',
+        'file_directory'    => 'sustainability/attachments',
+        'description_field' => TRUE,
+      ],
+    ])->save();
+  }
+
+  // ── Form display ──────────────────────────────────────────────────────────
+  $form_display = $display_repo->getFormDisplay('node', $type_id, 'default');
+  $needs_save   = FALSE;
+
+  if (!$form_display->getComponent('field_tags')) {
+    $form_display->setComponent('field_tags', [
+      'type'   => 'entity_reference_autocomplete_tags',
+      'weight' => 20,
+    ]);
+    $needs_save = TRUE;
+  }
+  if (!$form_display->getComponent('field_image')) {
+    $form_display->setComponent('field_image', [
+      'type'   => 'image_image',
+      'weight' => 25,
+    ]);
+    $needs_save = TRUE;
+  }
+  if (!$form_display->getComponent('field_sust_files')) {
+    $form_display->setComponent('field_sust_files', [
+      'type'   => 'file_generic',
+      'weight' => 30,
+    ]);
+    $needs_save = TRUE;
+  }
+  if ($needs_save) {
+    $form_display->save();
+  }
 }
 
 /**
@@ -323,57 +281,6 @@ function cud_sustainability_ensure_carousel_fields(): void {
 }
 
 /**
- * Adds the sections field to the sustainability bundle.
- */
-function cud_sustainability_ensure_sections_field(): void {
-  $type_id = 'sustainability';
-  $field_name = 'field_sust_sections';
-
-  if (!FieldStorageConfig::loadByName('node', $field_name)) {
-    FieldStorageConfig::create([
-      'field_name' => $field_name,
-      'entity_type' => 'node',
-      'type' => 'text_long',
-      'cardinality' => FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED,
-    ])->save();
-  }
-
-  if (!FieldConfig::loadByName('node', $type_id, $field_name)) {
-    FieldConfig::create([
-      'field_name' => $field_name,
-      'entity_type' => 'node',
-      'bundle' => $type_id,
-      'label' => 'Sections',
-      'required' => FALSE,
-      'description' => 'Full HTML sections printed in order on the page. Add as many as needed.',
-      'settings' => [],
-    ])->save();
-  }
-
-  $form_display = \Drupal::service('entity_display.repository')
-    ->getFormDisplay('node', $type_id, 'default');
-  if (!$form_display->getComponent($field_name)) {
-    $form_display->setComponent($field_name, [
-      'type' => 'text_textarea',
-      'weight' => 10,
-      'settings' => ['rows' => 8],
-    ]);
-    $form_display->save();
-  }
-
-  $view_display = \Drupal::service('entity_display.repository')
-    ->getViewDisplay('node', $type_id, 'default');
-  if (!$view_display->getComponent($field_name)) {
-    $view_display->setComponent($field_name, [
-      'label' => 'hidden',
-      'type' => 'text_default',
-      'weight' => 10,
-    ]);
-    $view_display->save();
-  }
-}
-
-/**
  * Creates a starter published sustainability entry for /sustainability.
  */
 function cud_sustainability_create_main_entry(): void {
@@ -405,171 +312,121 @@ function cud_sustainability_create_main_entry(): void {
 }
 
 /**
- * Creates the CUD Sustainability navigation menus with starter link items.
- */
-function cud_sustainability_update_10005(): void {
-  cud_sustainability_ensure_menus();
-}
-
-/**
- * Migrates field_research_slug values to path aliases then removes the field.
+ * Returns the canonical list of all sustainability navigation pages.
  *
- * For every published sustainability node that has a field_research_slug value,
- * a path alias is created (/sustainability for slug "main", /sustainability/{slug}
- * for all others) unless one already exists. The field instance and storage are
- * then deleted so they no longer appear on the content edit form.
- */
-function cud_sustainability_update_10006(): void {
-  $entity_type_manager = \Drupal::entityTypeManager();
-  $node_storage = $entity_type_manager->getStorage('node');
-  $alias_storage = $entity_type_manager->getStorage('path_alias');
-
-  $query = \Drupal::entityQuery('node')
-    ->condition('type', 'sustainability')
-    ->accessCheck(FALSE);
-  $nids = $query->execute();
-
-  foreach ($nids as $nid) {
-    $node = $node_storage->load($nid);
-    if (!$node || !$node->hasField('field_research_slug') || $node->get('field_research_slug')->isEmpty()) {
-      continue;
-    }
-
-    $slug = trim((string) $node->get('field_research_slug')->value);
-    if ($slug === '') {
-      continue;
-    }
-
-    $url_alias = ($slug === 'main') ? '/sustainability' : '/sustainability/' . ltrim($slug, '/');
-    $system_path = '/node/' . $nid;
-
-    // Only create the alias when one for this exact alias string is absent.
-    $existing = $alias_storage->loadByProperties(['alias' => $url_alias]);
-    if (empty($existing)) {
-      $alias_storage->create([
-        'path' => $system_path,
-        'alias' => $url_alias,
-        'langcode' => 'und',
-      ])->save();
-    }
-  }
-
-  // Remove field instance from the sustainability bundle.
-  $type_id = 'sustainability';
-  $instance = FieldConfig::loadByName('node', $type_id, 'field_research_slug');
-  if ($instance) {
-    // Remove from form/view displays first to avoid orphaned component entries.
-    $display_repo = \Drupal::service('entity_display.repository');
-    foreach (['default'] as $mode) {
-      $form_display = $display_repo->getFormDisplay('node', $type_id, $mode);
-      if ($form_display->getComponent('field_research_slug')) {
-        $form_display->removeComponent('field_research_slug')->save();
-      }
-      $view_display = $display_repo->getViewDisplay('node', $type_id, $mode);
-      if ($view_display->getComponent('field_research_slug')) {
-        $view_display->removeComponent('field_research_slug')->save();
-      }
-    }
-    $instance->delete();
-  }
-
-  // Remove the field storage when no other bundles reference it.
-  $remaining = $entity_type_manager
-    ->getStorage('field_config')
-    ->loadByProperties(['entity_type' => 'node', 'field_name' => 'field_research_slug']);
-  if (empty($remaining)) {
-    $storage = FieldStorageConfig::loadByName('node', 'field_research_slug');
-    if ($storage) {
-      $storage->delete();
-      field_purge_batch(100);
-    }
-  }
-}
-
-/**
- * Migrates carousel/sections data from field_research_* to field_sustainability_*
- * on the sustainability bundle, then removes the old field instances.
+ * Single source of truth used by both cud_sustainability_seed_nodes() (node
+ * placeholder creation) and cud_sustainability_ensure_menus() (menu link
+ * content seeding). Each entry carries everything both callers need: a human
+ * title, a URL alias, the target menu machine name, a sort weight, and a
+ * parent title (NULL for top-level items). The menu URI is derived at call
+ * time as 'internal:' . $item['alias'].
  *
- * The field_research_* storage tables are NOT dropped because the research
- * bundle also uses them. Only the sustainability-bundle instances are removed.
+ * To add, remove, or rename a page, edit this function only.
+ *
+ * @return array<int, array{title: string, alias: string, menu: string, weight: int, parent_key: string|null}>
  */
-function cud_sustainability_update_10007(): void {
-  $type_id = 'sustainability';
-  $entity_type_manager = \Drupal::entityTypeManager();
-  $node_storage = $entity_type_manager->getStorage('node');
-
-  // 1. Ensure the new field_sustainability_* fields exist on this bundle.
-  cud_sustainability_ensure_carousel_fields();
-  cud_sustainability_ensure_sections_field();
-
-  // 2. Migrate data node-by-node.
-  $nids = \Drupal::entityQuery('node')
-    ->condition('type', $type_id)
-    ->accessCheck(FALSE)
-    ->execute();
-
-  foreach ($nids as $nid) {
-    $node = $node_storage->load($nid);
-    if (!$node) {
-      continue;
-    }
-
-    $changed = FALSE;
-
-    // Carousel images (entity_reference).
-    if ($node->hasField('field_research_carousel_images')
-      && !$node->get('field_research_carousel_images')->isEmpty()
-      && $node->hasField('field_sust_carousel_images')
-      && $node->get('field_sust_carousel_images')->isEmpty()) {
-      $node->set('field_sust_carousel_images', $node->get('field_research_carousel_images')->getValue());
-      $changed = TRUE;
-    }
-
-    // Carousel content (text_long).
-    if ($node->hasField('field_research_carousel_content')
-      && !$node->get('field_research_carousel_content')->isEmpty()
-      && $node->hasField('field_sust_carousel_content')
-      && $node->get('field_sust_carousel_content')->isEmpty()) {
-      $node->set('field_sust_carousel_content', $node->get('field_research_carousel_content')->getValue());
-      $changed = TRUE;
-    }
-
-    // Sections (text_long).
-    if ($node->hasField('field_research_sections')
-      && !$node->get('field_research_sections')->isEmpty()
-      && $node->hasField('field_sust_sections')
-      && $node->get('field_sust_sections')->isEmpty()) {
-      $node->set('field_sust_sections', $node->get('field_research_sections')->getValue());
-      $changed = TRUE;
-    }
-
-    if ($changed) {
-      $node->save();
-    }
-  }
-
-  // 3. Remove old field_research_* instances from sustainability bundle only.
-  $display_repo = \Drupal::service('entity_display.repository');
-  $old_fields = [
-    'field_research_carousel_images',
-    'field_research_carousel_content',
-    'field_research_sections',
+function cud_sustainability_nav_pages(): array {
+  return [
+    // ── Our Commitment ───────────────────────────────────────────────────────
+    ['title' => 'Our Commitment',                              'alias' => '/sustainability/our-commitment',                                                         'menu' => 'cud-sustainability-primary',   'weight' => 0, 'parent_key' => NULL],
+    ['title' => 'Governance',                                  'alias' => '/sustainability/our-commitment/governance',                                              'menu' => 'cud-sustainability-primary',   'weight' => 0, 'parent_key' => 'Our Commitment'],
+    ['title' => 'Sustainability Committee',                    'alias' => '/sustainability/our-commitment/sustainability-committee',                                 'menu' => 'cud-sustainability-primary',   'weight' => 1, 'parent_key' => 'Our Commitment'],
+    ['title' => 'Institutional Policies',                      'alias' => '/sustainability/our-commitment/institutional-policies',                                  'menu' => 'cud-sustainability-primary',   'weight' => 2, 'parent_key' => 'Our Commitment'],
+    ['title' => 'Impact Reporting',                            'alias' => '/sustainability/our-commitment/impact-reporting',                                        'menu' => 'cud-sustainability-primary',   'weight' => 3, 'parent_key' => 'Our Commitment'],
+    ['title' => 'UN Sustainable Development Goals',            'alias' => '/sustainability/our-commitment/un-sustainable-development-goals',                        'menu' => 'cud-sustainability-primary',   'weight' => 4, 'parent_key' => 'Our Commitment'],
+    // ── Programs in Sustainability ────────────────────────────────────────────
+    ['title' => 'Programs in Sustainability',                  'alias' => '/sustainability/programs-in-sustainability',                                             'menu' => 'cud-sustainability-primary',   'weight' => 1, 'parent_key' => NULL],
+    ['title' => 'Sustainability Focused Programs',             'alias' => '/sustainability/programs-in-sustainability/sustainability-focused-programs',              'menu' => 'cud-sustainability-primary',   'weight' => 0, 'parent_key' => 'Programs in Sustainability'],
+    ['title' => 'Student-Led Sustainability',                  'alias' => '/sustainability/programs-in-sustainability/student-led-sustainability',                  'menu' => 'cud-sustainability-primary',   'weight' => 1, 'parent_key' => 'Programs in Sustainability'],
+    // ── Research in Sustainability ────────────────────────────────────────────
+    ['title' => 'Research in Sustainability',                  'alias' => '/sustainability/research-in-sustainability',                                             'menu' => 'cud-sustainability-primary',   'weight' => 2, 'parent_key' => NULL],
+    ['title' => 'Center for Sustainability & Innovation',      'alias' => '/sustainability/research-in-sustainability/center-for-sustainability-and-innovation',    'menu' => 'cud-sustainability-primary',   'weight' => 0, 'parent_key' => 'Research in Sustainability'],
+    ['title' => 'Research Projects',                           'alias' => '/sustainability/research-in-sustainability/research-projects',                           'menu' => 'cud-sustainability-primary',   'weight' => 1, 'parent_key' => 'Research in Sustainability'],
+    // ── Researchers in Sustainability ─────────────────────────────────────────
+    ['title' => 'Researchers in Sustainability',               'alias' => '/sustainability/researchers-in-sustainability',                                          'menu' => 'cud-sustainability-primary',   'weight' => 3, 'parent_key' => NULL],
+    ['title' => 'List of Researchers',                         'alias' => '/sustainability/researchers-in-sustainability/list-of-researchers',                      'menu' => 'cud-sustainability-primary',   'weight' => 0, 'parent_key' => 'Researchers in Sustainability'],
+    // ── Social Responsibility ─────────────────────────────────────────────────
+    ['title' => 'Social Responsibility',                       'alias' => '/sustainability/social-responsibility',                                                  'menu' => 'cud-sustainability-primary',   'weight' => 4, 'parent_key' => NULL],
+    ['title' => 'EDI @ CUD',                                   'alias' => '/sustainability/social-responsibility/edi',                                              'menu' => 'cud-sustainability-primary',   'weight' => 0, 'parent_key' => 'Social Responsibility'],
+    ['title' => 'People of Determination',                     'alias' => '/sustainability/social-responsibility/people-of-determination',                         'menu' => 'cud-sustainability-primary',   'weight' => 1, 'parent_key' => 'Social Responsibility'],
+    // ── Partnerships on Sustainability ────────────────────────────────────────
+    ['title' => 'Partnerships on Sustainability',              'alias' => '/sustainability/partnerships-on-sustainability',                                         'menu' => 'cud-sustainability-primary',   'weight' => 5, 'parent_key' => NULL],
+    ['title' => 'Institutions and Companies',                  'alias' => '/sustainability/partnerships-on-sustainability/list-of-institutions',                    'menu' => 'cud-sustainability-primary',   'weight' => 0, 'parent_key' => 'Partnerships on Sustainability'],
+    // ── Campus ───────────────────────────────────────────────────────────────
+    ['title' => 'Campus',                                      'alias' => '/sustainability/campus',                                                                 'menu' => 'cud-sustainability-primary',   'weight' => 6, 'parent_key' => NULL],
+    ['title' => 'Health & Wellness',                           'alias' => '/sustainability/campus/health-wellness',                                                 'menu' => 'cud-sustainability-primary',   'weight' => 0, 'parent_key' => 'Campus'],
+    ['title' => 'Sustainable Infrastructure',                  'alias' => '/sustainability/campus/sustainable-infrastructure',                                      'menu' => 'cud-sustainability-primary',   'weight' => 1, 'parent_key' => 'Campus'],
+    ['title' => 'Path to Net Zero',                            'alias' => '/sustainability/campus/path-to-net-zero',                                               'menu' => 'cud-sustainability-primary',   'weight' => 2, 'parent_key' => 'Campus'],
+    // ── Activities and News ───────────────────────────────────────────────────
+    ['title' => 'Activities and News',                         'alias' => '/sustainability/activities-and-news',                                                    'menu' => 'cud-sustainability-primary',   'weight' => 7, 'parent_key' => NULL],
+    ['title' => 'Academia',                                    'alias' => '/sustainability/activities-and-news/academia',                                           'menu' => 'cud-sustainability-primary',   'weight' => 0, 'parent_key' => 'Activities and News'],
+    ['title' => 'Extracurricular Activities on Sustainability', 'alias' => '/sustainability/activities-and-news/extracurricular-activities-on-sustainability',      'menu' => 'cud-sustainability-primary',   'weight' => 1, 'parent_key' => 'Activities and News'],
+    ['title' => 'News',                                        'alias' => '/sustainability/activities-and-news/news',                                               'menu' => 'cud-sustainability-primary',   'weight' => 2, 'parent_key' => 'Activities and News'],
+    // ── Secondary nav ─────────────────────────────────────────────────────────
+    ['title' => 'About Sustainability',                        'alias' => '/sustainability/about',                                                                  'menu' => 'cud-sustainability-secondary', 'weight' => 0, 'parent_key' => NULL],
+    ['title' => 'Partnerships',                                'alias' => '/sustainability/partnerships',                                                           'menu' => 'cud-sustainability-secondary', 'weight' => 1, 'parent_key' => NULL],
+    ['title' => 'Contact',                                     'alias' => '/sustainability/contact',                                                                'menu' => 'cud-sustainability-secondary', 'weight' => 2, 'parent_key' => NULL],
   ];
-  foreach ($old_fields as $field_name) {
-    $form_display = $display_repo->getFormDisplay('node', $type_id, 'default');
-    if ($form_display->getComponent($field_name)) {
-      $form_display->removeComponent($field_name)->save();
+}
+
+/**
+ * Seeds an unpublished sustainability node (owned by user 1) for every page
+ * defined in cud_sustainability_nav_pages(). Skips aliases that already
+ * resolve to an existing node. Tags are auto-derived from the alias path
+ * segments (dashes replaced with spaces, title-cased) and created in the
+ * 'tags' vocabulary if they do not already exist. Safe to run multiple times.
+ */
+function cud_sustainability_seed_nodes(): void {
+  $alias_manager = \Drupal::service('path_alias.manager');
+  $alias_storage = \Drupal::entityTypeManager()->getStorage('path_alias');
+
+  foreach (cud_sustainability_nav_pages() as $page) {
+    $alias = $page['alias'];
+
+    // Skip if this alias already resolves to an existing node.
+    $system_path = $alias_manager->getPathByAlias($alias);
+    if (preg_match('#^/node/\d+$#', $system_path)) {
+      continue;
     }
-    $view_display = $display_repo->getViewDisplay('node', $type_id, 'default');
-    if ($view_display->getComponent($field_name)) {
-      $view_display->removeComponent($field_name)->save();
+
+    // Derive tags from path segments, skipping the root 'sustainability' segment.
+    // e.g. /sustainability/our-commitment/governance → ['Our Commitment', 'Governance']
+    $segments = array_values(array_filter(explode('/', $alias)));
+    array_shift($segments);
+    $tag_ids = [];
+    foreach ($segments as $seg) {
+      $tag_ids[] = ['target_id' => cud_sustainability_get_or_create_tag(ucwords(str_replace('-', ' ', $seg)))];
     }
-    $instance = FieldConfig::loadByName('node', $type_id, $field_name);
-    if ($instance) {
-      $instance->delete();
-    }
-    // Do NOT delete the field storage — research bundle still uses it.
+
+    $node = Node::create([
+      'type'       => 'sustainability',
+      'title'      => $page['title'],
+      'status'     => 0,
+      'uid'        => 1,
+      'field_tags' => $tag_ids,
+    ]);
+    $node->save();
+
+    $alias_storage->create([
+      'path'     => '/node/' . $node->id(),
+      'alias'    => $alias,
+      'langcode' => 'und',
+    ])->save();
   }
+}
+
+/**
+ * Returns the tid of an existing 'tags' term matching $label, creating it if absent.
+ */
+function cud_sustainability_get_or_create_tag(string $label): int {
+  $term_storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+  $existing = $term_storage->loadByProperties(['vid' => 'tags', 'name' => $label]);
+  if (!empty($existing)) {
+    return (int) reset($existing)->id();
+  }
+  $term = $term_storage->create(['vid' => 'tags', 'name' => $label]);
+  $term->save();
+  return (int) $term->id();
 }
 
 /**
@@ -595,52 +452,15 @@ function cud_sustainability_ensure_menus(): void {
     return;
   }
 
-  $starter_items = [
-    'cud-sustainability-primary' => [
-      ['title' => 'Our Commitment',                     'uri' => 'internal:/sustainability/our-commitment',               'weight' => 0,  'parent_key' => NULL],
-      ['title' => 'Governance',                         'uri' => 'internal:/sustainability/our-commitment/governance',               'weight' => 0,  'parent_key' => 'Our Commitment'],
-      ['title' => 'Sustainability Committee',           'uri' => 'internal:/sustainability/our-commitment/sustainability-committee', 'weight' => 1,  'parent_key' => 'Our Commitment'],
-      ['title' => 'Institutional Policies',             'uri' => 'internal:/sustainability/our-commitment/institutional-policies',  'weight' => 2,  'parent_key' => 'Our Commitment'],
-      ['title' => 'Impact Reporting',                   'uri' => 'internal:/sustainability/our-commitment/impact-reporting',        'weight' => 3,  'parent_key' => 'Our Commitment'],
-      ['title' => 'UN Sustainable Development Goals',   'uri' => 'internal:/sustainability/our-commitment/un-sustainable-development-goals',                    'weight' => 4,  'parent_key' => 'Our Commitment'],
-
-      ['title' => 'Programs in Sustainability',         'uri' => 'internal:/sustainability/programs-in-sustainability',             'weight' => 1,  'parent_key' => NULL],
-      ['title' => 'Sustainability Focused Programs',    'uri' => 'internal:/sustainability/programs-in-sustainability/sustainability-focused-programs', 'weight' => 0, 'parent_key' => 'Programs in Sustainability'],
-      ['title' => 'Student-Led Sustainability',         'uri' => 'internal:/sustainability/programs-in-sustainability/student-led-sustainability',        'weight' => 1, 'parent_key' => 'Programs in Sustainability'],
-
-      ['title' => 'Research in Sustainability',   'uri' => 'internal:/sustainability/research-in-sustainability',            'weight' => 2,  'parent_key' => NULL],
-      ['title' => 'Center for Sustainability & Innovation', 'uri' => 'internal:/sustainability/research-in-sustainability/center-for-sustainability-and-innovation', 'weight' => 0, 'parent_key' => 'Research in Sustainability'],
-      ['title' => 'Research Projects',            'uri' => 'internal:/sustainability/research-in-sustainability/research-projects',                               'weight' => 1, 'parent_key' => 'Research in Sustainability'],
-
-      ['title' => 'Researchers in Sustainability','uri' => 'internal:/sustainability/researchers-in-sustainability',         'weight' => 3,  'parent_key' => NULL],
-      ['title' => 'List of researchers',          'uri' => 'internal:/sustainability/researchers-in-sustainability/list-of-researchers',                          'weight' => 0, 'parent_key' => 'Researchers in Sustainability'],
-
-      ['title' => 'Social Responsibility',        'uri' => 'internal:/sustainability/social-responsibility',                 'weight' => 4,  'parent_key' => NULL],
-      ['title' => 'EDI @ CUD',                    'uri' => 'internal:/sustainability/social-responsibility/edi',                                                  'weight' => 0, 'parent_key' => 'Social Responsibility'],
-      ['title' => 'People of Determination',      'uri' => 'internal:/sustainability/social-responsibility/people-of-determination',                              'weight' => 1, 'parent_key' => 'Social Responsibility'],
-
-      ['title' => 'Partnerships on Sustainability','uri' => 'internal:/sustainability/partnerships-on-sustainability',        'weight' => 5,  'parent_key' => NULL],
-      ['title' => 'Institutions and Companies',   'uri' => 'internal:/sustainability/partnerships-on-sustainability/list-of-institutions',                        'weight' => 0, 'parent_key' => 'Partnerships on Sustainability'],
-
-      ['title' => 'Campus',                       'uri' => 'internal:/sustainability/campus',                                'weight' => 6,  'parent_key' => NULL],
-      ['title' => 'Health & Wellness',            'uri' => 'internal:/sustainability/campus/health-wellness',                                                     'weight' => 0, 'parent_key' => 'Campus'],
-      ['title' => 'Sustainable Infrastructure',   'uri' => 'internal:/sustainability/campus/sustainable-infrastructure',                                          'weight' => 1, 'parent_key' => 'Campus'],
-      ['title' => 'Path to Net Zero',             'uri' => 'internal:/sustainability/campus/path-to-net-zero',                                                    'weight' => 2, 'parent_key' => 'Campus'],
-
-      ['title' => 'Activities and News',          'uri' => 'internal:/sustainability/activities-and-news',                  'weight' => 7,  'parent_key' => NULL],
-      ['title' => 'Academia',                     'uri' => 'internal:/sustainability/activities-and-news/academia',                                               'weight' => 0, 'parent_key' => 'Activities and News'],
-      ['title' => 'Extracurricular Activities on Sustainability', 'uri' => 'internal:/sustainability/activities-and-news/extracurricular-activities-on-sustainability', 'weight' => 1, 'parent_key' => 'Activities and News'],
-      ['title' => 'News',                         'uri' => 'internal:/sustainability/activities-and-news/news',                                                   'weight' => 2, 'parent_key' => 'Activities and News'],
-    ],
-    'cud-sustainability-secondary' => [
-      ['title' => 'About Sustainability', 'uri' => 'internal:/sustainability/about',        'weight' => 0, 'parent_key' => NULL],
-      ['title' => 'Partnerships',         'uri' => 'internal:/sustainability/partnerships', 'weight' => 1, 'parent_key' => NULL],
-      ['title' => 'Contact',              'uri' => 'internal:/sustainability/contact',      'weight' => 2, 'parent_key' => NULL],
-    ],
-  ];
-
   $mlc_storage = \Drupal::entityTypeManager()->getStorage('menu_link_content');
-  foreach ($starter_items as $menu_name => $items) {
+
+  // Group nav pages by menu; skip any menu that already has items seeded.
+  $by_menu = [];
+  foreach (cud_sustainability_nav_pages() as $page) {
+    $by_menu[$page['menu']][] = $page;
+  }
+
+  foreach ($by_menu as $menu_name => $items) {
     $existing = $mlc_storage->loadByProperties(['menu_name' => $menu_name]);
     if (!empty($existing)) {
       continue;
@@ -653,11 +473,11 @@ function cud_sustainability_ensure_menus(): void {
         continue;
       }
       $link = MenuLinkContent::create([
-        'title' => $item['title'],
-        'link' => ['uri' => $item['uri']],
+        'title'     => $item['title'],
+        'link'      => ['uri' => 'internal:' . $item['alias']],
         'menu_name' => $menu_name,
-        'weight' => $item['weight'],
-        'enabled' => TRUE,
+        'weight'    => $item['weight'],
+        'enabled'   => FALSE,
       ]);
       $link->save();
       $parent_ids[$item['title']] = 'menu_link_content:' . $link->uuid();
@@ -668,12 +488,12 @@ function cud_sustainability_ensure_menus(): void {
         continue;
       }
       MenuLinkContent::create([
-        'title' => $item['title'],
-        'link' => ['uri' => $item['uri']],
+        'title'     => $item['title'],
+        'link'      => ['uri' => 'internal:' . $item['alias']],
         'menu_name' => $menu_name,
-        'weight' => $item['weight'],
-        'parent' => $parent_ids[$item['parent_key']] ?? '',
-        'enabled' => TRUE,
+        'weight'    => $item['weight'],
+        'parent'    => $parent_ids[$item['parent_key']] ?? '',
+        'enabled'   => FALSE,
       ])->save();
     }
   }
