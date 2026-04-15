@@ -172,12 +172,17 @@
 		{# ── Targeted Supports for Students of Determination ──────────────────── #}
 		<div class="block-common-content" aria-labelledby="heading-student-support">
 			<h2 id="heading-student-support" class="text-md md:text-xl font-semibold cud-color-blue mb-3">{{ 'Targeted Supports for Students of Determination'|t }}</h2>
+			<figure class="my-5 flex flex-col items-center gap-3">
+				<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/target-supports-graph.png' }}" alt="{{ 'Horizontal bar chart showing growth in enrolment of students of determination at CUD: 52 in 2022–23, 57 in 2023–24, 81 in 2024–25, and 84 in 2025–26'|t }}" class="block w-auto h-auto mx-auto rounded-lg shadow-sm"/>
+				<figcaption class="max-w-lg text-center text-xs text-slate-500 leading-relaxed">
+					<strong class="font-semibold text-slate-700">{{ 'Enrolment of Students of Determination at CUD (2022–2026)'|t }}</strong><br/>
+					{{ 'CUD has seen a consistent increase in enrolled students of determination — from 52 students in 2022–23 to 84 in 2025–26 — reflecting the university\'s growing commitment to inclusive education.'|t }}
+				</figcaption>
+			</figure>
 			<p class="text-slate-700 text-sm leading-relaxed mb-3">CUD maintains dedicated support for students with disabilities (&ldquo;students of determination&rdquo;). We are committed to fostering an inclusive and safe learning environment for students of determination and students with disabilities.</p>
 			<p class="text-slate-700 text-sm leading-relaxed mb-3">Students who have a documented physical, psychological, learning or other challenge are eligible for academic accommodations, determined on a case-by-case basis. These accommodations can include extra time on exams, assistive technology, specialized learning resources, note-taking support or access to a distraction-reduced environment. CUD&rsquo;s approach is individualized and confidential: <a href="https://www.cud.ac.ae/student-life/personal-counselling" class="font-semibold text-sky-700 hover:underline">staff work closely</a> with each student to accommodate their individual needs and ensure they have equal opportunity to reach their maximum potential.</p>
 			<p class="text-slate-700 text-sm leading-relaxed">Beyond accommodations, CUD offers formal support programs: as <a href="https://www.cud.ac.ae/news/canadian-university-dubai-chancellor-discusses-actions-inclusion" class="text-sky-700 hover:underline">one alumni interview notes</a>, CUD was <em>&ldquo;among the first universities in the UAE to welcome students with special educational needs&rdquo;</em>, and has &ldquo;supported more than 100 determined students&rdquo; through scholarships, one-on-one tutoring, and a dedicated counselor to provide academic and pastoral care. These combined services &mdash; from admission scholarships to learning support and counseling &mdash; demonstrate CUD&rsquo;s institutional commitment to reducing barriers for disabled students.</p>
 		</div>
-
-
 
 		{# ── Scholarships for Students of Determination ───────────────────────── #}
 		<div class="block-common-content" aria-labelledby="heading-scholarships">
@@ -196,116 +201,60 @@
 		{# ── People of Determination Accessibility Features on Campus ────────── #}
 		<div class="block-common-content" aria-labelledby="heading-accessibility-features">
 			<h2 id="heading-accessibility-features" class="text-md md:text-xl font-semibold cud-color-blue mb-4">{{ 'People of Determination Accessibility Features on Campus'|t }}</h2>
+			{% set accessibility_buildings = [
+				{
+					title: 'Management Building'|t,
+					cards: [
+						{ title: 'First-floor accessible toilet'|t, alt: 'Management Building first-floor accessible toilet'|t, images: ['management-building-first-floor-toilet-01-corrected.jpeg', 'management-building-first-floor-toilet-02-corrected.jpeg'] },
+						{ title: 'Ground-floor accessible toilet'|t, alt: 'Management Building ground-floor accessible toilet'|t, images: ['management-building-ground-floor-toilet-01-corrected.jpeg', 'management-ground-floor-toilet-02.jpeg'] },
+						{ title: 'Clinic wheelchairs'|t, alt: 'Wheelchairs available at the Management Building clinic'|t, images: ['management-building-wheelchairs-at-the-clinic-01-corrected.jpeg'] },
+						{ title: 'Backside exit ramp'|t, alt: 'Management Building backside exit ramp'|t, images: ['management-building-ramp-backside-exit-01-corrected.jpeg'] },
+						{ title: 'Designated car park'|t, alt: 'Management Building designated parking for people of determination'|t, images: ['management-building-pod-designated-carpark-01-corrected.jpeg'] },
+					],
+				},
+				{
+					title: 'HUB Building'|t,
+					cards: [
+						{ title: 'Ground-floor VIP toilet'|t, alt: 'HUB Building ground-floor VIP accessible toilet'|t, images: ['hub-building-ground-floor-vip-toilet-01-corrected.jpeg', 'hub-building-ground-floor-vip-toilet-02-corrected.jpeg'] },
+						{ title: 'Recruitment offices'|t, alt: 'HUB Building recruitment offices accessibility feature'|t, images: ['hub-building-recruitment-offices-01-corrected.jpeg'] },
+						{ title: 'New offices entrance'|t, alt: 'Accessible entrance to the new offices in HUB Building'|t, images: ['hub-building-entrance-new-offices-01-corrected.jpeg'] },
+						{ title: 'Theatre seating areas'|t, alt: 'Theatre seating accessibility area in HUB Building'|t, images: ['hub-building-theatre-seating-areas-01-corrected.jpeg', 'hub-building-theatre-seating-areas-02-corrected.jpeg'] },
+						{ title: 'Designated parking'|t, alt: 'HUB Building designated parking for people of determination'|t, images: ['hub-building-pod-designated-parking-01-corrected.jpeg'] },
+						{ title: 'Library first-floor toilet'|t, alt: 'Accessible toilet near the HUB Building library on the first floor'|t, images: ['hub-building-toilet-first-floor-01-corrected.jpeg'] },
+						{ title: 'Kitchen-side first-floor toilet'|t, alt: 'Accessible toilet near the HUB Building kitchen on the first floor'|t, images: ['hub-building-toilet-first-floor-near-kitchen-01-corrected.jpeg'] },
+						{ title: 'Reception and clinic wheelchairs'|t, alt: 'Wheelchairs available near HUB Building reception and clinic'|t, images: ['hub-building-wheelchair-reception-clinic-01-corrected.jpeg', 'hub-building-wheelchair-reception-clinic-02-corrected.jpeg'] },
+						{ title: 'First-floor access elevator'|t, alt: 'HUB Building elevator providing access to the first floor'|t, images: ['hub-building-elevator-access-to-first-floor-01-corrected.jpeg'] },
+						{ title: 'Evacuation chairs'|t, alt: 'Evacuation chairs in HUB Building'|t, images: ['hub-building-evacuation-chairs-01-corrected.png'] },
+						{ title: 'Library and offices elevator access'|t, alt: 'HUB Building elevator access to the library and offices'|t, images: ['hub-building-elevator-access-to-library-and-offices-01-corrected.jpeg', 'hub-building-elevator-access-to-library-and-offices-02-corrected.png'] },
+						{ title: 'Additional accessibility features'|t, alt: 'Additional accessibility features in HUB Building'|t, images: ['hub-accessibility-feature-01.jpeg', 'hub-accessibility-feature-02.jpeg', 'hub-accessibility-feature-03.jpeg'] },
+					],
+				},
+			] %}
 
-			{# Management Building #}
-			<h3 class="text-base font-semibold text-slate-800 mt-5 mb-3 flex items-center gap-2">
-				<i class="fa-solid fa-building text-[#b13634] text-sm" aria-hidden="true"></i>
-				{{ 'Management Building'|t }}
-			</h3>
-			<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-				<div class="flex flex-col gap-2 rounded-xl border border-slate-200 p-3 shadow-sm">
-					<div class="grid grid-cols-2 gap-1.5">
-						<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/WhatsApp%20Image%202026-03-25%20at%202.37.15%20PM%20%281%29.jpeg' }}" alt="{{ 'Management Building — accessibility'|t }}" class="w-full h-28 object-cover rounded-lg tc-lightbox"/>
-						<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/WhatsApp%20Image%202026-03-25%20at%202.38.57%20PM%20%281%29.jpeg' }}" alt="{{ 'Management Building — accessibility'|t }}" class="w-full h-28 object-cover rounded-lg tc-lightbox"/>
-					</div>
-					<p class="text-xs font-medium text-slate-700 text-center">{{ 'Management Building'|t }}</p>
+			{% for building in accessibility_buildings %}
+				<h3 class="text-base font-semibold text-slate-800 mt-5 mb-3 flex items-center gap-2">
+					<i class="fa-solid fa-building text-[#b13634] text-sm" aria-hidden="true"></i>
+					{{ building.title }}
+				</h3>
+				<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+					{% for card in building.cards %}
+						{% set image_count = card.images|length %}
+						{% set image_grid_class = image_count == 3 ? 'grid-cols-3' : 'grid-cols-2' %}
+						<div class="flex flex-col gap-2 rounded-xl border border-slate-200 p-3 shadow-sm">
+							{% if image_count > 1 %}
+								<div class="grid {{ image_grid_class }} gap-1.5">
+									{% for image in card.images %}
+										<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/' ~ image }}" alt="{{ card.alt }}" class="w-full h-28 object-cover rounded-lg tc-lightbox"/>
+									{% endfor %}
+								</div>
+							{% else %}
+								<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/' ~ card.images|first }}" alt="{{ card.alt }}" class="w-full h-28 object-cover rounded-lg tc-lightbox"/>
+							{% endif %}
+							<p class="text-xs font-medium text-slate-700 text-center">{{ card.title }}</p>
+						</div>
+					{% endfor %}
 				</div>
-				<div class="flex flex-col gap-2 rounded-xl border border-slate-200 p-3 shadow-sm">
-					<div class="grid grid-cols-2 gap-1.5">
-						<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/WhatsApp%20Image%202026-03-25%20at%202.49.01%20PM.jpeg' }}" alt="{{ 'Ground floor toilet'|t }}" class="w-full h-28 object-cover rounded-lg tc-lightbox"/>
-						<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/WhatsApp%20Image%202026-03-25%20at%202.50.49%20PM.jpeg' }}" alt="{{ 'Ground floor toilet'|t }}" class="w-full h-28 object-cover rounded-lg tc-lightbox"/>
-					</div>
-					<p class="text-xs font-medium text-slate-700 text-center">{{ 'Ground floor toilet'|t }}</p>
-				</div>
-				<div class="flex flex-col gap-2 rounded-xl border border-slate-200 p-3 shadow-sm">
-					<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/WhatsApp%20Image%202026-03-25%20at%202.51.49%20PM.jpeg' }}" alt="{{ 'First floor toilet'|t }}" class="w-full h-28 object-cover rounded-lg tc-lightbox"/>
-					<p class="text-xs font-medium text-slate-700 text-center">{{ 'First floor toilet'|t }}</p>
-				</div>
-				<div class="flex flex-col gap-2 rounded-xl border border-slate-200 p-3 shadow-sm">
-					<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/WhatsApp%20Image%202026-03-25%20at%203.06.48%20PM.jpeg' }}" alt="{{ 'Wheelchairs available at the clinic'|t }}" class="w-full h-28 object-cover rounded-lg tc-lightbox"/>
-					<p class="text-xs font-medium text-slate-700 text-center">{{ 'Wheelchairs available at the clinic'|t }}</p>
-				</div>
-				<div class="flex flex-col gap-2 rounded-xl border border-slate-200 p-3 shadow-sm">
-					<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/WhatsApp%20Image%202026-03-25%20at%203.08.46%20PM.jpeg' }}" alt="{{ 'Ramp — Backside exit'|t }}" class="w-full h-28 object-cover rounded-lg tc-lightbox"/>
-					<p class="text-xs font-medium text-slate-700 text-center">{{ 'Ramp — Backside exit'|t }}</p>
-				</div>
-				<div class="flex flex-col gap-2 rounded-xl border border-slate-200 p-3 shadow-sm">
-					<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/WhatsApp%20Image%202026-03-25%20at%203.10.52%20PM.jpeg' }}" alt="{{ 'POD designated carpark'|t }}" class="w-full h-28 object-cover rounded-lg tc-lightbox"/>
-					<p class="text-xs font-medium text-slate-700 text-center">{{ 'POD designated carpark'|t }}</p>
-				</div>
-			</div>
-
-			{# HUB Building #}
-			<h3 class="text-base font-semibold text-slate-800 mt-6 mb-3 flex items-center gap-2">
-				<i class="fa-solid fa-building text-[#b13634] text-sm" aria-hidden="true"></i>
-				{{ 'HUB Building'|t }}
-			</h3>
-			<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-				<div class="flex flex-col gap-2 rounded-xl border border-slate-200 p-3 shadow-sm">
-					<div class="grid grid-cols-2 gap-1.5">
-						<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/WhatsApp%20Image%202026-03-25%20at%203.14.03%20PM.jpeg' }}" alt="{{ 'Ground floor VIP toilet'|t }}" class="w-full h-28 object-cover rounded-lg tc-lightbox"/>
-						<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/WhatsApp%20Image%202026-03-25%20at%203.34.42%20PM.jpeg' }}" alt="{{ 'Ground floor VIP toilet'|t }}" class="w-full h-28 object-cover rounded-lg tc-lightbox"/>
-					</div>
-					<p class="text-xs font-medium text-slate-700 text-center">{{ 'Ground floor VIP toilet'|t }}</p>
-				</div>
-				<div class="flex flex-col gap-2 rounded-xl border border-slate-200 p-3 shadow-sm">
-					<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/WhatsApp%20Image%202026-03-25%20at%203.34.57%20PM.jpeg' }}" alt="{{ 'Recruitment Offices'|t }}" class="w-full h-28 object-cover rounded-lg tc-lightbox"/>
-					<p class="text-xs font-medium text-slate-700 text-center">{{ 'Recruitment Offices'|t }}</p>
-				</div>
-				<div class="flex flex-col gap-2 rounded-xl border border-slate-200 p-3 shadow-sm">
-					<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/WhatsApp%20Image%202026-03-25%20at%203.36.26%20PM.jpeg' }}" alt="{{ 'Entrance — New offices'|t }}" class="w-full h-28 object-cover rounded-lg tc-lightbox"/>
-					<p class="text-xs font-medium text-slate-700 text-center">{{ 'Entrance — New offices'|t }}</p>
-				</div>
-				<div class="flex flex-col gap-2 rounded-xl border border-slate-200 p-3 shadow-sm">
-					<div class="grid grid-cols-2 gap-1.5">
-						<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/WhatsApp%20Image%202026-03-25%20at%203.38.09%20PM.jpeg' }}" alt="{{ 'Theatre Seating Areas'|t }}" class="w-full h-28 object-cover rounded-lg tc-lightbox"/>
-						<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/WhatsApp%20Image%202026-03-25%20at%203.43.10%20PM.jpeg' }}" alt="{{ 'Theatre Seating Areas'|t }}" class="w-full h-28 object-cover rounded-lg tc-lightbox"/>
-					</div>
-					<p class="text-xs font-medium text-slate-700 text-center">{{ 'Theatre Seating Areas'|t }}</p>
-				</div>
-				<div class="flex flex-col gap-2 rounded-xl border border-slate-200 p-3 shadow-sm">
-					<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/WhatsApp%20Image%202026-03-25%20at%204.07.18%20PM.jpeg' }}" alt="{{ 'POD designated parking'|t }}" class="w-full h-28 object-cover rounded-lg tc-lightbox"/>
-					<p class="text-xs font-medium text-slate-700 text-center">{{ 'POD designated parking'|t }}</p>
-				</div>
-				<div class="flex flex-col gap-2 rounded-xl border border-slate-200 p-3 shadow-sm">
-					<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/WhatsApp%20Image%202026-03-25%20at%204.17.14%20PM.jpeg' }}" alt="{{ 'Toilet first floor — Library'|t }}" class="w-full h-28 object-cover rounded-lg tc-lightbox"/>
-					<p class="text-xs font-medium text-slate-700 text-center">{{ 'Toilet first floor — Library'|t }}</p>
-				</div>
-				<div class="flex flex-col gap-2 rounded-xl border border-slate-200 p-3 shadow-sm">
-					<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/WhatsApp%20Image%202026-03-25%20at%204.18.32%20PM.jpeg' }}" alt="{{ 'Toilet first floor — near kitchen'|t }}" class="w-full h-28 object-cover rounded-lg tc-lightbox"/>
-					<p class="text-xs font-medium text-slate-700 text-center">{{ 'Toilet first floor — near kitchen'|t }}</p>
-				</div>
-				<div class="flex flex-col gap-2 rounded-xl border border-slate-200 p-3 shadow-sm">
-					<div class="grid grid-cols-2 gap-1.5">
-						<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/WhatsApp%20Image%202026-03-25%20at%207.31.19%20PM.jpeg' }}" alt="{{ 'Wheel chair — reception and clinic'|t }}" class="w-full h-28 object-cover rounded-lg tc-lightbox"/>
-						<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/WhatsApp%20Image%202026-03-25%20at%207.32.04%20PM.jpeg' }}" alt="{{ 'Wheel chair — reception and clinic'|t }}" class="w-full h-28 object-cover rounded-lg tc-lightbox"/>
-					</div>
-					<p class="text-xs font-medium text-slate-700 text-center">{{ 'Wheel chair — reception and clinic'|t }}</p>
-				</div>
-				<div class="flex flex-col gap-2 rounded-xl border border-slate-200 p-3 shadow-sm">
-					<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/WhatsApp%20Image%202026-03-26%20at%204.03.44%20PM.jpeg' }}" alt="{{ 'Elevator — access to first floor'|t }}" class="w-full h-28 object-cover rounded-lg tc-lightbox"/>
-					<p class="text-xs font-medium text-slate-700 text-center">{{ 'Elevator — access to first floor'|t }}</p>
-				</div>
-				<div class="flex flex-col gap-2 rounded-xl border border-slate-200 p-3 shadow-sm">
-					<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/WhatsApp%20Image%202026-03-26%20at%204.03.45%20PM.jpeg' }}" alt="{{ 'Evacuation chairs'|t }}" class="w-full h-28 object-cover rounded-lg tc-lightbox"/>
-					<p class="text-xs font-medium text-slate-700 text-center">{{ 'Evacuation chairs'|t }}</p>
-				</div>
-				<div class="flex flex-col gap-2 rounded-xl border border-slate-200 p-3 shadow-sm">
-					<div class="grid grid-cols-2 gap-1.5">
-						<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/WhatsApp%20Image%202026-03-26%20at%204.03.45%20PM%20%281%29.jpeg' }}" alt="{{ 'Elevator — access to library and offices'|t }}" class="w-full h-28 object-cover rounded-lg tc-lightbox"/>
-						<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/WhatsApp%20Image%202026-03-26%20at%204.03.45%20PM%20%282%29.jpeg' }}" alt="{{ 'Elevator — access to library and offices'|t }}" class="w-full h-28 object-cover rounded-lg tc-lightbox"/>
-					</div>
-					<p class="text-xs font-medium text-slate-700 text-center">{{ 'Elevator — access to library and offices'|t }}</p>
-				</div>
-				<div class="flex flex-col gap-2 rounded-xl border border-slate-200 p-3 shadow-sm">
-					<div class="grid grid-cols-3 gap-1.5">
-						<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/WhatsApp%20Image%202026-04-07%20at%205.33.50%20PM.jpeg' }}" alt="{{ 'HUB Building accessibility feature'|t }}" class="w-full h-28 object-cover rounded-lg tc-lightbox"/>
-						<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/WhatsApp%20Image%202026-04-07%20at%205.33.51%20PM%20%281%29.jpeg' }}" alt="{{ 'HUB Building accessibility feature'|t }}" class="w-full h-28 object-cover rounded-lg tc-lightbox"/>
-						<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/WhatsApp%20Image%202026-04-07%20at%205.33.51%20PM%20%282%29.jpeg' }}" alt="{{ 'HUB Building accessibility feature'|t }}" class="w-full h-28 object-cover rounded-lg tc-lightbox"/>
-					</div>
-					<p class="text-xs font-medium text-slate-700 text-center">{{ 'HUB Building — Additional Features'|t }}</p>
-				</div>
-			</div>
+			{% endfor %}
 		</div>
 
 		{% if content %}
