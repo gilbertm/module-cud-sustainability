@@ -597,16 +597,16 @@ function cud_sustainability_ensure_menus(): void {
 
   $starter_items = [
     'cud-sustainability-primary' => [
-      ['title' => 'Our Commitment',               'uri' => 'internal:/sustainability/our-commitment',               'weight' => 0,  'parent_key' => NULL],
-      ['title' => 'Governance',                   'uri' => 'internal:/sustainability/our-commitment/governance',               'weight' => 0,  'parent_key' => 'Our Commitment'],
-      ['title' => 'Sustainability Committee',     'uri' => 'internal:/sustainability/our-commitment/sustainability-committee', 'weight' => 1,  'parent_key' => 'Our Commitment'],
-      ['title' => 'Institutional Policies',       'uri' => 'internal:/sustainability/our-commitment/institutional-policies',  'weight' => 2,  'parent_key' => 'Our Commitment'],
-      ['title' => 'Impact Reporting',             'uri' => 'internal:/sustainability/our-commitment/impact-reporting',        'weight' => 3,  'parent_key' => 'Our Commitment'],
-      ['title' => 'SDGs',                         'uri' => 'internal:/sustainability/our-commitment/sdgs',                    'weight' => 4,  'parent_key' => 'Our Commitment'],
+      ['title' => 'Our Commitment',                     'uri' => 'internal:/sustainability/our-commitment',               'weight' => 0,  'parent_key' => NULL],
+      ['title' => 'Governance',                         'uri' => 'internal:/sustainability/our-commitment/governance',               'weight' => 0,  'parent_key' => 'Our Commitment'],
+      ['title' => 'Sustainability Committee',           'uri' => 'internal:/sustainability/our-commitment/sustainability-committee', 'weight' => 1,  'parent_key' => 'Our Commitment'],
+      ['title' => 'Institutional Policies',             'uri' => 'internal:/sustainability/our-commitment/institutional-policies',  'weight' => 2,  'parent_key' => 'Our Commitment'],
+      ['title' => 'Impact Reporting',                   'uri' => 'internal:/sustainability/our-commitment/impact-reporting',        'weight' => 3,  'parent_key' => 'Our Commitment'],
+      ['title' => 'UN Sustainable Development Goals',   'uri' => 'internal:/sustainability/our-commitment/un-sustainable-development-goals',                    'weight' => 4,  'parent_key' => 'Our Commitment'],
 
-      ['title' => 'Programs in Sustainability',   'uri' => 'internal:/sustainability/programs-in-sustainability',             'weight' => 1,  'parent_key' => NULL],
-      ['title' => 'Sustainability Focused Programs', 'uri' => 'internal:/sustainability/programs-in-sustainability/sustainability-focused-programs', 'weight' => 0, 'parent_key' => 'Programs in Sustainability'],
-      ['title' => 'Student-Led Sustainability',   'uri' => 'internal:/sustainability/programs-in-sustainability/student-led-sustainability',        'weight' => 1, 'parent_key' => 'Programs in Sustainability'],
+      ['title' => 'Programs in Sustainability',         'uri' => 'internal:/sustainability/programs-in-sustainability',             'weight' => 1,  'parent_key' => NULL],
+      ['title' => 'Sustainability Focused Programs',    'uri' => 'internal:/sustainability/programs-in-sustainability/sustainability-focused-programs', 'weight' => 0, 'parent_key' => 'Programs in Sustainability'],
+      ['title' => 'Student-Led Sustainability',         'uri' => 'internal:/sustainability/programs-in-sustainability/student-led-sustainability',        'weight' => 1, 'parent_key' => 'Programs in Sustainability'],
 
       ['title' => 'Research in Sustainability',   'uri' => 'internal:/sustainability/research-in-sustainability',            'weight' => 2,  'parent_key' => NULL],
       ['title' => 'Center for Sustainability & Innovation', 'uri' => 'internal:/sustainability/research-in-sustainability/center-for-sustainability-and-innovation', 'weight' => 0, 'parent_key' => 'Research in Sustainability'],

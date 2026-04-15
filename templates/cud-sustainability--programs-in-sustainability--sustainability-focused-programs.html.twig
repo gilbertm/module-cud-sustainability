@@ -55,7 +55,7 @@
 {% endif %}
 
 {# ── Page Header with Breadcrumb ─────────────────────────────────────────────── #}
-<section class="border-b border-slate-200 bg-white" aria-label="{{ 'Page header'|t }}">
+<section class="bg-white" aria-label="{{ 'Page header'|t }}">
 	<div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
 		<nav class="mb-3 flex items-center gap-1.5 text-xs text-slate-500" aria-label="{{ 'Breadcrumb'|t }}">
 			{% for link in breadcrumb %}
@@ -132,12 +132,12 @@
 
 {# ── Main Content (full-width) ────────────────────────────────────────────────── #}
 <section class="mx-auto max-w-7xl px-4 py-4 sm:px-6 sm:py-10 lg:px-8 !bg-white" id="main-content" aria-label="{{ title }}" data-mode="{{ mode }}">
-	<div class="min-w-0 space-y-6 lg:space-y-10">
+	<div class="min-w-0 space-y-5">
 
 		<div class="block-common-content" aria-labelledby="heading-prme">
 			<h2 id="heading-prme" class="text-md md:text-xl font-semibold cud-color-blue">{{ 'Empowering the Next Generation of Climate Leaders'|t }}</h2>
-			<p class="text-slate-700">At Canadian University Dubai (CUD), we recognize that education is the most powerful tool for climate action. Our academic portfolio is strategically designed to integrate environmental stewardship, resource efficiency, and sustainable innovation into the core of our curriculum.</p>
-			<p class="text-slate-700 mt-4">All programs listed below are **fully accredited** by the UAE Ministry of Education -- Higher Education Affairs, ensuring that every credit earned is officially recognized both locally and internationally. These programs lead to the award of specialized qualifications that explicitly address the global challenges of climate science, renewable energy, and the circular economy. Through a blend of theoretical rigor and practical application, CUD prepares students to lead the transition toward a sustainable and resilient future.</p>
+			<p class="text-sm text-slate-700">At Canadian University Dubai (CUD), we recognize that education is the most powerful tool for climate action. Our academic portfolio is strategically designed to integrate environmental stewardship, resource efficiency, and sustainable innovation into the core of our curriculum.</p>
+			<p class="text-sm text-slate-700 mt-4">All programs listed below are <b>fully accredited</b> by the UAE Ministry of Education -- Higher Education Affairs, ensuring that every credit earned is officially recognized both locally and internationally. These programs lead to the award of specialized qualifications that explicitly address the global challenges of climate science, renewable energy, and the circular economy. Through a blend of theoretical rigor and practical application, CUD prepares students to lead the transition toward a sustainable and resilient future.</p>
 		</div>
 
 
@@ -156,51 +156,81 @@
 					<div class="w-full justify-center">
 						<h2 id="heading-public-health" class="text-md md:text-xl font-semibold cud-color-blue mb-2">Public Health and Environmental Sustainability</h2>
 						<a href="/programs/undergraduate/public-health/bachelor-of-science-in-public-health-environmental-health-management" class="inline-block bg-sky-50 text-sky-800 border border-sky-100 rounded px-3 py-1 text-xs font-semibold mb-4 hover:bg-sky-100 transition">Bachelor of Science in Public Health and Environmental Health Management</a>
-						<div class="prose prose-slate max-w-none text-slate-700">
-							<p>
-								<div class="flex flex-wrap gap-3 mb-2">
-									<span class="inline-flex items-center gap-1 bg-slate-100 text-slate-700 border border-slate-200 rounded px-2 py-0.5 text-xs font-medium">
-										<i class="fa-solid fa-graduation-cap text-slate-400"></i> Qualification Level: Undergraduate Degree (BSc)
-									</span>
-								</div>
-								<div class="mb-4">
-									<span class="block font-semibold text-green-700 mb-1">Sustainability Focus</span>
-									<p class="mb-0">This program addresses the intersection of human health and the natural environment. It focuses on analyzing, evaluating, and controlling environmental factors—such as air quality, water safety, and waste management—to mitigate the impacts of climate change and environmental degradation on public health.</p>
-								</div>
+						<div class="prose prose-slate max-w-none text-sm text-slate-700">
+							<div class="flex flex-wrap gap-3 mb-2">
+								<span class="inline-flex items-center gap-1 bg-slate-100 text-slate-700 border border-slate-200 rounded px-2 py-0.5 text-xs font-medium">
+									<i class="fa-solid fa-graduation-cap text-slate-400"></i>
+									Qualification Level: Undergraduate Degree (BSc)
+								</span>
+							</div>
+							<div class="mb-4">
+								<span class="block font-semibold text-green-700 mb-1">Sustainability Focus</span>
+								<p class="mb-0">This program addresses the intersection of human health and the natural environment. It focuses on analyzing, evaluating, and controlling environmental factors—such as air quality, water safety, and waste management—to mitigate the impacts of climate change and environmental degradation on public health.</p>
+							</div>
 							<ul class="space-y-5">
 								<li class="bg-white/90 border border-slate-100 rounded-lg p-4 shadow-sm">
-									<div class="font-semibold text-slate-800 mb-1 flex items-center gap-2"><i class="fa-solid fa-leaf text-green-700"></i> Core Course Highlight: ENV 424 — Impacts of Climate Change Policy on Environmental Management</div>
+									<div class="font-semibold text-slate-800 mb-1 flex items-center gap-2">
+										<i class="fa-solid fa-leaf text-green-700"></i>
+										Core Course Highlight: ENV 424 — Impacts of Climate Change Policy on Environmental Management</div>
 									<ul class="ml-4 mt-1 space-y-1">
-										<li><span class="font-semibold text-slate-600">Description:</span> This advanced course explores the specific policy frameworks designed to address global climate change and their practical implementation within environmental management systems.</li>
-										<li><span class="font-semibold text-green-700">Sustainability Link:</span> It provides students with the critical tools to understand how climate policy influences environmental protection.</li>
+										<li>
+											<span class="font-semibold text-slate-600">Description:</span>
+											This advanced course explores the specific policy frameworks designed to address global climate change and their practical implementation within environmental management systems.</li>
+										<li>
+											<span class="font-semibold text-green-700">Sustainability Link:</span>
+											It provides students with the critical tools to understand how climate policy influences environmental protection.</li>
 									</ul>
 								</li>
 								<li class="bg-white/90 border border-slate-100 rounded-lg p-4 shadow-sm">
-									<div class="font-semibold text-slate-800 mb-1 flex items-center gap-2"><i class="fa-solid fa-leaf text-green-700"></i> Core Course Highlight: ENV 326 — Indoor and Outdoor Air Pollution</div>
+									<div class="font-semibold text-slate-800 mb-1 flex items-center gap-2">
+										<i class="fa-solid fa-leaf text-green-700"></i>
+										Core Course Highlight: ENV 326 — Indoor and Outdoor Air Pollution</div>
 									<ul class="ml-4 mt-1 space-y-1">
-										<li><span class="font-semibold text-slate-600">Description:</span> An in-depth study of the sources, chemistry, and transport of air pollutants, as well as their impacts on ecosystems and human respiratory health.</li>
-										<li><span class="font-semibold text-green-700">Sustainability Link:</span> By teaching students to monitor and mitigate carbon-based and chemical emissions, this course provides technical evidence for environmental sustainability education.</li>
+										<li>
+											<span class="font-semibold text-slate-600">Description:</span>
+											An in-depth study of the sources, chemistry, and transport of air pollutants, as well as their impacts on ecosystems and human respiratory health.</li>
+										<li>
+											<span class="font-semibold text-green-700">Sustainability Link:</span>
+											By teaching students to monitor and mitigate carbon-based and chemical emissions, this course provides technical evidence for environmental sustainability education.</li>
 									</ul>
 								</li>
 								<li class="bg-white/90 border border-slate-100 rounded-lg p-4 shadow-sm">
-									<div class="font-semibold text-slate-800 mb-1 flex items-center gap-2"><i class="fa-solid fa-leaf text-green-700"></i> Core Course Highlight: ENV 321 — Management of Domestic and Hazardous Wastes</div>
+									<div class="font-semibold text-slate-800 mb-1 flex items-center gap-2">
+										<i class="fa-solid fa-leaf text-green-700"></i>
+										Core Course Highlight: ENV 321 — Management of Domestic and Hazardous Wastes</div>
 									<ul class="ml-4 mt-1 space-y-1">
-										<li><span class="font-semibold text-slate-600">Description:</span> This course covers the lifecycle of waste products, emphasizing sustainable disposal methods, recycling, and the reduction of hazardous environmental contamination.</li>
-										<li><span class="font-semibold text-green-700">Sustainability Link:</span> It aligns with "Environmental Sustainability" by focusing on waste reduction and the protection of soil and water resources from toxic exposure.</li>
+										<li>
+											<span class="font-semibold text-slate-600">Description:</span>
+											This course covers the lifecycle of waste products, emphasizing sustainable disposal methods, recycling, and the reduction of hazardous environmental contamination.</li>
+										<li>
+											<span class="font-semibold text-green-700">Sustainability Link:</span>
+											It aligns with "Environmental Sustainability" by focusing on waste reduction and the protection of soil and water resources from toxic exposure.</li>
 									</ul>
 								</li>
 								<li class="bg-white/90 border border-slate-100 rounded-lg p-4 shadow-sm">
-									<div class="font-semibold text-slate-800 mb-1 flex items-center gap-2"><i class="fa-solid fa-leaf text-green-700"></i> Core Course Highlight: ENV 413 — Marine Pollution</div>
+									<div class="font-semibold text-slate-800 mb-1 flex items-center gap-2">
+										<i class="fa-solid fa-leaf text-green-700"></i>
+										Core Course Highlight: ENV 413 — Marine Pollution</div>
 									<ul class="ml-4 mt-1 space-y-1">
-										<li><span class="font-semibold text-slate-600">Description:</span> A specialized look at the degradation of marine ecosystems due to human activity, chemical runoff, and plastic waste.</li>
-										<li><span class="font-semibold text-green-700">Sustainability Link:</span> Addresses the protection of biodiversity and aquatic environments, a key pillar of environmental science.</li>
+										<li>
+											<span class="font-semibold text-slate-600">Description:</span>
+											A specialized look at the degradation of marine ecosystems due to human activity, chemical runoff, and plastic waste.</li>
+										<li>
+											<span class="font-semibold text-green-700">Sustainability Link:</span>
+											Addresses the protection of biodiversity and aquatic environments, a key pillar of environmental science.</li>
 									</ul>
 								</li>
 								<li class="bg-white/90 border border-slate-100 rounded-lg p-4 shadow-sm">
-									<div class="font-semibold text-slate-800 mb-1 flex items-center gap-2"><i class="fa-solid fa-leaf text-green-700"></i> Core Course Highlight: ENV 309 — Impacts of Earth Resources and Natural Hazards on the Environment</div>
+									<div class="font-semibold text-slate-800 mb-1 flex items-center gap-2">
+										<i class="fa-solid fa-leaf text-green-700"></i>
+										Core Course Highlight: ENV 309 — Impacts of Earth Resources and Natural Hazards on the Environment</div>
 									<ul class="ml-4 mt-1 space-y-1">
-										<li><span class="font-semibold text-slate-600">Description:</span> This elective examines how the extraction of natural resources and the occurrence of natural disasters (often exacerbated by climate change) affect environmental stability.</li>
-										<li><span class="font-semibold text-green-700">Sustainability Link:</span> Directly links geological and earth science with environmental risk management and sustainability.</li>
+										<li>
+											<span class="font-semibold text-slate-600">Description:</span>
+											This elective examines how the extraction of natural resources and the occurrence of natural disasters (often exacerbated by climate change) affect environmental stability.</li>
+										<li>
+											<span class="font-semibold text-green-700">Sustainability Link:</span>
+											Directly links geological and earth science with environmental risk management and sustainability.</li>
 									</ul>
 								</li>
 							</ul>
@@ -210,132 +240,194 @@
 			</div>
 
 			{# --- Renewable Energy and Power Systems --- #}
-			   <div class="program block-common-content" aria-labelledby="heading-renewable-energy">
-				   <div class="flex flex-col gap-6">
+			<div class="program block-common-content" aria-labelledby="heading-renewable-energy">
+				<div class="flex flex-col gap-6">
 					<div class="relative w-full">
 						<span class="image-loader absolute inset-0 flex items-center justify-center bg-white/60 z-10">
 							<i class="fa-solid fa-arrow-rotate-right animate-spin text-green-700 text-3xl" aria-hidden="true"></i>
 						</span>
 						<img src="//cud.ac.ae/sites/default/files/programs/2025/BSc_in_Power_Renewable_Energy.png" alt="Renewable Energy and Power Systems" class="w-full h-auto object-cover rounded-lg shadow" loading="lazy" onload="this.previousElementSibling.style.display='none'"/>
 					</div>
-					   <div class="w-full justify-center">
-						   <h2 id="heading-renewable-energy" class="text-md md:text-xl font-semibold cud-color-blue mb-2">Renewable Energy and Power Systems</h2>
-						   <a href="https://www.cud.ac.ae/programs/undergraduate/electrical-engineering/bachelor-of-science-in-power-and-renewable-energy" class="inline-block bg-sky-50 text-sky-800 border border-sky-100 rounded px-3 py-1 text-xs font-semibold mb-4 hover:bg-sky-100 transition">BSc Power & Renewable Energy</a>
-						   <div class="prose prose-slate max-w-none text-slate-700">
-							   <div class="flex flex-wrap gap-3 mb-2">
-								   <span class="inline-flex items-center gap-1 bg-slate-100 text-slate-700 border border-slate-200 rounded px-2 py-0.5 text-xs font-medium">
-									   <i class="fa-solid fa-graduation-cap text-slate-400"></i> Qualification Level: Undergraduate Degree (BSc)
-								   </span>
-							   </div>
-							   <div class="mb-4">
-								   <span class="block font-semibold text-green-700 mb-1">Sustainability Focus</span>
-								   <p class="mb-0">This program is specifically designed to train the next generation of engineers to lead the global clean energy transition. It aligns with the UAE's Net Zero 2050 vision and the Dubai Clean Energy Strategy 2050, focusing on the technical design, optimization, and implementation of carbon-neutral power systems.</p>
-							   </div>
-							   <ul class="space-y-5">
-								   <li class="bg-white/90 border border-slate-100 rounded-lg p-4 shadow-sm">
-									   <div class="font-semibold text-slate-800 mb-1 flex items-center gap-2"><i class="fa-solid fa-leaf text-green-700"></i> Core Course Highlight: PRE 362 — Solar Energy</div>
-									   <ul class="ml-4 mt-1 space-y-1">
-										   <li><span class="font-semibold text-slate-600">Description:</span> An in-depth study of photovoltaic systems, solar thermal energy, and the engineering principles required to harness solar radiation for large-scale power generation.</li>
-										   <li><span class="font-semibold text-green-700">Sustainability Link:</span> Directly addresses the "Environmental Sustainability" prompt by providing technical expertise in one of the primary alternatives to fossil-fuel-based energy.</li>
-									   </ul>
-								   </li>
-								   <li class="bg-white/90 border border-slate-100 rounded-lg p-4 shadow-sm">
-									   <div class="font-semibold text-slate-800 mb-1 flex items-center gap-2"><i class="fa-solid fa-leaf text-green-700"></i> Core Course Highlight: PRE 471 — Wind Energy</div>
-									   <ul class="ml-4 mt-1 space-y-1">
-										   <li><span class="font-semibold text-slate-600">Description:</span> This course covers the aerodynamics of wind turbines, site assessment, and the integration of wind-generated electricity into existing power grids.</li>
-										   <li><span class="font-semibold text-green-700">Sustainability Link:</span> Provides evidence of education specifically targeting renewable resource management and climate-neutral technology.</li>
-									   </ul>
-								   </li>
-								   <li class="bg-white/90 border border-slate-100 rounded-lg p-4 shadow-sm">
-									   <div class="font-semibold text-slate-800 mb-1 flex items-center gap-2"><i class="fa-solid fa-leaf text-green-700"></i> Core Course Highlight: DES 320 — Design for Sustainability</div>
-									   <ul class="ml-4 mt-1 space-y-1">
-										   <li><span class="font-semibold text-slate-600">Description:</span> A multidisciplinary course that teaches students how to integrate environmental considerations into the engineering design process, focusing on life-cycle analysis and resource efficiency.</li>
-										   <li><span class="font-semibold text-green-700">Sustainability Link:</span> Broader principles of environmental sustainability within a technical framework.</li>
-									   </ul>
-								   </li>
-								   <li class="bg-white/90 border border-slate-100 rounded-lg p-4 shadow-sm">
-									   <div class="font-semibold text-slate-800 mb-1 flex items-center gap-2"><i class="fa-solid fa-leaf text-green-700"></i> Core Course Highlight: PRE 481 — Smart Grids</div>
-									   <ul class="ml-4 mt-1 space-y-1">
-										   <li><span class="font-semibold text-slate-600">Description:</span> Focuses on the modernization of the electrical grid using digital technology to improve efficiency, reduce energy waste, and facilitate the reliable integration of renewable energy sources.</li>
-										   <li><span class="font-semibold text-green-700">Sustainability Link:</span> Teaches students how to manage "Climate Science" challenges through infrastructure innovation and demand-side energy management.</li>
-									   </ul>
-								   </li>
-								   <li class="bg-white/90 border border-slate-100 rounded-lg p-4 shadow-sm">
-									   <div class="font-semibold text-slate-800 mb-1 flex items-center gap-2"><i class="fa-solid fa-leaf text-green-700"></i> Core Course Highlight: PRE 473 — Energy Conversion and Storage</div>
-									   <ul class="ml-4 mt-1 space-y-1">
-										   <li><span class="font-semibold text-slate-600">Description:</span> Examines the methods of converting renewable energy into various forms and the critical role of battery and thermal storage in stabilizing green energy supplies.</li>
-										   <li><span class="font-semibold text-green-700">Sustainability Link:</span> Essential for a sustainable energy future, this course addresses the intermittency of renewables—a core challenge in climate science.</li>
-									   </ul>
-								   </li>
-							   </ul>
-						   </div>
-					   </div>
-				   </div>
-			   </div>
+					<div class="w-full justify-center">
+						<h2 id="heading-renewable-energy" class="text-md md:text-xl font-semibold cud-color-blue mb-2">Renewable Energy and Power Systems</h2>
+						<a href="https://www.cud.ac.ae/programs/undergraduate/electrical-engineering/bachelor-of-science-in-power-and-renewable-energy" class="inline-block bg-sky-50 text-sky-800 border border-sky-100 rounded px-3 py-1 text-xs font-semibold mb-4 hover:bg-sky-100 transition">BSc Power & Renewable Energy</a>
+						<div class="prose prose-slate max-w-none text-sm text-slate-700">
+							<div class="flex flex-wrap gap-3 mb-2">
+								<span class="inline-flex items-center gap-1 bg-slate-100 text-slate-700 border border-slate-200 rounded px-2 py-0.5 text-xs font-medium">
+									<i class="fa-solid fa-graduation-cap text-slate-400"></i>
+									Qualification Level: Undergraduate Degree (BSc)
+								</span>
+							</div>
+							<div class="mb-4">
+								<span class="block font-semibold text-green-700 mb-1">Sustainability Focus</span>
+								<p class="mb-0">This program is specifically designed to train the next generation of engineers to lead the global clean energy transition. It aligns with the UAE's Net Zero 2050 vision and the Dubai Clean Energy Strategy 2050, focusing on the technical design, optimization, and implementation of carbon-neutral power systems.</p>
+							</div>
+							<ul class="space-y-5">
+								<li class="bg-white/90 border border-slate-100 rounded-lg p-4 shadow-sm">
+									<div class="font-semibold text-slate-800 mb-1 flex items-center gap-2">
+										<i class="fa-solid fa-leaf text-green-700"></i>
+										Core Course Highlight: PRE 362 — Solar Energy</div>
+									<ul class="ml-4 mt-1 space-y-1">
+										<li>
+											<span class="font-semibold text-slate-600">Description:</span>
+											An in-depth study of photovoltaic systems, solar thermal energy, and the engineering principles required to harness solar radiation for large-scale power generation.</li>
+										<li>
+											<span class="font-semibold text-green-700">Sustainability Link:</span>
+											Directly addresses the "Environmental Sustainability" prompt by providing technical expertise in one of the primary alternatives to fossil-fuel-based energy.</li>
+									</ul>
+								</li>
+								<li class="bg-white/90 border border-slate-100 rounded-lg p-4 shadow-sm">
+									<div class="font-semibold text-slate-800 mb-1 flex items-center gap-2">
+										<i class="fa-solid fa-leaf text-green-700"></i>
+										Core Course Highlight: PRE 471 — Wind Energy</div>
+									<ul class="ml-4 mt-1 space-y-1">
+										<li>
+											<span class="font-semibold text-slate-600">Description:</span>
+											This course covers the aerodynamics of wind turbines, site assessment, and the integration of wind-generated electricity into existing power grids.</li>
+										<li>
+											<span class="font-semibold text-green-700">Sustainability Link:</span>
+											Provides evidence of education specifically targeting renewable resource management and climate-neutral technology.</li>
+									</ul>
+								</li>
+								<li class="bg-white/90 border border-slate-100 rounded-lg p-4 shadow-sm">
+									<div class="font-semibold text-slate-800 mb-1 flex items-center gap-2">
+										<i class="fa-solid fa-leaf text-green-700"></i>
+										Core Course Highlight: DES 320 — Design for Sustainability</div>
+									<ul class="ml-4 mt-1 space-y-1">
+										<li>
+											<span class="font-semibold text-slate-600">Description:</span>
+											A multidisciplinary course that teaches students how to integrate environmental considerations into the engineering design process, focusing on life-cycle analysis and resource efficiency.</li>
+										<li>
+											<span class="font-semibold text-green-700">Sustainability Link:</span>
+											Broader principles of environmental sustainability within a technical framework.</li>
+									</ul>
+								</li>
+								<li class="bg-white/90 border border-slate-100 rounded-lg p-4 shadow-sm">
+									<div class="font-semibold text-slate-800 mb-1 flex items-center gap-2">
+										<i class="fa-solid fa-leaf text-green-700"></i>
+										Core Course Highlight: PRE 481 — Smart Grids</div>
+									<ul class="ml-4 mt-1 space-y-1">
+										<li>
+											<span class="font-semibold text-slate-600">Description:</span>
+											Focuses on the modernization of the electrical grid using digital technology to improve efficiency, reduce energy waste, and facilitate the reliable integration of renewable energy sources.</li>
+										<li>
+											<span class="font-semibold text-green-700">Sustainability Link:</span>
+											Teaches students how to manage "Climate Science" challenges through infrastructure innovation and demand-side energy management.</li>
+									</ul>
+								</li>
+								<li class="bg-white/90 border border-slate-100 rounded-lg p-4 shadow-sm">
+									<div class="font-semibold text-slate-800 mb-1 flex items-center gap-2">
+										<i class="fa-solid fa-leaf text-green-700"></i>
+										Core Course Highlight: PRE 473 — Energy Conversion and Storage</div>
+									<ul class="ml-4 mt-1 space-y-1">
+										<li>
+											<span class="font-semibold text-slate-600">Description:</span>
+											Examines the methods of converting renewable energy into various forms and the critical role of battery and thermal storage in stabilizing green energy supplies.</li>
+										<li>
+											<span class="font-semibold text-green-700">Sustainability Link:</span>
+											Essential for a sustainable energy future, this course addresses the intermittency of renewables—a core challenge in climate science.</li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
 
 			{# --- Design and the Circular Economy --- #}
-			   <div class="program block-common-content" aria-labelledby="heading-circular-economy">
-				   <div class="flex flex-col gap-6">
+			<div class="program block-common-content" aria-labelledby="heading-circular-economy">
+				<div class="flex flex-col gap-6">
 					<div class="relative w-full">
 						<span class="image-loader absolute inset-0 flex items-center justify-center bg-white/60 z-10">
 							<i class="fa-solid fa-arrow-rotate-right animate-spin text-green-700 text-3xl" aria-hidden="true"></i>
 						</span>
 						<img src="//cud.ac.ae/sites/default/files/programs/2025/mscdice_0.png" alt="Design and the Circular Economy" class="w-full h-auto object-cover rounded-lg shadow" loading="lazy" onload="this.previousElementSibling.style.display='none'"/>
 					</div>
-					   <div class="w-full justify-center">
-						   <h2 id="heading-circular-economy" class="text-md md:text-xl font-semibold cud-color-blue mb-2">Design and the Circular Economy</h2>
-						   <a href="https://www.cud.ac.ae/programs/masters/architecture/master-of-science-in-design-innovation-for-circular-economy" class="inline-block bg-sky-50 text-sky-800 border border-sky-100 rounded px-3 py-1 text-xs font-semibold mb-4 hover:bg-sky-100 transition">Master of Science in Design Innovation for Circular Economy (MScDICE)</a>
-						   <div class="prose prose-slate max-w-none text-slate-700">
-							   <div class="flex flex-wrap gap-3 mb-2">
-								   <span class="inline-flex items-center gap-1 bg-slate-100 text-slate-700 border border-slate-200 rounded px-2 py-0.5 text-xs font-medium">
-									   <i class="fa-solid fa-graduation-cap text-slate-400"></i> Qualification Level: Master's Degree (MSc)
-								   </span>
-							   </div>
-							   <div class="mb-4">
-								   <span class="block font-semibold text-green-700 mb-1">Sustainability Focus</span>
-								   <p class="mb-0">This advanced degree focuses on the systemic transition from linear "take-make-waste" models to regenerative circular economies. It treats the climate crisis as a design challenge, equipping leaders to rethink products, urban systems, and policies to restore ecosystem balance and drive carbon neutrality.</p>
-							   </div>
-							   <ul class="space-y-5">
-								   <li class="bg-white/90 border border-slate-100 rounded-lg p-4 shadow-sm">
-									   <div class="font-semibold text-slate-800 mb-1 flex items-center gap-2"><i class="fa-solid fa-leaf text-green-700"></i> Core Course Highlight: DCE 611 — Design-Out Climate</div>
-									   <ul class="ml-4 mt-1 space-y-1">
-										   <li><span class="font-semibold text-slate-600">Description:</span> A foundational course exploring how design decisions contribute to or mitigate the climate crisis. It frames environmental degradation as a "design by-product" that can be engineered out of existence.</li>
-										   <li><span class="font-semibold text-green-700">Sustainability Link:</span> This course satisfies the "Climate Science" prompt by directly linking human-led activity (design) to global climate impacts and mitigation strategies.</li>
-									   </ul>
-								   </li>
-								   <li class="bg-white/90 border border-slate-100 rounded-lg p-4 shadow-sm">
-									   <div class="font-semibold text-slate-800 mb-1 flex items-center gap-2"><i class="fa-solid fa-leaf text-green-700"></i> Core Course Highlight: DCE 612 — Principles of Circular Economy</div>
-									   <ul class="ml-4 mt-1 space-y-1">
-										   <li><span class="font-semibold text-slate-600">Description:</span> Provides the theoretical and practical framework for circularity, focusing on resource regeneration, extending product lifecycles, and designing out waste and pollution.</li>
-										   <li><span class="font-semibold text-green-700">Sustainability Link:</span> Explicitly teaches "Environmental Sustainability" through the lens of resource efficiency and sustainable industrial systems.</li>
-									   </ul>
-								   </li>
-								   <li class="bg-white/90 border border-slate-100 rounded-lg p-4 shadow-sm">
-									   <div class="font-semibold text-slate-800 mb-1 flex items-center gap-2"><i class="fa-solid fa-leaf text-green-700"></i> Core Course Highlight: DCE 621 — Lifecycle Assessment and Circular Metrics</div>
-									   <ul class="ml-4 mt-1 space-y-1">
-										   <li><span class="font-semibold text-slate-600">Description:</span> Students learn to use data-driven methodologies to calculate the environmental footprint of products and systems across their entire lifespan.</li>
-										   <li><span class="font-semibold text-green-700">Sustainability Link:</span> Provides the technical "evidence" required for sustainability reporting and environmental impact quantification.</li>
-									   </ul>
-								   </li>
-								   <li class="bg-white/90 border border-slate-100 rounded-lg p-4 shadow-sm">
-									   <div class="font-semibold text-slate-800 mb-1 flex items-center gap-2"><i class="fa-solid fa-leaf text-green-700"></i> Core Course Highlight: DCE 622 — Regenerative Buildings and Cities</div>
-									   <ul class="ml-4 mt-1 space-y-1">
-										   <li><span class="font-semibold text-slate-600">Description:</span> Focuses on the built environment, exploring how urban design can move beyond "low impact" to actually restoring and regenerating local ecosystems.</li>
-										   <li><span class="font-semibold text-green-700">Sustainability Link:</span> Addresses large-scale environmental sustainability within the context of rapid urbanization and climate adaptation.</li>
-									   </ul>
-								   </li>
-								   <li class="bg-white/90 border border-slate-100 rounded-lg p-4 shadow-sm">
-									   <div class="font-semibold text-slate-800 mb-1 flex items-center gap-2"><i class="fa-solid fa-leaf text-green-700"></i> Elective Course Highlight: DCE 626 — Impacts of Climate Change Policy on Environmental Management</div>
-									   <ul class="ml-4 mt-1 space-y-1">
-										   <li><span class="font-semibold text-slate-600">Description:</span> Analyzes how international and local climate policies (such as the UAE Net Zero 2050) dictate the management of natural resources and industrial output.</li>
-										   <li><span class="font-semibold text-green-700">Sustainability Link:</span> Study of climate science and its resulting policy solutions.</li>
-									   </ul>
-								   </li>
-							   </ul>
-						   </div>
-					   </div>
-				   </div>
-			   </div>
+					<div class="w-full justify-center">
+						<h2 id="heading-circular-economy" class="text-md md:text-xl font-semibold cud-color-blue mb-2">Design and the Circular Economy</h2>
+						<a href="https://www.cud.ac.ae/programs/masters/architecture/master-of-science-in-design-innovation-for-circular-economy" class="inline-block bg-sky-50 text-sky-800 border border-sky-100 rounded px-3 py-1 text-xs font-semibold mb-4 hover:bg-sky-100 transition">Master of Science in Design Innovation for Circular Economy (MScDICE)</a>
+						<div class="prose prose-slate max-w-none text-sm text-slate-700">
+							<div class="flex flex-wrap gap-3 mb-2">
+								<span class="inline-flex items-center gap-1 bg-slate-100 text-slate-700 border border-slate-200 rounded px-2 py-0.5 text-xs font-medium">
+									<i class="fa-solid fa-graduation-cap text-slate-400"></i>
+									Qualification Level: Master's Degree (MSc)
+								</span>
+							</div>
+							<div class="mb-4">
+								<span class="block font-semibold text-green-700 mb-1">Sustainability Focus</span>
+								<p class="mb-0">This advanced degree focuses on the systemic transition from linear "take-make-waste" models to regenerative circular economies. It treats the climate crisis as a design challenge, equipping leaders to rethink products, urban systems, and policies to restore ecosystem balance and drive carbon neutrality.</p>
+							</div>
+							<ul class="space-y-5">
+								<li class="bg-white/90 border border-slate-100 rounded-lg p-4 shadow-sm">
+									<div class="font-semibold text-slate-800 mb-1 flex items-center gap-2">
+										<i class="fa-solid fa-leaf text-green-700"></i>
+										Core Course Highlight: DCE 611 — Design-Out Climate</div>
+									<ul class="ml-4 mt-1 space-y-1">
+										<li>
+											<span class="font-semibold text-slate-600">Description:</span>
+											A foundational course exploring how design decisions contribute to or mitigate the climate crisis. It frames environmental degradation as a "design by-product" that can be engineered out of existence.</li>
+										<li>
+											<span class="font-semibold text-green-700">Sustainability Link:</span>
+											This course satisfies the "Climate Science" prompt by directly linking human-led activity (design) to global climate impacts and mitigation strategies.</li>
+									</ul>
+								</li>
+								<li class="bg-white/90 border border-slate-100 rounded-lg p-4 shadow-sm">
+									<div class="font-semibold text-slate-800 mb-1 flex items-center gap-2">
+										<i class="fa-solid fa-leaf text-green-700"></i>
+										Core Course Highlight: DCE 612 — Principles of Circular Economy</div>
+									<ul class="ml-4 mt-1 space-y-1">
+										<li>
+											<span class="font-semibold text-slate-600">Description:</span>
+											Provides the theoretical and practical framework for circularity, focusing on resource regeneration, extending product lifecycles, and designing out waste and pollution.</li>
+										<li>
+											<span class="font-semibold text-green-700">Sustainability Link:</span>
+											Explicitly teaches "Environmental Sustainability" through the lens of resource efficiency and sustainable industrial systems.</li>
+									</ul>
+								</li>
+								<li class="bg-white/90 border border-slate-100 rounded-lg p-4 shadow-sm">
+									<div class="font-semibold text-slate-800 mb-1 flex items-center gap-2">
+										<i class="fa-solid fa-leaf text-green-700"></i>
+										Core Course Highlight: DCE 621 — Lifecycle Assessment and Circular Metrics</div>
+									<ul class="ml-4 mt-1 space-y-1">
+										<li>
+											<span class="font-semibold text-slate-600">Description:</span>
+											Students learn to use data-driven methodologies to calculate the environmental footprint of products and systems across their entire lifespan.</li>
+										<li>
+											<span class="font-semibold text-green-700">Sustainability Link:</span>
+											Provides the technical "evidence" required for sustainability reporting and environmental impact quantification.</li>
+									</ul>
+								</li>
+								<li class="bg-white/90 border border-slate-100 rounded-lg p-4 shadow-sm">
+									<div class="font-semibold text-slate-800 mb-1 flex items-center gap-2">
+										<i class="fa-solid fa-leaf text-green-700"></i>
+										Core Course Highlight: DCE 622 — Regenerative Buildings and Cities</div>
+									<ul class="ml-4 mt-1 space-y-1">
+										<li>
+											<span class="font-semibold text-slate-600">Description:</span>
+											Focuses on the built environment, exploring how urban design can move beyond "low impact" to actually restoring and regenerating local ecosystems.</li>
+										<li>
+											<span class="font-semibold text-green-700">Sustainability Link:</span>
+											Addresses large-scale environmental sustainability within the context of rapid urbanization and climate adaptation.</li>
+									</ul>
+								</li>
+								<li class="bg-white/90 border border-slate-100 rounded-lg p-4 shadow-sm">
+									<div class="font-semibold text-slate-800 mb-1 flex items-center gap-2">
+										<i class="fa-solid fa-leaf text-green-700"></i>
+										Elective Course Highlight: DCE 626 — Impacts of Climate Change Policy on Environmental Management</div>
+									<ul class="ml-4 mt-1 space-y-1">
+										<li>
+											<span class="font-semibold text-slate-600">Description:</span>
+											Analyzes how international and local climate policies (such as the UAE Net Zero 2050) dictate the management of natural resources and industrial output.</li>
+										<li>
+											<span class="font-semibold text-green-700">Sustainability Link:</span>
+											Study of climate science and its resulting policy solutions.</li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 
 
