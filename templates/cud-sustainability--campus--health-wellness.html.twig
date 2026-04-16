@@ -14,8 +14,6 @@
  */
 #}
 
-{{ attach_library('cud_sustainability/tabs') }}
-
 {% set carousel_slides = carousel_items|default([]) %}
 
 {% if carousel_slides %}
@@ -34,12 +32,9 @@
 							</div>
 						{% endif %}
 						<div class="carousel-content-overlay absolute inset-0 mx-auto h-full w-full max-w-none">
-							<div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/65 via-black/25 to-transparent"></div>
 							{% if item.overlay %}
 								{{ item.overlay }}
 							{% endif %}
-							{# Gradient backdrop — keeps text legible over any image #}
-
 						</div>
 					</article>
 				{% endfor %}
@@ -93,25 +88,8 @@
 
 {# Icon map for all seeded primary nav children, keyed by URL #}
 {% set icon_map = {
-	'/sustainability/our-commitment/governance': 'fa-landmark',
-	'/sustainability/our-commitment/sustainability-committee': 'fa-users',
-	'/sustainability/our-commitment/institutional-policies': 'fa-file-lines',
-	'/sustainability/our-commitment/impact-reporting': 'fa-chart-bar',
-	'/sustainability/our-commitment/sdgs': 'fa-leaf',
-	'/sustainability/programs-in-sustainability/sustainability-focused-programs': 'fa-chalkboard',
-	'/sustainability/programs-in-sustainability/student-led-sustainability': 'fa-users-between-lines',
-	'/sustainability/research-in-sustainability/center-for-sustainability-and-innovation': 'fa-flask-vial',
-	'/sustainability/research-in-sustainability/research-projects': 'fa-diagram-project',
-	'/sustainability/researchers-in-sustainability/list-of-researchers': 'fa-id-card',
 	'/sustainability/social-responsibility/edi': 'fa-handshake',
 	'/sustainability/social-responsibility/people-of-determination': 'fa-universal-access',
-	'/sustainability/partnerships-on-sustainability/list-of-institutions': 'fa-building',
-	'/sustainability/campus/health-wellness': 'fa-heart-pulse',
-	'/sustainability/campus/sustainable-infrastructure': 'fa-solar-panel',
-	'/sustainability/campus/path-to-net-zero': 'fa-seedling',
-	'/sustainability/activities-and-news/academia': 'fa-book',
-	'/sustainability/activities-and-news/extracurricular-activities-on-sustainability': 'fa-person-biking',
-	'/sustainability/activities-and-news/news': 'fa-newspaper'
 } %}
 
 {# Derive sub_items from the matching top-level primary nav parent #}
@@ -125,10 +103,10 @@
 
 {# ── Mobile / tablet sub-nav strip (hidden on lg+) ───────────────────────────── #}
 <div class="lg:hidden border-b border-slate-100 bg-white px-4 sm:px-6">
-	<nav class="flex flex-wrap gap-1.5 py-2.5" aria-label="{{ 'Our Commitment navigation'|t }}">
+	<nav class="flex gap-1.5 overflow-x-auto py-2.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" aria-label="{{ 'Our Commitment navigation'|t }}">
 		{% for sub in sub_items %}
-			<a href="{{ sub.url }}" class="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors{% if current_path == sub.url %} bg-slate-900 text-white{% else %} text-slate-600 hover:bg-slate-100 hover:text-slate-900{% endif %}">
-				<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }} shrink-0" aria-hidden="true"></i>
+			<a href="{{ sub.url }}" class="inline-flex flex-none items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors{% if current_path == sub.url %} bg-slate-900 text-white{% else %} text-slate-600 hover:bg-slate-100 hover:text-slate-900{% endif %}">
+				<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }}" aria-hidden="true"></i>
 				{{ sub.title }}
 			</a>
 		{% endfor %}
@@ -137,25 +115,348 @@
 
 {# ── Main Content (full-width) ────────────────────────────────────────────────── #}
 <section class="mx-auto max-w-7xl px-4 lg:px-8 !bg-white" id="main-content" aria-label="{{ title }}" data-mode="{{ mode }}">
-	<div class="min-w-0">
+	<div
+		class="min-w-0 space-y-5">
+
+
+		{# ── Health and Wellness Intro ────────────────────────────────────────── #}
+		<div class="block-common-content">
+			<p class="text-slate-700 text-sm leading-relaxed">{{ 'Canadian University Dubai supports the health and wellbeing of its community through on campus health services, personal counselling, and health promotion initiatives. CUD also boasts a wide range of facilities and services for its community – including affordable and healthy food options on and around campus in City Walk, and a well-equipped free-access Gym in the HUB Building on campus.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed">{{ 'In addition, CUD provides medical and life insurance coverage for faculty and staff, including access to a broad range of healthcare services and, in exceptional cases, further support beyond standard coverage based on individual circumstances and institutional approval.'|t }}</p>
+
+		</div>
+
+		{# ── CUD Health Centre ────────────────────────────────────────────────── #}
+		<div class="block-common-content" aria-labelledby="heading-health-centre">
+			<h2 id="heading-health-centre" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'CUD Health Centre'|t }}</h2>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The CUD Health Centre provides primary healthcare support for students, faculty and staff, including first aid, care for minor illnesses and injuries, health education, disease prevention guidance, emergency referral support, and information on health insurance benefits, coverage and networks. Health Centre services are available free of charge, and the University also promotes wellbeing through counselling, awareness activities, and community health campaigns that contribute to a safe, supportive and health-conscious campus environment. These activities are shared with Student Affairs and HR department.'|t }}</p>
+
+			{# Health Centre image placeholder #}
+			<div class="lazy-loading relative w-full mb-3">
+				<span class="image-loader absolute inset-0 flex items-center justify-center bg-white/60 z-10">
+					<i class="fa-solid fa-arrow-rotate-right animate-spin text-green-700 text-3xl" aria-hidden="true"></i>
+				</span>
+				<img src="//www.cud.ac.ae/sites/default/files/general/2016/health-centre-1920x1080.jpg" alt="{{ 'CUD Health Centre'|t }}" class="w-full h-auto object-cover rounded-lg shadow" loading="lazy" onload="this.previousElementSibling.style.display='none'"/>
+			</div>
+
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'Canadian University Dubai provides free-of-charge medical services to all students.'|t }}</p>
+			<ul class="space-y-2 mb-0">
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>
+						<strong>{{ 'On-Campus Health Centre:'|t }}</strong>
+						{{ 'Licensed nurses provide first-aid, medical consultations, and vital signs monitoring at no cost to the student body.'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>
+						<strong>{{ 'Sexual and Reproductive Health-Care Guide:'|t }}</strong>
+						{{ 'The licensed nurses are able to provide guidance and advice where appropriate for students and staff who wish to avail to the services.'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>
+						<strong>{{ 'Chronic Condition Management:'|t }}</strong>
+						{{ 'Students and staff with chronic illnesses or physical disabilities can submit medical reports to the Health Centre to arrange specialized on-campus assistance, including the safe storage of medications and emergency care coordination.'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>
+						<strong>{{ 'Physical Accessibility:'|t }}</strong>
+						{{ 'The Health Centre is strategically located on the ground floor of the CUD Hub, ensuring it is readily reachable for all students, including those with limited mobility.'|t }}</span>
+				</li>
+			</ul>
+		</div>
+
+		{# ── Mental Health Support ─────────────────────────────────────────────── #}
+		<div class="block-common-content" aria-labelledby="heading-mental-health">
+			<h2 id="heading-mental-health" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Mental Health Support'|t }}</h2>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'CUD recognizes that mental wellbeing is a cornerstone of social sustainability and academic success. Staff and faculty are also offered mental wellbeing support throughout their entire CUD career.'|t }}</p>
+			<ul class="space-y-2 mb-4">
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>
+						<strong>{{ 'Professional Counselling:'|t }}</strong>
+						{{ 'The university employs a dedicated Student Counsellor who provides confidential one-on-one sessions to address personal, psychological, or learning needs.'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>
+						<strong>{{ 'Minority Support:'|t }}</strong>
+						{{ 'Our counselling framework explicitly addresses "Minority Concerns," ensuring that students from diverse ethnic and cultural backgrounds have a safe space to discuss unique challenges.'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>
+						<strong>{{ 'Confidentiality Protocols:'|t }}</strong>
+						{{ 'All counselling and medical interactions are governed by strict confidentiality policies to ensure student and staff&rsquo;s safety and privacy.'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>
+						<strong>{{ 'Medical Insurance Coverage for External Support:'|t }}</strong>
+						{{ 'Eligible employees may access mental health and counselling support through CUD&rsquo;s medical insurance coverage, in accordance with the terms and benefits of the applicable plan. This complements the University&rsquo;s broader mental health support services available to the CUD community.'|t }}</span>
+				</li>
+			</ul>
+			<p class="text-slate-700 text-sm leading-relaxed mb-2">{{ 'Beyond clinical care and mental wellbeing support, CUD fosters resilience and life skills through the'|t }}
+				<strong>{{ 'Student Success Centre (SSC)'|t }}</strong>.</p>
+			<ul class="space-y-2">
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>
+						<strong>{{ 'Holistic Development:'|t }}</strong>
+						{{ 'The SSC hosts regular workshops focused on confidence-building, time management, and study skills to help students overcome learning hurdles.'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>
+						<strong>{{ 'Confidentiality and Safety:'|t }}</strong>
+						{{ 'All medical and psychological records are maintained with the highest standards of privacy, ensuring a safe space for students to seek help.'|t }}</span>
+				</li>
+			</ul>
+		</div>
+
+		{# ── Food and Exercise ─────────────────────────────────────────────────── #}
+		<div class="block-common-content" aria-labelledby="heading-food-exercise">
+			<h2 id="heading-food-exercise" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Food and Exercise'|t }}</h2>
+			<p class="text-slate-700 text-sm leading-relaxed mb-4">{{ 'At Canadian University Dubai, we recognize that healthy and affordable access to food and fitness is essential for a thriving academic community. Our provisions ensure that maintaining a balanced lifestyle is both convenient and financially accessible for all students and staff.'|t }}</p>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-4 mb-2">{{ 'CUD Café'|t }}</h3>
+
+			{# ── Café Gallery ── #}
+			<div class="mb-4 flex flex-wrap justify-center gap-3 sm:gap-4" aria-label="{{ 'CUD Gym Gallery'|t }}">
+				{% for i in 1..4 %}
+					<figure class="group overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm bg-white w-[calc(50%-0.375rem)] lg:w-[calc(25%-0.75rem)]">
+						<div class="overflow-hidden lazy-loading relative">
+							<span class="image-loader absolute inset-0 flex items-center justify-center bg-white/60 z-10">
+								<i class="fa-solid fa-arrow-rotate-right animate-spin text-green-700 text-3xl" aria-hidden="true"></i>
+							</span>
+							<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/health-wellness/cafe-0' ~ i ~ '.jpg' }}"
+								 alt="{{ 'CUD Café photo'|t }} {{ i }}"
+								 class="tc-lightbox w-full h-48 sm:h-56 object-cover transition-transform duration-300 group-hover:scale-105"
+								 loading="lazy"
+								 onload="this.previousElementSibling.style.display='none'">
+						</div>
+					</figure>
+				{% endfor %}
+			</div>
+
+			<p class="text-slate-700 text-sm leading-relaxed mb-2">{{ 'The CUD Café serves as our primary on-campus dining facility, prioritized for affordability and environmental responsibility.'|t }}</p>
+			<ul class="space-y-2 mb-4">
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>
+						<strong>{{ 'Affordable Pricing:'|t }}</strong>
+						{{ 'The Café offers a menu priced significantly lower than surrounding outlets in the City Walk district, ensuring that nutritious meals are accessible to the entire student body.'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>
+						<strong>{{ 'Eco-Conscious Materials:'|t }}</strong>
+						{{ 'In line with our circular economy goals, the Café exclusively utilizes sustainably sourced materials, including biodegradable straws and takeaway containers.'|t }}</span>
+				</li>
+			</ul>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-4 mb-2">{{ 'CUDeals'|t }}</h3>
+			<p class="text-slate-700 text-sm leading-relaxed mb-2">{{ 'We extend the affordability of the Dubai lifestyle through the CUDeals program, an exclusive loyalty initiative for the CUD community.'|t }}
+				<strong>{{ 'For all CUDeals, visit'|t }}
+					<a href="https://www.cud.ac.ae/cudeals" class="text-sky-700 hover:underline">https://www.cud.ac.ae/cudeals</a>
+				</strong>.</p>
+			<ul class="space-y-2 mb-4">
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>
+						<strong>{{ 'Widespread Discounts:'|t }}</strong>
+						{{ 'Students and staff can access discounts of up to'|t }}
+						<strong>50%</strong>
+						{{ 'at a wide array of partner restaurants, cafés, and daily supply outlets.'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>
+						<strong>{{ 'Holistic Lifestyle Support:'|t }}</strong>
+						{{ 'The program also covers non-food services, including entertainment, professional services, and health and wellness providers, helping to reduce the overall cost of living.'|t }}</span>
+				</li>
+			</ul>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-4 mb-2">{{ 'On-Campus Physical Fitness'|t }}</h3>
+
+			{# ── Gym Gallery ── #}
+			<div class="mb-4 flex flex-wrap justify-center gap-3 sm:gap-4" aria-label="{{ 'CUD Gym Gallery'|t }}">
+				{% for i in 1..5 %}
+					<figure class="group overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm bg-white w-[calc(50%-0.375rem)] lg:w-[calc(25%-0.75rem)]">
+						<div class="overflow-hidden lazy-loading relative">
+							<span class="image-loader absolute inset-0 flex items-center justify-center bg-white/60 z-10">
+								<i class="fa-solid fa-arrow-rotate-right animate-spin text-green-700 text-3xl" aria-hidden="true"></i>
+							</span>
+							<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/health-wellness/gym-0' ~ i ~ '.jpg' }}"
+								 alt="{{ 'CUD Gym photo'|t }} {{ i }}"
+								 class="tc-lightbox w-full h-48 sm:h-56 object-cover transition-transform duration-300 group-hover:scale-105"
+								 loading="lazy"
+								 onload="this.previousElementSibling.style.display='none'">
+						</div>
+					</figure>
+				{% endfor %}
+			</div>
+
+			<p class="text-slate-700 text-sm leading-relaxed mb-2">{{ 'Physical wellbeing is supported by our modern, on-campus fitness infrastructure.'|t }}</p>
+			<ul class="space-y-2">
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>
+						<strong>{{ 'Free Access:'|t }}</strong>
+						{{ 'The CUD Gym is entirely free for all members of the CUD community to use, removing financial barriers to physical activity.'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>
+						<strong>{{ 'Convenient Location:'|t }}</strong>
+						{{ 'The facility is strategically located on the ground floor of the Hub Building, providing easy, barrier-free access for students and employees between classes or shifts.'|t }}</span>
+				</li>
+			</ul>
+		</div>
+
+		{# ── Health Awareness Initiatives and Education ────────────────────────── #}
+		<div class="block-common-content" aria-labelledby="heading-health-awareness">
+			<h2 id="heading-health-awareness" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Health Awareness Initiatives and Education'|t }}</h2>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'CUD supports the health and wellbeing of its community through on campus health services, counselling, health education, and preventive awareness initiatives.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The CUD Health Centre provides primary healthcare support for students, faculty and staff, including first aid, care for minor illnesses and injuries, health education, disease prevention guidance, and referral support where needed.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'CUD also promotes wellbeing through personal counselling and health awareness activities delivered across the academic year.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-4">{{ 'As part of its health awareness and education efforts, CUD has organised campaigns and sessions in collaboration with healthcare partners, including breast cancer and prostate cancer awareness initiatives, alongside free health checks offered during awareness activities for students, faculty and staff. For eligible employees, CUD also provides medical insurance benefits that include maternity coverage, supporting access to reproductive healthcare through the University&rsquo;s health benefits framework.'|t }}</p>
+
+			<div class="mt-2">
+				<p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400 mb-3">{{ 'Related Links'|t }}</p>
+				<ul class="flex flex-col gap-2">
+					<li>
+						<a href="//www.cud.ac.ae/student-affairs/health-centre" class="group flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm transition-all hover:border-[#b13634]/30 hover:bg-[#b13634]/5 hover:text-[#b13634]">
+							<span class="flex items-center gap-2.5">
+								<i class="fa-solid fa-heart-pulse w-4 text-center text-slate-400 group-hover:text-[#b13634] transition-colors" aria-hidden="true"></i>
+								{{ 'CUD Student Affairs — Health Centre'|t }}
+							</span>
+							<i class="fa-solid fa-arrow-right text-xs text-slate-300 group-hover:text-[#b13634] transition-all group-hover:translate-x-0.5" aria-hidden="true"></i>
+						</a>
+					</li>
+					<li>
+						<a href="//www.cud.ac.ae/news/cud-joins-cancer-awareness-campaign" class="group flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm transition-all hover:border-[#b13634]/30 hover:bg-[#b13634]/5 hover:text-[#b13634]">
+							<span class="flex items-center gap-2.5">
+								<i class="fa-solid fa-ribbon w-4 text-center text-slate-400 group-hover:text-[#b13634] transition-colors" aria-hidden="true"></i>
+								{{ 'CUD joins Cancer Awareness Campaign'|t }}
+							</span>
+							<i class="fa-solid fa-arrow-right text-xs text-slate-300 group-hover:text-[#b13634] transition-all group-hover:translate-x-0.5" aria-hidden="true"></i>
+						</a>
+					</li>
+					<li>
+						<a href="//www.cud.ac.ae/news/world-mental-health-day-canadian-university-dubai" class="group flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm transition-all hover:border-[#b13634]/30 hover:bg-[#b13634]/5 hover:text-[#b13634]">
+							<span class="flex items-center gap-2.5">
+								<i class="fa-solid fa-brain w-4 text-center text-slate-400 group-hover:text-[#b13634] transition-colors" aria-hidden="true"></i>
+								{{ 'World Mental Health Day at Canadian University Dubai'|t }}
+							</span>
+							<i class="fa-solid fa-arrow-right text-xs text-slate-300 group-hover:text-[#b13634] transition-all group-hover:translate-x-0.5" aria-hidden="true"></i>
+						</a>
+					</li>
+					<li>
+						<a href="//www.cud.ac.ae/news/canadian-university-dubai-promotes-student-happiness-wellness-wednesdays" class="group flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm transition-all hover:border-[#b13634]/30 hover:bg-[#b13634]/5 hover:text-[#b13634]">
+							<span class="flex items-center gap-2.5">
+								<i class="fa-solid fa-star w-4 text-center text-slate-400 group-hover:text-[#b13634] transition-colors" aria-hidden="true"></i>
+								{{ 'CUD promotes Student Happiness — Wellness Wednesdays'|t }}
+							</span>
+							<i class="fa-solid fa-arrow-right text-xs text-slate-300 group-hover:text-[#b13634] transition-all group-hover:translate-x-0.5" aria-hidden="true"></i>
+						</a>
+					</li>
+					<li>
+						<a href="//www.cud.ac.ae/events/blood-donation-drive-2" class="group flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm transition-all hover:border-[#b13634]/30 hover:bg-[#b13634]/5 hover:text-[#b13634]">
+							<span class="flex items-center gap-2.5">
+								<i class="fa-solid fa-droplet w-4 text-center text-slate-400 group-hover:text-[#b13634] transition-colors" aria-hidden="true"></i>
+								{{ 'Blood Donation Drive'|t }}
+							</span>
+							<i class="fa-solid fa-arrow-right text-xs text-slate-300 group-hover:text-[#b13634] transition-all group-hover:translate-x-0.5" aria-hidden="true"></i>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		{# ── Sports ───────────────────────────────────────────────────────────── #}
+		<div class="block-common-content" aria-labelledby="heading-sports">
+			<h2 id="heading-sports" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Sports'|t }}</h2>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'At CUD we recognize that importance of staying healthy and active and offer a number of sporting activities to our students on campus.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'Students are encouraged to take part as an active role in sports at university can help them develop practical skills like team work, discipline, sportsmanship, cooperation, dedication and decision making, supporting both their physical and personality development, and helping them progress in the future.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-4">{{ 'Our dedicated Sports Program offers students the opportunity for regular training and practices, intra and inter-mural competitions, and our sports teams play matches in tournaments and events across the UAE.'|t }}</p>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Our sports programs include:'|t }}</h3>
+			<ul class="space-y-1 mb-4">
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-futbol mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					{{ 'Football training'|t }}
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-basketball mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					{{ 'Basketball team training'|t }}
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-volleyball mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					{{ 'Volleyball training'|t }}
+				</li>
+			</ul>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'We also have teams representing the university in:'|t }}</h3>
+			<ul class="space-y-1 mb-4">
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-table-tennis-paddle-ball mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					{{ 'Table tennis'|t }}
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-person-running mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					{{ 'Track and Field'|t }}
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-chess mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					{{ 'Chess'|t }}
+				</li>
+			</ul>
+
+			<div class="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-5 sm:p-6 shadow-sm">
+				<div class="flex items-start gap-4">
+					<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#b13634]/10 text-[#b13634]">
+						<i class="fa-solid fa-envelope text-lg" aria-hidden="true"></i>
+					</div>
+					<div class="min-w-0 flex-1">
+						<p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-400 mb-1">{{ 'Sports Program Contact'|t }}</p>
+						<p class="text-sm font-semibold text-slate-900 mb-0">{{ 'Mr. Dusan Popovic'|t }}</p>
+						<div class="mt-2 flex flex-col gap-1.5 text-sm">
+							<div class="flex items-center gap-2.5 text-slate-700">
+								<i class="fa-solid fa-envelope w-4 text-center text-[#b13634]" aria-hidden="true"></i>
+								<a href="mailto:sports@cud.ac.ae" class="hover:text-[#b13634] transition-colors underline underline-offset-2">sports@cud.ac.ae</a>
+							</div>
+							<div class="flex items-center gap-2.5 text-slate-700">
+								<i class="fa-solid fa-link w-4 text-center text-[#b13634]" aria-hidden="true"></i>
+								<a href="https://www.cud.ac.ae/life-on-campus/sports" class="hover:text-[#b13634] transition-colors underline underline-offset-2">www.cud.ac.ae/life-on-campus/sports</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		{% if content %}
 			<div class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-sky-700 prose-a:no-underline hover:prose-a:underline">
 				{{ content }}
 			</div>
 		{% endif %}
 
-		{# % if sections %}
-																			<div class="mt-8 space-y-6">
-																				{% for section in sections %}
-																					<div class="prose prose-slate max-w-none">{{ section }}</div>
-																				{% endfor %}
-																			</div>
-																		{% endif % #}
+		{% if sections %}
+			<div class="mt-8 space-y-6">
+				{% for section in sections %}
+					<div class="prose prose-slate max-w-none">{{ section }}</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+
 	</div>
 </section>
 
 {# ── Desktop floating contextual nav (hidden on mobile/tablet) ───────────────── #}
-<div class="hidden lg:block fixed right-0 top-1/2 -translate-y-1/2 z-40 group" aria-label="{{ 'Our Commitment navigation'|t }}">
+<section class="hidden lg:block fixed right-0 top-1/2 -translate-y-1/2 z-40 group" aria-label="{{ 'Our Commitment navigation'|t }}">
 	<div
 		class="flex items-stretch">
 
@@ -186,4 +487,4 @@
 		</div>
 
 	</div>
-</div>
+</section>
