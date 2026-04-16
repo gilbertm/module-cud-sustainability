@@ -1,0 +1,1176 @@
+{#
+/**
+ * @file
+ * Inner-page template for /sustainability/researchers-in-sustainability/list-of-researchers.
+ *
+ * Variables:
+ * - title: Page title string.
+ * - content: Rendered node content (full view mode).
+ * - carousel_items: Optional list of carousel slides.
+ * - sections: Optional list of processed-text sections.
+ * - primary_nav: Primary navigation array.
+ * - secondary_nav: Secondary navigation array.
+ * - mode: Display mode string ('main' or 'secondary').
+ */
+#}
+
+{% set carousel_slides = carousel_items|default([]) %}
+
+{% if carousel_slides %}
+	<section class="carousel group relative mb-8 w-screen max-w-none -translate-x-1/2 left-1/2" data-cud-carousel data-cud-carousel-autoplay="5600" aria-label="{{ 'Governance carousel'|t }}">
+		<div class="w-full relative overflow-hidden">
+			<div class="w-full flex transition-transform duration-700 ease-out will-change-transform" data-cud-carousel-track>
+				{% for item in carousel_slides %}
+					<article class="relative min-w-full" data-cud-carousel-slide>
+						{% if item.image %}
+							<div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[280px] overflow-hidden sm:min-h-[340px] lg:min-h-[420px]">
+								{{ item.image }}
+							</div>
+						{% elseif item.image_url %}
+							<div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[280px] overflow-hidden sm:min-h-[340px] lg:min-h-[420px]">
+								<img src="{{ item.image_url }}" alt="{{ item.title|default('Governance') }}" loading="lazy" class="h-full w-full object-cover">
+							</div>
+						{% endif %}
+						<div class="carousel-content-overlay absolute inset-0 mx-auto h-full w-full max-w-none">
+							{% if item.overlay %}
+								{{ item.overlay }}
+							{% endif %}
+						</div>
+					</article>
+				{% endfor %}
+			</div>
+
+			{% if carousel_slides|length > 1 %}
+				<div class="carousel-content-controls">
+					<button class="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-md bg-slate-950/80 p-2.5 text-slate-100 opacity-0 shadow-xl backdrop-blur-md transition-all duration-500 ease-in-out group-hover:opacity-100 hover:bg-slate-800/90 hover:text-white focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-sky-400 sm:left-6" data-cud-carousel-prev aria-label="{{ 'Previous slide'|t }}">
+						<i class="fa-solid fa-chevron-left h-5 w-5" aria-hidden="true"></i>
+					</button>
+					<button class="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-md bg-slate-950/80 p-2.5 text-slate-100 opacity-0 shadow-xl backdrop-blur-md transition-all duration-500 ease-in-out group-hover:opacity-100 hover:bg-slate-800/90 hover:text-white focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-sky-400 sm:right-6" data-cud-carousel-next aria-label="{{ 'Next slide'|t }}">
+						<i class="fa-solid fa-chevron-right h-5 w-5" aria-hidden="true"></i>
+					</button>
+				</div>
+			{% endif %}
+		</div>
+	</section>
+{% endif %}
+
+{# ── Page Header with Breadcrumb ─────────────────────────────────────────────── #}
+<section class="bg-white" aria-label="{{ 'Page header'|t }}">
+	<div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+		<nav class="mb-3 flex items-center gap-1.5 text-xs text-slate-500" aria-label="{{ 'Breadcrumb'|t }}">
+			{% for link in breadcrumb %}
+				{% if not loop.first %}
+					<i class="fa-solid fa-chevron-right text-[9px] text-slate-400" aria-hidden="true"></i>
+				{% endif %}
+				{% if link.url %}
+					<a href="{{ link.url }}" class="hover:text-slate-700 transition-colors">{{ link.text }}</a>
+				{% else %}
+					<span>{{ link.text }}</span>
+				{% endif %}
+			{% endfor %}
+			{% if breadcrumb is not empty %}
+				<i class="fa-solid fa-chevron-right text-[9px] text-slate-400" aria-hidden="true"></i>
+			{% endif %}
+			<span class="font-medium text-slate-700">{{ title }}</span>
+		</nav>
+		<div class="flex items-center gap-3">
+			<h1 class="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">{{ title }}</h1>
+			{% if edit_url %}
+				<a href="{{ edit_url }}" class="shrink-0 rounded-md p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700" title="{{ 'Edit node'|t }}" aria-label="{{ 'Edit'|t }}">
+					<i class="fa-solid fa-pen-to-square text-sm" aria-hidden="true"></i>
+				</a>
+			{% endif %}
+		</div>
+	</div>
+</section>
+
+{# ── Shared sub-nav data ──────────────────────────────────────────────────────── #}
+
+{# Icon map for all seeded primary nav children, keyed by URL #}
+{% set icon_map = {
+	'/sustainability/social-responsibility/edi': 'fa-handshake',
+	'/sustainability/social-responsibility/people-of-determination': 'fa-universal-access',
+} %}
+
+{# Derive sub_items from the matching top-level primary nav parent #}
+{% set active_nav_parent = null %}
+{% for item in primary_nav %}
+	{% if item.children and (current_path == item.url or current_path starts with (item.url ~ '/')) %}
+		{% set active_nav_parent = item %}
+	{% endif %}
+{% endfor %}
+{% set sub_items = active_nav_parent ? active_nav_parent.children : [] %}
+
+{# ── Mobile / tablet sub-nav strip (hidden on lg+) ───────────────────────────── #}
+<div class="lg:hidden border-b border-slate-100 bg-white px-4 sm:px-6">
+	<nav class="flex gap-1.5 overflow-x-auto py-2.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" aria-label="{{ 'Our Commitment navigation'|t }}">
+		{% for sub in sub_items %}
+			<a href="{{ sub.url }}" class="inline-flex flex-none items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors{% if current_path == sub.url %} bg-slate-900 text-white{% else %} text-slate-600 hover:bg-slate-100 hover:text-slate-900{% endif %}">
+				<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }}" aria-hidden="true"></i>
+				{{ sub.title }}
+			</a>
+		{% endfor %}
+	</nav>
+</div>
+
+{# ── Main Content (full-width) ────────────────────────────────────────────────── #}
+<section class="mx-auto max-w-7xl px-4 lg:px-8 !bg-white" id="main-content" aria-label="{{ title }}" data-mode="{{ mode }}">
+	<div
+		class="min-w-0 space-y-5">
+
+
+		{# ── LD+JSON Structured Data for Researchers ─────────────────────────── #}
+		<script type="application/ld+json">
+		{
+			"@context": "https://schema.org",
+			"@type": "ItemList",
+			"name": "Researchers in Sustainability — Canadian University Dubai",
+			"description": "Faculty members at Canadian University Dubai engaged in sustainability research across engineering, architecture, management, health sciences, and communication disciplines.",
+			"numberOfItems": 53,
+			"url": "https://www.cud.ac.ae/sustainability/researchers-in-sustainability/list-of-researchers",
+			"publisher": {
+				"@type": "CollegeOrUniversity",
+				"name": "Canadian University Dubai",
+				"url": "https://www.cud.ac.ae",
+				"address": {
+					"@type": "PostalAddress",
+					"addressLocality": "Dubai",
+					"addressCountry": "AE"
+				}
+			},
+			"itemListElement": [
+				{
+					"@type": "ListItem",
+					"position": 1,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Adam Fenech",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Canada Research Chair, Culture of Work Committee Member",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 2,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Chureerat Haq",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Manager, Center for Sustainability and Innovation",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 3,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Sherif Moussa",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Dean, School of Engineering, Applied Science and Technology",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 4,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Aseel Takshe",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Acting Dean, School of Health Sciences and Psychology",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 5,
+					"item": {
+						"@type": "Person",
+						"name": "Mr. Massimo Imparato",
+						"honorificPrefix": "Mr.",
+						"jobTitle": "Dean, School of Architecture and Interior Design",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 6,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Ibrahim Tabche",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Acting Dean, School of Management",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 7,
+					"item": {
+						"@type": "Person",
+						"name": "Prof. Efthymios Papatzikis",
+						"honorificPrefix": "Prof.",
+						"jobTitle": "Professor, School of Engineering, Applied Science and Technology",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 8,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Firuz Kamalov",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Professor, School of Engineering, Applied Science and Technology",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 9,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Rafik Belarbi",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Professor, School of Architecture and Interior Design",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 10,
+					"item": {
+						"@type": "Person",
+						"name": "Prof. Constantin Victor Spiridonidis",
+						"honorificPrefix": "Prof.",
+						"jobTitle": "Chair of Architecture, School of Architecture and Interior Design",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 11,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Agata Stachowicz-Stanusch",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Professor, School of Management",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 12,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Kweh Qian Long",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Professor, School of Management",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 13,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Syed Zamberi",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Professor, School of Management",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 14,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Wissam Ghach",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Associate Professor, School of Health Sciences and Psychology",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 15,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Alia AlNaggar",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Associate Professor, School of Engineering, Applied Science and Technology",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 16,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Haythem El-Messiry",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Associate Professor, School of Engineering, Applied Science and Technology",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 17,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Khaled Goher",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Associate Professor, School of Engineering, Applied Science and Technology",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 18,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Khalid Elgazzar",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Associate Professor, School of Engineering, Applied Science and Technology",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 19,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Kuljeet Kaur",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Associate Professor, School of Engineering, Applied Science and Technology",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 20,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Yasir Faheem",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Associate Professor, School of Engineering, Applied Science and Technology",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 21,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Maha Salman",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Associate Professor, School of Architecture and Interior Design",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 22,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Seif Khiati",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Associate Professor, School of Architecture and Interior Design",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 23,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Simona Azzali",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Associate Professor, School of Architecture and Interior Design",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 24,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Najaf Khakan",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Associate Professor, School of Management",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 25,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Osama Atayah",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Associate Professor, School of Management",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 26,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Rima Bizri",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Associate Professor, School of Management",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 27,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Saida Harguem",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Associate Professor, School of Management",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 28,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Zakariya Chabani",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Associate Professor, School of Management",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 29,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Malcolm Price",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Associate Professor, Faculty of Communication, Arts and Sciences",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 30,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Mohammed Nami",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Associate Professor, Faculty of Communication, Arts and Sciences",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 31,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Abir Hamze",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Assistant Professor, School of Health Sciences and Psychology",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 32,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Emran AlOtaibi",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Assistant Professor, School of Health Sciences and Psychology",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 33,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Richa Malhotra",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Assistant Professor, School of Health Sciences and Psychology",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 34,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Vinita Puri",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Assistant Professor, School of Health Sciences and Psychology",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 35,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Rita Zgheib",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Assistant Professor, School of Engineering, Applied Science and Technology",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 36,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Tamer Mohamed",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Assistant Professor, School of Engineering, Applied Science and Technology",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 37,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Ziad El Khatib",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Assistant Professor, School of Engineering, Applied Science and Technology",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 38,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Sana Tamzini",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Assistant Professor, School of Architecture and Interior Design",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 39,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Serkan Gunay",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Assistant Professor, School of Architecture and Interior Design",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 40,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Samuel Ouzan",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Assistant Professor, School of Management",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 41,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Soumaya Askri",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Assistant Professor, School of Management",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 42,
+					"item": {
+						"@type": "Person",
+						"name": "Ms. Chloe Bennett",
+						"honorificPrefix": "Ms.",
+						"jobTitle": "Assistant Professor of Practice, Faculty of Communication, Arts and Sciences",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 43,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Lauren Khan",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Assistant Professor, Faculty of Communication, Arts and Sciences",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 44,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Sawsan AlMadhi",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Assistant Professor, Faculty of Communication, Arts and Sciences",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 45,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Sophie Johnson",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Chair of Interior Design, School of Architecture and Interior Design",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 46,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Tatjana Karabegovic",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Visiting Assistant Professor, School of Architecture and Interior Design",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 47,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Ammar Yahia",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Faculty, School of Engineering, Applied Science and Technology",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 48,
+					"item": {
+						"@type": "Person",
+						"name": "Ms. Christine Yogiaman",
+						"honorificPrefix": "Ms.",
+						"jobTitle": "Senior Lecturer, School of Architecture and Interior Design",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 49,
+					"item": {
+						"@type": "Person",
+						"name": "Mr. Shahab Ghandhari",
+						"honorificPrefix": "Mr.",
+						"jobTitle": "Senior Lecturer, School of Architecture and Interior Design",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 50,
+					"item": {
+						"@type": "Person",
+						"name": "Ms. Zeineb Naouar",
+						"honorificPrefix": "Ms.",
+						"jobTitle": "Senior Lecturer, School of Architecture and Interior Design",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 51,
+					"item": {
+						"@type": "Person",
+						"name": "Dr. Rina Salhab",
+						"honorificPrefix": "Dr.",
+						"jobTitle": "Lecturer, Faculty of Communication, Arts and Sciences",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				},
+				{
+					"@type": "ListItem",
+					"position": 52,
+					"item": {
+						"@type": "Person",
+						"name": "Ms. Taghrid Abuzeid",
+						"honorificPrefix": "Ms.",
+						"jobTitle": "Teaching Assistant, School of Architecture and Interior Design",
+						"affiliation": { "@type": "CollegeOrUniversity", "name": "Canadian University Dubai" }
+					}
+				}
+			]
+		}
+		</script>
+
+		{# ── Researchers in Sustainability – Intro ────────────────────────────── #}
+		<div class="block-common-content">
+			<p class="text-slate-700 text-sm leading-relaxed">{{ 'Canadian University Dubai is home to a growing community of faculty researchers whose work advances understanding and practice in sustainability across multiple disciplines. Listed below are CUD&rsquo;s researchers in sustainability, organised by academic rank and school affiliation.'|t }}</p>
+		</div>
+
+		{# ── Summary KPIs ─────────────────────────────────────────────────────── #}
+		<div class="block-common-content">
+			<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+				<div class="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-4 text-center shadow-sm">
+					<p class="text-2xl font-bold text-[#b13634] mb-0">53</p>
+					<p class="text-xs text-slate-500 mt-1 mb-0">{{ 'Faculty Researchers'|t }}</p>
+				</div>
+				<div class="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-4 text-center shadow-sm">
+					<p class="text-2xl font-bold text-[#b13634] mb-0">6</p>
+					<p class="text-xs text-slate-500 mt-1 mb-0">{{ 'Schools &amp; Faculties'|t }}</p>
+				</div>
+				<div class="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-4 text-center shadow-sm">
+					<p class="text-2xl font-bold text-[#b13634] mb-0">7</p>
+					<p class="text-xs text-slate-500 mt-1 mb-0">{{ 'Professors'|t }}</p>
+				</div>
+				<div class="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-4 text-center shadow-sm">
+					<p class="text-2xl font-bold text-[#b13634] mb-0">16</p>
+					<p class="text-xs text-slate-500 mt-1 mb-0">{{ 'Associate Professors'|t }}</p>
+				</div>
+				<div class="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-4 text-center shadow-sm">
+					<p class="text-2xl font-bold text-[#b13634] mb-0">15</p>
+					<p class="text-xs text-slate-500 mt-1 mb-0">{{ 'Assistant Professors'|t }}</p>
+				</div>
+			</div>
+		</div>
+
+		{# ══════════════════════════════════════════════════════════════════════ #}
+		{# ── LEADERSHIP & RESEARCH CHAIRS ─────────────────────────────────── #}
+		{# ══════════════════════════════════════════════════════════════════════ #}
+		<div class="block-common-content" aria-labelledby="heading-leadership">
+			<h2 id="heading-leadership" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Leadership &amp; Research Chairs'|t }}</h2>
+			<p class="text-slate-700 text-xs mb-3">{{ 'Deans, acting deans, research chairs, and centre leadership directing sustainability research strategy.'|t }}</p>
+			<div class="overflow-x-auto rounded-xl border border-slate-200 shadow-sm">
+				<table class="w-full text-sm text-left" aria-label="{{ 'Leadership and Research Chairs'|t }}">
+					<thead class="bg-slate-50 text-xs uppercase tracking-wider text-slate-500">
+						<tr>
+							<th scope="col" class="px-4 py-3 font-semibold">{{ 'Name'|t }}</th>
+							<th scope="col" class="px-4 py-3 font-semibold">{{ 'Role'|t }}</th>
+							<th scope="col" class="px-4 py-3 font-semibold hidden sm:table-cell">{{ 'School / Unit'|t }}</th>
+						</tr>
+					</thead>
+					<tbody class="divide-y divide-slate-100">
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Adam Fenech'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'Canada Research Chair'|t }}</td>
+							<td class="px-4 py-3 text-slate-500 hidden sm:table-cell">{{ 'Culture of Work Committee'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Chureerat Haq'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'Manager'|t }}</td>
+							<td class="px-4 py-3 text-slate-500 hidden sm:table-cell">{{ 'Center for Sustainability and Innovation'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Sherif Moussa'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'Dean'|t }}</td>
+							<td class="px-4 py-3 text-slate-500 hidden sm:table-cell">{{ 'School of Engineering, Applied Science and Technology'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Aseel Takshe'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'Acting Dean'|t }}</td>
+							<td class="px-4 py-3 text-slate-500 hidden sm:table-cell">{{ 'School of Health Sciences and Psychology'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Mr. Massimo Imparato'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'Dean'|t }}</td>
+							<td class="px-4 py-3 text-slate-500 hidden sm:table-cell">{{ 'School of Architecture and Interior Design'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Ibrahim Tabche'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'Acting Dean'|t }}</td>
+							<td class="px-4 py-3 text-slate-500 hidden sm:table-cell">{{ 'School of Management'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Sophie Johnson'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'Chair of Interior Design'|t }}</td>
+							<td class="px-4 py-3 text-slate-500 hidden sm:table-cell">{{ 'School of Architecture and Interior Design'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Prof. Constantin Victor Spiridonidis'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'Chair of Architecture'|t }}</td>
+							<td class="px-4 py-3 text-slate-500 hidden sm:table-cell">{{ 'School of Architecture and Interior Design'|t }}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		{# ══════════════════════════════════════════════════════════════════════ #}
+		{# ── PROFESSORS ───────────────────────────────────────────────────── #}
+		{# ══════════════════════════════════════════════════════════════════════ #}
+		<div class="block-common-content" aria-labelledby="heading-professors">
+			<h2 id="heading-professors" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Professors'|t }}</h2>
+			<p class="text-slate-700 text-xs mb-3">{{ 'Full professors contributing to sustainability research across CUD&rsquo;s academic divisions.'|t }}</p>
+			<div class="overflow-x-auto rounded-xl border border-slate-200 shadow-sm">
+				<table class="w-full text-sm text-left" aria-label="{{ 'Professors'|t }}">
+					<thead class="bg-slate-50 text-xs uppercase tracking-wider text-slate-500">
+						<tr>
+							<th scope="col" class="px-4 py-3 font-semibold">{{ 'Name'|t }}</th>
+							<th scope="col" class="px-4 py-3 font-semibold">{{ 'School / Faculty'|t }}</th>
+						</tr>
+					</thead>
+					<tbody class="divide-y divide-slate-100">
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Prof. Efthymios Papatzikis'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'School of Engineering, Applied Science and Technology'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Firuz Kamalov'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'School of Engineering, Applied Science and Technology'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Rafik Belarbi'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'School of Architecture and Interior Design'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Agata Stachowicz-Stanusch'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'School of Management'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Kweh Qian Long'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'School of Management'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Syed Zamberi'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'School of Management'|t }}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		{# ══════════════════════════════════════════════════════════════════════ #}
+		{# ── ASSOCIATE PROFESSORS ─────────────────────────────────────────── #}
+		{# ══════════════════════════════════════════════════════════════════════ #}
+		<div class="block-common-content" aria-labelledby="heading-associate-professors">
+			<h2 id="heading-associate-professors" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Associate Professors'|t }}</h2>
+			<p class="text-slate-700 text-xs mb-3">{{ 'Mid-career academics with established sustainability research portfolios.'|t }}</p>
+			<div class="overflow-x-auto rounded-xl border border-slate-200 shadow-sm">
+				<table class="w-full text-sm text-left" aria-label="{{ 'Associate Professors'|t }}">
+					<thead class="bg-slate-50 text-xs uppercase tracking-wider text-slate-500">
+						<tr>
+							<th scope="col" class="px-4 py-3 font-semibold">{{ 'Name'|t }}</th>
+							<th scope="col" class="px-4 py-3 font-semibold">{{ 'School / Faculty'|t }}</th>
+						</tr>
+					</thead>
+					<tbody class="divide-y divide-slate-100">
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Wissam Ghach'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'School of Health Sciences and Psychology'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Alia AlNaggar'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'School of Engineering, Applied Science and Technology'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Haythem El-Messiry'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'School of Engineering, Applied Science and Technology'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Khaled Goher'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'School of Engineering, Applied Science and Technology'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Khalid Elgazzar'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'School of Engineering, Applied Science and Technology'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Kuljeet Kaur'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'School of Engineering, Applied Science and Technology'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Yasir Faheem'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'School of Engineering, Applied Science and Technology'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Maha Salman'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'School of Architecture and Interior Design'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Seif Khiati'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'School of Architecture and Interior Design'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Simona Azzali'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'School of Architecture and Interior Design'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Najaf Khakan'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'School of Management'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Osama Atayah'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'School of Management'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Rima Bizri'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'School of Management'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Saida Harguem'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'School of Management'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Zakariya Chabani'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'School of Management'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Malcolm Price'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'Faculty of Communication, Arts and Sciences'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Mohammed Nami'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'Faculty of Communication, Arts and Sciences'|t }}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		{# ══════════════════════════════════════════════════════════════════════ #}
+		{# ── ASSISTANT PROFESSORS ─────────────────────────────────────────── #}
+		{# ══════════════════════════════════════════════════════════════════════ #}
+		<div class="block-common-content" aria-labelledby="heading-assistant-professors">
+			<h2 id="heading-assistant-professors" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Assistant Professors'|t }}</h2>
+			<p class="text-slate-700 text-xs mb-3">{{ 'Early-career faculty building emerging sustainability research programmes.'|t }}</p>
+			<div class="overflow-x-auto rounded-xl border border-slate-200 shadow-sm">
+				<table class="w-full text-sm text-left" aria-label="{{ 'Assistant Professors'|t }}">
+					<thead class="bg-slate-50 text-xs uppercase tracking-wider text-slate-500">
+						<tr>
+							<th scope="col" class="px-4 py-3 font-semibold">{{ 'Name'|t }}</th>
+							<th scope="col" class="px-4 py-3 font-semibold">{{ 'School / Faculty'|t }}</th>
+						</tr>
+					</thead>
+					<tbody class="divide-y divide-slate-100">
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Abir Hamze'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'School of Health Sciences and Psychology'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Emran AlOtaibi'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'School of Health Sciences and Psychology'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Richa Malhotra'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'School of Health Sciences and Psychology'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Vinita Puri'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'School of Health Sciences and Psychology'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Rita Zgheib'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'School of Engineering, Applied Science and Technology'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Tamer Mohamed'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'School of Engineering, Applied Science and Technology'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Ziad El Khatib'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'School of Engineering, Applied Science and Technology'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Sana Tamzini'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'School of Architecture and Interior Design'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Serkan Gunay'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'School of Architecture and Interior Design'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Tatjana Karabegovic'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'School of Architecture and Interior Design'|t }}
+								<span class="ml-1 text-xs text-slate-400">({{ 'Visiting'|t }})</span></td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Samuel Ouzan'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'School of Management'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Soumaya Askri'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'School of Management'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Ms. Chloe Bennett'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'Faculty of Communication, Arts and Sciences'|t }}
+								<span class="ml-1 text-xs text-slate-400">({{ 'of Practice'|t }})</span></td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Lauren Khan'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'Faculty of Communication, Arts and Sciences'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Sawsan AlMadhi'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'Faculty of Communication, Arts and Sciences'|t }}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		{# ══════════════════════════════════════════════════════════════════════ #}
+		{# ── FACULTY, LECTURERS & TEACHING STAFF ──────────────────────────── #}
+		{# ══════════════════════════════════════════════════════════════════════ #}
+		<div class="block-common-content" aria-labelledby="heading-lecturers">
+			<h2 id="heading-lecturers" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Faculty, Lecturers &amp; Teaching Staff'|t }}</h2>
+			<p class="text-slate-700 text-xs mb-3">{{ 'Faculty members, senior lecturers, lecturers, and teaching assistants contributing to sustainability education and research.'|t }}</p>
+			<div class="overflow-x-auto rounded-xl border border-slate-200 shadow-sm">
+				<table class="w-full text-sm text-left" aria-label="{{ 'Faculty, Lecturers and Teaching Staff'|t }}">
+					<thead class="bg-slate-50 text-xs uppercase tracking-wider text-slate-500">
+						<tr>
+							<th scope="col" class="px-4 py-3 font-semibold">{{ 'Name'|t }}</th>
+							<th scope="col" class="px-4 py-3 font-semibold">{{ 'Role'|t }}</th>
+							<th scope="col" class="px-4 py-3 font-semibold hidden sm:table-cell">{{ 'School / Faculty'|t }}</th>
+						</tr>
+					</thead>
+					<tbody class="divide-y divide-slate-100">
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Ammar Yahia'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'Faculty'|t }}</td>
+							<td class="px-4 py-3 text-slate-500 hidden sm:table-cell">{{ 'School of Engineering, Applied Science and Technology'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Ms. Christine Yogiaman'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'Senior Lecturer'|t }}</td>
+							<td class="px-4 py-3 text-slate-500 hidden sm:table-cell">{{ 'School of Architecture and Interior Design'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Mr. Shahab Ghandhari'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'Senior Lecturer'|t }}</td>
+							<td class="px-4 py-3 text-slate-500 hidden sm:table-cell">{{ 'School of Architecture and Interior Design'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Ms. Zeineb Naouar'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'Senior Lecturer'|t }}</td>
+							<td class="px-4 py-3 text-slate-500 hidden sm:table-cell">{{ 'School of Architecture and Interior Design'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Dr. Rina Salhab'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'Lecturer'|t }}</td>
+							<td class="px-4 py-3 text-slate-500 hidden sm:table-cell">{{ 'Faculty of Communication, Arts and Sciences'|t }}</td>
+						</tr>
+						<tr class="hover:bg-[#b13634]/5 transition-colors">
+							<td class="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">
+								<i class="fa-solid fa-user-tie w-4 text-[#b13634] mr-1.5" aria-hidden="true"></i>{{ 'Ms. Taghrid Abuzeid'|t }}</td>
+							<td class="px-4 py-3 text-slate-600">{{ 'Teaching Assistant'|t }}</td>
+							<td class="px-4 py-3 text-slate-500 hidden sm:table-cell">{{ 'School of Architecture and Interior Design'|t }}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		{% if content %}
+			<div class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-sky-700 prose-a:no-underline hover:prose-a:underline">
+				{{ content }}
+			</div>
+		{% endif %}
+
+		{% if sections %}
+			<div class="mt-8 space-y-6">
+				{% for section in sections %}
+					<div class="prose prose-slate max-w-none">{{ section }}</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+
+	</div>
+</section>
+
+{# ── Desktop floating contextual nav (hidden on mobile/tablet) ───────────────── #}
+<section class="hidden lg:block fixed right-0 top-1/2 -translate-y-1/2 z-40 group" aria-label="{{ 'Our Commitment navigation'|t }}">
+	<div
+		class="flex items-stretch">
+
+		{# Expanded panel — slides in from right edge on hover #}
+		<div class="flex flex-col justify-center overflow-hidden bg-white border-y border-l border-slate-200 rounded-l-2xl shadow-xl w-0 opacity-0 group-hover:w-56 group-hover:opacity-100 transition-all duration-300 ease-out">
+			<div class="min-w-[14rem] px-4 py-5">
+				<p class="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400 whitespace-nowrap">{{ active_nav_parent ? active_nav_parent.title : 'Navigation'|t }}</p>
+				<ul class="space-y-0.5">
+					{% for sub in sub_items %}
+						<li>
+							<a href="{{ sub.url }}" class="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors whitespace-nowrap{% if current_path == sub.url %} bg-slate-100 font-semibold text-slate-900{% else %} text-slate-600 hover:bg-slate-50 hover:text-slate-900{% endif %}">
+								<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }} w-4 text-center text-xs{% if current_path == sub.url %} text-[#b13634]{% else %} text-slate-400{% endif %}" aria-hidden="true"></i>
+								{{ sub.title }}
+							</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+
+		{# Tab strip — always visible on right edge, collapses border-radius on hover #}
+		<div class="flex flex-col items-center justify-center gap-2.5 bg-[#b13634] rounded-l-2xl group-hover:rounded-l-none shadow-lg shadow-[#b13634]/30 px-2.5 py-5 min-w-[2.75rem] transition-all duration-300 cursor-default select-none">
+			<i class="fa-solid fa-layer-group text-white/90 text-md" aria-hidden="true"></i>
+			<div class="w-px h-2 bg-white/30 rounded-full"></div>
+			{% for sub in sub_items %}
+				<div class="rounded-full transition-colors {% if current_path == sub.url %}w-2 h-2 bg-white{% else %}w-1.5 h-1.5 bg-white/40 hover:bg-white/70{% endif %}" title="{{ sub.title }}"></div>
+			{% endfor %}
+		</div>
+
+	</div>
+</section>
