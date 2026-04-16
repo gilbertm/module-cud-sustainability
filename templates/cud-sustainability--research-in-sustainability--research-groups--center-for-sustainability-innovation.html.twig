@@ -1,0 +1,367 @@
+{#
+/**
+ * @file
+ * Inner-page template for /sustainability/our-commitment/governance.
+ *
+ * Variables:
+ * - title: Page title string.
+ * - content: Rendered node content (full view mode).
+ * - carousel_items: Optional list of carousel slides.
+ * - sections: Optional list of processed-text sections.
+ * - primary_nav: Primary navigation array.
+ * - secondary_nav: Secondary navigation array.
+ * - mode: Display mode string ('main' or 'secondary').
+ */
+#}
+
+{% set carousel_slides = carousel_items|default([]) %}
+
+{% if carousel_slides %}
+	<section class="carousel group relative mb-8 w-screen max-w-none -translate-x-1/2 left-1/2" data-cud-carousel data-cud-carousel-autoplay="5600" aria-label="{{ 'Governance carousel'|t }}">
+		<div class="w-full relative overflow-hidden">
+			<div class="w-full flex transition-transform duration-700 ease-out will-change-transform" data-cud-carousel-track>
+				{% for item in carousel_slides %}
+					<article class="relative min-w-full" data-cud-carousel-slide>
+						{% if item.image %}
+							<div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[280px] overflow-hidden sm:min-h-[340px] lg:min-h-[420px]">
+								{{ item.image }}
+							</div>
+						{% elseif item.image_url %}
+							<div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[280px] overflow-hidden sm:min-h-[340px] lg:min-h-[420px]">
+								<img src="{{ item.image_url }}" alt="{{ item.title|default('Governance') }}" loading="lazy" class="h-full w-full object-cover">
+							</div>
+						{% endif %}
+						<div class="carousel-content-overlay absolute inset-0 mx-auto h-full w-full max-w-none">
+							{% if item.overlay %}
+								{{ item.overlay }}
+							{% endif %}
+						</div>
+					</article>
+				{% endfor %}
+			</div>
+
+			{% if carousel_slides|length > 1 %}
+				<div class="carousel-content-controls">
+					<button class="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-md bg-slate-950/80 p-2.5 text-slate-100 opacity-0 shadow-xl backdrop-blur-md transition-all duration-500 ease-in-out group-hover:opacity-100 hover:bg-slate-800/90 hover:text-white focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-sky-400 sm:left-6" data-cud-carousel-prev aria-label="{{ 'Previous slide'|t }}">
+						<i class="fa-solid fa-chevron-left h-5 w-5" aria-hidden="true"></i>
+					</button>
+					<button class="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-md bg-slate-950/80 p-2.5 text-slate-100 opacity-0 shadow-xl backdrop-blur-md transition-all duration-500 ease-in-out group-hover:opacity-100 hover:bg-slate-800/90 hover:text-white focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-sky-400 sm:right-6" data-cud-carousel-next aria-label="{{ 'Next slide'|t }}">
+						<i class="fa-solid fa-chevron-right h-5 w-5" aria-hidden="true"></i>
+					</button>
+				</div>
+			{% endif %}
+		</div>
+	</section>
+{% endif %}
+
+{# ── Page Header with Breadcrumb ─────────────────────────────────────────────── #}
+<section class="bg-white" aria-label="{{ 'Page header'|t }}">
+	<div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+		<nav class="mb-3 flex items-center gap-1.5 text-xs text-slate-500" aria-label="{{ 'Breadcrumb'|t }}">
+			{% for link in breadcrumb %}
+				{% if not loop.first %}
+					<i class="fa-solid fa-chevron-right text-[9px] text-slate-400" aria-hidden="true"></i>
+				{% endif %}
+				{% if link.url %}
+					<a href="{{ link.url }}" class="hover:text-slate-700 transition-colors">{{ link.text }}</a>
+				{% else %}
+					<span>{{ link.text }}</span>
+				{% endif %}
+			{% endfor %}
+			{% if breadcrumb is not empty %}
+				<i class="fa-solid fa-chevron-right text-[9px] text-slate-400" aria-hidden="true"></i>
+			{% endif %}
+			<span class="font-medium text-slate-700">{{ title }}</span>
+		</nav>
+		<div class="flex items-center gap-3">
+			<h1 class="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">{{ title }}</h1>
+			{% if edit_url %}
+				<a href="{{ edit_url }}" class="shrink-0 rounded-md p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700" title="{{ 'Edit node'|t }}" aria-label="{{ 'Edit'|t }}">
+					<i class="fa-solid fa-pen-to-square text-sm" aria-hidden="true"></i>
+				</a>
+			{% endif %}
+		</div>
+	</div>
+</section>
+
+{# ── Shared sub-nav data ──────────────────────────────────────────────────────── #}
+
+{# Icon map for all seeded primary nav children, keyed by URL #}
+{% set icon_map = {
+	'/sustainability/research-in-sustainability/center-for-sustainability-and-innovation': 'fa-flask-vial',
+	'/sustainability/research-in-sustainability/research-groups': 'fa-diagram-project'
+} %}
+
+{# Derive sub_items from the matching top-level primary nav parent #}
+{% set active_nav_parent = null %}
+{% for item in primary_nav %}
+	{% if item.children and (current_path == item.url or current_path starts with (item.url ~ '/')) %}
+		{% set active_nav_parent = item %}
+	{% endif %}
+{% endfor %}
+{% set sub_items = active_nav_parent ? active_nav_parent.children : [] %}
+
+{# ── Mobile / tablet sub-nav strip (hidden on lg+) ───────────────────────────── #}
+<div class="lg:hidden border-b border-slate-100 bg-white px-4 sm:px-6">
+	<nav class="flex gap-1.5 overflow-x-auto py-2.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" aria-label="{{ 'Our Commitment navigation'|t }}">
+		{% for sub in sub_items %}
+			<a href="{{ sub.url }}" class="inline-flex flex-none items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors{% if current_path == sub.url %} bg-slate-900 text-white{% else %} text-slate-600 hover:bg-slate-100 hover:text-slate-900{% endif %}">
+				<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }}" aria-hidden="true"></i>
+				{{ sub.title }}
+			</a>
+		{% endfor %}
+	</nav>
+</div>
+
+{# ── Main Content (full-width) ────────────────────────────────────────────────── #}
+<section class="mx-auto max-w-7xl px-4 lg:px-8 !bg-white" id="main-content" aria-label="{{ title }}" data-mode="{{ mode }}">
+	<div
+		class="min-w-0 space-y-5">
+
+
+		{# ── 1. Climate Research Lab at Canadian University Dubai ─────────────── #}
+		<div class="block-common-content" aria-labelledby="heading-climate-lab">
+			<h2 id="heading-climate-lab" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Climate Research Lab at Canadian University Dubai'|t }}</h2>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The Canadian University Dubai (CUD) Climate Research Lab is a research and innovation hub dedicated to advancing climate-risk intelligence, adaptation solutions, and decarbonization pathways for the UAE and the wider MENA region. Modeled on leading applied climate labs that integrate research, training, monitoring, and knowledge mobilization, the Lab will generate Dubai- and UAE-specific evidence on climate hazards (extreme heat, flooding, drought, air quality, coastal risk), translate findings into decision-ready tools for government and industry, and develop the next generation of climate talent through experiential learning and applied research partnerships. The Lab&rsquo;s approach emphasizes high-resolution climate analytics, real-world pilots, and strong stakeholder engagement so that scientific outputs directly support resilient infrastructure, public health, water and food security, and clean-energy transition planning.'|t }}</p>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Objectives'|t }}</h3>
+			<ul class="space-y-1.5 mb-4">
+				<li class="flex items-start gap-2">
+					<i class="fa-solid fa-circle-check mt-0.5 text-[#b13634]"></i>
+					<p class="text-sm leading-relaxed text-slate-700">{{ 'Produce UAE-relevant climate intelligence &mdash; Build a Dubai/UAE climate evidence base using observations, remote sensing, and model projections to quantify trends, extremes, and compound hazards (heat + humidity, intense rainfall + drainage capacity, coastal surge + sea-level rise).'|t }}</p>
+				</li>
+				<li class="flex items-start gap-2">
+					<i class="fa-solid fa-circle-check mt-0.5 text-[#b13634]"></i>
+					<p class="text-sm leading-relaxed text-slate-700">{{ 'Deliver actionable adaptation tools &mdash; Develop localized risk maps, sector vulnerability profiles, and adaptation option appraisals that help agencies and organizations prioritize investments in resilient infrastructure, health protection, and climate-ready urban services.'|t }}</p>
+				</li>
+				<li class="flex items-start gap-2">
+					<i class="fa-solid fa-circle-check mt-0.5 text-[#b13634]"></i>
+					<p class="text-sm leading-relaxed text-slate-700">{{ 'Accelerate decarbonisation and net-zero readiness &mdash; Support mitigation planning through emissions analytics and scenario work aligned with the UAE&rsquo;s Net Zero 2050 direction and sectoral programs (power, industry, transport, buildings, waste, agriculture).'|t }}</p>
+				</li>
+				<li class="flex items-start gap-2">
+					<i class="fa-solid fa-circle-check mt-0.5 text-[#b13634]"></i>
+					<p class="text-sm leading-relaxed text-slate-700">{{ 'Build capacity and workforce readiness &mdash; Provide training in climate data analysis, downscaling, impact assessment, and decision support for students and professionals&mdash;positioning CUD as a pipeline for climate and sustainability talent in Dubai.'|t }}</p>
+				</li>
+				<li class="flex items-start gap-2">
+					<i class="fa-solid fa-circle-check mt-0.5 text-[#b13634]"></i>
+					<p class="text-sm leading-relaxed text-slate-700">{{ 'Enable partnerships and applied research translation &mdash; Convene government, business, and community partners to co-design pilots, share data responsibly, and rapidly translate research into policy briefs, standards guidance, and public-facing risk communication.'|t }}</p>
+				</li>
+			</ul>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Sustainability Focus'|t }}</h3>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The Lab&rsquo;s sustainability agenda is built around measurable, implementable outcomes, with particular emphasis on:'|t }}</p>
+			<ul class="space-y-1.5 mb-4">
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700">{{ 'Urban heat resilience and sustainable cooling: heat-risk mapping, vulnerable-population protection, neighborhood-scale interventions, and evaluation of cooling efficiency pathways.'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700">{{ 'Climate-resilient cities and infrastructure: flood-risk diagnostics (extreme rainfall), drainage and transport vulnerability studies, and resilience-by-design guidance for built assets.'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700">{{ 'Clean energy transition and efficiency: research support for Dubai&rsquo;s clean energy trajectory (including long-term targets) and evidence for demand-side efficiency strategies.'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700">{{ 'Water security and drought risk: climate pressures on water systems, demand management, and adaptation options tied to urban growth and climate extremes.'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700">{{ 'Coastal and marine resilience: sea-level and coastal hazard analytics relevant to critical infrastructure, tourism zones, and ecological assets.'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700">{{ 'Climate-health linkages: heat illness risk, air-quality co-stressors, and preparedness frameworks that connect climate signals to public-health action.'|t }}</p>
+				</li>
+			</ul>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Research Project'|t }}</h3>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'A 3-year Dubai Future Foundation-funded project titled'|t }} <strong>{{ 'Strengthening the Resilience of Dubai Households to Climate Change Through Risk Assessment and Behaviour Change Adaptation Measures'|t }}</strong> {{ 'has begun. The project&rsquo;s primary goal is to develop and deploy an AI-driven high-resolution climate prediction, socio-economic impact assessment, and behaviour change program tailored to the UAE&rsquo;s hyper-arid, rapidly urbanizing environment. Using advanced climate models, AI, vulnerability analysis, and behavioural sciences, it will deliver actionable insights to Dubai households, policymakers, and industries. This goal is specific to the climate and geographic context, measurable via defined metrics, achievable given the project team&rsquo;s expertise, relevant to national climate resilience priorities, and time-bound within the grant period.'|t }}</p>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Team Leader'|t }}</h3>
+			<div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm max-w-md">
+				<div class="flex items-center gap-3">
+					<div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#b13634]/10">
+						<i class="fa-solid fa-user-tie text-[#b13634]"></i>
+					</div>
+					<div>
+						<p class="text-sm font-semibold text-slate-800">{{ 'Dr. Adam Fenech'|t }}</p>
+						<a href="mailto:adam.fenech@cud.ac.ae" class="text-xs text-sky-700 hover:underline">adam.fenech@cud.ac.ae</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{# ── 2. Resilient Urban Ecosystems, Climate Adaptation and Water-Energy Nexus #}
+		<div class="block-common-content" aria-labelledby="heading-resilient-urban">
+			<h2 id="heading-resilient-urban" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Resilient Urban Ecosystems, Climate Adaptation and Water-Energy Nexus'|t }}</h2>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'This research group addresses the growing need to rethink urban environments in the UAE and the wider MENA region in light of converging environmental pressures. These include extreme heat, flash flooding, land degradation, water stress, rising electricity demand for cooling, and the growing vulnerability of urban infrastructure to compound climate risks. In this context, resilience can no longer be understood as a purely engineering problem. It requires integrated responses that combine urban climatology, passive design, water-sensitive planning, nature-based solutions, and climate-responsive architecture. This need was made particularly visible by the extreme rainfall event of April 2024, which caused severe flooding and disruption across parts of the UAE, including Dubai, and reinforced the importance of designing urban systems that are robust under both chronic and acute climate stress.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The group will therefore focus on the development of urban and architectural strategies that improve thermal habitability, reduce environmental exposure, and strengthen the adaptive capacity of communities, buildings, and public spaces. A central concern will be the water-energy-climate nexus, which is especially relevant in the Gulf context. As highlighted by the IEA, rising temperatures, cooling demand, and desalination needs are becoming major drivers of electricity growth across MENA, making it essential to link climate adaptation with energy and water efficiency rather than addressing each domain in isolation.'|t }}</p>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Research Project'|t }}</h3>
+			<p class="text-slate-700 text-sm leading-relaxed mb-1"><strong>{{ 'Integrated Bioclimatic Design for Flood-Resilient and Heat-Adapted Communities'|t }}</strong></p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'This project will develop and validate an integrated framework for both new developments and urban retrofit scenarios, with the aim of producing neighborhoods that are cooler, more water-efficient, and more resilient to extreme rainfall. The project will combine passive cooling strategies, urban shading, ventilation-oriented design, reflective and low-impact materials, vegetation-based solutions, and water-sensitive urban design principles in order to reduce heat stress while improving stormwater management and surface-water control. Rather than treating runoff only as a hazard, the project will investigate how rainfall can be captured, delayed, infiltrated, reused, or redirected in ways that improve local environmental performance and support more circular urban water systems.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'Its scientific value lies in the integration of domains that are too often considered separately: microclimate, building design, landscape systems, water management, and resilience planning. Its regional relevance is equally strong. The project responds directly to the UAE&rsquo;s need to reduce urban overheating, limit infrastructure vulnerability, and improve water security under conditions of climate uncertainty. It also supports key national and local policy frameworks, including the UAE Net Zero 2050 Strategic Initiative, the National Climate Change Plan 2017&ndash;2050, the UAE Water Security Strategy 2036, and the Dubai 2040 Urban Master Plan.'|t }}</p>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Team Leader'|t }}</h3>
+			<div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm max-w-md">
+				<div class="flex items-center gap-3">
+					<div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#b13634]/10">
+						<i class="fa-solid fa-user-tie text-[#b13634]"></i>
+					</div>
+					<div>
+						<p class="text-sm font-semibold text-slate-800">{{ 'Professor Rafik Belarbi'|t }}</p>
+						<a href="mailto:rafik.belarbi@cud.ac.ae" class="text-xs text-sky-700 hover:underline">rafik.belarbi@cud.ac.ae</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{# ── 3. Digital Transition, Low-Carbon Construction and Net Zero Built Environment #}
+		<div class="block-common-content" aria-labelledby="heading-digital-transition">
+			<h2 id="heading-digital-transition" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Digital Transition, Low-Carbon Construction and Net Zero Built Environment'|t }}</h2>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'This research group focuses on the digital and technological transformation of the built environment as a lever for environmental performance, decarbonization, and resilient decision-making. Its purpose is not simply to promote advanced tools for their own sake, but to develop methods that help predict, optimize, and validate how buildings and urban systems perform under real climatic, material, and operational conditions. The group will bring together expertise in simulation, artificial intelligence, machine learning, digital twins, data-driven design, advanced materials, and additive manufacturing in order to support the next generation of low-carbon and Net Zero buildings.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'This orientation is particularly timely. Globally, the transition of the building sector now requires much more than incremental operational efficiency. It also demands lower embodied carbon, better material efficiency, lifecycle thinking, and new construction approaches capable of reducing waste while improving performance. In the UAE, this challenge is amplified by the region&rsquo;s heavy dependence on cooling, its exposure to harsh climatic conditions, and the strategic need to couple technological innovation with practical implementation at building and district scales. The group will therefore position digitalization as an enabler of better environmental choices, more robust design processes, and stronger links between research, policy, and industry.'|t }}</p>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Research Project 1'|t }}</h3>
+			<p class="text-slate-700 text-sm leading-relaxed mb-1"><strong>{{ 'AI-Powered Urban Climate Modelling and Risk Assessment'|t }}</strong></p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'This project will develop high-resolution urban models capable of predicting and assessing key environmental risks, including heat accumulation, urban heat island intensity, outdoor thermal discomfort, flood-prone scenarios, and the performance of mitigation measures under future climate conditions. Using advanced statistical methods, machine learning, and physics-informed modelling, the project will support the creation of digital twins for selected urban areas in Dubai. These digital environments will allow planners, developers, and public authorities to test the consequences of different urban forms, material choices, greening strategies, and infrastructure decisions before implementation.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The originality of the project lies in its capacity to turn environmental complexity into decision-support intelligence. Rather than producing static simulations, it will provide a dynamic platform for scenario testing, optimisation, and risk-informed planning. This aligns closely with Dubai&rsquo;s long-term urban development strategy and with broader UAE priorities around digital transformation, environmental planning, and evidence-based governance'|t }}</p>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Research Project 2'|t }}</h3>
+			<p class="text-slate-700 text-sm leading-relaxed mb-1"><strong>{{ '3D Printing for Sustainable and Net Zero Buildings'|t }}</strong></p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'This project will investigate the role of large-scale additive manufacturing in the delivery of sustainable, low-carbon, and Net Zero buildings adapted to the climatic and material context of the UAE. The project will address three interrelated research directions. First, it will explore the development of printable materials with reduced embodied carbon, including bio-based, mineral-based, and waste-derived formulations that make use of locally relevant resources and support circular construction pathways. Second, it will examine how 3D printing can enable thermally efficient and materially optimised building envelopes by taking advantage of complex geometries, tailored porosity, integrated shading, and passive-performance-driven design. Third, it will assess how additive manufacturing may facilitate the integration of renewable energy systems and smart building components into the envelope and structural logic of future Net Zero buildings.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The project is strategically important because it places 3D printing at the intersection of construction innovation, resource efficiency, and climate action. It does not treat additive manufacturing as a standalone technological novelty, but as a possible response to several critical challenges: reducing waste, lowering embodied impacts, improving design flexibility, shortening construction sequences, and supporting high-performance envelopes suited to hot-arid environments. This makes the project strongly relevant to both the UAE&rsquo;s climate ambitions and Dubai&rsquo;s established policy commitment to 3D printing as a strategic sector, including its objective that 25% of buildings in Dubai should be based on 3D printing technology by 2030.'|t }}</p>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Team Leaders'|t }}</h3>
+			<div class="flex flex-wrap gap-4">
+				<div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm max-w-md">
+					<div class="flex items-center gap-3">
+						<div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#b13634]/10">
+							<i class="fa-solid fa-user-tie text-[#b13634]"></i>
+						</div>
+						<div>
+							<p class="text-sm font-semibold text-slate-800">{{ 'Dr. Seif Khiati'|t }}</p>
+							<a href="mailto:seif.khiati@cud.ac.ae" class="text-xs text-sky-700 hover:underline">seif.khiati@cud.ac.ae</a>
+						</div>
+					</div>
+				</div>
+				<div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm max-w-md">
+					<div class="flex items-center gap-3">
+						<div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#b13634]/10">
+							<i class="fa-solid fa-user-tie text-[#b13634]"></i>
+						</div>
+						<div>
+							<p class="text-sm font-semibold text-slate-800">{{ 'Professor Ammar Yahia'|t }}</p>
+							<a href="mailto:ammar.yahia@cud.ac.ae" class="text-xs text-sky-700 hover:underline">ammar.yahia@cud.ac.ae</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{# ── 4. LRU–UdS–CUD Strategic Academic and Research Partnership ──────── #}
+		<div class="block-common-content" aria-labelledby="heading-lru-uds-cud">
+			<h2 id="heading-lru-uds-cud" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'LRU&ndash;UdS&ndash;CUD Strategic Academic and Research Partnership'|t }}</h2>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The La Rochelle Universit&eacute; (France) &ndash; Universit&eacute; de Sherbrooke (Canada) &ndash; Canadian University Dubai (United Arab Emirates) Strategic Academic and Research Partnership constitutes a structured international framework dedicated to advancing excellence in research, graduate education, academic mobility, and innovation for sustainable development. Built upon the Memoranda of Understanding signed in 2022 between Canadian University Dubai and its partners in La Rochelle and Sherbrooke, this cooperation provides a formal basis for long-term collaboration across Europe, North America, and the Gulf region.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'This tripartite partnership is intended to move beyond conventional academic exchange by establishing a coherent platform for the co-development of research initiatives, joint scientific programming, faculty and student mobility, co-supervision, and knowledge transfer. It draws upon the complementary strengths of the three institutions and is supported by an already active record of international scientific events involving the three universities, including symposia and workshops held in Dubai, La Rochelle, and Sherbrooke.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The partnership is particularly aligned with strategic fields in which convergence is already clearly established, notably energy efficiency and sustainable buildings, resilient urban systems, low-carbon construction, biosourced and geosourced materials, and the integration of artificial intelligence and digital approaches for performance optimization in the built environment. These themes are fully consistent with the vision of the Center for Sustainability and Innovation (CSI) at CUD, which is conceived as a multidisciplinary collaboration hub supporting joint projects, innovation, talent development, and international academic visibility.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'Through this alliance, the three universities seek to consolidate a high-level international ecosystem capable of generating academically rigorous, societally relevant, and operationally impactful outcomes. The partnership is intended to support the development of joint academic pathways, collaborative research proposals, international events, and stronger engagement with public and industrial stakeholders. In this configuration, Dubai serves not only as a regional anchor for the MENA context, but also as a strategic interface for linking European and North American expertise with emerging sustainability and innovation priorities in the Gulf.'|t }}</p>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Ongoing Research Projects'|t }}</h3>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The long-term strategic alliance group is working on the third edition of the Collaborative Network. The previous edition covered themes included sustainable construction materials, energy-efficient building design, 3D printing in construction, heat and mass transfer in porous materials, and climate-responsive architecture. By integrating advanced material science, digital construction technologies, and climate responsive design strategies, the group contributes to the development of resilient and sustainable built environments that address both global climate challenges and regional sustainability goals.'|t }}</p>
+		</div>
+
+		{# ── 5. The Social Business Group ─────────────────────────────────────── #}
+		<div class="block-common-content" aria-labelledby="heading-social-business">
+			<h2 id="heading-social-business" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'The Social Business Group'|t }}</h2>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The group is dedicated to advancing sustainable businesses that promote both economic growth and social inclusion. It serves as a collaborative platform bringing together researchers and practitioners to develop innovative, impact-driven solutions.'|t }}</p>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Core Objectives'|t }}</h3>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'To generate research that supports the development of inclusive and sustainable enterprises. It seeks to bridge the gap between theory and practice by fostering partnerships with industry and communities. Additionally, the group is committed to promote ethical business practices, and build capacity through knowledge sharing, training, and interdisciplinary collaboration.'|t }}</p>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Sustainability Focus'|t }}</h3>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The group focuses on No Poverty (SDG 1) and Zero Hunger (SDG 2) through food security initiatives and partnerships that support vulnerable populations. A strong commitment to Gender Equality (SDG 5) is reflected in woman leadership and workforce collaboration. Through social business research and co-create activities, the group enhances sustainability and digital literacy for Quality Education (SDG 4), Decent Work and Economic Growth (SDG 8), and Reduced Inequalities (SDG 10), particularly among the underrepresented groups. Through stakeholder engagement and research, the group emphasizes Peace, Justice, and Strong Institutions (SDG 16), reenforcing trust and long-term societal impact, and Partnerships for the Goals (SDG 17).'|t }}</p>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Ongoing Research Projects'|t }}</h3>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The research group is actively engaged in a portfolio of collaborative initiatives centered on sustainability and social business education as a pathway to inclusive development. These projects explore how educational frameworks, curricula, and institutional practices can be designed to equip diverse communities with the knowledge, skills, and agency required to participate in and benefit from sustainable development processes. Emphasis is placed on interdisciplinary approaches that integrate social, economic, and environmental dimensions, as well as on partnerships with academic institutions, practitioners, and community stakeholders.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'In parallel, the group is advancing a series of research papers targeted for submission to leading peer-reviewed journals in the fields of sustainability and social enterprises. These publications aim to contribute to both theoretical and applied scholarship by generating evidence-based insights, developing innovative models, and critically examining emerging practices. Collectively, the group seeks to strengthen academic discourse, and support the design of scalable, impact-driven solutions for inclusive and sustainable development.'|t }}</p>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Team Leader'|t }}</h3>
+			<div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm max-w-md">
+				<div class="flex items-center gap-3">
+					<div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#b13634]/10">
+						<i class="fa-solid fa-user-tie text-[#b13634]"></i>
+					</div>
+					<div>
+						<p class="text-sm font-semibold text-slate-800">{{ 'Dr. Chureerat Haq'|t }}</p>
+						<a href="mailto:Chureerat.Haq@cud.ac.ae" class="text-xs text-sky-700 hover:underline">Chureerat.Haq@cud.ac.ae</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{% if content %}
+			<div class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-sky-700 prose-a:no-underline hover:prose-a:underline">
+				{{ content }}
+			</div>
+		{% endif %}
+
+		{% if sections %}
+			<div class="mt-8 space-y-6">
+				{% for section in sections %}
+					<div class="prose prose-slate max-w-none">{{ section }}</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+
+	</div>
+</section>
+
+{# ── Desktop floating contextual nav (hidden on mobile/tablet) ───────────────── #}
+<section class="hidden lg:block fixed right-0 top-1/2 -translate-y-1/2 z-40 group" aria-label="{{ 'Our Commitment navigation'|t }}">
+	<div
+		class="flex items-stretch">
+
+		{# Expanded panel — slides in from right edge on hover #}
+		<div class="flex flex-col justify-center overflow-hidden bg-white border-y border-l border-slate-200 rounded-l-2xl shadow-xl w-0 opacity-0 group-hover:w-56 group-hover:opacity-100 transition-all duration-300 ease-out">
+			<div class="min-w-[14rem] px-4 py-5">
+				<p class="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400 whitespace-nowrap">{{ active_nav_parent ? active_nav_parent.title : 'Navigation'|t }}</p>
+				<ul class="space-y-0.5">
+					{% for sub in sub_items %}
+						<li>
+							<a href="{{ sub.url }}" class="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors whitespace-nowrap{% if current_path == sub.url %} bg-slate-100 font-semibold text-slate-900{% else %} text-slate-600 hover:bg-slate-50 hover:text-slate-900{% endif %}">
+								<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }} w-4 text-center text-xs{% if current_path == sub.url %} text-[#b13634]{% else %} text-slate-400{% endif %}" aria-hidden="true"></i>
+								{{ sub.title }}
+							</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+
+		{# Tab strip — always visible on right edge, collapses border-radius on hover #}
+		<div class="flex flex-col items-center justify-center gap-2.5 bg-[#b13634] rounded-l-2xl group-hover:rounded-l-none shadow-lg shadow-[#b13634]/30 px-2.5 py-5 min-w-[2.75rem] transition-all duration-300 cursor-default select-none">
+			<i class="fa-solid fa-layer-group text-white/90 text-md" aria-hidden="true"></i>
+			<div class="w-px h-2 bg-white/30 rounded-full"></div>
+			{% for sub in sub_items %}
+				<div class="rounded-full transition-colors {% if current_path == sub.url %}w-2 h-2 bg-white{% else %}w-1.5 h-1.5 bg-white/40 hover:bg-white/70{% endif %}" title="{{ sub.title }}"></div>
+			{% endfor %}
+		</div>
+
+	</div>
+</section>

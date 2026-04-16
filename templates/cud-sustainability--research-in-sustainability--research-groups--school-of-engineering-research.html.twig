@@ -1,0 +1,324 @@
+{#
+/**
+ * @file
+ * Inner-page template for /sustainability/our-commitment/governance.
+ *
+ * Variables:
+ * - title: Page title string.
+ * - content: Rendered node content (full view mode).
+ * - carousel_items: Optional list of carousel slides.
+ * - sections: Optional list of processed-text sections.
+ * - primary_nav: Primary navigation array.
+ * - secondary_nav: Secondary navigation array.
+ * - mode: Display mode string ('main' or 'secondary').
+ */
+#}
+
+{% set carousel_slides = carousel_items|default([]) %}
+
+{% if carousel_slides %}
+	<section class="carousel group relative mb-8 w-screen max-w-none -translate-x-1/2 left-1/2" data-cud-carousel data-cud-carousel-autoplay="5600" aria-label="{{ 'Governance carousel'|t }}">
+		<div class="w-full relative overflow-hidden">
+			<div class="w-full flex transition-transform duration-700 ease-out will-change-transform" data-cud-carousel-track>
+				{% for item in carousel_slides %}
+					<article class="relative min-w-full" data-cud-carousel-slide>
+						{% if item.image %}
+							<div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[280px] overflow-hidden sm:min-h-[340px] lg:min-h-[420px]">
+								{{ item.image }}
+							</div>
+						{% elseif item.image_url %}
+							<div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[280px] overflow-hidden sm:min-h-[340px] lg:min-h-[420px]">
+								<img src="{{ item.image_url }}" alt="{{ item.title|default('Governance') }}" loading="lazy" class="h-full w-full object-cover">
+							</div>
+						{% endif %}
+						<div class="carousel-content-overlay absolute inset-0 mx-auto h-full w-full max-w-none">
+							{% if item.overlay %}
+								{{ item.overlay }}
+							{% endif %}
+						</div>
+					</article>
+				{% endfor %}
+			</div>
+
+			{% if carousel_slides|length > 1 %}
+				<div class="carousel-content-controls">
+					<button class="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-md bg-slate-950/80 p-2.5 text-slate-100 opacity-0 shadow-xl backdrop-blur-md transition-all duration-500 ease-in-out group-hover:opacity-100 hover:bg-slate-800/90 hover:text-white focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-sky-400 sm:left-6" data-cud-carousel-prev aria-label="{{ 'Previous slide'|t }}">
+						<i class="fa-solid fa-chevron-left h-5 w-5" aria-hidden="true"></i>
+					</button>
+					<button class="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-md bg-slate-950/80 p-2.5 text-slate-100 opacity-0 shadow-xl backdrop-blur-md transition-all duration-500 ease-in-out group-hover:opacity-100 hover:bg-slate-800/90 hover:text-white focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-sky-400 sm:right-6" data-cud-carousel-next aria-label="{{ 'Next slide'|t }}">
+						<i class="fa-solid fa-chevron-right h-5 w-5" aria-hidden="true"></i>
+					</button>
+				</div>
+			{% endif %}
+		</div>
+	</section>
+{% endif %}
+
+{# ── Page Header with Breadcrumb ─────────────────────────────────────────────── #}
+<section class="bg-white" aria-label="{{ 'Page header'|t }}">
+	<div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+		<nav class="mb-3 flex items-center gap-1.5 text-xs text-slate-500" aria-label="{{ 'Breadcrumb'|t }}">
+			{% for link in breadcrumb %}
+				{% if not loop.first %}
+					<i class="fa-solid fa-chevron-right text-[9px] text-slate-400" aria-hidden="true"></i>
+				{% endif %}
+				{% if link.url %}
+					<a href="{{ link.url }}" class="hover:text-slate-700 transition-colors">{{ link.text }}</a>
+				{% else %}
+					<span>{{ link.text }}</span>
+				{% endif %}
+			{% endfor %}
+			{% if breadcrumb is not empty %}
+				<i class="fa-solid fa-chevron-right text-[9px] text-slate-400" aria-hidden="true"></i>
+			{% endif %}
+			<span class="font-medium text-slate-700">{{ title }}</span>
+		</nav>
+		<div class="flex items-center gap-3">
+			<h1 class="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">{{ title }}</h1>
+			{% if edit_url %}
+				<a href="{{ edit_url }}" class="shrink-0 rounded-md p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700" title="{{ 'Edit node'|t }}" aria-label="{{ 'Edit'|t }}">
+					<i class="fa-solid fa-pen-to-square text-sm" aria-hidden="true"></i>
+				</a>
+			{% endif %}
+		</div>
+	</div>
+</section>
+
+{# ── Shared sub-nav data ──────────────────────────────────────────────────────── #}
+
+{# Icon map for all seeded primary nav children, keyed by URL #}
+{% set icon_map = {
+	'/sustainability/research-in-sustainability/center-for-sustainability-and-innovation': 'fa-flask-vial',
+	'/sustainability/research-in-sustainability/research-groups': 'fa-diagram-project'
+} %}
+
+{# Derive sub_items from the matching top-level primary nav parent #}
+{% set active_nav_parent = null %}
+{% for item in primary_nav %}
+	{% if item.children and (current_path == item.url or current_path starts with (item.url ~ '/')) %}
+		{% set active_nav_parent = item %}
+	{% endif %}
+{% endfor %}
+{% set sub_items = active_nav_parent ? active_nav_parent.children : [] %}
+
+{# ── Mobile / tablet sub-nav strip (hidden on lg+) ───────────────────────────── #}
+<div class="lg:hidden border-b border-slate-100 bg-white px-4 sm:px-6">
+	<nav class="flex gap-1.5 overflow-x-auto py-2.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" aria-label="{{ 'Our Commitment navigation'|t }}">
+		{% for sub in sub_items %}
+			<a href="{{ sub.url }}" class="inline-flex flex-none items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors{% if current_path == sub.url %} bg-slate-900 text-white{% else %} text-slate-600 hover:bg-slate-100 hover:text-slate-900{% endif %}">
+				<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }}" aria-hidden="true"></i>
+				{{ sub.title }}
+			</a>
+		{% endfor %}
+	</nav>
+</div>
+
+{# ── Main Content (full-width) ────────────────────────────────────────────────── #}
+<section class="mx-auto max-w-7xl px-4 lg:px-8 !bg-white" id="main-content" aria-label="{{ title }}" data-mode="{{ mode }}">
+	<div
+		class="min-w-0 space-y-5">
+
+
+		{# ── 1. Safe and Sustainable Transportation Group ─────────────────────── #}
+		<div class="block-common-content" aria-labelledby="heading-sst">
+			<h2 id="heading-sst" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Safe and Sustainable Transportation Group'|t }}</h2>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The Safe and Sustainable Transport Research Group focuses on developing intelligent, data-driven solutions to enhance the safety, efficiency, and environmental sustainability of modern transportation systems. The group integrates artificial intelligence, Internet of Things (IoT), and advanced optimization techniques to address critical challenges in traffic management, vehicular networks, and transportation infrastructure.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-4">{{ 'Core research areas include intelligent transportation systems, real-time traffic prediction, route optimization, and anomaly detection in vehicular environments. The group also investigates cooperative and connected mobility frameworks, leveraging distributed learning and edge intelligence to improve system resilience and reduce congestion. A strong emphasis is placed on reducing emissions and energy consumption, contributing to cleaner and more sustainable mobility ecosystems.'|t }}</p>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Goals'|t }}</h3>
+			<ul class="space-y-2 mb-4">
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>
+						<strong>{{ 'Safer Mobility Systems:'|t }}</strong>
+						{{ 'Design and deploy AI-driven solutions for accident prevention, anomaly detection, and secure vehicular communication, improving safety across transportation networks.'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>
+						<strong>{{ 'Sustainable Transport Solutions:'|t }}</strong>
+						{{ 'Develop models and optimization frameworks that reduce congestion, fuel consumption, and emissions, supporting the transition to environmentally sustainable mobility.'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>
+						<strong>{{ 'Industry and Government Collaboration:'|t }}</strong>
+						{{ 'Engage with transportation authorities, municipalities, and industry partners to implement scalable smart mobility solutions and inform policy development.'|t }}</span>
+				</li>
+			</ul>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-4 mb-2">{{ 'SDG Alignment'|t }}</h3>
+			<p class="text-slate-700 text-sm leading-relaxed mb-2">{{ 'The group research agenda directly supports:'|t }}</p>
+			<ul class="space-y-1.5 mb-4">
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><strong>{{ 'SDG 11: Sustainable Cities and Communities'|t }}</strong> {{ 'by enabling efficient, safe, and accessible urban transportation systems'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><strong>{{ 'SDG 13: Climate Action'|t }}</strong> {{ 'through reduction of transport-related emissions via intelligent optimization and planning'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><strong>{{ 'SDG 9: Industry, Innovation and Infrastructure'|t }}</strong> {{ 'by advancing smart transportation infrastructure and connected mobility technologies'|t }}</p>
+				</li>
+			</ul>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-4 mb-2">{{ 'Team Leader'|t }}</h3>
+			<div class="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-5 sm:p-6 shadow-sm">
+				<div class="flex items-start gap-4">
+					<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#b13634]/10 text-[#b13634]">
+						<i class="fa-solid fa-user-tie text-lg" aria-hidden="true"></i>
+					</div>
+					<div class="min-w-0 flex-1">
+						<p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-400 mb-1">{{ 'Team Leader'|t }}</p>
+						<p class="text-sm font-semibold text-slate-900 mb-0">{{ 'Dr. Sahil Garg'|t }}</p>
+						<div class="mt-2 flex flex-col gap-1.5 text-sm">
+							<div class="flex items-center gap-2.5 text-slate-700">
+								<i class="fa-solid fa-envelope w-4 text-center text-[#b13634]" aria-hidden="true"></i>
+								<a href="mailto:sahil.garg@cud.ac.ae" class="hover:text-[#b13634] transition-colors underline underline-offset-2">sahil.garg@cud.ac.ae</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{# ── 2. Sustainable Medical AI and Digital Health Group ────────────────── #}
+		<div class="block-common-content" aria-labelledby="heading-smai">
+			<h2 id="heading-smai" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Sustainable Medical AI and Digital Health Group'|t }}</h2>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The Sustainable Medical AI and Digital Health Research Group focuses on developing intelligent, scalable, and responsible AI solutions to improve healthcare delivery and public health outcomes. The group integrates machine learning, deep learning, and IoT-enabled sensing technologies to enable early disease detection, real-time patient monitoring, and data-driven clinical decision support.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-4">{{ 'A central emphasis is placed on sustainability in healthcare systems&mdash;designing efficient AI models, enabling remote and accessible care, and reducing the operational and environmental costs of healthcare delivery. The group also advances privacy-preserving and trustworthy AI frameworks, including federated learning and secure data infrastructures, to ensure safe and ethical deployment in real-world medical settings.'|t }}</p>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Goals'|t }}</h3>
+			<ul class="space-y-2 mb-4">
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>
+						<strong>{{ 'AI-Driven Healthcare Innovation:'|t }}</strong>
+						{{ 'Develop robust and interpretable AI models for diagnostics, prognosis, and patient monitoring, with demonstrated clinical and public health relevance.'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>
+						<strong>{{ 'Scalable and Accessible Digital Health:'|t }}</strong>
+						{{ 'Design technologies that expand access to healthcare through remote monitoring, edge intelligence, and low-resource deployment settings.'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>
+						<strong>{{ 'Trustworthy and Sustainable AI Systems:'|t }}</strong>
+						{{ 'Advance methods that ensure privacy, fairness, and energy-efficient computation in medical AI, supporting long-term sustainability and regulatory compliance.'|t }}</span>
+				</li>
+			</ul>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-4 mb-2">{{ 'SDG Alignment'|t }}</h3>
+			<ul class="space-y-1.5 mb-4">
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><strong>{{ 'SDG 3: Good Health and Well-Being'|t }}</strong> {{ 'by enabling AI-driven early detection, improving access to digital healthcare solutions, and strengthening real-time health risk monitoring'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><strong>{{ 'SDG 9: Industry, Innovation and Infrastructure'|t }}</strong> {{ 'through the development of advanced digital health technologies'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><strong>{{ 'SDG 6: Clean Water and Sanitation'|t }}</strong> {{ 'via data-driven environmental and health monitoring systems'|t }}</p>
+				</li>
+			</ul>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-4 mb-2">{{ 'External Research Grants'|t }}</h3>
+			<ul class="space-y-2 mb-4">
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>{{ '&ldquo;Towards High-Resolution 3D Reconstruction in Volume Electron Microscopy.&rdquo; Principal Investigator: Haythem El Messiry (2025&ndash;2028)'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>{{ '&ldquo;Identifying Prodromal and Preclinical Markers for Predicting Diagnosis and Progression in Dementia&rdquo; Principal Investigator: Firuz Kamalov (2025&ndash;2027)'|t }}</span>
+				</li>
+			</ul>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-4 mb-2">{{ 'Team Leader'|t }}</h3>
+			<div class="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-5 sm:p-6 shadow-sm">
+				<div class="flex items-start gap-4">
+					<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#b13634]/10 text-[#b13634]">
+						<i class="fa-solid fa-user-tie text-lg" aria-hidden="true"></i>
+					</div>
+					<div class="min-w-0 flex-1">
+						<p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-400 mb-1">{{ 'Team Leader'|t }}</p>
+						<p class="text-sm font-semibold text-slate-900 mb-0">{{ 'Dr. Firuz Kamalov'|t }}</p>
+						<div class="mt-2 flex flex-col gap-1.5 text-sm">
+							<div class="flex items-center gap-2.5 text-slate-700">
+								<i class="fa-solid fa-envelope w-4 text-center text-[#b13634]" aria-hidden="true"></i>
+								<a href="mailto:firuz@cud.ac.ae" class="hover:text-[#b13634] transition-colors underline underline-offset-2">firuz@cud.ac.ae</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{% if content %}
+			<div class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-sky-700 prose-a:no-underline hover:prose-a:underline">
+				{{ content }}
+			</div>
+		{% endif %}
+
+		{% if sections %}
+			<div class="mt-8 space-y-6">
+				{% for section in sections %}
+					<div class="prose prose-slate max-w-none">{{ section }}</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+
+	</div>
+</section>
+
+{# ── Desktop floating contextual nav (hidden on mobile/tablet) ───────────────── #}
+<section class="hidden lg:block fixed right-0 top-1/2 -translate-y-1/2 z-40 group" aria-label="{{ 'Our Commitment navigation'|t }}">
+	<div
+		class="flex items-stretch">
+
+		{# Expanded panel — slides in from right edge on hover #}
+		<div class="flex flex-col justify-center overflow-hidden bg-white border-y border-l border-slate-200 rounded-l-2xl shadow-xl w-0 opacity-0 group-hover:w-56 group-hover:opacity-100 transition-all duration-300 ease-out">
+			<div class="min-w-[14rem] px-4 py-5">
+				<p class="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400 whitespace-nowrap">{{ active_nav_parent ? active_nav_parent.title : 'Navigation'|t }}</p>
+				<ul class="space-y-0.5">
+					{% for sub in sub_items %}
+						<li>
+							<a href="{{ sub.url }}" class="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors whitespace-nowrap{% if current_path == sub.url %} bg-slate-100 font-semibold text-slate-900{% else %} text-slate-600 hover:bg-slate-50 hover:text-slate-900{% endif %}">
+								<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }} w-4 text-center text-xs{% if current_path == sub.url %} text-[#b13634]{% else %} text-slate-400{% endif %}" aria-hidden="true"></i>
+								{{ sub.title }}
+							</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+
+		{# Tab strip — always visible on right edge, collapses border-radius on hover #}
+		<div class="flex flex-col items-center justify-center gap-2.5 bg-[#b13634] rounded-l-2xl group-hover:rounded-l-none shadow-lg shadow-[#b13634]/30 px-2.5 py-5 min-w-[2.75rem] transition-all duration-300 cursor-default select-none">
+			<i class="fa-solid fa-layer-group text-white/90 text-md" aria-hidden="true"></i>
+			<div class="w-px h-2 bg-white/30 rounded-full"></div>
+			{% for sub in sub_items %}
+				<div class="rounded-full transition-colors {% if current_path == sub.url %}w-2 h-2 bg-white{% else %}w-1.5 h-1.5 bg-white/40 hover:bg-white/70{% endif %}" title="{{ sub.title }}"></div>
+			{% endfor %}
+		</div>
+
+	</div>
+</section>

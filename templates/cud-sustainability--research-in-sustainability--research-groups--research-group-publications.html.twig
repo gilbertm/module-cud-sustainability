@@ -1,0 +1,263 @@
+{#
+/**
+ * @file
+ * Inner-page template for /sustainability/our-commitment/governance.
+ *
+ * Variables:
+ * - title: Page title string.
+ * - content: Rendered node content (full view mode).
+ * - carousel_items: Optional list of carousel slides.
+ * - sections: Optional list of processed-text sections.
+ * - primary_nav: Primary navigation array.
+ * - secondary_nav: Secondary navigation array.
+ * - mode: Display mode string ('main' or 'secondary').
+ */
+#}
+
+{% set carousel_slides = carousel_items|default([]) %}
+
+{% if carousel_slides %}
+	<section class="carousel group relative mb-8 w-screen max-w-none -translate-x-1/2 left-1/2" data-cud-carousel data-cud-carousel-autoplay="5600" aria-label="{{ 'Governance carousel'|t }}">
+		<div class="w-full relative overflow-hidden">
+			<div class="w-full flex transition-transform duration-700 ease-out will-change-transform" data-cud-carousel-track>
+				{% for item in carousel_slides %}
+					<article class="relative min-w-full" data-cud-carousel-slide>
+						{% if item.image %}
+							<div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[280px] overflow-hidden sm:min-h-[340px] lg:min-h-[420px]">
+								{{ item.image }}
+							</div>
+						{% elseif item.image_url %}
+							<div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[280px] overflow-hidden sm:min-h-[340px] lg:min-h-[420px]">
+								<img src="{{ item.image_url }}" alt="{{ item.title|default('Governance') }}" loading="lazy" class="h-full w-full object-cover">
+							</div>
+						{% endif %}
+						<div class="carousel-content-overlay absolute inset-0 mx-auto h-full w-full max-w-none">
+							{% if item.overlay %}
+								{{ item.overlay }}
+							{% endif %}
+						</div>
+					</article>
+				{% endfor %}
+			</div>
+
+			{% if carousel_slides|length > 1 %}
+				<div class="carousel-content-controls">
+					<button class="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-md bg-slate-950/80 p-2.5 text-slate-100 opacity-0 shadow-xl backdrop-blur-md transition-all duration-500 ease-in-out group-hover:opacity-100 hover:bg-slate-800/90 hover:text-white focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-sky-400 sm:left-6" data-cud-carousel-prev aria-label="{{ 'Previous slide'|t }}">
+						<i class="fa-solid fa-chevron-left h-5 w-5" aria-hidden="true"></i>
+					</button>
+					<button class="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-md bg-slate-950/80 p-2.5 text-slate-100 opacity-0 shadow-xl backdrop-blur-md transition-all duration-500 ease-in-out group-hover:opacity-100 hover:bg-slate-800/90 hover:text-white focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-sky-400 sm:right-6" data-cud-carousel-next aria-label="{{ 'Next slide'|t }}">
+						<i class="fa-solid fa-chevron-right h-5 w-5" aria-hidden="true"></i>
+					</button>
+				</div>
+			{% endif %}
+		</div>
+	</section>
+{% endif %}
+
+{# ── Page Header with Breadcrumb ─────────────────────────────────────────────── #}
+<section class="bg-white" aria-label="{{ 'Page header'|t }}">
+	<div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+		<nav class="mb-3 flex items-center gap-1.5 text-xs text-slate-500" aria-label="{{ 'Breadcrumb'|t }}">
+			{% for link in breadcrumb %}
+				{% if not loop.first %}
+					<i class="fa-solid fa-chevron-right text-[9px] text-slate-400" aria-hidden="true"></i>
+				{% endif %}
+				{% if link.url %}
+					<a href="{{ link.url }}" class="hover:text-slate-700 transition-colors">{{ link.text }}</a>
+				{% else %}
+					<span>{{ link.text }}</span>
+				{% endif %}
+			{% endfor %}
+			{% if breadcrumb is not empty %}
+				<i class="fa-solid fa-chevron-right text-[9px] text-slate-400" aria-hidden="true"></i>
+			{% endif %}
+			<span class="font-medium text-slate-700">{{ title }}</span>
+		</nav>
+		<div class="flex items-center gap-3">
+			<h1 class="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">{{ title }}</h1>
+			{% if edit_url %}
+				<a href="{{ edit_url }}" class="shrink-0 rounded-md p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700" title="{{ 'Edit node'|t }}" aria-label="{{ 'Edit'|t }}">
+					<i class="fa-solid fa-pen-to-square text-sm" aria-hidden="true"></i>
+				</a>
+			{% endif %}
+		</div>
+	</div>
+</section>
+
+{# ── Shared sub-nav data ──────────────────────────────────────────────────────── #}
+
+{# Icon map for all seeded primary nav children, keyed by URL #}
+{% set icon_map = {
+	'/sustainability/research-in-sustainability/center-for-sustainability-and-innovation': 'fa-flask-vial',
+	'/sustainability/research-in-sustainability/research-groups': 'fa-diagram-project'
+} %}
+
+{# Derive sub_items from the matching top-level primary nav parent #}
+{% set active_nav_parent = null %}
+{% for item in primary_nav %}
+	{% if item.children and (current_path == item.url or current_path starts with (item.url ~ '/')) %}
+		{% set active_nav_parent = item %}
+	{% endif %}
+{% endfor %}
+{% set sub_items = active_nav_parent ? active_nav_parent.children : [] %}
+
+{# ── Mobile / tablet sub-nav strip (hidden on lg+) ───────────────────────────── #}
+<div class="lg:hidden border-b border-slate-100 bg-white px-4 sm:px-6">
+	<nav class="flex gap-1.5 overflow-x-auto py-2.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" aria-label="{{ 'Our Commitment navigation'|t }}">
+		{% for sub in sub_items %}
+			<a href="{{ sub.url }}" class="inline-flex flex-none items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors{% if current_path == sub.url %} bg-slate-900 text-white{% else %} text-slate-600 hover:bg-slate-100 hover:text-slate-900{% endif %}">
+				<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }}" aria-hidden="true"></i>
+				{{ sub.title }}
+			</a>
+		{% endfor %}
+	</nav>
+</div>
+
+{# ── Main Content (full-width) ────────────────────────────────────────────────── #}
+<section class="mx-auto max-w-7xl px-4 lg:px-8 !bg-white" id="main-content" aria-label="{{ title }}" data-mode="{{ mode }}">
+	<div
+		class="min-w-0 space-y-5">
+
+
+		{# ── Selected Publications (Centre for Sustainability & Innovation) ──── #}
+		<div class="block-common-content" aria-labelledby="heading-csi-pubs">
+			<h2 id="heading-csi-pubs" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Selected Publications (Centre for Sustainability & Innovation Research Groups)'|t }}</h2>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'LRU&ndash;UdS&ndash;CUD Strategic Academic and Research Partnership'|t }}</h3>
+			<ol class="list-decimal list-inside space-y-2 mb-4">
+				<li class="text-sm leading-relaxed text-slate-700">A. Bahar, A. Hamami, F. Benmahiddine, S. Belhabib, <strong>R. Belarbi</strong> and S. Guessasma, The Thermal and Mechanical Behaviour of Wood-PLA Composites Processed by Additive Manufacturing for Building Insulation, Polymers 2023, 15, 3056.</li>
+				<li class="text-sm leading-relaxed text-slate-700">A. Charaka, J. Berger, F. Benmahiddine, <strong>R. Belarbi</strong>, On the development of accelerated aging design: assessment of its effects on a bio-based material, Journal of Porous Media, 2026, ISSN Online:1934-0508.</li>
+				<li class="text-sm leading-relaxed text-slate-700">A. Charaka, J. Berger, F. Benmahiddine, <strong>R. Belarbi</strong>, Experimental assessment of the similarity law for a one-dimensional coupled heat and water vapor diffusion in hemp concrete, <em>International Journal of Heat and Mass Transfer (2023)</em>.</li>
+				<li class="text-sm leading-relaxed text-slate-700">Akli Younsi, Armelle Nouviaire, <strong>Rafik Belarbi</strong>, Effect of recycled waste cardboard chips on the physico-thermal-hygric properties of hemp-lime biocomposites, Results in Engineering, Volume 29, 2026, 109773, ISSN 2590-1230.</li>
+				<li class="text-sm leading-relaxed text-slate-700">A Younsi, M. Mahi, A. Hamami, <strong>R Belarbi</strong>, E Bastidas-Arteaga, High-Volume Recycled Waste Glass Powder Cement-Based Materials: Role of Glass Powder Granularity, Buildings 13 (7), 1783, 2023.</li>
+				<li class="text-sm leading-relaxed text-slate-700">Boumlik, Karim, <strong>Rafik Belarbi</strong>, Mohammed Ahachad, Mustapha Mahdaoui, Hassan Radoine, and Moncef Krarti. 2024. &ldquo;Design Optimization of Energy-Efficient Residential Buildings in Morocco,&rdquo; <em><strong>Buildings</strong></em> 14, no. 12: 3915.</li>
+				<li class="text-sm leading-relaxed text-slate-700">Charaka, J. Berger, <strong>R. Belarbi</strong>, Critical assessment of an aging phenomenological model for building materials, Journal of Building Physics, 2025, Vol.48(6), p.889-921, ISSN: 1744-2591, 1744-2583.</li>
+				<li class="text-sm leading-relaxed text-slate-700">Deeb, O. Kalaoun, <strong>R. Belarbi</strong> Proper Generalized Decomposition using Taylor expansion for non-linear diffusion equations, <em><strong>Mathematics and Computers in Simulation</strong></em>, V. 208, pp.71-94, 2023, ISSN 0378-4754.</li>
+				<li class="text-sm leading-relaxed text-slate-700">El Bachawati, Makram, Yassine Elias Belarbi, Henri El Zakhem, and <strong>Rafik Belarbi</strong>. 2026. &ldquo;Life Cycle Assessment of Sustainable Materials: A Comprehensive Analysis of Methodological Asymmetries and Environmental Trade-Offs&rdquo; <em>Buildings</em> 16, no. 7: 1385.</li>
+				<li class="text-sm leading-relaxed text-slate-700">F. Benmahiddine, F. Bennai, A. Charaka, A.E.A Hamami, A. Tahakourt, <strong>R. Belarbi</strong>, Multi-scale analysis of the effects of hysteresis on the hydrothermal behaviour of bio-based materials: Application to hemp concrete, <em><strong>Construction and Building Materials</strong></em>, V. 411, 134107, ISSN 0950-0618, 2024.</li>
+				<li class="text-sm leading-relaxed text-slate-700">F. Benmahiddine, <strong>R. Belarbi</strong>, A. Tahakourt (2023). Effect of the Formulation on the Hydric and Mechanical Properties of Flax Concrete: Comparison with Hemp Concrete. In: Escalante-Garcia, J.I., et al. (eds) Proceedings of the 75th RILEM Annual Week 2021. <em><strong>RILEM Bookseries, vol 40. Springer, Cham.</strong></em></li>
+				<li class="text-sm leading-relaxed text-slate-700">F Mobasheri, M Hosseinpoor, <strong>A Yahia</strong>, F Pourkamali-Anaraki, (2025) Machine Learning as an Innovative Engineering Tool for Controlling Concrete Performance: A Comprehensive Review, Archives of Computational Methods in Engineering.</li>
+				<li class="text-sm leading-relaxed text-slate-700">Makram El Bachawati, Yassine Elias Belarbi, Henri El Zakhem and <strong>Rafik Belarbi</strong> Life Cycle Assessment of Sustainable Materials: A Comprehensive Analysis of Methodological Asymmetries and Environmental Trade-Offs, 2026, <em><strong>Buildings</strong></em>, 16, 1385.</li>
+				<li class="text-sm leading-relaxed text-slate-700">M. Baba, S. Bourbia, <strong>R. Belarbi</strong>, A. Yahia, From aggregate to composite: Design of flax-based concretes through thermal treatment and hemp synergy for controlled construction practices, <em><strong>Materials &amp; Design</strong></em>, Volume 264, 115701, 2026, ISSN 0264-1275.</li>
+				<li class="text-sm leading-relaxed text-slate-700">M Kohandelnia, M Hayek, K Bouarab, <strong>A Yahia</strong>, (2025) New perspectives into the rheology of earth suspensions modified with algae-derived biopolymers, <em><strong>Construction and Building Materials</strong></em> 503, 144523.</li>
+				<li class="text-sm leading-relaxed text-slate-700">M Kohandelnia, <strong>A Yahia</strong>, (2025) From dry flowability to rheology: advancing earth-based paste optimization, <em><strong>ACI Materials Journal</strong></em> 122 (6).</li>
+				<li class="text-sm leading-relaxed text-slate-700">M Kohandelnia, M Zerzouri, <strong>A Yahia</strong>, KH Khayat, (2025) Treatment and Activation Effects on Kaolinite-Based Earth Concrete, <em><strong>Construction and Building Materials</strong></em> 478, 141380.</li>
+				<li class="text-sm leading-relaxed text-slate-700">M Zerzouri, R Hamzaoui, L Ziyani, <strong>A Yahia</strong>, S Alehyen, (2025) Enhancing Illitic-Clay Geopolymer Production: A Comparative Study of Conventional Method and Mechanosynthesized Pre-geopolymer Powder, Applied Clay Science.</li>
+				<li class="text-sm leading-relaxed text-slate-700">M. Sawadogo, F. Benmahiddine, A. Godin, M. Duquesne, <strong>R. Belarbi</strong>, A. Hamami Development and hygrothermal performance analysis of a novel eco-friendly insulating wall under various climatic conditions, <em><strong>Building &amp; Environment</strong></em>, (2023), Volume 245, 110841, ISSN 0360-1323.</li>
+				<li class="text-sm leading-relaxed text-slate-700">M. Sawadogo, A. Godin, M. Duquesne, E. Lacroix, A. Veill&egrave;re, AEA. El Hamami, <strong>R. Belarbi</strong> Investigation of eco-friendly and economic shape-stabilized composites for building walls and thermal comfort, <em><strong>Building and Environment</strong></em>, Volume 231, 2023, 110026, ISSN 0360-1323.</li>
+				<li class="text-sm leading-relaxed text-slate-700">M. Kohandelnia, M. Hosseinpoor, <strong>A. Yahia</strong>, <strong>R. Belarbi</strong>, New insight on rheology of self-consolidating earth concrete (SCEC), <em><strong>Powder Technology</strong></em>, Volume 424 (2023) 118561, ISSN 0032-5910.</li>
+				<li class="text-sm leading-relaxed text-slate-700">M. Kohandelnia, M. Hosseinpoor, <strong>A. Yahia</strong>, <strong>R. Belarbi</strong>, Hygrothermal and microstructural characterization of self-consolidating earth concrete, <em><strong>Journal of Building Engineering</strong></em>, Volume 69 (2023), 106287, ISSN 2352-7102.</li>
+				<li class="text-sm leading-relaxed text-slate-700">M. Kohandelnia, M. Hosseinpoor, A. Yahia, <strong>R. Belarbi</strong>, Multiscale investigation of self-consolidating earthen materials using a novel concrete-equivalent mortar approach, <em><strong>Construction and Building Materials</strong></em> (2023) Volume 370, 2023, ISSN 0950-0618.</li>
+				<li class="text-sm leading-relaxed text-slate-700">Salah-Eddine Ouldboukhitine, Amer Bakkour, Sofiane Amziane, <strong>Rafik Belarbi</strong>, A comparative study of energy performance of Green, White, and gravel roofs in a temperate climate through In-Situ measurement and dynamic simulation, <strong>Energy and Buildings</strong>, Volume 320, 2024, 114630, ISSN 0378-7788.</li>
+				<li class="text-sm leading-relaxed text-slate-700">Salah-Eddine Ouldboukhitine, Amer Bakkour, Seif Khiati, <strong>Rafik Belarbi</strong>, (2025) Insights into the Thermal Performance of Green Walls as a Passive Cooling Solution in Oceanic Climates. Elsevier, <em><strong>Energy and Buildings</strong></em>, Volume 342, 1 September 2025, 115850. ISSN 0378-7788.</li>
+				<li class="text-sm leading-relaxed text-slate-700"><strong>Seif Khiati, Rafik Belarbi</strong>, <strong>Ammar Yahia</strong> (2023). Sustainable Buildings: A Choice, or a Must for Our Future? <em><strong>Energies</strong></em> 2023, MDPI, vol. 16(6), pages 1-5, March.</li>
+				<li class="text-sm leading-relaxed text-slate-700">S. E. Ouldboukhitine, A. Bakkour, <strong>S. Khiati</strong>, R. Belarbi, Modular green walls: A sustainable architectural solution for energy efficiency in oceanic climates, Energy and Buildings, 2025, Volume 342, 115850, ISSN 0378-7788.</li>
+				<li class="text-sm leading-relaxed text-slate-700">Sofiane Bourbia, Habiba Kazeoui, Abdelfetah. Zenati, <strong>Rafik Belarbi</strong> Thermo-Hygro-Mechanical Behavior of an Innovative Bio-Based Building Material Incorporating Date Palm Shives, <em><strong>Journal of Building Engineering</strong></em>, Volume 123, 2026, 115967, ISSN 2352-7102.</li>
+				<li class="text-sm leading-relaxed text-slate-700">Sofiane Bourbia, Habiba Kazeoui, &amp; <strong>Rafik Belarbi</strong>. A review on recent research on bio-based building materials and their applications, Materials for Renewable and Sustainable Energy, 12, 117&ndash;139 (2023).</li>
+				<li class="text-sm leading-relaxed text-slate-700">Sultan Alpar, Julien Berger, <strong>Rafik Belarbi</strong>, Shape Optimisation of the Energy Efficiency of Building Retrofitted Fa&ccedil;ade, 31&egrave;me Congr&egrave;s Fran&ccedil;ais de Thermique et Agroressources, Reims 30/05-02/06/2023.</li>
+				<li class="text-sm leading-relaxed text-slate-700">Y. Nasr, H El Zakhem, AEA Hamami, M El Bachawati, <strong>R Belarbi</strong>, Comprehensive Assessment of the Impact of Green Roofs and Walls on Building Energy Performance: Scientific Review, <em><strong>Energies</strong></em> (2024), 17 (20), 5160.</li>
+				<li class="text-sm leading-relaxed text-slate-700">Yara Nasr, Makram El Bachawati, Ameur Hamami, Henri El Zakhem, <strong>Rafik Belarbi</strong>, Composition Effects on Microstructure and Mechanical Performance of Lightweight Cementitious Mortars Incorporating Recycled Glass Powder, Developments in the Built Environment, Accepted 07 April 2026.</li>
+			</ol>
+		</div>
+
+		{# ── Digital Transition, Low-Carbon Construction Publications ─────────── #}
+		<div class="block-common-content" aria-labelledby="heading-dtlc-pubs">
+			<h2 id="heading-dtlc-pubs" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Digital Transition, Low-Carbon Construction and Net Zero Built Environment'|t }}</h2>
+			<ol class="list-decimal list-inside space-y-2 mb-4">
+				<li class="text-sm leading-relaxed text-slate-700">Boukhatem, M. Hayek, Y. Boutouam, K. Bouarab, A. Yahia (2026) Ion-Dependent Rheological and Hydration Behavior of (&kappa;)-Carrageenan Biopolymer in Cement Suspensions. Journal Advances in Cement Research. (Accepted for publication).</li>
+				<li class="text-sm leading-relaxed text-slate-700">JV Gonz&aacute;lez-Avi&ntilde;a, M Hosseinpoor, A Yahia, M Kohandelnia, A Dur&aacute;n-Herrera, (2025) Anionic biopolymers to enhance concrete rheological properties for 3D printing applications, Journal of Building Engineering 114, 114493.</li>
+				<li class="text-sm leading-relaxed text-slate-700">BS Aouichat, M Hosseinpoor, A Yahia, M Dupuis, (2025) Dispersion of cellulose nanocrystals and cellulose nanofibers in aqueous suspensions: synergistic effect of concrete superplasticizers, Materials and Structures 58 (9), pp. 1-19.</li>
+				<li class="text-sm leading-relaxed text-slate-700">I Harbouz, A Yahia, E Roziere, A Loukili, (2025) Squeeze test: A toolkit for assessing the printability of stiff cement-based materials, Construction and Building Materials 491, 142521.</li>
+				<li class="text-sm leading-relaxed text-slate-700">M Hayek, Y El Bitouri, K Bouarab, A Yahia, (2025) Structural Build-Up of Cement Pastes: A Comprehensive Overview and Key Research Directions, Construction Materials 5, 31.</li>
+				<li class="text-sm leading-relaxed text-slate-700">JV Gonz&aacute;lez-Avi&ntilde;a, M Hosseinpoor, A Yahia, A Dur&aacute;n-Herrera, (2024) Synergistic effects of superplasticizers and biopolymer-based viscosity-modifying admixtures on the rheology of cement-based systems, Cement and Concrete Composites 154, 105807.</li>
+			</ol>
+		</div>
+
+		{# ── Climate Research Lab Publications ────────────────────────────────── #}
+		<div class="block-common-content" aria-labelledby="heading-crl-pubs">
+			<h2 id="heading-crl-pubs" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Climate Research Lab'|t }}</h2>
+			<p class="text-slate-700 text-sm leading-relaxed mb-4">Fenech, A., D. Scott, X. Wand R. Gordon. In preparation. Artificial Intelligence for Climate Action: Advances, Methodologies, Governance, and Policy Pathways for Global and National Climate Strategies.</p>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Submitted Papers'|t }}</h3>
+			<ol class="list-decimal list-inside space-y-2 mb-4">
+				<li class="text-sm leading-relaxed text-slate-700">Sultan Alpar, Julien Berger &amp; <strong>Rafik Belarbi</strong>, Influence of shape parametrization techniques on the solution of thermal design problem for facade energy optimization, <em><strong>Computational Thermal Sciences journal</strong></em>, May 2026.</li>
+				<li class="text-sm leading-relaxed text-slate-700">Yara Nasr, Ameur Hamami, Henri El Zakhem, Makram El Bachawati, <strong>Rafik Belarbi</strong>, Interaction between microstructure and hygrothermal behavior of lightweight mortars containing glass waste powder, <em><strong>Journal of Building Engineering</strong></em>, May 2026.</li>
+			</ol>
+		</div>
+
+		{# ── School of Engineering: Safe and Sustainable Transport Pubs ────────── #}
+		<div class="block-common-content" aria-labelledby="heading-sst-pubs">
+			<h2 id="heading-sst-pubs" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'School of Engineering: Safe and Sustainable Transport'|t }}</h2>
+			<ol class="list-decimal list-inside space-y-2 mb-4">
+				<li class="text-sm leading-relaxed text-slate-700">Ullah, I., Khalil, I., Bai, X., Garg, S., Kaddoum, G., &amp; Hossain, M. S. (2025). An ensemble-based hybrid model for the detection of attacks in the internet of vehicular things. <em>IEEE Transactions on Intelligent Transportation Systems</em>, 26(10), 17914-17927.</li>
+				<li class="text-sm leading-relaxed text-slate-700">Dai, C., Zhu, T., Xiang, S., Xie, L., Garg, S., &amp; Hossain, M. S. (2025). Psfl: Personalized split federated learning framework for distributed model training in intelligent transportation systems. <em>IEEE Transactions on Intelligent Transportation Systems</em>.</li>
+				<li class="text-sm leading-relaxed text-slate-700">Dai, C., He, G., Guo, B., Garg, S., Kaddoum, G., &amp; Hassan, M. M. (2025). Position-aware structural knowledge sharing-based federated graph learning for intelligent transportation systems. <em>IEEE Transactions on Intelligent Transportation Systems</em>.</li>
+				<li class="text-sm leading-relaxed text-slate-700">Dai, C., Xiang, S., Xie, L., Garg, S., Kaddoum, G., &amp; Hassan, M. M. (2025). An improved nonlinear precoding scheme in multicarrier signaling optimization for transportation networks applications. <em>IEEE Transactions on Intelligent Transportation Systems</em>.</li>
+				<li class="text-sm leading-relaxed text-slate-700">Elgazwy, A., Elgazzar, K., &amp; Khamis, A. (2025). Predicting pedestrian crossing intentions in adverse weather with self-attention models. <em>IEEE Transactions on Intelligent Transportation Systems</em>.</li>
+				<li class="text-sm leading-relaxed text-slate-700">Aissa, M., Bouhdid, B., Ben Mnaouer, A., Belghith, A., &amp; AlAhmadi, S. (2022). SOFCluster: Safety&dash;oriented, fuzzy logic&dash;based clustering scheme for vehicular ad hoc networks. <em>Transactions on Emerging Telecommunications Technologies</em>, 33(3), e3951.</li>
+			</ol>
+		</div>
+
+		{# ── School of Engineering: Sustainable Medical AI & Digital Health Pubs ── #}
+		<div class="block-common-content" aria-labelledby="heading-smai-pubs">
+			<h2 id="heading-smai-pubs" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'School of Engineering: Sustainable Medical AI and Digital Health'|t }}</h2>
+			<ol class="list-decimal list-inside space-y-2 mb-4">
+				<li class="text-sm leading-relaxed text-slate-700">Zhang, R. H., Feng, J., Li, H., El&#8209;Messiry, H., &amp; Xu, Z. (2025). Unsupervised trajectory optimization for 3D registration in serial section electron microscopy using neural ODEs. In Advances in Neural Information Processing Systems (NeurIPS 2025).</li>
+				<li class="text-sm leading-relaxed text-slate-700">Elmoghazy, S., Elgazzar, S., Badawi, A., Elgazzar, K., &amp; Burhan, A. M. (2025). Combining Video&dash;Based Skeletal and Wearable Physiological Data for Early Detection of Agitation in Dementia Using Deep Learning. Alzheimer&rsquo;s &amp; Dementia, 21, e105825.</li>
+				<li class="text-sm leading-relaxed text-slate-700">Moore, D. E., Tao, S., Moore, S. R., Morgan, B., Tadin, D., Tadin, C. S., &amp; Murnane, E. L. (2025). CareInsights: AI-enabled Infrastructure for Person-centered Dementia Care in Resource-constrained Facilities. Proceedings of the ACM on Interactive, Mobile, Wearable and Ubiquitous Technologies, 9(4), 1-42.</li>
+				<li class="text-sm leading-relaxed text-slate-700">Kamalov, F., Pourghebleh, B., Gheisari, M., Liu, Y., &amp; Moussa, S. (2023). Internet of medical things privacy and security: Challenges, solutions, and future trends from a new perspective. Sustainability, 15(4), 3317.</li>
+				<li class="text-sm leading-relaxed text-slate-700">Zgheib, R., Chahbandarian, G., Kamalov, F., El Messiry, H., &amp; Al-Gindy, A. (2023). Towards an ML-based semantic IoT for pandemic management: A survey of enabling technologies for COVID-19. Neurocomputing, 528, 160-177.</li>
+				<li class="text-sm leading-relaxed text-slate-700">Rajab, K., Kamalov, F., &amp; Cherukuri, A. K. (2022). Forecasting COVID-19: vector autoregression-based model. Arabian journal for science and engineering, 47(6), 6851-6860.</li>
+			</ol>
+		</div>
+
+		{% if content %}
+			<div class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-sky-700 prose-a:no-underline hover:prose-a:underline">
+				{{ content }}
+			</div>
+		{% endif %}
+
+		{% if sections %}
+			<div class="mt-8 space-y-6">
+				{% for section in sections %}
+					<div class="prose prose-slate max-w-none">{{ section }}</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+
+	</div>
+</section>
+
+{# ── Desktop floating contextual nav (hidden on mobile/tablet) ───────────────── #}
+<section class="hidden lg:block fixed right-0 top-1/2 -translate-y-1/2 z-40 group" aria-label="{{ 'Our Commitment navigation'|t }}">
+	<div
+		class="flex items-stretch">
+
+		{# Expanded panel — slides in from right edge on hover #}
+		<div class="flex flex-col justify-center overflow-hidden bg-white border-y border-l border-slate-200 rounded-l-2xl shadow-xl w-0 opacity-0 group-hover:w-56 group-hover:opacity-100 transition-all duration-300 ease-out">
+			<div class="min-w-[14rem] px-4 py-5">
+				<p class="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400 whitespace-nowrap">{{ active_nav_parent ? active_nav_parent.title : 'Navigation'|t }}</p>
+				<ul class="space-y-0.5">
+					{% for sub in sub_items %}
+						<li>
+							<a href="{{ sub.url }}" class="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors whitespace-nowrap{% if current_path == sub.url %} bg-slate-100 font-semibold text-slate-900{% else %} text-slate-600 hover:bg-slate-50 hover:text-slate-900{% endif %}">
+								<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }} w-4 text-center text-xs{% if current_path == sub.url %} text-[#b13634]{% else %} text-slate-400{% endif %}" aria-hidden="true"></i>
+								{{ sub.title }}
+							</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+
+		{# Tab strip — always visible on right edge, collapses border-radius on hover #}
+		<div class="flex flex-col items-center justify-center gap-2.5 bg-[#b13634] rounded-l-2xl group-hover:rounded-l-none shadow-lg shadow-[#b13634]/30 px-2.5 py-5 min-w-[2.75rem] transition-all duration-300 cursor-default select-none">
+			<i class="fa-solid fa-layer-group text-white/90 text-md" aria-hidden="true"></i>
+			<div class="w-px h-2 bg-white/30 rounded-full"></div>
+			{% for sub in sub_items %}
+				<div class="rounded-full transition-colors {% if current_path == sub.url %}w-2 h-2 bg-white{% else %}w-1.5 h-1.5 bg-white/40 hover:bg-white/70{% endif %}" title="{{ sub.title }}"></div>
+			{% endfor %}
+		</div>
+
+	</div>
+</section>

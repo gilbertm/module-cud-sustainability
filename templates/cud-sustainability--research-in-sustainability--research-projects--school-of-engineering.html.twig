@@ -1,0 +1,287 @@
+{#
+/**
+ * @file
+ * Inner-page template for /sustainability/our-commitment/governance.
+ *
+ * Variables:
+ * - title: Page title string.
+ * - content: Rendered node content (full view mode).
+ * - carousel_items: Optional list of carousel slides.
+ * - sections: Optional list of processed-text sections.
+ * - primary_nav: Primary navigation array.
+ * - secondary_nav: Secondary navigation array.
+ * - mode: Display mode string ('main' or 'secondary').
+ */
+#}
+
+{% set carousel_slides = carousel_items|default([]) %}
+
+{% if carousel_slides %}
+	<section class="carousel group relative mb-8 w-screen max-w-none -translate-x-1/2 left-1/2" data-cud-carousel data-cud-carousel-autoplay="5600" aria-label="{{ 'Governance carousel'|t }}">
+		<div class="w-full relative overflow-hidden">
+			<div class="w-full flex transition-transform duration-700 ease-out will-change-transform" data-cud-carousel-track>
+				{% for item in carousel_slides %}
+					<article class="relative min-w-full" data-cud-carousel-slide>
+						{% if item.image %}
+							<div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[280px] overflow-hidden sm:min-h-[340px] lg:min-h-[420px]">
+								{{ item.image }}
+							</div>
+						{% elseif item.image_url %}
+							<div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[280px] overflow-hidden sm:min-h-[340px] lg:min-h-[420px]">
+								<img src="{{ item.image_url }}" alt="{{ item.title|default('Governance') }}" loading="lazy" class="h-full w-full object-cover">
+							</div>
+						{% endif %}
+						<div class="carousel-content-overlay absolute inset-0 mx-auto h-full w-full max-w-none">
+							{% if item.overlay %}
+								{{ item.overlay }}
+							{% endif %}
+						</div>
+					</article>
+				{% endfor %}
+			</div>
+
+			{% if carousel_slides|length > 1 %}
+				<div class="carousel-content-controls">
+					<button class="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-md bg-slate-950/80 p-2.5 text-slate-100 opacity-0 shadow-xl backdrop-blur-md transition-all duration-500 ease-in-out group-hover:opacity-100 hover:bg-slate-800/90 hover:text-white focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-sky-400 sm:left-6" data-cud-carousel-prev aria-label="{{ 'Previous slide'|t }}">
+						<i class="fa-solid fa-chevron-left h-5 w-5" aria-hidden="true"></i>
+					</button>
+					<button class="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-md bg-slate-950/80 p-2.5 text-slate-100 opacity-0 shadow-xl backdrop-blur-md transition-all duration-500 ease-in-out group-hover:opacity-100 hover:bg-slate-800/90 hover:text-white focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-sky-400 sm:right-6" data-cud-carousel-next aria-label="{{ 'Next slide'|t }}">
+						<i class="fa-solid fa-chevron-right h-5 w-5" aria-hidden="true"></i>
+					</button>
+				</div>
+			{% endif %}
+		</div>
+	</section>
+{% endif %}
+
+{# ── Page Header with Breadcrumb ─────────────────────────────────────────────── #}
+<section class="bg-white" aria-label="{{ 'Page header'|t }}">
+	<div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+		<nav class="mb-3 flex items-center gap-1.5 text-xs text-slate-500" aria-label="{{ 'Breadcrumb'|t }}">
+			{% for link in breadcrumb %}
+				{% if not loop.first %}
+					<i class="fa-solid fa-chevron-right text-[9px] text-slate-400" aria-hidden="true"></i>
+				{% endif %}
+				{% if link.url %}
+					<a href="{{ link.url }}" class="hover:text-slate-700 transition-colors">{{ link.text }}</a>
+				{% else %}
+					<span>{{ link.text }}</span>
+				{% endif %}
+			{% endfor %}
+			{% if breadcrumb is not empty %}
+				<i class="fa-solid fa-chevron-right text-[9px] text-slate-400" aria-hidden="true"></i>
+			{% endif %}
+			<span class="font-medium text-slate-700">{{ title }}</span>
+		</nav>
+		<div class="flex items-center gap-3">
+			<h1 class="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">{{ title }}</h1>
+			{% if edit_url %}
+				<a href="{{ edit_url }}" class="shrink-0 rounded-md p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700" title="{{ 'Edit node'|t }}" aria-label="{{ 'Edit'|t }}">
+					<i class="fa-solid fa-pen-to-square text-sm" aria-hidden="true"></i>
+				</a>
+			{% endif %}
+		</div>
+	</div>
+</section>
+
+{# ── Shared sub-nav data ──────────────────────────────────────────────────────── #}
+
+{# Icon map for all seeded primary nav children, keyed by URL #}
+{% set icon_map = {
+	'/sustainability/research-in-sustainability/center-for-sustainability-and-innovation': 'fa-flask-vial',
+	'/sustainability/research-in-sustainability/research-groups': 'fa-diagram-project'
+} %}
+
+{# Derive sub_items from the matching top-level primary nav parent #}
+{% set active_nav_parent = null %}
+{% for item in primary_nav %}
+	{% if item.children and (current_path == item.url or current_path starts with (item.url ~ '/')) %}
+		{% set active_nav_parent = item %}
+	{% endif %}
+{% endfor %}
+{% set sub_items = active_nav_parent ? active_nav_parent.children : [] %}
+
+{# ── Mobile / tablet sub-nav strip (hidden on lg+) ───────────────────────────── #}
+<div class="lg:hidden border-b border-slate-100 bg-white px-4 sm:px-6">
+	<nav class="flex gap-1.5 overflow-x-auto py-2.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" aria-label="{{ 'Our Commitment navigation'|t }}">
+		{% for sub in sub_items %}
+			<a href="{{ sub.url }}" class="inline-flex flex-none items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors{% if current_path == sub.url %} bg-slate-900 text-white{% else %} text-slate-600 hover:bg-slate-100 hover:text-slate-900{% endif %}">
+				<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }}" aria-hidden="true"></i>
+				{{ sub.title }}
+			</a>
+		{% endfor %}
+	</nav>
+</div>
+
+{# ── Main Content (full-width) ────────────────────────────────────────────────── #}
+<section class="mx-auto max-w-7xl px-4 lg:px-8 !bg-white" id="main-content" aria-label="{{ title }}" data-mode="{{ mode }}">
+	<div
+		class="min-w-0 space-y-5">
+
+
+		{# ── Department of Electrical Engineering ─────────────────────────────── #}
+		<div class="block-common-content" aria-labelledby="heading-ee-intro">
+			<h2 id="heading-ee-intro" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Department of Electrical Engineering at CUD'|t }}</h2>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The Department of Electrical Engineering at CUD is developing sustainability-oriented work across smart mobility, inclusive design, predictive maintenance, climate resilience, smart agriculture, industrial inspection, and technology-enabled economic transformation.'|t }}</p>
+		</div>
+
+		{# ── Top Sustainability Projects ──────────────────────────────────────── #}
+		<div class="block-common-content" aria-labelledby="heading-top-projects">
+			<h2 id="heading-top-projects" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Top Sustainability Projects at the Department of Electrical Engineering at CUD'|t }}</h2>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ '1. Farmacation'|t }}</h3>
+			<ul class="space-y-1.5 mb-4">
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><strong>{{ 'Primary Sustainability Contribution:'|t }}</strong> {{ 'Smart agriculture, resource efficiency, food security'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><strong>{{ 'Key Highlights:'|t }}</strong> {{ 'Integrates greenhouse control, AI disease detection, and automation to reduce water, energy, and labour waste.'|t }}</p>
+				</li>
+			</ul>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ '2. City Walk Companion'|t }}</h3>
+			<ul class="space-y-1.5 mb-4">
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><strong>{{ 'Primary Sustainability Contribution:'|t }}</strong> {{ 'Inclusive urban mobility and social sustainability'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><strong>{{ 'Key Highlights:'|t }}</strong> {{ 'Directly addresses accessibility, user safety, and independent movement in public spaces.'|t }}</p>
+				</li>
+			</ul>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ '3. Autonomous Corrosion Detection Robot / OXIDE'|t }}</h3>
+			<ul class="space-y-1.5 mb-4">
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><strong>{{ 'Primary Sustainability Contribution:'|t }}</strong> {{ 'Predictive maintenance and industrial sustainability'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><strong>{{ 'Key Highlights:'|t }}</strong> {{ 'Extends infrastructure life, reduces manual inspection risk, and supports proactive maintenance.'|t }}</p>
+				</li>
+			</ul>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ '4. F.I.R.E'|t }}</h3>
+			<ul class="space-y-1.5 mb-4">
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><strong>{{ 'Primary Sustainability Contribution:'|t }}</strong> {{ 'Climate resilience and ecosystem protection'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><strong>{{ 'Key Highlights:'|t }}</strong> {{ 'Targets wildfire suppression and prevention with a safer robotic intervention approach.'|t }}</p>
+				</li>
+			</ul>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ '5. VibraX'|t }}</h3>
+			<ul class="space-y-1.5 mb-4">
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><strong>{{ 'Primary Sustainability Contribution:'|t }}</strong> {{ 'Industrial efficiency and circular economy'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><strong>{{ 'Key Highlights:'|t }}</strong> {{ 'Low-cost predictive maintenance helps avoid premature equipment failure and waste.'|t }}</p>
+				</li>
+			</ul>
+		</div>
+
+		{# ── Student Projects ─────────────────────────────────────────────────── #}
+		<div class="block-common-content" aria-labelledby="heading-student-projects">
+			<h2 id="heading-student-projects" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Student Projects at the Department of Electrical Engineering at CUD'|t }}</h2>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ '1. Powering Electricity Forecasting with Transfer Learning'|t }}</h3>
+			<span class="inline-block rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 mb-2">{{ 'Published'|t }}</span>
+			<p class="text-slate-700 text-sm leading-relaxed mb-4">{{ 'Accurate forecasting is one of the keys to the efficient use of the limited existing energy resources and plays an important role in sustainable development. While most of the current research has focused on energy price forecasting, very few studies have considered medium-term (monthly) electricity generation. This research aims to fill this gap by proposing a novel forecasting approach based on zero-shot transfer learning. Specifically, we train a Neural Basis Expansion Analysis for Time Series (NBEATS) model on a vast dataset comprising diverse time series data. Then, the trained model is applied to forecast electric power generation using zero-shot learning. The results show that the proposed method achieves a lower error than the benchmark deep learning and statistical methods, especially in backtesting. Furthermore, the proposed method provides vastly superior execution time as it does not require problem-specific training.'|t }}</p>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ '2. Secure and Dynamic Resource Allocation for Cloud Computing'|t }}</h3>
+			<span class="inline-block rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800 mb-2">{{ 'In-progress'|t }}</span>
+			<p class="text-slate-700 text-sm leading-relaxed mb-4">{{ 'This project aims to develop a secure and adaptive framework for efficiently allocating cloud resources based on real-time demand. It focuses on optimizing performance and scalability while integrating security mechanisms to protect data and prevent unauthorized access. The solution leverages intelligent algorithms to balance resource utilization, reduce latency, and ensure reliable and secure cloud operations.'|t }}</p>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ '3. IoT and AI-Driven Optimization of Commercial Swimming Pool Operations'|t }}</h3>
+			<span class="inline-block rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800 mb-2">{{ 'In-progress'|t }}</span>
+			<p class="text-slate-700 text-sm leading-relaxed mb-4">{{ 'This project develops an intelligent system that uses IoT sensors and AI algorithms to monitor and optimize key pool parameters such as water quality, energy consumption, and maintenance schedules in real time. The goal is to enhance operational efficiency, reduce costs, and ensure safety and regulatory compliance through predictive analytics and automated control.'|t }}</p>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ '4. Machine Learning Pipeline for EV Battery State-of-Health Estimation and Prediction'|t }}</h3>
+			<span class="inline-block rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800 mb-2">{{ 'In-progress'|t }}</span>
+			<p class="text-slate-700 text-sm leading-relaxed mb-4">{{ 'This project develops an end-to-end machine learning pipeline to estimate and predict the state-of-health (SoH) of electric vehicle batteries using real-world operational data. The system leverages advanced analytics to enable accurate degradation forecasting, supporting predictive maintenance, improved battery lifespan, and enhanced reliability.'|t }}</p>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ '5. Energy Efficient Resource Allocation and Trajectory Optimization Method for Secure Digital Twin-Enabled UAV-Assisted MEC in 6G Networks'|t }}</h3>
+			<span class="inline-block rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 mb-2">{{ 'Published'|t }}</span>
+			<p class="text-slate-700 text-sm leading-relaxed mb-4">{{ 'The future sixth generation (6G) mobile network will be a highly heterogeneous system that integrates diverse technologies and communication paradigms, encompassing diverse consumer electronics devices, including various internet of things (IoT) devices utilizing different protocols. The combination of unmanned aerial vehicles (UAVs) and mobile edge computing (MEC) with 6G has created ground-breaking prospects for effective data processing and computation services in the IoT. Despite this improvement, the presence of an eavesdropper introduces significant security risks into the computing process of mobile devices (MDs), permitting the collection of sensitive data from MDs and perhaps affecting the correctness of offloaded computations. This study proposes an efficient technique for reducing energy usage in a secure digital twin (DT)-enabled UAV-assisted MEC metaverse network that faces the threat of a UAV eavesdropper. By ensuring the secure processing of all MDs data, the network meets its energy consumption objectives by optimizing trajectories and resources, taking into account parameters like as time, local computation, and offloading computation dispersion. Because of the complicated arrangement of the interplay of various variables and non-linear constraints, solving the problem directly is extremely difficult. To solve this complexity, an auxiliary variable is used to rearrange the problem into a more understandable format. We employ DT-enabled DRL to address this issue because traditional methods are inadequate. The empirical findings indicate that the proposed methodology achieved a reduction in energy consumption of approximately 83.32% and a decrease in time delay of roughly 11.97%, in comparison to the prevailing baseline methodologies.'|t }}</p>
+		</div>
+
+		{% if content %}
+			<div class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-sky-700 prose-a:no-underline hover:prose-a:underline">
+				{{ content }}
+			</div>
+		{% endif %}
+
+		{% if sections %}
+			<div class="mt-8 space-y-6">
+				{% for section in sections %}
+					<div class="prose prose-slate max-w-none">{{ section }}</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+
+	</div>
+</section>
+
+{# ── Desktop floating contextual nav (hidden on mobile/tablet) ───────────────── #}
+<section class="hidden lg:block fixed right-0 top-1/2 -translate-y-1/2 z-40 group" aria-label="{{ 'Our Commitment navigation'|t }}">
+	<div
+		class="flex items-stretch">
+
+		{# Expanded panel — slides in from right edge on hover #}
+		<div class="flex flex-col justify-center overflow-hidden bg-white border-y border-l border-slate-200 rounded-l-2xl shadow-xl w-0 opacity-0 group-hover:w-56 group-hover:opacity-100 transition-all duration-300 ease-out">
+			<div class="min-w-[14rem] px-4 py-5">
+				<p class="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400 whitespace-nowrap">{{ active_nav_parent ? active_nav_parent.title : 'Navigation'|t }}</p>
+				<ul class="space-y-0.5">
+					{% for sub in sub_items %}
+						<li>
+							<a href="{{ sub.url }}" class="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors whitespace-nowrap{% if current_path == sub.url %} bg-slate-100 font-semibold text-slate-900{% else %} text-slate-600 hover:bg-slate-50 hover:text-slate-900{% endif %}">
+								<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }} w-4 text-center text-xs{% if current_path == sub.url %} text-[#b13634]{% else %} text-slate-400{% endif %}" aria-hidden="true"></i>
+								{{ sub.title }}
+							</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+
+		{# Tab strip — always visible on right edge, collapses border-radius on hover #}
+		<div class="flex flex-col items-center justify-center gap-2.5 bg-[#b13634] rounded-l-2xl group-hover:rounded-l-none shadow-lg shadow-[#b13634]/30 px-2.5 py-5 min-w-[2.75rem] transition-all duration-300 cursor-default select-none">
+			<i class="fa-solid fa-layer-group text-white/90 text-md" aria-hidden="true"></i>
+			<div class="w-px h-2 bg-white/30 rounded-full"></div>
+			{% for sub in sub_items %}
+				<div class="rounded-full transition-colors {% if current_path == sub.url %}w-2 h-2 bg-white{% else %}w-1.5 h-1.5 bg-white/40 hover:bg-white/70{% endif %}" title="{{ sub.title }}"></div>
+			{% endfor %}
+		</div>
+
+	</div>
+</section>

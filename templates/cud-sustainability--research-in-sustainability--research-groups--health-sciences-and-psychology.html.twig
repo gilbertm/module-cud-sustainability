@@ -1,0 +1,574 @@
+{#
+/**
+ * @file
+ * Inner-page template for /sustainability/our-commitment/governance.
+ *
+ * Variables:
+ * - title: Page title string.
+ * - content: Rendered node content (full view mode).
+ * - carousel_items: Optional list of carousel slides.
+ * - sections: Optional list of processed-text sections.
+ * - primary_nav: Primary navigation array.
+ * - secondary_nav: Secondary navigation array.
+ * - mode: Display mode string ('main' or 'secondary').
+ */
+#}
+
+{% set carousel_slides = carousel_items|default([]) %}
+
+{% if carousel_slides %}
+	<section class="carousel group relative mb-8 w-screen max-w-none -translate-x-1/2 left-1/2" data-cud-carousel data-cud-carousel-autoplay="5600" aria-label="{{ 'Governance carousel'|t }}">
+		<div class="w-full relative overflow-hidden">
+			<div class="w-full flex transition-transform duration-700 ease-out will-change-transform" data-cud-carousel-track>
+				{% for item in carousel_slides %}
+					<article class="relative min-w-full" data-cud-carousel-slide>
+						{% if item.image %}
+							<div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[280px] overflow-hidden sm:min-h-[340px] lg:min-h-[420px]">
+								{{ item.image }}
+							</div>
+						{% elseif item.image_url %}
+							<div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[280px] overflow-hidden sm:min-h-[340px] lg:min-h-[420px]">
+								<img src="{{ item.image_url }}" alt="{{ item.title|default('Governance') }}" loading="lazy" class="h-full w-full object-cover">
+							</div>
+						{% endif %}
+						<div class="carousel-content-overlay absolute inset-0 mx-auto h-full w-full max-w-none">
+							{% if item.overlay %}
+								{{ item.overlay }}
+							{% endif %}
+						</div>
+					</article>
+				{% endfor %}
+			</div>
+
+			{% if carousel_slides|length > 1 %}
+				<div class="carousel-content-controls">
+					<button class="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-md bg-slate-950/80 p-2.5 text-slate-100 opacity-0 shadow-xl backdrop-blur-md transition-all duration-500 ease-in-out group-hover:opacity-100 hover:bg-slate-800/90 hover:text-white focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-sky-400 sm:left-6" data-cud-carousel-prev aria-label="{{ 'Previous slide'|t }}">
+						<i class="fa-solid fa-chevron-left h-5 w-5" aria-hidden="true"></i>
+					</button>
+					<button class="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-md bg-slate-950/80 p-2.5 text-slate-100 opacity-0 shadow-xl backdrop-blur-md transition-all duration-500 ease-in-out group-hover:opacity-100 hover:bg-slate-800/90 hover:text-white focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-sky-400 sm:right-6" data-cud-carousel-next aria-label="{{ 'Next slide'|t }}">
+						<i class="fa-solid fa-chevron-right h-5 w-5" aria-hidden="true"></i>
+					</button>
+				</div>
+			{% endif %}
+		</div>
+	</section>
+{% endif %}
+
+{# ── Page Header with Breadcrumb ─────────────────────────────────────────────── #}
+<section class="bg-white" aria-label="{{ 'Page header'|t }}">
+	<div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+		<nav class="mb-3 flex items-center gap-1.5 text-xs text-slate-500" aria-label="{{ 'Breadcrumb'|t }}">
+			{% for link in breadcrumb %}
+				{% if not loop.first %}
+					<i class="fa-solid fa-chevron-right text-[9px] text-slate-400" aria-hidden="true"></i>
+				{% endif %}
+				{% if link.url %}
+					<a href="{{ link.url }}" class="hover:text-slate-700 transition-colors">{{ link.text }}</a>
+				{% else %}
+					<span>{{ link.text }}</span>
+				{% endif %}
+			{% endfor %}
+			{% if breadcrumb is not empty %}
+				<i class="fa-solid fa-chevron-right text-[9px] text-slate-400" aria-hidden="true"></i>
+			{% endif %}
+			<span class="font-medium text-slate-700">{{ title }}</span>
+		</nav>
+		<div class="flex items-center gap-3">
+			<h1 class="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">{{ title }}</h1>
+			{% if edit_url %}
+				<a href="{{ edit_url }}" class="shrink-0 rounded-md p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700" title="{{ 'Edit node'|t }}" aria-label="{{ 'Edit'|t }}">
+					<i class="fa-solid fa-pen-to-square text-sm" aria-hidden="true"></i>
+				</a>
+			{% endif %}
+		</div>
+	</div>
+</section>
+
+{# ── Shared sub-nav data ──────────────────────────────────────────────────────── #}
+
+{# Icon map for all seeded primary nav children, keyed by URL #}
+{% set icon_map = {
+	'/sustainability/research-in-sustainability/center-for-sustainability-and-innovation': 'fa-flask-vial',
+	'/sustainability/research-in-sustainability/research-groups': 'fa-diagram-project'
+} %}
+
+{# Derive sub_items from the matching top-level primary nav parent #}
+{% set active_nav_parent = null %}
+{% for item in primary_nav %}
+	{% if item.children and (current_path == item.url or current_path starts with (item.url ~ '/')) %}
+		{% set active_nav_parent = item %}
+	{% endif %}
+{% endfor %}
+{% set sub_items = active_nav_parent ? active_nav_parent.children : [] %}
+
+{# ── Mobile / tablet sub-nav strip (hidden on lg+) ───────────────────────────── #}
+<div class="lg:hidden border-b border-slate-100 bg-white px-4 sm:px-6">
+	<nav class="flex gap-1.5 overflow-x-auto py-2.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" aria-label="{{ 'Our Commitment navigation'|t }}">
+		{% for sub in sub_items %}
+			<a href="{{ sub.url }}" class="inline-flex flex-none items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors{% if current_path == sub.url %} bg-slate-900 text-white{% else %} text-slate-600 hover:bg-slate-100 hover:text-slate-900{% endif %}">
+				<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }}" aria-hidden="true"></i>
+				{{ sub.title }}
+			</a>
+		{% endfor %}
+	</nav>
+</div>
+
+{# ── Main Content (full-width) ────────────────────────────────────────────────── #}
+<section class="mx-auto max-w-7xl px-4 lg:px-8 !bg-white" id="main-content" aria-label="{{ title }}" data-mode="{{ mode }}">
+	<div
+		class="min-w-0 space-y-5">
+
+
+		{# ── 1. Eco-Health Innovation Research Group ──────────────────────────── #}
+		<div class="block-common-content" aria-labelledby="heading-eco-health">
+			<h2 id="heading-eco-health" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Eco-Health Innovation Research Group (SDG 2, SDG 4, SDG 5, SDG 11, SDG 13)'|t }}</h2>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The Eco-Health Innovation Research Group focuses on understanding and addressing the complex interactions between environmental changes, biodiversity, and human health, aligning its work with SDG 2 (Zero Hunger) through sustainable food systems, SDG 4 (Quality Education) via student-led research and capacity building, SDG 5 (Gender Equality) by promoting inclusive and equitable participation in research, SDG 11 (Sustainable Cities and Communities) through improved waste management and community-based interventions, and SDG 13 (Climate Action) by addressing the health impacts of climate change. By integrating ecology, epidemiology, and social sciences, the group develops innovative, practical solutions to mitigate health risks caused by human-induced environmental pressures. Their work includes studying pathogen circulation in multi-host systems, evaluating the health impacts of climate change and biodiversity loss, advancing solid waste management strategies, and promoting community-led interventions for sustainable improvements. The group publishes with a selected number of undergraduate and postgraduate students.'|t }}</p>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Goals'|t }}</h3>
+			<ul class="space-y-1.5 mb-4">
+				<li class="flex items-start gap-2">
+					<i class="fa-solid fa-circle-check mt-0.5 text-[#b13634]"></i>
+					<p class="text-sm leading-relaxed text-slate-700"><strong>{{ 'High-Impact Publications:'|t }}</strong> {{ 'We strive to publish groundbreaking findings in leading journals, sharing our advancements in environmental health, environmental sustainability with the global research community.'|t }}</p>
+				</li>
+				<li class="flex items-start gap-2">
+					<i class="fa-solid fa-circle-check mt-0.5 text-[#b13634]"></i>
+					<p class="text-sm leading-relaxed text-slate-700"><strong>{{ 'Global Conference Engagement:'|t }}</strong> {{ 'We actively present our work at premier conferences, collaborating with researchers worldwide to exchange insights, shape the trajectory of environmental health, and inspire new avenues for exploration and innovation'|t }}</p>
+				</li>
+			</ul>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Selected Research'|t }}</h3>
+			<ul class="space-y-1.5 mb-4">
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><em><strong>{{ 'Exploring Awareness of Direct & Indirect Climate Health Impacts Among UAE University Students:'|t }}</strong></em> {{ 'This research assesses UAE university students perceived awareness of direct and indirect climate&ndash;health impacts and their ability to correctly distinguish between them'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><em><strong>{{ 'Gender Influences on Knowledge and Practices Related to Indoor Air Pollution in Dubai:'|t }}</strong></em> {{ 'This research investigates indoor air pollution (IAP) in Dubai, examining residents&rsquo; awareness, exposure, and household behaviours affecting indoor air quality, with an emphasis on gender differences.'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><em><strong>{{ 'Perspectives on Environmental Education Effectiveness in UAE Universities:'|t }}</strong></em> {{ 'This research evaluates the effectiveness of environmental education programs in UAE universities by analyzing the perspectives of students and faculty, identifying key drivers and barriers to fostering pro-environmental behaviours and sustainable campus practices.'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><em><strong>{{ 'Urban Health Island (UHI) Analysis and Data Driven Predictive Modelling to Support Sustainable Urban Planning in Dubai:'|t }}</strong></em> {{ 'This research assesses Urban Heat Island (UHI) patterns in Dubai and applies data-driven predictive modelling to support sustainable urban planning strategies that reduce heat exposure and improve population health.'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><em><strong>{{ 'Bakhoor Use and Indoor Air Quality: Health and Environmental Implications in Household Settings:'|t }}</strong></em> {{ 'This research investigates bakhoor use and indoor air quality in household settings, examining exposure patterns, health implications, and environmental factors that influence respiratory well-being.'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><em><strong>{{ 'Sustainable Food Systems and Population Health: Eco-Health Pathways for Better Nutrition and Environmental Protection:'|t }}</strong></em> {{ 'This research explores how sustainable food systems can improve population health by identifying pathways that enhance nutritional outcomes while reducing environmental impacts.'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><em><strong>{{ 'Levels of Waste Management Literacy Among University Students in Dubai:'|t }}</strong></em> {{ 'This research examines the level of waste management literacy among university students in Dubai. Understanding this gap is essential to support effective waste diversion, strengthen sustainability education, and contribute to Dubai&rsquo;s long-term waste management and circular economy goals.'|t }}</p>
+				</li>
+			</ul>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Team Leader'|t }}</h3>
+			<div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm max-w-md">
+				<div class="flex items-center gap-3">
+					<div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#b13634]/10">
+						<i class="fa-solid fa-user-tie text-[#b13634]"></i>
+					</div>
+					<div>
+						<p class="text-sm font-semibold text-slate-800">{{ 'Dr. Aseel Takshe'|t }}</p>
+						<a href="mailto:aseel.takshe@cud.ac.ae" class="text-xs text-sky-700 hover:underline">aseel.takshe@cud.ac.ae</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{# ── 2. Occupational Health Innovation Research Group ─────────────────── #}
+		<div class="block-common-content" aria-labelledby="heading-occupational-health">
+			<h2 id="heading-occupational-health" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Occupational Health Innovation Research Group (SDG 3)'|t }}</h2>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The Occupational Health Innovation Group focuses on workplace environments and their link to health, directly contributing to Sustainable Development Goal 3 (Good Health and Well-being) by promoting safe and healthy working conditions, preventing occupational injuries and diseases, and enhancing employee well-being. This group researches the prevention of work-related injuries and illnesses through improved safety protocols, risk assessment, and employee health promotion. The group publishes with a selected number of undergraduate and postgraduate students.'|t }}</p>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Goals'|t }}</h3>
+			<ul class="space-y-1.5 mb-4">
+				<li class="flex items-start gap-2">
+					<i class="fa-solid fa-circle-check mt-0.5 text-[#b13634]"></i>
+					<p class="text-sm leading-relaxed text-slate-700"><strong>{{ 'High-Impact Publications:'|t }}</strong> {{ 'We strive to publish groundbreaking findings in leading journals, sharing our advancements in occupational health and safety with the global research community.'|t }}</p>
+				</li>
+				<li class="flex items-start gap-2">
+					<i class="fa-solid fa-circle-check mt-0.5 text-[#b13634]"></i>
+					<p class="text-sm leading-relaxed text-slate-700"><strong>{{ 'Global Conference Engagement:'|t }}</strong> {{ 'We actively present our work at premier conferences, collaborating with researchers worldwide to exchange insights, shape the trajectory of occupational health and safety, and inspire new avenues for exploration and innovation'|t }}</p>
+				</li>
+			</ul>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Selected Research'|t }}</h3>
+			<ul class="space-y-1.5 mb-4">
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><em><strong>{{ 'Artificial Intelligence in Healthcare Administration: Impacts on Workforce Performance, Burnout, and Occupational Well-Being:'|t }}</strong></em> {{ 'This research examines the use of artificial intelligence in healthcare administration, focusing on its effects on workforce performance, burnout, and the occupational well-being of healthcare employees.'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><em><strong>{{ 'Indoor Air Quality in Workplaces: Occupational Risks in Offices, Clinics, and Laboratories:'|t }}</strong></em> {{ 'This research investigates indoor air quality in workplace settings, assessing occupational exposure risks in offices, clinics, and laboratories and identifying factors that may affect worker health and safety.'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><em><strong>{{ 'Label Information, WHO Color Codes, GHS and FAO Pictograms: A Comprehensive Review of Farmers&rsquo; Comprehension toward Safe Pesticide Use:'|t }}</strong></em> {{ 'This reach evaluates farmers&rsquo; understanding of WHO color codes, GHS, and FAO pictograms, while analyzing the comprehension of these aids in promoting safe pesticide handling among farmers in UAE and Lebanon.'|t }}</p>
+				</li>
+			</ul>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Team Leader'|t }}</h3>
+			<div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm max-w-md">
+				<div class="flex items-center gap-3">
+					<div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#b13634]/10">
+						<i class="fa-solid fa-user-tie text-[#b13634]"></i>
+					</div>
+					<div>
+						<p class="text-sm font-semibold text-slate-800">{{ 'Dr. Wissam Ghach'|t }}</p>
+						<a href="mailto:wissam.ghach@cud.ac.ae" class="text-xs text-sky-700 hover:underline">wissam.ghach@cud.ac.ae</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{# ── 3. Population Health Analytics Research Group ────────────────────── #}
+		<div class="block-common-content" aria-labelledby="heading-population-health">
+			<h2 id="heading-population-health" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Population Health Analytics Research Group (SDG 3)'|t }}</h2>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The Population Health Analytics group develops and applies advanced methods to study disease patterns, causes, and effects in populations, providing critical insights to inform public health policy and interventions, directly contributing to the achievement of Sustainable Development Goal 3 by generating evidence that supports improved health outcomes and equitable access to healthcare at the population level. The group publishes with a selected number of undergraduate and post graduate students.'|t }}</p>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Goals'|t }}</h3>
+			<ul class="space-y-1.5 mb-4">
+				<li class="flex items-start gap-2">
+					<i class="fa-solid fa-circle-check mt-0.5 text-[#b13634]"></i>
+					<p class="text-sm leading-relaxed text-slate-700"><strong>{{ 'High-Impact Publications:'|t }}</strong> {{ 'We strive to publish groundbreaking findings in leading journals, sharing our advancements in epidemiological research with the global research community.'|t }}</p>
+				</li>
+				<li class="flex items-start gap-2">
+					<i class="fa-solid fa-circle-check mt-0.5 text-[#b13634]"></i>
+					<p class="text-sm leading-relaxed text-slate-700"><strong>{{ 'Global Conference Engagement:'|t }}</strong> {{ 'We actively present our work at premier conferences, collaborating with researchers worldwide to exchange insights, shape the trajectory of epidemiology, and inspire new avenues for exploration and innovation'|t }}</p>
+				</li>
+			</ul>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Selected Research'|t }}</h3>
+			<ul class="space-y-1.5 mb-4">
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><em><strong>{{ 'Mortality and adverse events of extracorporeal haemadsorption therapy in cardiac surgery:'|t }}</strong></em> {{ 'This research is a systematic review and meta-analysis of randomised controlled trials assess the effectiveness of extracorporeal haemadsorption therapy in cardiac surgery'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><em><strong>{{ 'Interventions to preserve insulin-secreting beta cell function in people newly diagnosed with type 1 diabetes:'|t }}</strong></em> {{ 'This is a systematic review and network meta-analysis comparing treatments for preserving beta-cells in persons with newly diagnosed type 1 diabetes.'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><em><strong>{{ 'Population&dash;level investigation of the knowledge of ocular chemical injuries and proper immediate action in UAE and Jordan:'|t }}</strong></em> {{ 'This research evaluates the general population&rsquo;s awareness, knowledge, and immediate, proper management actions regarding ocular chemical injuries in the UAE and Jordan to identify gaps in knowledge and promote safety awareness'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><em><strong>{{ 'The Knowledge&ndash;Behaviour Paradox in Higher Education: Multivariable and Machine-Learning Analyses of Infectious Disease Knowledge, Attitudes, and Practices (KAP) Among UAE University Students and Faculty:'|t }}</strong></em> {{ 'This research aims to quantify infectious disease-related knowledge, attitudes, and practices and to test whether the K&rarr;A&rarr;P pathway holds when examined using multivariable and machine learning approaches.'|t }}</p>
+				</li>
+			</ul>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Team Leader'|t }}</h3>
+			<div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm max-w-md">
+				<div class="flex items-center gap-3">
+					<div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#b13634]/10">
+						<i class="fa-solid fa-user-tie text-[#b13634]"></i>
+					</div>
+					<div>
+						<p class="text-sm font-semibold text-slate-800">{{ 'Dr. Malcolm Price'|t }}</p>
+						<a href="mailto:malcolm.price@cud.ac.ae" class="text-xs text-sky-700 hover:underline">malcolm.price@cud.ac.ae</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{# ── 4. Innovative Health Systems and Technologies Research Group ──────── #}
+		<div class="block-common-content" aria-labelledby="heading-health-systems">
+			<h2 id="heading-health-systems" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Innovative Health Systems and Technologies Research Group (SDG 3)'|t }}</h2>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The Innovative Health Systems and Technologies research group focuses on advancing healthcare delivery through the integration of cutting-edge health technologies, rigorous health technology assessment, and innovative financing models. Their work aims to improve the efficiency, accessibility, and quality of health services by designing and testing new tools, data platforms, and processes that address unmet healthcare needs, directly contributing to Sustainable Development Goal 3 (Good Health and Well-being) by strengthening health systems and promoting equitable access to high-quality care. The group publishes with a selected number of undergraduate and postgraduate students.'|t }}</p>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Goals'|t }}</h3>
+			<ul class="space-y-1.5 mb-4">
+				<li class="flex items-start gap-2">
+					<i class="fa-solid fa-circle-check mt-0.5 text-[#b13634]"></i>
+					<p class="text-sm leading-relaxed text-slate-700"><strong>{{ 'High-Impact Publications:'|t }}</strong> {{ 'We strive to publish groundbreaking findings in leading journals, sharing our advancements in health technology assessment and delivery with the global research community.'|t }}</p>
+				</li>
+				<li class="flex items-start gap-2">
+					<i class="fa-solid fa-circle-check mt-0.5 text-[#b13634]"></i>
+					<p class="text-sm leading-relaxed text-slate-700"><strong>{{ 'Global Conference Engagement:'|t }}</strong> {{ 'We actively present our work at premier conferences, collaborating with researchers worldwide to exchange insights, shape the trajectory of health system assessment, and inspire new avenues for exploration and innovation'|t }}</p>
+				</li>
+			</ul>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Selected Research'|t }}</h3>
+			<ul class="space-y-1.5 mb-4">
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><em><strong>{{ 'Mapping the Integration of Artificial Intelligence and Digital Technologies in Health Technology Assessment:'|t }}</strong></em> {{ 'A Scoping Review Protocol of Global Knowledge and Practices: This research maps the Integration of Artificial Intelligence and Digital Technologies in Health Technology Assessment'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><em><strong>{{ 'A Deep Dive into the Health Technology Assessment System in the United Arab Emirates:'|t }}</strong></em> {{ 'Evidence from an Institutional Survey: This research utilises institutional survey-based study to assess HTA practices, capacity, and implementation across relevant organizations in the UAE.'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><em><strong>{{ 'Supporting Caregivers of People with Dementia:'|t }}</strong></em> {{ 'This research aims to develop a &ldquo;Demensia KITA,&rdquo; a mobile application specifically tailored to the needs of Dementia Caregivers'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><em><strong>{{ 'Mapping AI Applications in Non-Clinical Healthcare in UAE and its Alignment with SDG3:'|t }}</strong></em> {{ 'This research maps AI applications in Non-Clinical health domains in UAE, analyse its alignment with SDG3 and adapt the TEF framework.'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><em><strong>{{ 'Towards Trustworthy AI for Autism Spectrum Disorder: A Technical Survey of Multimodal Systems, Knowledge Representation and Clinical Integration:'|t }}</strong></em> {{ 'This research provides a survey that comprehensively reviews AI for Autism Spectrum Disorder.'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><em><strong>{{ 'NICU/ICU Auditory Protocols, Clinical Session Analytics, and Premature Infant qEEG Pipeline Development:'|t }}</strong></em> {{ 'This translational research-infrastructure project, aims to develop reproducible NICU/ICU auditory-delivery tools, structured clinical session analytics, and reusable qEEG analysis pipelines for premature infant research datasets.'|t }}</p>
+				</li>
+			</ul>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Team Leader'|t }}</h3>
+			<div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm max-w-md">
+				<div class="flex items-center gap-3">
+					<div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#b13634]/10">
+						<i class="fa-solid fa-user-tie text-[#b13634]"></i>
+					</div>
+					<div>
+						<p class="text-sm font-semibold text-slate-800">{{ 'Dr. Mohammed AlKhaldi'|t }}</p>
+						<a href="mailto:mohammed.alkhaldi@cud.ac.ae" class="text-xs text-sky-700 hover:underline">mohammed.alkhaldi@cud.ac.ae</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{# ── 5. Cognitive and Brain Development Research Group ────────────────── #}
+		<div class="block-common-content" aria-labelledby="heading-cognitive-brain">
+			<h2 id="heading-cognitive-brain" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Cognitive and Brain Development Research Group (SDG 3)'|t }}</h2>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The Cognitive and Brain Development research group innovatively investigates the neural and psychological mechanisms underpinning cognition, perception, and behaviour by employing cutting-edge brain imaging technologies, advanced data analysis methods, and neurofeedback protocols. This group integrates novel techniques such as machine learning, high-resolution and multimodal neuroimaging, and brain-computer interfaces to deepen understanding of brain function and mental health, directly contributing to Sustainable Development Goal 3 (Good Health and Well-being) by advancing knowledge and interventions that support mental health, neurological well-being, and improved quality of life. The group publishes with a selected number of undergraduate and postgraduate students.'|t }}</p>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Goals'|t }}</h3>
+			<ul class="space-y-1.5 mb-4">
+				<li class="flex items-start gap-2">
+					<i class="fa-solid fa-circle-check mt-0.5 text-[#b13634]"></i>
+					<p class="text-sm leading-relaxed text-slate-700"><strong>{{ 'High-Impact Publications:'|t }}</strong> {{ 'We strive to publish groundbreaking findings in leading journals, sharing our advancements in neurosciences with the global research community.'|t }}</p>
+				</li>
+				<li class="flex items-start gap-2">
+					<i class="fa-solid fa-circle-check mt-0.5 text-[#b13634]"></i>
+					<p class="text-sm leading-relaxed text-slate-700"><strong>{{ 'Global Conference Engagement:'|t }}</strong> {{ 'We actively present our work at premier conferences, collaborating with researchers worldwide to exchange insights, shape the trajectory of neuroscience, and inspire new avenues for exploration and innovation'|t }}</p>
+				</li>
+			</ul>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Selected Research'|t }}</h3>
+			<ul class="space-y-1.5 mb-4">
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><em><strong>{{ 'ManyBabies 5: A Large-Scale Investigation of the Proposed Shift from Familiarity Preference to Novelty Preference in Infant Looking Time:'|t }}</strong></em> {{ 'This research conducted in collaboration with Stanford University, investigates how age, task difficulty, and familiarization time shape the transition from familiarity preference to novelty preference in infant looking-time paradigms.'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><em><strong>{{ 'Item-level MoCA Analysis as Early Cognitive Markers of Alzheimer&rsquo;s Disease Progression:'|t }}</strong></em> {{ 'This research explores early detection of Alzheimer&rsquo;s disease through a longitudinal machine learning using plasma biomarkers to predict disease progression.'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><em><strong>{{ 'RDoC-Informed Explainable AI as a Paradigm for Multilevel Alzheimer&rsquo;s Disease Diagnosis and Progression Prediction:'|t }}</strong></em> {{ 'This research explores early detection of Alzheimer&rsquo;s disease through explainable AI within an RDoC framework to enhance clinical interpretability,'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><em><strong>{{ 'Studying Neurophysiological Auditory Responses in Early Neonatal Environments (S.N.A.R.E.N.E.):'|t }}</strong></em> {{ 'This multimodal NICU research, conducted in collaboration with the &ldquo;Panagiotis and Aglaia Kyriakou&rdquo; NICU, Children&rsquo;s Hospital, Greece, uses EEG and fNIRS to compare how structured and unstructured auditory environments influence the neurophysiological and hemodynamic responses of preterm infants.'|t }}</p>
+				</li>
+			</ul>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Team Leader'|t }}</h3>
+			<div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm max-w-md">
+				<div class="flex items-center gap-3">
+					<div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#b13634]/10">
+						<i class="fa-solid fa-user-tie text-[#b13634]"></i>
+					</div>
+					<div>
+						<p class="text-sm font-semibold text-slate-800">{{ 'Prof. Efthymios Papatzikis'|t }}</p>
+						<a href="mailto:e.papatzikis@cud.ac.ae" class="text-xs text-sky-700 hover:underline">e.papatzikis@cud.ac.ae</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{# ── 6. Wellbeing and Performance Research Group ──────────────────────── #}
+		<div class="block-common-content" aria-labelledby="heading-wellbeing">
+			<h2 id="heading-wellbeing" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Wellbeing and Performance Research Group (SDG 3)'|t }}</h2>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The Wellbeing and Performance group examines factors influencing physical and mental wellness, developing evidence-based strategies for disease prevention, health promotion, and improving quality of life across diverse populations, directly supporting Sustainable Development Goal 3 (Good Health and Well-being) by promoting healthier lifestyles, preventing disease, and enhancing overall population health outcomes. The group publishes with a selected number of undergraduate and postgraduate students.'|t }}</p>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Goals'|t }}</h3>
+			<ul class="space-y-1.5 mb-4">
+				<li class="flex items-start gap-2">
+					<i class="fa-solid fa-circle-check mt-0.5 text-[#b13634]"></i>
+					<p class="text-sm leading-relaxed text-slate-700"><strong>{{ 'High-Impact Publications:'|t }}</strong> {{ 'We strive to publish groundbreaking findings in leading journals, sharing our advancements in psychological health and wellbeing with the global research community.'|t }}</p>
+				</li>
+				<li class="flex items-start gap-2">
+					<i class="fa-solid fa-circle-check mt-0.5 text-[#b13634]"></i>
+					<p class="text-sm leading-relaxed text-slate-700"><strong>{{ 'Global Conference Engagement:'|t }}</strong> {{ 'We actively present our work at premier conferences, collaborating with researchers worldwide to exchange insights, shape the trajectory of wellbeing, and inspire new avenues for exploration and innovation'|t }}</p>
+				</li>
+			</ul>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Selected Research'|t }}</h3>
+			<ul class="space-y-1.5 mb-4">
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><em><strong>{{ 'Exploring the Efficacy of Solution-Focused Brief Therapy in Managing Antenatal Anxiety and Fear of Childbirth among Primigravida Women:'|t }}</strong></em> {{ 'This research examines the efficacy of Solution-Focused Brief Therapy (SFBT) in reducing antenatal anxiety and fear of childbirth among primigravida women, with implications for its integration into maternal healthcare.'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><em><strong>{{ 'Exploring Mental Health Challenges in Special Education: A Case Study of Stakeholders&rsquo; Perspectives in a School Community:'|t }}</strong></em> {{ 'This research examines mental health challenges in special education through a case study of stakeholder perspectives within a school community, with attention to systemic and contextual factors influencing student well-being.'|t }}</p>
+				</li>
+				<li class="flex gap-3">
+					<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+						<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+					</span>
+					<p class="text-sm leading-relaxed text-slate-700"><em><strong>{{ 'Live Singing as an Early Intervention for Infant Mental Health in the NICU:'|t }}</strong></em> {{ 'This research is a secondary analysis of NICU singing&ndash;EEG data, conducted in collaboration with the &ldquo;Panagiotis and Aglaia Kyriakou&rdquo; NICU, Childrens Hospital, Greece, testing whether higher parent&ndash;infant behavioral synchrony during live lullaby singing is associated with more organized cortical activity in premature infants.'|t }}</p>
+				</li>
+			</ul>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Team Leader'|t }}</h3>
+			<div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm max-w-md">
+				<div class="flex items-center gap-3">
+					<div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#b13634]/10">
+						<i class="fa-solid fa-user-tie text-[#b13634]"></i>
+					</div>
+					<div>
+						<p class="text-sm font-semibold text-slate-800">{{ 'Dr. Alia AlNaggar'|t }}</p>
+						<a href="mailto:alia.naggar@cud.ac.ae" class="text-xs text-sky-700 hover:underline">alia.naggar@cud.ac.ae</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{# ── 7. Social-Personality Dynamics Research Group ────────────────────── #}
+		<div class="block-common-content" aria-labelledby="heading-social-personality">
+			<h2 id="heading-social-personality" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Social-Personality Dynamics Research Group'|t }}</h2>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The Social-Personality Dynamics group focuses on individual differences and social behavior, this team explores how personality traits, social dynamics, and cultural contexts influence mental health and human interaction. The group publishes with a selected number of undergraduate and post graduate students.'|t }}</p>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Goals'|t }}</h3>
+			<ul class="space-y-1.5 mb-4">
+				<li class="flex items-start gap-2">
+					<i class="fa-solid fa-circle-check mt-0.5 text-[#b13634]"></i>
+					<p class="text-sm leading-relaxed text-slate-700"><strong>{{ 'High-Impact Publications:'|t }}</strong> {{ 'We strive to publish groundbreaking findings in leading journals, sharing our advancements in personality with the global research community.'|t }}</p>
+				</li>
+				<li class="flex items-start gap-2">
+					<i class="fa-solid fa-circle-check mt-0.5 text-[#b13634]"></i>
+					<p class="text-sm leading-relaxed text-slate-700"><strong>{{ 'Global Conference Engagement:'|t }}</strong> {{ 'We actively present our work at premier conferences, collaborating with researchers worldwide to exchange insights, shape the trajectory of social psychology, and inspire new avenues for exploration and innovation'|t }}</p>
+				</li>
+			</ul>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-2 mb-2">{{ 'Team Leader'|t }}</h3>
+			<div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm max-w-md">
+				<div class="flex items-center gap-3">
+					<div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#b13634]/10">
+						<i class="fa-solid fa-user-tie text-[#b13634]"></i>
+					</div>
+					<div>
+						<p class="text-sm font-semibold text-slate-800">{{ 'Dr. Vinita Puri'|t }}</p>
+						<a href="mailto:Vinita.Puri@cud.ac.ae" class="text-xs text-sky-700 hover:underline">Vinita.Puri@cud.ac.ae</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{% if content %}
+			<div class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-sky-700 prose-a:no-underline hover:prose-a:underline">
+				{{ content }}
+			</div>
+		{% endif %}
+
+		{% if sections %}
+			<div class="mt-8 space-y-6">
+				{% for section in sections %}
+					<div class="prose prose-slate max-w-none">{{ section }}</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+
+	</div>
+</section>
+
+{# ── Desktop floating contextual nav (hidden on mobile/tablet) ───────────────── #}
+<section class="hidden lg:block fixed right-0 top-1/2 -translate-y-1/2 z-40 group" aria-label="{{ 'Our Commitment navigation'|t }}">
+	<div
+		class="flex items-stretch">
+
+		{# Expanded panel — slides in from right edge on hover #}
+		<div class="flex flex-col justify-center overflow-hidden bg-white border-y border-l border-slate-200 rounded-l-2xl shadow-xl w-0 opacity-0 group-hover:w-56 group-hover:opacity-100 transition-all duration-300 ease-out">
+			<div class="min-w-[14rem] px-4 py-5">
+				<p class="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400 whitespace-nowrap">{{ active_nav_parent ? active_nav_parent.title : 'Navigation'|t }}</p>
+				<ul class="space-y-0.5">
+					{% for sub in sub_items %}
+						<li>
+							<a href="{{ sub.url }}" class="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors whitespace-nowrap{% if current_path == sub.url %} bg-slate-100 font-semibold text-slate-900{% else %} text-slate-600 hover:bg-slate-50 hover:text-slate-900{% endif %}">
+								<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }} w-4 text-center text-xs{% if current_path == sub.url %} text-[#b13634]{% else %} text-slate-400{% endif %}" aria-hidden="true"></i>
+								{{ sub.title }}
+							</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+
+		{# Tab strip — always visible on right edge, collapses border-radius on hover #}
+		<div class="flex flex-col items-center justify-center gap-2.5 bg-[#b13634] rounded-l-2xl group-hover:rounded-l-none shadow-lg shadow-[#b13634]/30 px-2.5 py-5 min-w-[2.75rem] transition-all duration-300 cursor-default select-none">
+			<i class="fa-solid fa-layer-group text-white/90 text-md" aria-hidden="true"></i>
+			<div class="w-px h-2 bg-white/30 rounded-full"></div>
+			{% for sub in sub_items %}
+				<div class="rounded-full transition-colors {% if current_path == sub.url %}w-2 h-2 bg-white{% else %}w-1.5 h-1.5 bg-white/40 hover:bg-white/70{% endif %}" title="{{ sub.title }}"></div>
+			{% endfor %}
+		</div>
+
+	</div>
+</section>

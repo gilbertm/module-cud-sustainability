@@ -1,0 +1,265 @@
+{#
+/**
+ * @file
+ * Inner-page template for /sustainability/our-commitment/governance.
+ *
+ * Variables:
+ * - title: Page title string.
+ * - content: Rendered node content (full view mode).
+ * - carousel_items: Optional list of carousel slides.
+ * - sections: Optional list of processed-text sections.
+ * - primary_nav: Primary navigation array.
+ * - secondary_nav: Secondary navigation array.
+ * - mode: Display mode string ('main' or 'secondary').
+ */
+#}
+
+{% set carousel_slides = carousel_items|default([]) %}
+
+{% if carousel_slides %}
+	<section class="carousel group relative mb-8 w-screen max-w-none -translate-x-1/2 left-1/2" data-cud-carousel data-cud-carousel-autoplay="5600" aria-label="{{ 'Governance carousel'|t }}">
+		<div class="w-full relative overflow-hidden">
+			<div class="w-full flex transition-transform duration-700 ease-out will-change-transform" data-cud-carousel-track>
+				{% for item in carousel_slides %}
+					<article class="relative min-w-full" data-cud-carousel-slide>
+						{% if item.image %}
+							<div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[280px] overflow-hidden sm:min-h-[340px] lg:min-h-[420px]">
+								{{ item.image }}
+							</div>
+						{% elseif item.image_url %}
+							<div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[280px] overflow-hidden sm:min-h-[340px] lg:min-h-[420px]">
+								<img src="{{ item.image_url }}" alt="{{ item.title|default('Governance') }}" loading="lazy" class="h-full w-full object-cover">
+							</div>
+						{% endif %}
+						<div class="carousel-content-overlay absolute inset-0 mx-auto h-full w-full max-w-none">
+							{% if item.overlay %}
+								{{ item.overlay }}
+							{% endif %}
+						</div>
+					</article>
+				{% endfor %}
+			</div>
+
+			{% if carousel_slides|length > 1 %}
+				<div class="carousel-content-controls">
+					<button class="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-md bg-slate-950/80 p-2.5 text-slate-100 opacity-0 shadow-xl backdrop-blur-md transition-all duration-500 ease-in-out group-hover:opacity-100 hover:bg-slate-800/90 hover:text-white focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-sky-400 sm:left-6" data-cud-carousel-prev aria-label="{{ 'Previous slide'|t }}">
+						<i class="fa-solid fa-chevron-left h-5 w-5" aria-hidden="true"></i>
+					</button>
+					<button class="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-md bg-slate-950/80 p-2.5 text-slate-100 opacity-0 shadow-xl backdrop-blur-md transition-all duration-500 ease-in-out group-hover:opacity-100 hover:bg-slate-800/90 hover:text-white focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-sky-400 sm:right-6" data-cud-carousel-next aria-label="{{ 'Next slide'|t }}">
+						<i class="fa-solid fa-chevron-right h-5 w-5" aria-hidden="true"></i>
+					</button>
+				</div>
+			{% endif %}
+		</div>
+	</section>
+{% endif %}
+
+{# ── Page Header with Breadcrumb ─────────────────────────────────────────────── #}
+<section class="bg-white" aria-label="{{ 'Page header'|t }}">
+	<div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+		<nav class="mb-3 flex items-center gap-1.5 text-xs text-slate-500" aria-label="{{ 'Breadcrumb'|t }}">
+			{% for link in breadcrumb %}
+				{% if not loop.first %}
+					<i class="fa-solid fa-chevron-right text-[9px] text-slate-400" aria-hidden="true"></i>
+				{% endif %}
+				{% if link.url %}
+					<a href="{{ link.url }}" class="hover:text-slate-700 transition-colors">{{ link.text }}</a>
+				{% else %}
+					<span>{{ link.text }}</span>
+				{% endif %}
+			{% endfor %}
+			{% if breadcrumb is not empty %}
+				<i class="fa-solid fa-chevron-right text-[9px] text-slate-400" aria-hidden="true"></i>
+			{% endif %}
+			<span class="font-medium text-slate-700">{{ title }}</span>
+		</nav>
+		<div class="flex items-center gap-3">
+			<h1 class="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">{{ title }}</h1>
+			{% if edit_url %}
+				<a href="{{ edit_url }}" class="shrink-0 rounded-md p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700" title="{{ 'Edit node'|t }}" aria-label="{{ 'Edit'|t }}">
+					<i class="fa-solid fa-pen-to-square text-sm" aria-hidden="true"></i>
+				</a>
+			{% endif %}
+		</div>
+	</div>
+</section>
+
+{# ── Shared sub-nav data ──────────────────────────────────────────────────────── #}
+
+{# Icon map for all seeded primary nav children, keyed by URL #}
+{% set icon_map = {
+	'/sustainability/research-in-sustainability/center-for-sustainability-and-innovation': 'fa-flask-vial',
+	'/sustainability/research-in-sustainability/research-groups': 'fa-diagram-project'
+} %}
+
+{# Derive sub_items from the matching top-level primary nav parent #}
+{% set active_nav_parent = null %}
+{% for item in primary_nav %}
+	{% if item.children and (current_path == item.url or current_path starts with (item.url ~ '/')) %}
+		{% set active_nav_parent = item %}
+	{% endif %}
+{% endfor %}
+{% set sub_items = active_nav_parent ? active_nav_parent.children : [] %}
+
+{# ── Mobile / tablet sub-nav strip (hidden on lg+) ───────────────────────────── #}
+<div class="lg:hidden border-b border-slate-100 bg-white px-4 sm:px-6">
+	<nav class="flex gap-1.5 overflow-x-auto py-2.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" aria-label="{{ 'Our Commitment navigation'|t }}">
+		{% for sub in sub_items %}
+			<a href="{{ sub.url }}" class="inline-flex flex-none items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors{% if current_path == sub.url %} bg-slate-900 text-white{% else %} text-slate-600 hover:bg-slate-100 hover:text-slate-900{% endif %}">
+				<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }}" aria-hidden="true"></i>
+				{{ sub.title }}
+			</a>
+		{% endfor %}
+	</nav>
+</div>
+
+{# ── Main Content (full-width) ────────────────────────────────────────────────── #}
+<section class="mx-auto max-w-7xl px-4 lg:px-8 !bg-white" id="main-content" aria-label="{{ title }}" data-mode="{{ mode }}">
+	<div
+		class="min-w-0 space-y-5">
+
+
+		{# ── Mission ─────────────────────────────────────────────────────────── #}
+		<div class="block-common-content" aria-labelledby="heading-mission">
+			<h2 id="heading-mission" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Mission'|t }}</h2>
+			<p class="text-slate-700 text-sm leading-relaxed">{{ 'The Centre&rsquo;s mission is to advance sustainability through interdisciplinary research, innovative education, strategic partnerships, and engagement that foster knowledge exchange and develop practical solutions to environmental, social, and economic challenges. By empowering students, researchers, industry partners, and community stakeholders, the Centre supports Dubai&rsquo;s sustainable transformation and contribute to global sustainability goals. Its initiatives align with national priorities of the United Arab Emirates, including the UAE Net Zero 2050 Strategic Initiative, UAE Vision 2031, and the UAE Centennial 2071, while also advancing the broader objectives of the United Nations Sustainable Development Goals.'|t }}</p>
+		</div>
+
+		{# ── Alignment with UAE National Priorities ───────────────────────────── #}
+		<div class="block-common-content" aria-labelledby="heading-alignment">
+			<h2 id="heading-alignment" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'The Alignment with UAE National Priorities'|t }}</h2>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The Centre operates in a national context where the United Arab Emirates has committed to ambitious climate and development pathways, including the UAE Net Zero by 2050 Strategic Initiative, the UAE&rsquo;s first Long-Term Low Emissions Development Strategy (LTS), the National Climate Change Plan 2017&ndash;2050, and We the UAE 2031. These frameworks position the UAE as a global leader in green innovation, clean energy, and climate diplomacy, and call for strong collaboration between government, industry, and academic institutions.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The Centre advances innovative and sustainable solutions that foster inclusion and social justice while addressing critical environmental and societal challenges. It promotes strong academia-government-industry collaboration and supports initiatives aligned with the United Nations Sustainable Development Goals (SDGs). Through strategic partnerships with government, industry, and international institutions, the Centre aims to cultivate a culture of sustainability across campus and beyond.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed">{{ 'Within this landscape, the Centre for Sustainability and Innovation at Canadian University Dubai acts as an academic partner and knowledge hub that can generate applied research that supports climate-resilient infrastructure, sustainable cities, and low-carbon economic diversification. The Centre also aims to build human capital through education, training, and professional development aligned with the skills required for a green, innovation-driven economy. The Centre will convene multi-stakeholder dialogues that translate UAE priorities into practical solutions, pilot projects, and community engagement initiatives.'|t }}</p>
+		</div>
+
+		{# ── Strategic Pillars ────────────────────────────────────────────────── #}
+		<div class="block-common-content" aria-labelledby="heading-pillars">
+			<h2 id="heading-pillars" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Strategic Pillars'|t }}</h2>
+			<p class="text-slate-700 text-sm leading-relaxed">{{ 'The Centre operates under four strategic pillars. The pillars include innovation and research, strategy and policy, partnership and networks, and engagement and education. The following section outlines each of the Centre&rsquo;s strategic pillars and their implementation.'|t }}</p>
+		</div>
+
+		{# ── Pillar 1: Innovation & Research ──────────────────────────────────── #}
+		<div class="block-common-content" aria-labelledby="heading-pillar-1">
+			<h2 id="heading-pillar-1" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Pillar 1: Innovation & Research'|t }}</h2>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The first strategic pillar of the Centre for Sustainability and Innovation is innovation and research. The Centre focuses on four interconnected areas, namely, climate change, the built environment, environmental science, and social justice. It brings together scholars who combine global research leadership with a strong commitment to Dubai and the wider UAE. Their work ties advanced science and practice directly to the UAE&rsquo;s priorities on resilient cities, green infrastructure, environmental science, and inclusive growth. The Centre supports innovation projects that address sustainability challenges, and work with academics on applied sustainability research. Additionally, the Centre also houses the Silk-Road Universities Network (SUN). The section below showcases the Centre&rsquo;s contributions to sustainability through innovation and research.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The centre will provide researchers&rsquo; salary, support for Highly Qualified Personnel (post-doctoral fellows, research assistants), research space, and other funding to scholars who contribute to building Canadian University Dubai&rsquo;s reputation in internationally leading research and innovation that creates sustainable societal and economic advantages for Dubai and the United Arab Emirates. The centre will seek to develop additional endowed and externally funded research, supported through the generosity of individual, corporate, and/or government donors. The research of these Endowed Chairs will focus on topics of interest to the donors and the United Arab Emirates.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed">{{ 'The centre&rsquo;s research will benefit decision-making in all sectors of society (government, business, non-for-profit, civil society) and students with the potential to commercialize new discoveries and innovations.'|t }}</p>
+		</div>
+
+		{# ── Pillar 2: Strategy and Policy ────────────────────────────────────── #}
+		<div class="block-common-content" aria-labelledby="heading-pillar-2">
+			<h2 id="heading-pillar-2" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Pillar 2: Strategy and Policy'|t }}</h2>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The Centre&rsquo;s role in strategy and policy includes developing and advising on university sustainability policies, targets, and reporting practices that reflect UAE Environment Policy and Net Zero 2050 priorities. The Centre&rsquo;s focus is also on producing policy-relevant research, policy briefs, and technical inputs that can inform government-led processes at federal and emirate levels, while respecting the top-down nature of policy formulation in the UAE. The following discuss the Centre&rsquo;s role and implementation in terms of strategy and policy.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The Centre for Sustainability at Canadian University Dubai plays a pivotal role in advancing the university&rsquo;s sustainability strategy by guiding policy development, supporting evidence-based decision making, and integrating sustainability principles across institutional operations and projects. At the institutional level, the Centre helps shape governance frameworks, strategic priorities, and performance indicators that embed sustainability into teaching, research, campus management, and community engagement. At the project level, it provides technical expertise, monitoring, and capacity building to ensure initiatives are designed and implemented in line with recognized sustainability standards and best practices.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The Centre leads institution-wide sustainability planning and performance monitoring, including campus operations, curriculum, and research portfolios. Its report will highlight CUD research, initiatives, and impact across environmental, social, and economic dimensions. It will showcase CUD contributions to knowledge generation and sustainable practices, reinforcing CUD&rsquo;s role as a leader in advancing sustainability locally and globally. The report will also serve as CUD&rsquo;s monitor for sustainability performance and address the university challenges.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed">{{ 'Through this integrated approach, the Centre ensures that the university&rsquo;s initiatives contribute meaningfully to the United Nations Sustainable Development Goals while aligning with national and local priorities, including the UAE Net Zero 2050 Strategic Initiative, the UAE National Agenda for Sustainable Development, and broader federal and emirate level sustainability frameworks. By bridging strategy, policy, and implementation, the Centre strengthens CUD&rsquo;s role as a knowledge partner supporting the UAE&rsquo;s transition toward a resilient, knowledge-driven, and environmentally responsible future.'|t }}</p>
+		</div>
+
+		{# ── Pillar 3: Partnerships and Networks ──────────────────────────────── #}
+		<div class="block-common-content" aria-labelledby="heading-pillar-3">
+			<h2 id="heading-pillar-3" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Pillar 3: Partnerships and Networks'|t }}</h2>
+			<p class="text-slate-700 text-sm leading-relaxed mb-4">{{ 'The Centre for Sustainability and Innovation has developed partnerships and networks with various organizations, including government, NGOs, industry, and educational institutes. The following section outlines partnerships and networks as one of the core pillars supporting the operation of the Centre for Sustainability and Innovation at CUD.'|t }}</p>
+
+			{# ── 3.1 Government ── #}
+			<h3 class="text-base font-semibold text-slate-800 mt-4 mb-2">{{ '3.1 Government'|t }}</h3>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The Centre is in the process of exploring a collaboration with the Authority for Social Contribution (Ma&rsquo;an). Ma&rsquo;an is the Abu Dhabi&rsquo;s government authority dedicated to strengthening the social sector by enabling communication participation, funding social initiatives, and supporting organizations that address key social challenges.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-4">{{ 'The collaboration between Ma&rsquo;an and CUD will strengthen social sustainability and support the government priorities focus on reducing inequalities, good health and wellbeing, quality education, decent work and economic growth, and partnerships for the goals. By strengthening the social sector and enabling impactful initiatives, the Centre&rsquo;s collaborations with government entities are envisaged to contribute to national strategies, such as UAE Net Zero by 2050 Strategic Initiative and the UAE Centennial 2071, which emphasize sustainable and inclusive growth.'|t }}</p>
+
+			{# ── 3.2 NGOs ── #}
+			<h3 class="text-base font-semibold text-slate-800 mt-4 mb-2">{{ '3.2 NGOs'|t }}</h3>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'A strategic research-and-innovation alliance between the Climate Institute (CI) and Canadian University Dubai (CUD) has been finalized linking climate expertise with applied university research to build a credible Carbon Credit System. The partnership between the Climate Institute and Canadian University Dubai (CUD) offers a powerful foundation for building an integrated carbon-market ecosystem: a Carbon Credit National Registry for individual countries, a blockchain-enabled Carbon Credit Trading System, and an institute Carbon Credit Auditing System.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The Climate Institute was founded in 1986 as one of the world&rsquo;s first organizations focused solely on addressing climate change, with a mission of delivering &ldquo;climate solutions through global partnerships.&rdquo; By opening a Middle East footprint at the Canadian University Dubai, the Climate Institute brings a long-standing experience as a convener of international climate dialogue, policy innovation, and collaborative action, making it a credible institutional anchor for a transnational carbon-market platform.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-4">{{ 'This partnership creates major benefits for CUD by linking academic research with practical climate-finance infrastructure. The research work is leading edge, and overdue: a national registry provides countries with a transparent mechanism for project registration, issuance, and tracking, helping developing nations issue credits more efficiently; the blockchain trading layer supports secure, low-cost, peer-to-peer transactions, improving transparency, liquidity, and fraud resistance; and the remotely-sensed and ground-truthed auditing system use AI, IoT sensors, GPS, and satellite-based MRV to create a continuous verification system rather than slow, retrospective audits.'|t }}</p>
+
+			{# ── 3.3 Industry ── #}
+			<h3 class="text-base font-semibold text-slate-800 mt-4 mb-2">{{ '3.3 Industry'|t }}</h3>
+			<p class="text-slate-700 text-sm leading-relaxed mb-4">{{ 'In 2025, the Center initiated engagement with the Canadian Trade Commission, a global network of trade professionals that helps Canadian businesses succeed internationally. The Trade Commissioner Service (TCS) supports Canadian companies in expanding abroad. The Center has initiated relationships with Canadian Trade Commissioners from two fields, education, and business. The plan with the Canadian Trade Commissioner from business side, in collaboration with Canadian companies, is to incorporate Canadian technologies and business practices into the Centre&rsquo;s initiatives. The collaboration will strengthen the partnership in advancing the goals of the UN Sustainable Development Goals (SDGs).'|t }}</p>
+
+			{# ── 3.4 Educational Institutes ── #}
+			<h3 class="text-base font-semibold text-slate-800 mt-4 mb-2">{{ '3.4 Educational Institutes'|t }}</h3>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'In this category, relevant universities include Silk-Road Universities Network (SUN) which is an international academic alliance created to connect universities located along the historic land and sea routes of the Silk Road. With 81 universities from 28 countries, the SUN&rsquo;s purpose is to restore scholarly links across regions, encourage intercultural understanding, and help train future leaders through academic cooperation. SUN aims to unite institutions across the Silk Road in order to contribute to peace and the creative development of civilization, positioning the &ldquo;Spirit of the Silk Road&rdquo; as a bridge between East and West.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'After years of participation in the SUN, the Canadian University Dubai (CUD) has become a leader in the network by hosting the Secretary-General, and the Secretariat, to the SUN. SUN strengthens CUD&rsquo;s role as a global connector between the Middle East, Asia, and wider international research communities. CUD hosted the 8th General Assembly of SUN in February 2023, bringing together delegates from international institutions to discuss &ldquo;The Role of Higher Education in the Era of Artificial Intelligence and Big Data: Challenges and Opportunities.&rdquo; The event positioned Dubai itself as a meeting point between East and West and gave CUD a platform to convene academic and industry voices around emerging global issues.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'CUD partnership with SUN expands CUD&rsquo;s research collaboration, allowing CUD faculty to engage in multidisciplinary exchange with scholars across many countries. During the CUD-hosted conference, university leadership highlighted that 28 panel discussions and 23 research papers helped create networks across academia and industry. SUN also increases student opportunity, with workshops and activities enabling students from member institutions to meet, collaborate, and celebrate diversity. The SUN-CUD partnership enhances institutional visibility and prestige, reinforcing CUD&rsquo;s broader strategy of building international research programs that generate knowledge for society and strengthen the university&rsquo;s global stature.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'In April 2026, the Center has initiated its collaboration with the Yunus Center at Asian Institute of Technology. Asian Institute of Technology (AIT) is #1 QS Rankings university in Thailand, and #101-150 in World QS Rankings 2025. Yunus Centre at Asian Institute of Technology is the first Yunus Centre outside Bangladesh. The Yunus Centre was founded by the Nobel Peace Prize Laureate, Professor Muhammad Yunus, who has contributed significantly to alleviate poverty and hunger, reduce inequalities, and improve gender equality. One of the collaborations between the Center and YCA will be an online discussion on Advancing International Collaboration in Sustainability Education for Social Justice, scheduled in April 2026. The discussion will bring academic in various countries and contribute to the UN SDGs in terms of quality education and partnership for the goals.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed">{{ 'In summary, strategic partnerships and networks with government entities, NGOs, industry, and academic institutions are key pillars of CUD&rsquo;s Centre for Sustainability and Innovation since they enable the translation of research and education into practical sustainability solutions. Collaboration with government ensures alignment with national policies and sustainability agendas, while partnerships with industry support innovation, technology development, and real work implementation of sustainable practices. Engagement with NGOs strengthens community outreach and social impact. Cooperation with universities enhances interdisciplinary research, knowledge exchange, and global collaboration. Through these partnerships and networks, the Centre expands its research capacity, increases its societal impact, and accelerates progress toward sustainable development at the local, national, and international levels.'|t }}</p>
+		</div>
+
+		{# ── Pillar 4: Engagement & Education ─────────────────────────────────── #}
+		<div class="block-common-content" aria-labelledby="heading-pillar-4">
+			<h2 id="heading-pillar-4" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Pillar 4: Engagement & Education'|t }}</h2>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The fourth and last strategic pillar guiding the operation of the Centre for Sustainability and Innovation is engagement and education. By fostering interdisciplinary collaboration and knowledge exchange, the Centre contributes to building resilient, inclusive, and sustainable communities, while shaping visionary leaders who advance sustainable innovation and create positive impact in business and society worldwide.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed">{{ 'The Centre has initiated staff and student sustainability programs, conduct sustainability awareness campaigns, organize trainings and workshops, dialogues, and sustainability events.'|t }}</p>
+		</div>
+
+		{# ── Manager Contact ──────────────────────────────────────────────────── #}
+		<div class="block-common-content">
+			<div class="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-5 sm:p-6 shadow-sm">
+				<div class="flex items-start gap-4">
+					<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#b13634]/10 text-[#b13634]">
+						<i class="fa-solid fa-user-tie text-lg" aria-hidden="true"></i>
+					</div>
+					<div class="min-w-0 flex-1">
+						<p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-400 mb-1">{{ 'Manager of Centre for Sustainability and Innovation'|t }}</p>
+						<p class="text-sm font-semibold text-slate-900 mb-0">{{ 'Dr. Chureerat Haq'|t }}</p>
+						<div class="mt-2 flex flex-col gap-1.5 text-sm">
+							<div class="flex items-center gap-2.5 text-slate-700">
+								<i class="fa-solid fa-envelope w-4 text-center text-[#b13634]" aria-hidden="true"></i>
+								<a href="mailto:Chureerat.Haq@cud.ac.ae" class="hover:text-[#b13634] transition-colors underline underline-offset-2">Chureerat.Haq@cud.ac.ae</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{% if content %}
+			<div class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-sky-700 prose-a:no-underline hover:prose-a:underline">
+				{{ content }}
+			</div>
+		{% endif %}
+
+		{% if sections %}
+			<div class="mt-8 space-y-6">
+				{% for section in sections %}
+					<div class="prose prose-slate max-w-none">{{ section }}</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+
+	</div>
+</section>
+
+{# ── Desktop floating contextual nav (hidden on mobile/tablet) ───────────────── #}
+<section class="hidden lg:block fixed right-0 top-1/2 -translate-y-1/2 z-40 group" aria-label="{{ 'Our Commitment navigation'|t }}">
+	<div
+		class="flex items-stretch">
+
+		{# Expanded panel — slides in from right edge on hover #}
+		<div class="flex flex-col justify-center overflow-hidden bg-white border-y border-l border-slate-200 rounded-l-2xl shadow-xl w-0 opacity-0 group-hover:w-56 group-hover:opacity-100 transition-all duration-300 ease-out">
+			<div class="min-w-[14rem] px-4 py-5">
+				<p class="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400 whitespace-nowrap">{{ active_nav_parent ? active_nav_parent.title : 'Navigation'|t }}</p>
+				<ul class="space-y-0.5">
+					{% for sub in sub_items %}
+						<li>
+							<a href="{{ sub.url }}" class="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors whitespace-nowrap{% if current_path == sub.url %} bg-slate-100 font-semibold text-slate-900{% else %} text-slate-600 hover:bg-slate-50 hover:text-slate-900{% endif %}">
+								<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }} w-4 text-center text-xs{% if current_path == sub.url %} text-[#b13634]{% else %} text-slate-400{% endif %}" aria-hidden="true"></i>
+								{{ sub.title }}
+							</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+
+		{# Tab strip — always visible on right edge, collapses border-radius on hover #}
+		<div class="flex flex-col items-center justify-center gap-2.5 bg-[#b13634] rounded-l-2xl group-hover:rounded-l-none shadow-lg shadow-[#b13634]/30 px-2.5 py-5 min-w-[2.75rem] transition-all duration-300 cursor-default select-none">
+			<i class="fa-solid fa-layer-group text-white/90 text-md" aria-hidden="true"></i>
+			<div class="w-px h-2 bg-white/30 rounded-full"></div>
+			{% for sub in sub_items %}
+				<div class="rounded-full transition-colors {% if current_path == sub.url %}w-2 h-2 bg-white{% else %}w-1.5 h-1.5 bg-white/40 hover:bg-white/70{% endif %}" title="{{ sub.title }}"></div>
+			{% endfor %}
+		</div>
+
+	</div>
+</section>
