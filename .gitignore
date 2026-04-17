@@ -16,4 +16,6 @@ Thumbs.db
 *.swp
 *.swo
 
+*.tar.gz
+
 contents/
