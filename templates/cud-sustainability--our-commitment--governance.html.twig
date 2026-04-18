@@ -137,7 +137,7 @@
 		<section
 			class="tab-panel-pages mb-12" data-cud-tabs>
 			{# Tab bar #}
-			<div class="relative flex gap-1 border-b border-slate-200" role="tablist" aria-label="{{ 'Governance panels'|t }}">
+			<div class="relative flex flex-wrap gap-1 border-b border-slate-200 overflow-x-auto sm:overflow-visible" role="tablist" aria-label="{{ 'Governance panels'|t }}">
 
 				<button role="tab" id="tab-bot" aria-controls="panel-bot" aria-selected="true" data-cud-tab="bot" class="cud-tab-btn group relative flex items-center gap-1.5 lg:gap-2 px-3 py-2.5 lg:px-5 lg:py-3.5 text-xs lg:text-sm font-semibold text-[#b13634] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#b13634]/50 focus-visible:ring-offset-2">
 					<i class="fa-solid fa-people-group text-sm lg:text-xl" aria-hidden="true"></i>
@@ -145,16 +145,9 @@
 					<span class="absolute inset-x-0 bottom-0 h-0.5 rounded-full bg-[#b13634] transition-opacity"></span>
 				</button>
 
-				<button role="tab" id="tab-senate" aria-controls="panel-senate" aria-selected="false" data-cud-tab="senate" class="cud-tab-btn group relative flex items-center gap-1.5 lg:gap-2 px-3 py-2.5 lg:px-5 lg:py-3.5 text-xs lg:text-sm font-semibold text-slate-500 transition-colors hover:text-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#b13634]/50 focus-visible:ring-offset-2">
+				<button role="tab" id="tab-senate-and-academic-council" aria-controls="panel-senate-and-academic-council" aria-selected="false" data-cud-tab="senate-and-academic-council" class="cud-tab-btn group relative flex items-center gap-1.5 lg:gap-2 px-3 py-2.5 lg:px-5 lg:py-3.5 text-xs lg:text-sm font-semibold text-slate-500 transition-colors hover:text-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#b13634]/50 focus-visible:ring-offset-2">
 					<i class="fa-solid fa-landmark text-sm lg:text-xl" aria-hidden="true"></i>
-					{{ 'Senate'|t }}
-					<span class="absolute inset-x-0 bottom-0 h-0.5 rounded-full bg-[#b13634] opacity-0 transition-opacity"></span>
-				</button>
-
-
-				<button role="tab" id="tab-academic-council" aria-controls="panel-academic-council" aria-selected="false" data-cud-tab="academic-council" class="cud-tab-btn group relative flex items-center gap-1.5 lg:gap-2 px-3 py-2.5 lg:px-5 lg:py-3.5 text-xs lg:text-sm font-semibold text-slate-500 transition-colors hover:text-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#b13634]/50 focus-visible:ring-offset-2">
-					<i class="fa-solid fa-graduation-cap text-sm lg:text-xl" aria-hidden="true"></i>
-					{{ 'Academic Council'|t }}
+					{{ 'Senate and Academic Council'|t }}
 					<span class="absolute inset-x-0 bottom-0 h-0.5 rounded-full bg-[#b13634] opacity-0 transition-opacity"></span>
 				</button>
 
@@ -164,12 +157,18 @@
 					<span class="absolute inset-x-0 bottom-0 h-0.5 rounded-full bg-[#b13634] opacity-0 transition-opacity"></span>
 				</button>
 
-
-				<button role="tab" id="tab-governance" aria-controls="panel-governance" aria-selected="false" data-cud-tab="governance" class="cud-tab-btn group relative flex items-center gap-1.5 lg:gap-2 px-3 py-2.5 lg:px-5 lg:py-3.5 text-xs lg:text-sm font-semibold text-slate-500 transition-colors hover:text-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#b13634]/50 focus-visible:ring-offset-2">
+				<button role="tab" id="tab-student-bodies" aria-controls="panel-student-bodies" aria-selected="false" data-cud-tab="student-bodies" class="cud-tab-btn group relative flex items-center gap-1.5 lg:gap-2 px-3 py-2.5 lg:px-5 lg:py-3.5 text-xs lg:text-sm font-semibold text-slate-500 transition-colors hover:text-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#b13634]/50 focus-visible:ring-offset-2">
 					<i class="fa-solid fa-scale-balanced text-sm lg:text-xl" aria-hidden="true"></i>
-					{{ 'Governance Bodies'|t }}
+					{{ 'Student Bodies'|t }}
 					<span class="absolute inset-x-0 bottom-0 h-0.5 rounded-full bg-[#b13634] opacity-0 transition-opacity"></span>
 				</button>
+
+				<button role="tab" id="tab-ethical-compliance" aria-controls="panel-ethical-compliance" aria-selected="false" data-cud-tab="ethical-compliance" class="cud-tab-btn group relative flex items-center gap-1.5 lg:gap-2 px-3 py-2.5 lg:px-5 lg:py-3.5 text-xs lg:text-sm font-semibold text-slate-500 transition-colors hover:text-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#b13634]/50 focus-visible:ring-offset-2">
+					<i class="fa-solid fa-graduation-cap text-sm lg:text-xl" aria-hidden="true"></i>
+					{{ 'Ethical Compliance'|t }}
+					<span class="absolute inset-x-0 bottom-0 h-0.5 rounded-full bg-[#b13634] opacity-0 transition-opacity"></span>
+				</button>
+
 
 			</div>
 
@@ -313,132 +312,8 @@
 
 			</div>
 
-			{# ── Panel 2 : Academic Council  ─────────────────────────────────────────── #}
-			<div role="tabpanel" id="panel-academic-council" aria-labelledby="tab-academic-council" data-cud-panel="academic-council" class="cud-tab-panel--inactive pt-8 hidden">
-				<div class="academic-council">
-					<div class="mb-12 pb-10">
-						<div class="mb-6 flex items-center gap-3">
-							<span class="h-px flex-1 bg-gradient-to-r from-[#b13634]/30 to-transparent"></span>
-							<h2 class="text-md md:text-lg font-semibold uppercase tracking-[0.25em] text-[#b13634]">{{ 'Academic Council Members'|t }}</h2>
-							<span class="h-px flex-1 bg-gradient-to-l from-[#b13634]/30 to-transparent"></span>
-						</div>
-
-						<div class="overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm">
-							<table class="w-full border-collapse text-sm">
-								<thead>
-									<tr class="bg-slate-50 border-b border-slate-200">
-										<th scope="col" class="w-[40%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Name'|t }}</th>
-										<th scope="col" class="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Title'|t }}</th>
-									</tr>
-								</thead>
-								<tbody class="divide-y divide-slate-100 bg-white">
-
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Karim Chelli</td>
-										<td class="px-4 py-3.5 text-slate-500">President and Vice-Chancellor/Acting VPAA</td>
-									</tr>
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Sherif Moussa</td>
-										<td class="px-4 py-3.5 text-slate-500">Dean of School of Engineering, Applied Sciences and Technology</td>
-									</tr>
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Mr. Massimo Imparato</td>
-										<td class="px-4 py-3.5 text-slate-500">Dean of School of Architecture and Interior Design</td>
-									</tr>
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Aseel Takshe</td>
-										<td class="px-4 py-3.5 text-slate-500">Dean of School of Health Sciences and Psychology</td>
-									</tr>
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Kiray Khoury</td>
-										<td class="px-4 py-3.5 text-slate-500">Program Coordinator, Communication department</td>
-									</tr>
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Ibrahim Tabche</td>
-										<td class="px-4 py-3.5 text-slate-500">Acting Dean of School of Management</td>
-									</tr>
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Robert McClung</td>
-										<td class="px-4 py-3.5 text-slate-500">Dean of First Year Students/Acting Dean of School of Communication and Creative Industries</td>
-									</tr>
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Yasir Faheem</td>
-										<td class="px-4 py-3.5 text-slate-500">Associate Professor and Program Coordinator of Cyber Security</td>
-									</tr>
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Haytham El Messiry</td>
-										<td class="px-4 py-3.5 text-slate-500">Associate Professor and Program Director of MSc AI</td>
-									</tr>
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Tamer Mohamed Abdellatif Mohamed</td>
-										<td class="px-4 py-3.5 text-slate-500">Assistant Professor and Chair of Cyber Security</td>
-									</tr>
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Ms. Chloe Bennet</td>
-										<td class="px-4 py-3.5 text-slate-500">Chair of Creative Industries Department</td>
-									</tr>
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Ms. Sophie Johnson</td>
-										<td class="px-4 py-3.5 text-slate-500">Senior Lecturer and Head of Department of Interior Design</td>
-									</tr>
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Soumaya Askri</td>
-										<td class="px-4 py-3.5 text-slate-500">Assistant Professor and Program Coordinator of Marketing and International Business</td>
-									</tr>
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Mohammed Abdulhakim Nuruldeen</td>
-										<td class="px-4 py-3.5 text-slate-500">Professor and Program Coordinator of E-Business and MITM</td>
-									</tr>
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Osama Atayah</td>
-										<td class="px-4 py-3.5 text-slate-500">Associate Professor and Program Director of MBA</td>
-									</tr>
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Ikhlaas Gurrib</td>
-										<td class="px-4 py-3.5 text-slate-500">Professor and Program Coordinator of Finance</td>
-									</tr>
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Ossama Khassawneh</td>
-										<td class="px-4 py-3.5 text-slate-500">Assistant Professor and Program Coordinator of HR and Caretaker of Entrepreneurship and Management</td>
-									</tr>
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Mr. Mohammad Elmoshnib</td>
-										<td class="px-4 py-3.5 text-slate-500">Registrar</td>
-									</tr>
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Anwar Muhammad Abaidullah</td>
-										<td class="px-4 py-3.5 text-slate-500">Dean of IRP and Acting Managing Director of ICT</td>
-									</tr>
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Mrs. Menchie Armillo</td>
-										<td class="px-4 py-3.5 text-slate-500">Director, LRC</td>
-									</tr>
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Mr. Aftab Khan</td>
-										<td class="px-4 py-3.5 text-slate-500">Director, ICT</td>
-									</tr>
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Rami El Khatib</td>
-										<td class="px-4 py-3.5 text-slate-500">Vice President Student Services</td>
-									</tr>
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Pr. Christopher Hill</td>
-										<td class="px-4 py-3.5 text-slate-500">Vice President, Global Engagement</td>
-									</tr>
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Ms. Shaima Alhai</td>
-										<td class="px-4 py-3.5 text-slate-500">Student Council President/Vice President</td>
-									</tr>
-
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			{# ── Panel 3 : Senate            ─────────────────────────────────────────── #}
-			<div role="tabpanel" id="panel-senate" aria-labelledby="tab-senate" data-cud-panel="senate" class="cud-tab-panel--inactive pt-8 hidden">
+			{# ── Panel 2 : Senate and Academic Council            ─────────────────────────────────────────── #}
+			<div role="tabpanel" id="panel-senate-and-academic-council" aria-labelledby="tab-senate-and-academic-council" data-cud-panel="senate-and-academic-council" class="cud-tab-panel--inactive pt-8 hidden">
 
 				<div class="senate">
 					<div class="mb-12 pb-10">
@@ -609,10 +484,130 @@
 					</div>
 				</div>
 
+				<div class="academic-council">
+					<div class="mb-12 pb-10">
+						<div class="mb-6 flex items-center gap-3">
+							<span class="h-px flex-1 bg-gradient-to-r from-[#b13634]/30 to-transparent"></span>
+							<h2 class="text-md md:text-lg font-semibold uppercase tracking-[0.25em] text-[#b13634]">{{ 'Academic Council Members'|t }}</h2>
+							<span class="h-px flex-1 bg-gradient-to-l from-[#b13634]/30 to-transparent"></span>
+						</div>
+
+						<div class="overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm">
+							<table class="w-full border-collapse text-sm">
+								<thead>
+									<tr class="bg-slate-50 border-b border-slate-200">
+										<th scope="col" class="w-[40%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Name'|t }}</th>
+										<th scope="col" class="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Title'|t }}</th>
+									</tr>
+								</thead>
+								<tbody class="divide-y divide-slate-100 bg-white">
+
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Karim Chelli</td>
+										<td class="px-4 py-3.5 text-slate-500">President and Vice-Chancellor/Acting VPAA</td>
+									</tr>
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Sherif Moussa</td>
+										<td class="px-4 py-3.5 text-slate-500">Dean of School of Engineering, Applied Sciences and Technology</td>
+									</tr>
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Mr. Massimo Imparato</td>
+										<td class="px-4 py-3.5 text-slate-500">Dean of School of Architecture and Interior Design</td>
+									</tr>
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Aseel Takshe</td>
+										<td class="px-4 py-3.5 text-slate-500">Dean of School of Health Sciences and Psychology</td>
+									</tr>
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Kiray Khoury</td>
+										<td class="px-4 py-3.5 text-slate-500">Program Coordinator, Communication department</td>
+									</tr>
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Ibrahim Tabche</td>
+										<td class="px-4 py-3.5 text-slate-500">Acting Dean of School of Management</td>
+									</tr>
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Robert McClung</td>
+										<td class="px-4 py-3.5 text-slate-500">Dean of First Year Students/Acting Dean of School of Communication and Creative Industries</td>
+									</tr>
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Yasir Faheem</td>
+										<td class="px-4 py-3.5 text-slate-500">Associate Professor and Program Coordinator of Cyber Security</td>
+									</tr>
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Haytham El Messiry</td>
+										<td class="px-4 py-3.5 text-slate-500">Associate Professor and Program Director of MSc AI</td>
+									</tr>
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Tamer Mohamed Abdellatif Mohamed</td>
+										<td class="px-4 py-3.5 text-slate-500">Assistant Professor and Chair of Cyber Security</td>
+									</tr>
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Ms. Chloe Bennet</td>
+										<td class="px-4 py-3.5 text-slate-500">Chair of Creative Industries Department</td>
+									</tr>
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Ms. Sophie Johnson</td>
+										<td class="px-4 py-3.5 text-slate-500">Senior Lecturer and Head of Department of Interior Design</td>
+									</tr>
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Soumaya Askri</td>
+										<td class="px-4 py-3.5 text-slate-500">Assistant Professor and Program Coordinator of Marketing and International Business</td>
+									</tr>
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Mohammed Abdulhakim Nuruldeen</td>
+										<td class="px-4 py-3.5 text-slate-500">Professor and Program Coordinator of E-Business and MITM</td>
+									</tr>
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Osama Atayah</td>
+										<td class="px-4 py-3.5 text-slate-500">Associate Professor and Program Director of MBA</td>
+									</tr>
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Ikhlaas Gurrib</td>
+										<td class="px-4 py-3.5 text-slate-500">Professor and Program Coordinator of Finance</td>
+									</tr>
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Ossama Khassawneh</td>
+										<td class="px-4 py-3.5 text-slate-500">Assistant Professor and Program Coordinator of HR and Caretaker of Entrepreneurship and Management</td>
+									</tr>
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Mr. Mohammad Elmoshnib</td>
+										<td class="px-4 py-3.5 text-slate-500">Registrar</td>
+									</tr>
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Anwar Muhammad Abaidullah</td>
+										<td class="px-4 py-3.5 text-slate-500">Dean of IRP and Acting Managing Director of ICT</td>
+									</tr>
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Mrs. Menchie Armillo</td>
+										<td class="px-4 py-3.5 text-slate-500">Director, LRC</td>
+									</tr>
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Mr. Aftab Khan</td>
+										<td class="px-4 py-3.5 text-slate-500">Director, ICT</td>
+									</tr>
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Dr. Rami El Khatib</td>
+										<td class="px-4 py-3.5 text-slate-500">Vice President Student Services</td>
+									</tr>
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Pr. Christopher Hill</td>
+										<td class="px-4 py-3.5 text-slate-500">Vice President, Global Engagement</td>
+									</tr>
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Ms. Shaima Alhai</td>
+										<td class="px-4 py-3.5 text-slate-500">Student Council President/Vice President</td>
+									</tr>
+
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
 			</div>
 
 
-			{# ── Panel 4 : Senior Management ─────────────────────────────────────────── #}
+			{# ── Panel 3 : Senior Management ─────────────────────────────────────────── #}
 			<div role="tabpanel" id="panel-senior-management" aria-labelledby="tab-senior-management" data-cud-panel="senior-management" class="cud-tab-panel--inactive pt-8 hidden">
 
 				<div class="senior-management">
@@ -730,13 +725,12 @@
 
 			</div>
 
-
-			{# ── Panel 5 : Governance Bodies ─────────────────────────────────────────── #}
+			{# ── Panel 4 : Student Bodies ─────────────────────────────────────────── #}
 			<div
-				role="tabpanel" id="panel-governance" aria-labelledby="tab-governance" data-cud-panel="governance" class="cud-tab-panel--inactive pt-8 hidden">
+				role="tabpanel" id="panel-student-bodies" aria-labelledby="tab-student-bodies" data-cud-panel="student-bodies" class="cud-tab-panel--inactive pt-8 hidden">
 
 				{# ── Members of Student Council ── #}
-				<div class="student-council">
+				<div class="student-council mb-4 lg:mb-8">
 					<div class="mb-12 pb-10">
 						<div class="mb-6 flex items-center gap-3">
 							<span class="h-px flex-1 bg-gradient-to-r from-[#b13634]/30 to-transparent"></span>
@@ -776,6 +770,110 @@
 									<tr class="hover:bg-slate-50/70 transition-colors">
 										<td class="px-4 py-3.5 font-medium text-slate-800">Nitisha Thakwani</td>
 										<td class="px-4 py-3.5 text-slate-500">Public Relations Officer</td>
+									</tr>
+
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<div class="content-for-student-council">
+						<div class="mb-6">
+							<h3 class="text-base font-semibold text-slate-800 mb-2">{{ "About the Student Council"|t }}</h3>
+							<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ "Canadian University Dubai's Student Council is a volunteer-based, non-incorporated association aligned with the University's mission. The Student Council's mission includes acting as a liaison between students and administration, promoting student welfare, and encouraging student life and cultural events. The details of the Student Council's role and responsibilities can be found in the CUD Policy and Procedure Manual and the Student Handbook."|t }}</p>
+						</div>
+						<div class="mb-6">
+							<h4 class="text-sm font-semibold text-slate-700 mb-1">{{ "Membership & Structure"|t }}</h4>
+							<p class="text-slate-700 text-sm leading-relaxed mb-2">{{ "All full-time students in good academic standing (CGPA 3.0+ for President/VP, 2.5+ for others) who have completed at least two semesters are eligible to participate in the elections and serve as a member of the Student Council. The council includes executive positions (President, Vice President, Treasurer, Secretary, Media Officer, Public Relations Officer) elected annually, alongside general members. Members serve a one-year term, renewable once."|t }}</p>
+						</div>
+						<div class="mb-6">
+							<h4 class="text-sm font-semibold text-slate-700 mb-1">{{ "Elections"|t }}</h4>
+							<p class="text-slate-700 text-sm leading-relaxed mb-2">{{ "Elections are held each Spring semester. Candidates must meet eligibility criteria, register, submit required documents (resume, photo, supporter list for President/VP), and pass interviews. Campaigning involves speeches and approved materials, adhering to a strict code of conduct prohibiting misleading statements or attacks. Voting is open to all current full-time and part-time students."|t }}</p>
+						</div>
+						<div class="mb-6">
+							<h4 class="text-sm font-semibold text-slate-700 mb-1">{{ "Student Representation through the Student Council"|t }}</h4>
+							<p class="text-slate-700 text-sm leading-relaxed mb-2">{{ "The elected Student Council representatives are included in several key university committees, ensuring student perspectives are considered in decision-making:"|t }}</p>
+							<ul class="space-y-2 mb-4">
+								<li class="flex gap-2.5 text-sm text-slate-700">
+									<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+									<span><strong>{{ "University Senate:"|t }}</strong> {{ "One Student Council representative is a member. The Senate reviews and recommends major academic and policy matters to the Board of Trustees."|t }}</span>
+								</li>
+								<li class="flex gap-2.5 text-sm text-slate-700">
+									<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+									<span><strong>{{ "Academic Council:"|t }}</strong> {{ "One representative from the Student Council is a member. The Academic council advises on academic programs, policies, teaching, learning, and research."|t }}</span>
+								</li>
+								<li class="flex gap-2.5 text-sm text-slate-700">
+									<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+									<span><strong>{{ "Student Disciplinary Committee:"|t }}</strong> {{ "One Student Council representative is a member. This committee reviews student misconduct cases."|t }}</span>
+								</li>
+								<li class="flex gap-2.5 text-sm text-slate-700">
+									<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+									<span><strong>{{ "Learning Resource Center Committee:"|t }}</strong> {{ "One Student Council representative is a member."|t }}</span>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+
+
+				{# ── Academic Societies ── #}
+				<div class="student-academic-societies mb-4 lg:mb-8">
+					<div class="mb-12 pb-10">
+						<div class="mb-6 flex items-center gap-3">
+							<span class="h-px flex-1 bg-gradient-to-r from-[#b13634]/30 to-transparent"></span>
+							<h2 class="text-md md:text-lg font-semibold uppercase tracking-[0.25em] text-[#b13634]">{{ 'Academic Societies'|t }}</h2>
+							<span class="h-px flex-1 bg-gradient-to-l from-[#b13634]/30 to-transparent"></span>
+						</div>
+
+						<div class="overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm">
+							<table class="w-full border-collapse text-sm">
+								<thead>
+									<tr class="bg-slate-50 border-b border-slate-200">
+										<th scope="col" class="w-[40%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Name'|t }}</th>
+										<th scope="col" class="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Title'|t }}</th>
+									</tr>
+								</thead>
+								<tbody class="divide-y divide-slate-100 bg-white">
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Aaliyah Nizam</td>
+										<td class="px-4 py-3.5 text-slate-500">President, Psychology</td>
+									</tr>
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Lillian Husam</td>
+										<td class="px-4 py-3.5 text-slate-500">President, Eco-Lution</td>
+									</tr>
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Danica Chloe Reyes</td>
+										<td class="px-4 py-3.5 text-slate-500">President, IEEE</td>
+									</tr>
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Habiba Kapadia</td>
+										<td class="px-4 py-3.5 text-slate-500">President, Communication</td>
+									</tr>
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Riddhi Kapadia</td>
+										<td class="px-4 py-3.5 text-slate-500">President, Business</td>
+									</tr>
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Nathan Kahsay Kidanu</td>
+										<td class="px-4 py-3.5 text-slate-500">President, AI</td>
+									</tr>
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Ishaan Rai</td>
+										<td class="px-4 py-3.5 text-slate-500">President, Finance</td>
+									</tr>
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Khrystyna Kramchanina</td>
+										<td class="px-4 py-3.5 text-slate-500">President, Case Study Lab</td>
+									</tr>
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Nazla Chy</td>
+										<td class="px-4 py-3.5 text-slate-500">President, CoLab</td>
+									</tr>
+									<tr class="hover:bg-slate-50/70 transition-colors">
+										<td class="px-4 py-3.5 font-medium text-slate-800">Anas Altaweel</td>
+										<td class="px-4 py-3.5 text-slate-500">President, EcoRise innovation hub</td>
 									</tr>
 
 								</tbody>
@@ -856,169 +954,119 @@
 					</div>
 				</div>
 
-				{# ── Academic Societies ── #}
-				<div class="student-academic-societies">
-					<div class="mb-12 pb-10">
+			</div>
+
+			{# ── Panel 5 : Ethical Compliance  ─────────────────────────────────────────── #}
+			<div role="tabpanel" id="panel-ethical-compliance" aria-labelledby="tab-ethical-compliance" data-cud-panel="ethical-compliance" class="cud-tab-panel--inactive pt-8 hidden">
+				{# ── Office for Ethical Compliance ────────────────────────────────────────── #}
+				<div class="post-contents mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+
+					<section class="mb-12" aria-labelledby="heading-ethical-compliance">
 						<div class="mb-6 flex items-center gap-3">
 							<span class="h-px flex-1 bg-gradient-to-r from-[#b13634]/30 to-transparent"></span>
-							<h2 class="text-md md:text-lg font-semibold uppercase tracking-[0.25em] text-[#b13634]">{{ 'Academic Societies'|t }}</h2>
+							<h2 id="heading-ethical-compliance" class="text-md md:text-lg font-semibold uppercase tracking-[0.25em] text-[#b13634]">{{ 'Office for Ethical Compliance'|t }}</h2>
 							<span class="h-px flex-1 bg-gradient-to-l from-[#b13634]/30 to-transparent"></span>
 						</div>
 
-						<div class="overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm">
-							<table class="w-full border-collapse text-sm">
-								<thead>
-									<tr class="bg-slate-50 border-b border-slate-200">
-										<th scope="col" class="w-[40%] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Name'|t }}</th>
-										<th scope="col" class="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-400">{{ 'Title'|t }}</th>
-									</tr>
-								</thead>
-								<tbody class="divide-y divide-slate-100 bg-white">
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Aaliyah Nizam</td>
-										<td class="px-4 py-3.5 text-slate-500">President, Psychology</td>
-									</tr>
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Lillian Husam</td>
-										<td class="px-4 py-3.5 text-slate-500">President, Eco-Lution</td>
-									</tr>
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Danica Chloe Reyes</td>
-										<td class="px-4 py-3.5 text-slate-500">President, IEEE</td>
-									</tr>
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Habiba Kapadia</td>
-										<td class="px-4 py-3.5 text-slate-500">President, Communication</td>
-									</tr>
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Riddhi Kapadia</td>
-										<td class="px-4 py-3.5 text-slate-500">President, Business</td>
-									</tr>
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Nathan Kahsay Kidanu</td>
-										<td class="px-4 py-3.5 text-slate-500">President, AI</td>
-									</tr>
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Ishaan Rai</td>
-										<td class="px-4 py-3.5 text-slate-500">President, Finance</td>
-									</tr>
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Khrystyna Kramchanina</td>
-										<td class="px-4 py-3.5 text-slate-500">President, Case Study Lab</td>
-									</tr>
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Nazla Chy</td>
-										<td class="px-4 py-3.5 text-slate-500">President, CoLab</td>
-									</tr>
-									<tr class="hover:bg-slate-50/70 transition-colors">
-										<td class="px-4 py-3.5 font-medium text-slate-800">Anas Altaweel</td>
-										<td class="px-4 py-3.5 text-slate-500">President, EcoRise innovation hub</td>
-									</tr>
+						<div class="overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm bg-white p-6 sm:p-8">
+							<p class="text-sm leading-relaxed text-slate-700 mb-4">
+								{{ 'All faculty, staff, and students have a responsibility to be aware of all policies that cover items related to ethics. The university is a safe environment for individuals to report suspected unethical behaviour. If you are subject to an unethical behaviour, you should report it to your immediate supervisor (Dean of your school for students) and the Director of Human Resources if that supervisor is not a party to the concern which you raised. If the supervisor is a party to the suspect behaviour, the behaviour should be reported to the Senior Administration Manager of Human Resources and Administration'|t }}
+								(<a href="mailto:yusri@cud.ac.ae" class="font-medium text-[#b13634] hover:underline">yusri@cud.ac.ae</a>).
+								{{ 'The Human Resources Department must ensure that all employees and students are aware that this kind of disclosure is guaranteed by the university to be possible without fear of reprisal.'|t }}
+							</p>
 
-								</tbody>
-							</table>
+							<p class="text-sm leading-relaxed text-slate-700">
+							{{ 'All research activities conducted by faculty and students must be aligned with principles of Canadian University Dubai policies:'|t }}
+							<strong class="font-semibold text-[#b13634]">{{ 'Ethical Research Policy'|t }}</strong>,
+							<strong class="font-semibold text-[#b13634]">{{ 'Student Involvement in Research Policy'|t }}</strong>,
+							<strong class="font-semibold text-[#b13634]">{{ 'Policy on Research Involving Humans'|t }}</strong>,
+							{{ 'and'|t }}
+							<strong class="font-semibold text-[#b13634]">{{ 'Policy on Research Involving Animals, Biohazards Agents, or Radioactive Material'|t }}</strong>,
+							{{ 'and CUD values. Research Ethics is defined a set of moral principles researchers use when researching a topic. These principles encompass all areas of the research project especially those related to participants in the study.'|t }}
+							</p>
 						</div>
-					</div>
-				</div>
-			</div>
+						
+					</section>
 
+					<section class="mb-12" aria-labelledby="heading-suggestion-box">
+						<div class="mb-6 flex items-center gap-3">
+							<span class="h-px flex-1 bg-gradient-to-r from-[#b13634]/30 to-transparent"></span>
+							<h2 id="heading-suggestion-box" class="text-md md:text-lg font-semibold uppercase tracking-[0.25em] text-[#b13634]">{{ 'How to Raise a Concern: Our Suggestion Box'|t }}</h2>
+							<span class="h-px flex-1 bg-gradient-to-l from-[#b13634]/30 to-transparent"></span>
+						</div>
+
+						<div class="overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm bg-white p-6 sm:p-8">
+							<p class="mb-6 text-sm leading-relaxed text-slate-700">
+								{{ 'To ensure that every member of our community feels safe and supported, we provide multiple avenues for communication, including a physical'|t }}
+								<strong class="font-semibold text-slate-800">{{ 'Suggestion Box'|t }}</strong>
+								{{ 'located on both campuses.'|t }}
+							</p>
+
+							<p class="mb-4 text-sm font-medium text-slate-700">{{ 'This service is designed to:'|t }}</p>
+
+							<ul class="mb-0 space-y-4" role="list">
+								<li class="flex gap-3">
+									<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+										<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+									</span>
+									<p class="text-sm leading-relaxed text-slate-700">
+										<strong class="font-semibold text-slate-800">{{ 'Promote Anonymity:'|t }}</strong>
+										{{ 'The Suggestion Boxes offer a completely anonymous way to share feedback, report "grave concerns," or act as a whistleblower without the pressure of a face-to-face meeting.'|t }}
+									</p>
+								</li>
+								<li class="flex gap-3">
+									<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+										<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+									</span>
+									<p class="text-sm leading-relaxed text-slate-700">
+										<strong class="font-semibold text-slate-800">{{ 'Support Inclusivity:'|t }}</strong>
+										{{ 'We recognize that some individuals may feel shy or hesitant to come forward through digital or formal channels; these boxes provide a low-barrier, accessible alternative for everyone.'|t }}
+									</p>
+								</li>
+								<li class="flex gap-3">
+									<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
+										<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
+									</span>
+									<p class="text-sm leading-relaxed text-slate-700">
+										<strong class="font-semibold text-slate-800">{{ 'Ensure Confidentiality:'|t }}</strong>
+										{{ 'All submissions are treated with the utmost seriousness and are reviewed by authorized personnel to ensure that every voice is heard and every concern is addressed with integrity.'|t }}
+									</p>
+								</li>
+							</ul>
+						</div>
+						{# ── Suggestion Box Gallery ── #}
+						<div class="mt-8" aria-label="{{ 'Suggestion Box Gallery'|t }}">
+							<div class="grid grid-cols-2 gap-4 sm:gap-6 max-w-2xl mx-auto">
+
+								<figure class="group overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm bg-white">
+									<div class="overflow-hidden">
+										<img src="{{ cud_sustainability_asset_path ~ 'images/suggestion-box-hub-for-ethicalcompliance-section.jpg' }}" alt="{{ 'Suggestion Box at the HUB Campus'|t }}" class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" width="400" height="256">
+									</div>
+									<figcaption class="px-4 py-3 text-center text-xs font-medium text-slate-500 uppercase tracking-wide border-t border-slate-100">
+										{{ 'HUB Campus'|t }}
+									</figcaption>
+								</figure>
+
+								<figure class="group overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm bg-white">
+									<div class="overflow-hidden">
+										<img src="{{ cud_sustainability_asset_path ~ 'images/suggestion-box-som-for-ethical-compliance-section.jpg' }}" alt="{{ 'Suggestion Box at the SOM Campus'|t }}" class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" width="400" height="256">
+									</div>
+									<figcaption class="px-4 py-3 text-center text-xs font-medium text-slate-500 uppercase tracking-wide border-t border-slate-100">
+										{{ 'SOM Campus'|t }}
+									</figcaption>
+								</figure>
+
+							</div>
+						</div>
+					</section>
+
+				</div>
+				{# ── /Office for Ethical Compliance ───────────────────────────────────────── #}
+			
+			</div>
 
 		</section>
 		{# ── /Tabbed panel ─────────────────────────────────────────────────────────── #}
-
-		{# ── Office for Ethical Compliance ────────────────────────────────────────── #}
-		<div class="post-contents mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-
-			<section class="mb-12" aria-labelledby="heading-ethical-compliance">
-				<div class="mb-6 flex items-center gap-3">
-					<span class="h-px flex-1 bg-gradient-to-r from-[#b13634]/30 to-transparent"></span>
-					<h2 id="heading-ethical-compliance" class="text-md md:text-lg font-semibold uppercase tracking-[0.25em] text-[#b13634]">{{ 'Office for Ethical Compliance'|t }}</h2>
-					<span class="h-px flex-1 bg-gradient-to-l from-[#b13634]/30 to-transparent"></span>
-				</div>
-
-				<div class="overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm bg-white p-6 sm:p-8">
-					<p class="text-sm leading-relaxed text-slate-700">
-						{{ 'All faculty, staff, and students have a responsibility to be aware of all policies that cover items related to ethics. The university is a safe environment for individuals to report suspected unethical behaviour. If you are subject to an unethical behaviour, you should report it to your immediate supervisor (Dean of your school for students) and the Director of Human Resources if that supervisor is not a party to the concern which you raised. If the supervisor is a party to the suspect behaviour, the behaviour should be reported to the Senior Administration Manager of Human Resources and Administration'|t }}
-						(<a href="mailto:yusri@cud.ac.ae" class="font-medium text-[#b13634] hover:underline">yusri@cud.ac.ae</a>).
-						{{ 'The Human Resources Department must ensure that all employees and students are aware that this kind of disclosure is guaranteed by the university to be possible without fear of reprisal.'|t }}
-					</p>
-				</div>
-			</section>
-
-			<section class="mb-12" aria-labelledby="heading-suggestion-box">
-				<div class="mb-6 flex items-center gap-3">
-					<span class="h-px flex-1 bg-gradient-to-r from-[#b13634]/30 to-transparent"></span>
-					<h2 id="heading-suggestion-box" class="text-md md:text-lg font-semibold uppercase tracking-[0.25em] text-[#b13634]">{{ 'How to Raise a Concern: Our Suggestion Box'|t }}</h2>
-					<span class="h-px flex-1 bg-gradient-to-l from-[#b13634]/30 to-transparent"></span>
-				</div>
-
-				<div class="overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm bg-white p-6 sm:p-8">
-					<p class="mb-6 text-sm leading-relaxed text-slate-700">
-						{{ 'To ensure that every member of our community feels safe and supported, we provide multiple avenues for communication, including a physical'|t }}
-						<strong class="font-semibold text-slate-800">{{ 'Suggestion Box'|t }}</strong>
-						{{ 'located on both campuses.'|t }}
-					</p>
-
-					<p class="mb-4 text-sm font-medium text-slate-700">{{ 'This service is designed to:'|t }}</p>
-
-					<ul class="mb-0 space-y-4" role="list">
-						<li class="flex gap-3">
-							<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
-								<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
-							</span>
-							<p class="text-sm leading-relaxed text-slate-700">
-								<strong class="font-semibold text-slate-800">{{ 'Promote Anonymity:'|t }}</strong>
-								{{ 'The Suggestion Boxes offer a completely anonymous way to share feedback, report "grave concerns," or act as a whistleblower without the pressure of a face-to-face meeting.'|t }}
-							</p>
-						</li>
-						<li class="flex gap-3">
-							<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
-								<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
-							</span>
-							<p class="text-sm leading-relaxed text-slate-700">
-								<strong class="font-semibold text-slate-800">{{ 'Support Inclusivity:'|t }}</strong>
-								{{ 'We recognize that some individuals may feel shy or hesitant to come forward through digital or formal channels; these boxes provide a low-barrier, accessible alternative for everyone.'|t }}
-							</p>
-						</li>
-						<li class="flex gap-3">
-							<span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#b13634]/10">
-								<span class="h-1.5 w-1.5 rounded-full bg-[#b13634]"></span>
-							</span>
-							<p class="text-sm leading-relaxed text-slate-700">
-								<strong class="font-semibold text-slate-800">{{ 'Ensure Confidentiality:'|t }}</strong>
-								{{ 'All submissions are treated with the utmost seriousness and are reviewed by authorized personnel to ensure that every voice is heard and every concern is addressed with integrity.'|t }}
-							</p>
-						</li>
-					</ul>
-				</div>
-				{# ── Suggestion Box Gallery ── #}
-				<div class="mt-8" aria-label="{{ 'Suggestion Box Gallery'|t }}">
-					<div class="grid grid-cols-2 gap-4 sm:gap-6 max-w-2xl mx-auto">
-
-						<figure class="group overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm bg-white">
-							<div class="overflow-hidden">
-								   <img src="{{ cud_sustainability_asset_path ~ 'images/suggestion-box-hub-for-ethicalcompliance-section.jpg' }}" alt="{{ 'Suggestion Box at the HUB Campus'|t }}" class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" width="400" height="256">
-							</div>
-							<figcaption class="px-4 py-3 text-center text-xs font-medium text-slate-500 uppercase tracking-wide border-t border-slate-100">
-								{{ 'HUB Campus'|t }}
-							</figcaption>
-						</figure>
-
-						<figure class="group overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm bg-white">
-							<div class="overflow-hidden">
-								   <img src="{{ cud_sustainability_asset_path ~ 'images/suggestion-box-som-for-ethical-compliance-section.jpg' }}" alt="{{ 'Suggestion Box at the SOM Campus'|t }}" class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" width="400" height="256">
-							</div>
-							<figcaption class="px-4 py-3 text-center text-xs font-medium text-slate-500 uppercase tracking-wide border-t border-slate-100">
-								{{ 'SOM Campus'|t }}
-							</figcaption>
-						</figure>
-
-					</div>
-				</div>
-			</section>
-
-		</div>
-		{# ── /Office for Ethical Compliance ───────────────────────────────────────── #}
 
 		{% if content %}
 			<div class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-sky-700 prose-a:no-underline hover:prose-a:underline">
