@@ -119,6 +119,21 @@
 
 		{# ── Activities & News Intro ──────────────────────────────────────────── #}
 		<div class="block-common-content">
+			<ul class="grid gap-3 grid-cols-1 lg:grid-cols-2 mb-4 lg:mb-8" role="list">
+				<li>
+
+					<a href="/sustainability/activities-and-news#heading-training-main" class="flex items-center gap-3 rounded-lg border border-slate-300 px-4 py-2.5 text-sm text-slate-700 transition-all hover:border-[#b13634]/30 hover:bg-[#b13634]/5 hover:text-slate-900 group/link">
+						<span class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-sky-50 text-sky-600 transition-colors group-hover/link:bg-[#b13634]/10 group-hover/link:text-[#b13634]">
+							<i class="fa-solid fa-user-graduate text-[#b13634] text-base shrink-0" aria-hidden="true"></i>
+						</span>
+						<span class="leading-snug">{{ 'Mandatory Sustainability Training For Staff and Students'|t }}</span>
+						<i class="fa-solid fa-chevron-right ml-auto text-[10px] text-slate-300 transition-colors group-hover/link:text-[#b13634]" aria-hidden="true"></i>
+					</a>
+
+				</li>
+
+			</ul>
+
 			<p class="text-slate-700 text-sm leading-relaxed">{{ 'Canadian University Dubai actively drives sustainability through a vibrant programme of events, research milestones, institutional partnerships, and student-led initiatives. Explore our latest activities and news — from landmark MoU signings and award-winning student innovations to campus sustainability programmes and global research contributions.'|t }}</p>
 		</div>
 
@@ -152,6 +167,7 @@
 				{% endfor %}
 			</ul>
 			<div class="mt-5 rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-4 sm:p-5">
+				<a id="heading-training-main" name="heading-training-main" class="max-h-[1px] h-[1px] overflow-hidden text-[1px]">&nbsp;</a>
 				<div class="flex items-start gap-4">
 					<div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#b13634]/10 text-[#b13634]">
 						<i class="fa-solid fa-newspaper text-xl" aria-hidden="true"></i>
@@ -165,22 +181,23 @@
 						</a>
 					</div>
 				</div>
+
 			</div>
 		</div>
 
 		{# ── Sustainability News ──────────────────────────────────────────────── #}
-		<div class="block-common-content" aria-labelledby="heading-news">
-		  <h2 id="heading-news" class="text-md md:text-xl font-semibold cud-color-blue mb-4 flex items-center gap-2">
-		    <i class="fa-solid fa-newspaper text-[#b13634] text-base shrink-0" aria-hidden="true"></i>
-		    Mandatory Sustainability Training For Staff and Students
-		  </h2>
-		  <div class="prose max-w-none text-slate-700 mb-4 lg:mb-8">
-		  	<p class="text-sm font-semibold text-slate-700 leading-relaxed">Environmental Sustainability Awareness Presentation for New Faculty, Staff, and Students</p>
-		    <p class="text-sm text-slate-700 leading-relaxed">The Center for Sustainability and Innovation delivers an information program, for new employees and new students Orientation Program on Environmental and Social Sustainability Awareness, focusing on CUD policies related to environmental and social sustainability in August and January of each year.</p>
-		    <p class="text-sm text-slate-700 leading-relaxed">The program aims to raise awareness of sustainability initiatives and practices at CUD among new faculty, administrative staff, and students. It also encouraged new employees and students to actively participate in the sustainability initiatives led by the Center for Sustainability and Innovation.</p>
-		    <p class="text-sm text-slate-700 leading-relaxed">For example, this orientation program was held on January 8, 2026 for newcomers of Spring 2026. This program is organized in collaboration with HR Department and Student Services, Purchase Department, and Facilities. The program was delivered by Dr. Chureerat Haq, Manager – Center for Sustainability and Innovation and Mr. Quraish Alharahsheh, Director of Administration at CUD, as shown in the photos below.</p>
-		  </div>
-		  {# ── Mandatory Sustainability Training Gallery ───────────────────────────────────── #}
+		<div class="block-common-content" aria-labelledby="heading-training">
+			<h2 id="heading-training" class="text-md md:text-xl font-semibold cud-color-blue mb-4 flex items-center gap-2">
+				<i class="fa-solid fa-user-graduate text-[#b13634] text-base shrink-0" aria-hidden="true"></i>
+				{{ 'Mandatory Sustainability Training For Staff and Students'|t }}
+			</h2>
+			<div class="prose max-w-none text-slate-700 mb-4 lg:mb-8">
+				<p class="text-sm font-semibold text-slate-700 leading-relaxed">{{ 'Environmental Sustainability Awareness Presentation for New Faculty, Staff, and Students'|t }}</p>
+				<p class="text-sm text-slate-700 leading-relaxed">{{ 'The Center for Sustainability and Innovation delivers an information program, for new employees and new students Orientation Program on Environmental and Social Sustainability Awareness, focusing on CUD policies related to environmental and social sustainability in August and January of each year.'|t }}</p>
+				<p class="text-sm text-slate-700 leading-relaxed">{{ 'The program aims to raise awareness of sustainability initiatives and practices at CUD among new faculty, administrative staff, and students. It also encouraged new employees and students to actively participate in the sustainability initiatives led by the Center for Sustainability and Innovation.'|t }}</p>
+				<p class="text-sm text-slate-700 leading-relaxed">{{ 'For example, this orientation program was held on January 8, 2026 for newcomers of Spring 2026. This program is organized in collaboration with HR Department and Student Services, Purchase Department, and Facilities. The program was delivered by Dr. Chureerat Haq, Manager – Center for Sustainability and Innovation and Mr. Quraish Alharahsheh, Director of Administration at CUD, as shown in the photos below.'|t }}</p>
+			</div>
+			{# ── Mandatory Sustainability Training Gallery ───────────────────────────────────── #}
 			<div class="mb-4 flex flex-wrap justify-center gap-3 sm:gap-4" aria-label="{{ 'Mandatory Sustainability Training Gallery'|t }}">
 				{% for i in 1..2 %}
 					<figure class="group overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm bg-white w-[calc(50%-0.375rem)] lg:w-[calc(25%-0.75rem)]">
@@ -188,11 +205,7 @@
 							<span class="image-loader absolute inset-0 flex items-center justify-center bg-white/60 z-10">
 								<i class="fa-solid fa-arrow-rotate-right animate-spin text-green-700 text-3xl" aria-hidden="true"></i>
 							</span>
-							<img src="{{ cud_sustainability_asset_path ~ 'images/activities-news/mandatory-sustainability-training-orientation-0' ~ i ~ '.png' }}"
-								 alt="{{ 'Mandatory Sustainability Training For Staff and Students photo'|t }} {{ i }}"
-								 class="tc-lightbox w-full h-48 sm:h-56 object-cover transition-transform duration-300 group-hover:scale-105"
-								 loading="lazy"
-								 onload="this.previousElementSibling.style.display='none'">
+							<img src="{{ cud_sustainability_asset_path ~ 'images/activities-news/mandatory-sustainability-training-orientation-0' ~ i ~ '.png' }}" alt="{{ 'Mandatory Sustainability Training For Staff and Students photo'|t }} {{ i }}" class="tc-lightbox w-full h-48 sm:h-56 object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" onload="this.previousElementSibling.style.display='none'">
 						</div>
 					</figure>
 				{% endfor %}
@@ -409,11 +422,13 @@
 								<time datetime="{{ item.datetime }}" class="text-[10px] text-slate-400 tabular-nums" itemprop="datePublished">{{ item.date }}</time>
 								<span class="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600">{{ item.tag }}</span>
 							</div>
-						<h3 class="text-sm font-semibold text-slate-800 leading-snug" itemprop="headline"><a href="{{ item.url }}" rel="noopener noreferrer" target="_blank" class="hover:text-[#b13634] transition-colors">{{ item.title }}</a></h3>
-						<p class="text-xs text-slate-500 leading-relaxed flex-1" itemprop="description">{{ item.body }}</p>
-						<meta itemprop="publisher" content="Canadian University Dubai"/>
-						<meta itemprop="url" content="{{ item.url }}"/>
-						<a href="{{ item.url }}" rel="noopener noreferrer" target="_blank" class="mt-1 inline-flex items-center gap-1.5 text-xs font-medium text-sky-700 hover:text-[#b13634] transition-colors">
+							<h3 class="text-sm font-semibold text-slate-800 leading-snug" itemprop="headline">
+								<a href="{{ item.url }}" rel="noopener noreferrer" target="_blank" class="hover:text-[#b13634] transition-colors">{{ item.title }}</a>
+							</h3>
+							<p class="text-xs text-slate-500 leading-relaxed flex-1" itemprop="description">{{ item.body }}</p>
+							<meta itemprop="publisher" content="Canadian University Dubai"/>
+							<meta itemprop="url" content="{{ item.url }}"/>
+							<a href="{{ item.url }}" rel="noopener noreferrer" target="_blank" class="mt-1 inline-flex items-center gap-1.5 text-xs font-medium text-sky-700 hover:text-[#b13634] transition-colors">
 								{{ 'Read more at CUD News'|t }}
 								<i class="fa-solid fa-arrow-up-right-from-square text-[10px]" aria-hidden="true"></i>
 							</a>
@@ -422,7 +437,7 @@
 				{% endfor %}
 			</div>
 		</div>
-	
+
 		{% if content %}
 			<div class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-sky-700 prose-a:no-underline hover:prose-a:underline">
 				{{ content }}
@@ -436,7 +451,7 @@
 				{% endfor %}
 			</div>
 		{% endif %}
-		
+
 	</div>
 </section>
 
