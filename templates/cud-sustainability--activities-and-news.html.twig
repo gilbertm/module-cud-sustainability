@@ -170,6 +170,37 @@
 
 		{# ── Sustainability News ──────────────────────────────────────────────── #}
 		<div class="block-common-content" aria-labelledby="heading-news">
+		  <h2 id="heading-news" class="text-md md:text-xl font-semibold cud-color-blue mb-4 flex items-center gap-2">
+		    <i class="fa-solid fa-newspaper text-[#b13634] text-base shrink-0" aria-hidden="true"></i>
+		    Mandatory Sustainability Training For Staff and Students
+		  </h2>
+		  <div class="prose max-w-none text-slate-700 mb-4 lg:mb-8">
+		  	<p class="text-sm font-semibold text-slate-700 leading-relaxed">Environmental Sustainability Awareness Presentation for New Faculty, Staff, and Students</p>
+		    <p class="text-sm text-slate-700 leading-relaxed">The Center for Sustainability and Innovation delivers an information program, for new employees and new students Orientation Program on Environmental and Social Sustainability Awareness, focusing on CUD policies related to environmental and social sustainability in August and January of each year.</p>
+		    <p class="text-sm text-slate-700 leading-relaxed">The program aims to raise awareness of sustainability initiatives and practices at CUD among new faculty, administrative staff, and students. It also encouraged new employees and students to actively participate in the sustainability initiatives led by the Center for Sustainability and Innovation.</p>
+		    <p class="text-sm text-slate-700 leading-relaxed">For example, this orientation program was held on January 8, 2026 for newcomers of Spring 2026. This program is organized in collaboration with HR Department and Student Services, Purchase Department, and Facilities. The program was delivered by Dr. Chureerat Haq, Manager – Center for Sustainability and Innovation and Mr. Quraish Alharahsheh, Director of Administration at CUD, as shown in the photos below.</p>
+		  </div>
+		  {# ── Mandatory Sustainability Training Gallery ───────────────────────────────────── #}
+			<div class="mb-4 flex flex-wrap justify-center gap-3 sm:gap-4" aria-label="{{ 'Mandatory Sustainability Training Gallery'|t }}">
+				{% for i in 1..2 %}
+					<figure class="group overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm bg-white w-[calc(50%-0.375rem)] lg:w-[calc(25%-0.75rem)]">
+						<div class="overflow-hidden lazy-loading relative">
+							<span class="image-loader absolute inset-0 flex items-center justify-center bg-white/60 z-10">
+								<i class="fa-solid fa-arrow-rotate-right animate-spin text-green-700 text-3xl" aria-hidden="true"></i>
+							</span>
+							<img src="{{ cud_sustainability_asset_path ~ 'images/activities-news/mandatory-sustainability-training-orientation-0' ~ i ~ '.png' }}"
+								 alt="{{ 'Mandatory Sustainability Training For Staff and Students photo'|t }} {{ i }}"
+								 class="tc-lightbox w-full h-48 sm:h-56 object-cover transition-transform duration-300 group-hover:scale-105"
+								 loading="lazy"
+								 onload="this.previousElementSibling.style.display='none'">
+						</div>
+					</figure>
+				{% endfor %}
+			</div>
+		</div>
+
+		{# ── Sustainability News ──────────────────────────────────────────────── #}
+		<div class="block-common-content" aria-labelledby="heading-news">
 			<h2 id="heading-news" class="text-md md:text-xl font-semibold cud-color-blue mb-4 flex items-center gap-2">
 				<i class="fa-solid fa-newspaper text-[#b13634] text-base shrink-0" aria-hidden="true"></i>
 				{{ 'Sustainability News'|t }}
@@ -178,7 +209,7 @@
 				{
 					date: 'December 2025'|t,
 					datetime: '2025-12',
-					url: 'https://www.cud.ac.ae/news',
+					url: 'https://www.cud.ac.ae/events/cud-knowledge-partner-forbes-middle-east-healthcare-leaders-summit-2025',
 					image: 'activities-news-forbes-purehealth-healthcare-leaders-summit.jpeg',
 					alt: 'Panel discussion at the Forbes Middle East Healthcare Leaders Summit in Abu Dhabi, with CUD representatives contributing'|t,
 					title: 'CUD Knowledge Partner at Forbes Middle East Healthcare Leaders Summit'|t,

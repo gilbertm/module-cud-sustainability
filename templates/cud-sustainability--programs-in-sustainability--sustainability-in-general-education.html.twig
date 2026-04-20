@@ -1,0 +1,454 @@
+{#
+/**
+ * @file
+ * Inner-page template for /sustainability/our-commitment/governance.
+ *
+ * Variables:
+ * - title: Page title string.
+ * - content: Rendered node content (full view mode).
+ * - carousel_items: Optional list of carousel slides.
+ * - sections: Optional list of processed-text sections.
+ * - primary_nav: Primary navigation array.
+ * - secondary_nav: Secondary navigation array.
+ * - mode: Display mode string ('main' or 'secondary').
+ */
+#}
+
+{% set carousel_slides = carousel_items|default([]) %}
+
+{% if carousel_slides %}
+	<section class="carousel group relative mb-8 w-screen max-w-none -translate-x-1/2 left-1/2" data-cud-carousel data-cud-carousel-autoplay="5600" aria-label="{{ 'Governance carousel'|t }}">
+		<div class="w-full relative overflow-hidden">
+			<div class="w-full flex transition-transform duration-700 ease-out will-change-transform" data-cud-carousel-track>
+				{% for item in carousel_slides %}
+					<article class="relative min-w-full" data-cud-carousel-slide>
+						{% if item.image %}
+							<div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[280px] overflow-hidden sm:min-h-[340px] lg:min-h-[420px]">
+								{{ item.image }}
+							</div>
+						{% elseif item.image_url %}
+							<div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[280px] overflow-hidden sm:min-h-[340px] lg:min-h-[420px]">
+								<img src="{{ item.image_url }}" alt="{{ item.title|default('Governance') }}" loading="lazy" class="h-full w-full object-cover">
+							</div>
+						{% endif %}
+						<div class="carousel-content-overlay absolute inset-0 mx-auto h-full w-full max-w-none">
+							{% if item.overlay %}
+								{{ item.overlay }}
+							{% endif %}
+						</div>
+					</article>
+				{% endfor %}
+			</div>
+
+			{% if carousel_slides|length > 1 %}
+				<div class="carousel-content-controls">
+					<button class="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-md bg-slate-950/80 p-2.5 text-slate-100 opacity-0 shadow-xl backdrop-blur-md transition-all duration-500 ease-in-out group-hover:opacity-100 hover:bg-slate-800/90 hover:text-white focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-sky-400 sm:left-6" data-cud-carousel-prev aria-label="{{ 'Previous slide'|t }}">
+						<i class="fa-solid fa-chevron-left h-5 w-5" aria-hidden="true"></i>
+					</button>
+					<button class="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-md bg-slate-950/80 p-2.5 text-slate-100 opacity-0 shadow-xl backdrop-blur-md transition-all duration-500 ease-in-out group-hover:opacity-100 hover:bg-slate-800/90 hover:text-white focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-sky-400 sm:right-6" data-cud-carousel-next aria-label="{{ 'Next slide'|t }}">
+						<i class="fa-solid fa-chevron-right h-5 w-5" aria-hidden="true"></i>
+					</button>
+				</div>
+			{% endif %}
+		</div>
+	</section>
+{% endif %}
+
+{# ── Page Header with Breadcrumb ─────────────────────────────────────────────── #}
+<section class="bg-white" aria-label="{{ 'Page header'|t }}">
+	<div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+		<nav class="mb-3 flex items-center gap-1.5 text-xs text-slate-500" aria-label="{{ 'Breadcrumb'|t }}">
+			{% for link in breadcrumb %}
+				{% if not loop.first %}
+					<i class="fa-solid fa-chevron-right text-[9px] text-slate-400" aria-hidden="true"></i>
+				{% endif %}
+				{% if link.url %}
+					<a href="{{ link.url }}" class="hover:text-slate-700 transition-colors">{{ link.text }}</a>
+				{% else %}
+					<span>{{ link.text }}</span>
+				{% endif %}
+			{% endfor %}
+			{% if breadcrumb is not empty %}
+				<i class="fa-solid fa-chevron-right text-[9px] text-slate-400" aria-hidden="true"></i>
+			{% endif %}
+			<span class="font-medium text-slate-700">{{ title }}</span>
+		</nav>
+		<div class="flex items-center gap-3">
+			<h1 class="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">{{ title }}</h1>
+			{% if edit_url %}
+				<a href="{{ edit_url }}" class="shrink-0 rounded-md p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700" title="{{ 'Edit node'|t }}" aria-label="{{ 'Edit'|t }}">
+					<i class="fa-solid fa-pen-to-square text-sm" aria-hidden="true"></i>
+				</a>
+			{% endif %}
+		</div>
+	</div>
+</section>
+
+{# ── Shared sub-nav data ──────────────────────────────────────────────────────── #}
+
+{# Icon map for all seeded primary nav children, keyed by URL #}
+{% set icon_map = {
+	'/sustainability/our-commitment/governance': 'fa-landmark',
+	'/sustainability/our-commitment/sustainability-committee': 'fa-users',
+	'/sustainability/our-commitment/institutional-policies': 'fa-file-lines',
+	'/sustainability/our-commitment/impact-reporting': 'fa-chart-bar',
+	'/sustainability/our-commitment/sdgs': 'fa-leaf',
+	'/sustainability/programs-in-sustainability/sustainability-focused-programs': 'fa-chalkboard',
+	'/sustainability/programs-in-sustainability/sustainability-in-general-education': 'fa-chalkboard',
+	'/sustainability/programs-in-sustainability/student-led-sustainability': 'fa-users-between-lines',
+	'/sustainability/research-in-sustainability/center-for-sustainability-and-innovation': 'fa-flask-vial',
+	'/sustainability/research-in-sustainability/research-projects': 'fa-diagram-project',
+	'/sustainability/researchers-in-sustainability/list-of-researchers': 'fa-id-card',
+	'/sustainability/social-responsibility/edi': 'fa-handshake',
+	'/sustainability/social-responsibility/people-of-determination': 'fa-universal-access',
+	'/sustainability/partnerships-on-sustainability/list-of-institutions': 'fa-building',
+	'/sustainability/campus/health-wellness': 'fa-heart-pulse',
+	'/sustainability/campus/sustainable-infrastructure': 'fa-solar-panel',
+	'/sustainability/campus/path-to-net-zero': 'fa-seedling',
+	'/sustainability/activities-and-news/academia': 'fa-book',
+	'/sustainability/activities-and-news/extracurricular-activities-on-sustainability': 'fa-person-biking',
+	'/sustainability/activities-and-news/news': 'fa-newspaper'
+} %}
+
+{# Derive sub_items from the matching top-level primary nav parent #}
+{% set active_nav_parent = null %}
+{% for item in primary_nav %}
+	{% if item.children and (current_path == item.url or current_path starts with (item.url ~ '/')) %}
+		{% set active_nav_parent = item %}
+	{% endif %}
+{% endfor %}
+{% set sub_items = active_nav_parent ? active_nav_parent.children : [] %}
+
+{# ── Mobile / tablet sub-nav strip (hidden on lg+) ───────────────────────────── #}
+<div class="lg:hidden border-b border-slate-100 bg-white px-4 sm:px-6">
+	<nav class="flex gap-1.5 overflow-x-auto py-2.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" aria-label="{{ 'Our Commitment navigation'|t }}">
+		{% for sub in sub_items %}
+			<a href="{{ sub.url }}" class="inline-flex flex-none items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors{% if current_path == sub.url %} bg-slate-900 text-white{% else %} text-slate-600 hover:bg-slate-100 hover:text-slate-900{% endif %}">
+				<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }}" aria-hidden="true"></i>
+				{{ sub.title }}
+			</a>
+		{% endfor %}
+	</nav>
+</div>
+
+{# ── Main Content (full-width) ────────────────────────────────────────────────── #}
+<section class="mx-auto max-w-7xl px-4 lg:px-8 !bg-white" id="main-content" aria-label="{{ title }}" data-mode="{{ mode }}">
+	<div class="min-w-0 space-y-5">
+
+				<div class="block-common-content" aria-labelledby="heading-prme">
+			<h2 id="heading-prme" class="text-md md:text-xl font-semibold cud-color-blue">{{ 'Sustainability in General Education'|t }}</h2>
+			<h3 class="text-base font-semibold text-slate-800 mt-4 mb-2">{{ 'Mandatory Courses'|t }}</h3>
+			<p class="text-sm text-slate-700 mb-4">{{ 'All undergraduate students, independently of their programs, are required to take the ENT 141 and ENT 142 entrepreneurship and innovation courses, and take at least one optional course among GED 125, GED 132, GED 150, GED 205, or GED 324.'|t }}</p>
+			<p class="text-sm text-slate-700 mb-4">{{ 'The syllabi and Course Learning Outcomes (CLOs) of these courses can be found below:'|t }}</p>
+		</div>
+
+		<div class="space-y-10">
+			{# --- ENT 141 --- #}
+			<div class="block-common-content" aria-labelledby="heading-ent-141">
+				<h2 id="heading-ent-141" class="text-md md:text-xl font-semibold cud-color-blue mb-3">{{ 'ENT 141: Fundamentals of Innovation and Entrepreneurship 1'|t }}</h2>
+				<p class="text-sm text-slate-700 mb-4">{{ 'The course introduces the design thinking principles and idea evaluation processes. By the end of this course, the student will understand the main concepts of innovation, entrepreneurship, and sustainability, specifically the sustainability framework (economy, society, and environment). The learning content ranges from exploring numerous innovative and sustainable ideas using contemporary tools for ideation.'|t }}</p>
+				
+				<p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400 mb-3">{{ 'Course Sustainability Highlights:'|t }}</p>
+				<ul class="space-y-2 mb-4">
+					<li class="flex gap-2.5 text-sm text-slate-700">
+						<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+						<span><strong>{{ 'CLO1:'|t }}</strong> {{ 'Explain the basic concepts of innovation, entrepreneurship, and sustainability, and their value to the society and economy.'|t }}</span>
+					</li>
+					<li class="flex gap-2.5 text-sm text-slate-700">
+						<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+						<span><strong>{{ 'CLO 4:'|t }}</strong> {{ 'Identify key elements of the sustainability framework in the proposed innovative opportunities.'|t }}</span>
+					</li>
+				</ul>
+
+				<div class="mt-2">
+					<p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400 mb-3">{{ 'Related Links'|t }}</p>
+					<ul class="flex flex-col gap-2">
+						<li>
+							<a href="/modules/custom/cud_sustainability/assets/pdfs/course-syllabus/ent-141--2024-25.pdf"
+							   class="group flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm transition-all hover:border-[#b13634]/30 hover:bg-[#b13634]/5 hover:text-[#b13634]">
+								<span class="flex items-center gap-2.5">
+									<i class="fa-solid fa-file-pdf w-4 text-center text-slate-400 group-hover:text-[#b13634] transition-colors" aria-hidden="true"></i>
+									{{ 'Download the ENT 141 course syllabus'|t }}
+								</span>
+								<i class="fa-solid fa-arrow-right text-xs text-slate-300 group-hover:text-[#b13634] transition-all group-hover:translate-x-0.5" aria-hidden="true"></i>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			{# --- ENT 142 --- #}
+			<div class="block-common-content" aria-labelledby="heading-ent-142">
+				<h2 id="heading-ent-142" class="text-md md:text-xl font-semibold cud-color-blue mb-3">{{ 'ENT 142: Fundamentals of Innovation and Entrepreneurship 2'|t }}</h2>
+				<p class="text-sm text-slate-700 mb-4">{{ 'Based on the United Nations Sustainable Development Goals (UNSDGs), the learner will apply design thinking methods to solve real-life social issues through social innovation. The student will focus on their own enterprising journey throughout their program of study using reflective practices.'|t }}</p>
+				
+				<p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400 mb-3">{{ 'Course Sustainability Highlights:'|t }}</p>
+				<ul class="space-y-2 mb-4">
+					<li class="flex gap-2.5 text-sm text-slate-700">
+						<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+						<span><strong>{{ 'CLO1:'|t }}</strong> {{ 'Explain the process of innovation, entrepreneurship and sustainability.'|t }}</span>
+					</li>
+					<li class="flex gap-2.5 text-sm text-slate-700">
+						<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+						<span><strong>{{ 'CLO3:'|t }}</strong> {{ 'Analyze the impact of innovation, entrepreneurship and sustainability on society and the economy.'|t }}</span>
+					</li>
+				</ul>
+
+				<div class="mt-2">
+					<p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400 mb-3">{{ 'Related Links'|t }}</p>
+					<ul class="flex flex-col gap-2">
+						<li>
+							<a href="/modules/custom/cud_sustainability/assets/pdfs/course-syllabus/ent-142--2024-25.pdf"
+							   class="group flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm transition-all hover:border-[#b13634]/30 hover:bg-[#b13634]/5 hover:text-[#b13634]">
+								<span class="flex items-center gap-2.5">
+									<i class="fa-solid fa-file-pdf w-4 text-center text-slate-400 group-hover:text-[#b13634] transition-colors" aria-hidden="true"></i>
+									{{ 'Download the ENT 142 course syllabus'|t }}
+								</span>
+								<i class="fa-solid fa-arrow-right text-xs text-slate-300 group-hover:text-[#b13634] transition-all group-hover:translate-x-0.5" aria-hidden="true"></i>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="block-common-content">
+				<h2 class="text-md md:text-xl font-semibold cud-color-blue mb-3">{{ 'Optional Courses'|t }}</h2>
+			</div>
+
+			{# --- GED 125 --- #}
+			<div class="block-common-content" aria-labelledby="heading-ged-125">
+				<h3 id="heading-ged-125" class="text-base font-semibold text-slate-800 mt-4 mb-2">{{ 'GED 125: Ecosystem and Human Health'|t }}</h3>
+				<p class="text-sm text-slate-700 mb-4">{{ 'This course introduces the key concepts of human health, emphasizing how they are related and the implications of this relationship to human wellbeing. Topics related to the definition of health, healthy behavior, stress, nutrition, physical activity, addiction, infectious and non-infectious disease, and environmental health will be covered in this course.'|t }}</p>
+				
+				<p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400 mb-3">{{ 'Course Sustainability Highlights:'|t }}</p>
+				<ul class="space-y-2 mb-4">
+					<li class="flex gap-2.5 text-sm text-slate-700">
+						<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+						<span><strong>{{ 'CLO 1:'|t }}</strong> {{ 'Define the comprehensive ecological model of health and the different aspects related to healthy behavior.'|t }}</span>
+					</li>
+					<li class="flex gap-2.5 text-sm text-slate-700">
+						<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+						<span><strong>{{ 'CLO 4:'|t }}</strong> {{ 'Recognize different infectious and non-infectious diseases.'|t }}</span>
+					</li>
+					<li class="flex gap-2.5 text-sm text-slate-700">
+						<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+						<span><strong>{{ 'CLO 5:'|t }}</strong> {{ 'Discuss the pros and cons of a healthcare system.'|t }}</span>
+					</li>
+				</ul>
+
+				<div class="mt-2">
+					<p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400 mb-3">{{ 'Related Links'|t }}</p>
+					<ul class="flex flex-col gap-2">
+						<li>
+							<a href="/modules/custom/cud_sustainability/assets/pdfs/course-syllabus/ged-125-syllabus--2025-26.pdf"
+							   class="group flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm transition-all hover:border-[#b13634]/30 hover:bg-[#b13634]/5 hover:text-[#b13634]">
+								<span class="flex items-center gap-2.5">
+									<i class="fa-solid fa-file-pdf w-4 text-center text-slate-400 group-hover:text-[#b13634] transition-colors" aria-hidden="true"></i>
+									{{ 'Download the GED 125 course syllabus'|t }}
+								</span>
+								<i class="fa-solid fa-arrow-right text-xs text-slate-300 group-hover:text-[#b13634] transition-all group-hover:translate-x-0.5" aria-hidden="true"></i>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			{# --- GED 132 --- #}
+			<div class="block-common-content" aria-labelledby="heading-ged-132">
+				<h3 id="heading-ged-132" class="text-base font-semibold text-slate-800 mt-4 mb-2">{{ 'GED 132: Science and Technology in Society'|t }}</h3>
+				<p class="text-sm text-slate-700 mb-4">{{ 'This course examines the aims, methods and consequences of scientific enquiry in human history, including the impact of scientific and technological advances on societies, cultures and political systems. The course also discusses some of the philosophical disputes prompted by those advances and the political and their ethical implications on societies.'|t }}</p>
+				
+				<p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400 mb-3">{{ 'Course Sustainability Highlights:'|t }}</p>
+				<ul class="space-y-2 mb-4">
+					<li class="flex gap-2.5 text-sm text-slate-700">
+						<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+						<span><strong>{{ 'CLO 2:'|t }}</strong> {{ 'Explain how society, scientific and technological discoveries influence each other.'|t }}</span>
+					</li>
+					<li class="flex gap-2.5 text-sm text-slate-700">
+						<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+						<span><strong>{{ 'CLO 3:'|t }}</strong> {{ 'Discuss the benefits and disadvantages of scientific and technological discoveries.'|t }}</span>
+					</li>
+				</ul>
+
+				<div class="mt-2">
+					<p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400 mb-3">{{ 'Related Links'|t }}</p>
+					<ul class="flex flex-col gap-2">
+						<li>
+							<a href="/modules/custom/cud_sustainability/assets/pdfs/course-syllabus/ged-132-syllabus--2025-26.pdf"
+							   class="group flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm transition-all hover:border-[#b13634]/30 hover:bg-[#b13634]/5 hover:text-[#b13634]">
+								<span class="flex items-center gap-2.5">
+									<i class="fa-solid fa-file-pdf w-4 text-center text-slate-400 group-hover:text-[#b13634] transition-colors" aria-hidden="true"></i>
+									{{ 'Download the GED 132 course syllabus'|t }}
+								</span>
+								<i class="fa-solid fa-arrow-right text-xs text-slate-300 group-hover:text-[#b13634] transition-all group-hover:translate-x-0.5" aria-hidden="true"></i>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			{# --- GED 150 --- #}
+			<div class="block-common-content" aria-labelledby="heading-ged-150">
+				<h3 id="heading-ged-150" class="text-base font-semibold text-slate-800 mt-4 mb-2">{{ 'GED 150: Foundations for Community Engagement and Social Work'|t }}</h3>
+				<p class="text-sm text-slate-700 mb-4">{{ 'This course is designed to develop practice knowledge and skills necessary to begin professional social work practice, while introducing you to the values, philosophies and knowledge base integrated into social work practice. The course will assist you in the early development of skills such as: self-awareness, personal values, professional values, communication, observation, building professional relationships, and identification and analyses of ethical dilemmas. Specific emphasis will be given to developing a sense of professional identity, responsibility and basic practice skills with individuals, families and communities.'|t }}</p>
+				
+				<p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400 mb-3">{{ 'Course Sustainability Highlights:'|t }}</p>
+				<ul class="space-y-2 mb-4">
+					<li class="flex gap-2.5 text-sm text-slate-700">
+						<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+						<span><strong>{{ 'CLO 1:'|t }}</strong> {{ 'Understand the role of social workers in a social service or community agency, as well as their relationship to other professionals in these settings.'|t }}</span>
+					</li>
+					<li class="flex gap-2.5 text-sm text-slate-700">
+						<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+						<span><strong>{{ 'CLO 2:'|t }}</strong> {{ 'Develop basic practice skills with individuals, groups, and communities in the helping process.'|t }}</span>
+					</li>
+					<li class="flex gap-2.5 text-sm text-slate-700">
+						<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+						<span><strong>{{ 'CLO 3:'|t }}</strong> {{ 'Appraise people’s presenting problems through good communication (oral and written) skills, critical thinking, and cultural sensitivity.'|t }}</span>
+					</li>
+				</ul>
+
+				<div class="mt-2">
+					<p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400 mb-3">{{ 'Related Links'|t }}</p>
+					<ul class="flex flex-col gap-2">
+						<li>
+							<a href="/modules/custom/cud_sustainability/assets/pdfs/course-syllabus/ged-150-syllabus--2025-26.pdf"
+							   class="group flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm transition-all hover:border-[#b13634]/30 hover:bg-[#b13634]/5 hover:text-[#b13634]">
+								<span class="flex items-center gap-2.5">
+									<i class="fa-solid fa-file-pdf w-4 text-center text-slate-400 group-hover:text-[#b13634] transition-colors" aria-hidden="true"></i>
+									{{ 'Download the GED 150 course syllabus'|t }}
+								</span>
+								<i class="fa-solid fa-arrow-right text-xs text-slate-300 group-hover:text-[#b13634] transition-all group-hover:translate-x-0.5" aria-hidden="true"></i>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			{# --- GED 205 --- #}
+			<div class="block-common-content" aria-labelledby="heading-ged-205">
+				<h3 id="heading-ged-205" class="text-base font-semibold text-slate-800 mt-4 mb-2">{{ 'GED 205: Psychology in Everyday Life'|t }}</h3>
+				<p class="text-sm text-slate-700 mb-4">{{ 'An introduction to concepts and principles of selected areas of psychology and their applications to daily living. The aim is to foster students’ understanding of the self and its interactions with the environment. Topics include: research in psychology, basic neuro-psychology, theories of learning, memory, motivation, development, intelligence, health, and social psychology.'|t }}</p>
+				
+				<p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400 mb-3">{{ 'Course Sustainability Highlights:'|t }}</p>
+				<ul class="space-y-2 mb-4">
+					<li class="flex gap-2.5 text-sm text-slate-700">
+						<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+						<span><strong>{{ 'CLO 2:'|t }}</strong> {{ 'Describe and discuss the purpose of psychological research in the advancement of science.'|t }}</span>
+					</li>
+					<li class="flex gap-2.5 text-sm text-slate-700">
+						<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+						<span><strong>{{ 'CLO 3:'|t }}</strong> {{ 'Define and explain selected concepts and principles of psychology.'|t }}</span>
+					</li>
+				</ul>
+
+				<div class="mt-2">
+					<p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400 mb-3">{{ 'Related Links'|t }}</p>
+					<ul class="flex flex-col gap-2">
+						<li>
+							<a href="/modules/custom/cud_sustainability/assets/pdfs/course-syllabus/ged-205-syllabus--2025-26.pdf"
+							   class="group flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm transition-all hover:border-[#b13634]/30 hover:bg-[#b13634]/5 hover:text-[#b13634]">
+								<span class="flex items-center gap-2.5">
+									<i class="fa-solid fa-file-pdf w-4 text-center text-slate-400 group-hover:text-[#b13634] transition-colors" aria-hidden="true"></i>
+									{{ 'Download the GED 205 course syllabus'|t }}
+								</span>
+								<i class="fa-solid fa-arrow-right text-xs text-slate-300 group-hover:text-[#b13634] transition-all group-hover:translate-x-0.5" aria-hidden="true"></i>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			{# --- GED 324 --- #}
+			<div class="block-common-content" aria-labelledby="heading-ged-324">
+				<h3 id="heading-ged-324" class="text-base font-semibold text-slate-800 mt-4 mb-2">{{ 'GED 324: Ethical Reasoning for Today’s World'|t }}</h3>
+				<p class="text-sm text-slate-700 mb-4">{{ 'This course includes two aspects: On the one side, it examines the theories, skills and applications of moral philosophy, including a description and a discussion of the three influential approaches to morality, namely: character ethics, consequences-based ethics, and principle based ethics. Some topics are: an introduction to ethics and morality, consequentialist and non-consequentialist ethics, character/ virtue ethics, models of justice, and being a good citizen. On the other hand, the course is devoted to developing abilities to practice ethical reasoning. The focus is set on the American Counseling Association Code of ethics, which includes explicit references to possible ethical dilemmas, and suggests, in its preamble that counsellors reflect on the process of solving such dilemmas.'|t }}</p>
+				
+				<p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400 mb-3">{{ 'Course Sustainability Highlights:'|t }}</p>
+				<ul class="space-y-2 mb-4">
+					<li class="flex gap-2.5 text-sm text-slate-700">
+						<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+						<span><strong>{{ 'CLO 1:'|t }}</strong> {{ 'Compare the major ethical models, i.e., character, virtue, consequence and non-consequentialist models.'|t }}</span>
+					</li>
+					<li class="flex gap-2.5 text-sm text-slate-700">
+						<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+						<span><strong>{{ 'CLO 2:'|t }}</strong> {{ 'Identify the principles of ethical model, as implemented in a well-known Code of Ethics, such as the one of the American Counseling Association (ACA) through in-depth reading.'|t }}</span>
+					</li>
+					<li class="flex gap-2.5 text-sm text-slate-700">
+						<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+						<span><strong>{{ 'CLO 3:'|t }}</strong> {{ 'Apply a well-known ethical model articulating the moral framework to the current social, personal and professional issues.'|t }}</span>
+					</li>
+					<li class="flex gap-2.5 text-sm text-slate-700">
+						<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+						<span><strong>{{ 'CLO 4:'|t }}</strong> {{ 'Demonstrate an understanding of the importance of ethical principles in professional counseling practices.'|t }}</span>
+					</li>
+				</ul>
+
+				<div class="mt-2">
+					<p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400 mb-3">{{ 'Related Links'|t }}</p>
+					<ul class="flex flex-col gap-2">
+						<li>
+							<a href="/modules/custom/cud_sustainability/assets/pdfs/course-syllabus/ged-324-syllabus--2025-26.pdf"
+							   class="group flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm transition-all hover:border-[#b13634]/30 hover:bg-[#b13634]/5 hover:text-[#b13634]">
+								<span class="flex items-center gap-2.5">
+									<i class="fa-solid fa-file-pdf w-4 text-center text-slate-400 group-hover:text-[#b13634] transition-colors" aria-hidden="true"></i>
+									{{ 'Download the GED 324 course syllabus'|t }}
+								</span>
+								<i class="fa-solid fa-arrow-right text-xs text-slate-300 group-hover:text-[#b13634] transition-all group-hover:translate-x-0.5" aria-hidden="true"></i>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+
+
+		{% if content %}
+			<div class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-sky-700 prose-a:no-underline hover:prose-a:underline">
+				{{ content }}
+			</div>
+		{% endif %}
+
+		{% if sections %}
+			<div class="mt-8 space-y-6">
+				{% for section in sections %}
+					<div class="prose prose-slate max-w-none">{{ section }}</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+	</div>
+</section>
+
+{# ── Desktop floating contextual nav (hidden on mobile/tablet) ───────────────── #}
+<div class="hidden lg:block fixed right-0 top-1/2 -translate-y-1/2 z-40 group" aria-label="{{ 'Our Commitment navigation'|t }}">
+	<div
+		class="flex items-stretch">
+
+		{# Expanded panel — slides in from right edge on hover #}
+		<div class="flex flex-col justify-center overflow-hidden bg-white border-y border-l border-slate-200 rounded-l-2xl shadow-xl w-0 opacity-0 group-hover:w-56 group-hover:opacity-100 transition-all duration-300 ease-out">
+			<div class="min-w-[14rem] px-4 py-5">
+				<p class="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400 whitespace-nowrap">{{ active_nav_parent ? active_nav_parent.title : 'Navigation'|t }}</p>
+				<ul class="space-y-0.5">
+					{% for sub in sub_items %}
+						<li>
+							<a href="{{ sub.url }}" class="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors whitespace-nowrap{% if current_path == sub.url %} bg-slate-100 font-semibold text-slate-900{% else %} text-slate-600 hover:bg-slate-50 hover:text-slate-900{% endif %}">
+								<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }} w-4 text-center text-xs{% if current_path == sub.url %} text-[#b13634]{% else %} text-slate-400{% endif %}" aria-hidden="true"></i>
+								{{ sub.title }}
+							</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+
+		{# Tab strip — always visible on right edge, collapses border-radius on hover #}
+		<div class="flex flex-col items-center justify-center gap-2.5 bg-[#b13634] rounded-l-2xl group-hover:rounded-l-none shadow-lg shadow-[#b13634]/30 px-2.5 py-5 min-w-[2.75rem] transition-all duration-300 cursor-default select-none">
+			<i class="fa-solid fa-layer-group text-white/90 text-md" aria-hidden="true"></i>
+			<div class="w-px h-2 bg-white/30 rounded-full"></div>
+			{% for sub in sub_items %}
+				<div class="rounded-full transition-colors {% if current_path == sub.url %}w-2 h-2 bg-white{% else %}w-1.5 h-1.5 bg-white/40 hover:bg-white/70{% endif %}" title="{{ sub.title }}"></div>
+			{% endfor %}
+		</div>
+
+	</div>
+</div>

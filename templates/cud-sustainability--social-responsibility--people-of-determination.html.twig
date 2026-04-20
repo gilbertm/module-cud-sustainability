@@ -226,7 +226,6 @@
 						{ title: 'First-floor access elevator'|t, alt: 'HUB Building elevator providing access to the first floor'|t, images: ['hub-building-elevator-access-to-first-floor-01-corrected.jpeg'] },
 						{ title: 'Evacuation chairs'|t, alt: 'Evacuation chairs in HUB Building'|t, images: ['hub-building-evacuation-chairs-01-corrected.png'] },
 						{ title: 'Library and offices elevator access'|t, alt: 'HUB Building elevator access to the library and offices'|t, images: ['hub-building-elevator-access-to-library-and-offices-01-corrected.jpeg', 'hub-building-elevator-access-to-library-and-offices-02-corrected.png'] },
-						{ title: 'Additional accessibility features'|t, alt: 'Additional accessibility features in HUB Building'|t, images: ['hub-accessibility-feature-01.jpeg', 'hub-accessibility-feature-02.jpeg', 'hub-accessibility-feature-03.jpeg'] },
 					],
 				},
 			] %}
@@ -236,19 +235,21 @@
 					<i class="fa-solid fa-building text-[#b13634] text-sm" aria-hidden="true"></i>
 					{{ building.title }}
 				</h3>
-				<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+				<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
 					{% for card in building.cards %}
 						{% set image_count = card.images|length %}
-						{% set image_grid_class = image_count == 3 ? 'grid-cols-3' : 'grid-cols-2' %}
-						<div class="flex flex-col gap-2 rounded-xl border border-slate-200 p-3 shadow-sm">
+						{% set image_grid_class = image_count == 4 ? 'grid-cols-4' : 'grid-cols-2' %}
+						<div class="flex flex-col gap-2 rounded-xl border border-slate-200 p-3 shadow-sm h-56 sm:h-64 lg:h-72">
 							{% if image_count > 1 %}
-								<div class="grid {{ image_grid_class }} gap-1.5">
+								<div class="grid {{ image_grid_class }} gap-1.5 overflow-hidden h-28 sm:h-32 lg:h-40">
 									{% for image in card.images %}
-										<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/' ~ image }}" alt="{{ card.alt }}" class="w-full h-28 object-cover rounded-lg tc-lightbox"/>
+										<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/' ~ image }}" alt="{{ card.alt }}" class="w-full h-full max-h-full object-cover rounded-lg tc-lightbox"/>
 									{% endfor %}
 								</div>
 							{% else %}
-								<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/' ~ card.images|first }}" alt="{{ card.alt }}" class="w-full h-28 object-cover rounded-lg tc-lightbox"/>
+								<div class="flex items-center justify-center overflow-hidden h-28 sm:h-32 lg:h-40">
+									<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/' ~ card.images|first }}" alt="{{ card.alt }}" class="w-full h-full max-h-full object-cover rounded-lg tc-lightbox"/>
+								</div>
 							{% endif %}
 							<p class="text-xs font-medium text-slate-700 text-center">{{ card.title }}</p>
 						</div>
