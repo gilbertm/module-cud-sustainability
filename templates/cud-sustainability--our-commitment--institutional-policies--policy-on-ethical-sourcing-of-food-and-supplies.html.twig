@@ -1,38 +1,385 @@
 {#
+/**
  * @file
- * Inner-page template for /sustainability/our-commitment/institutional-policies/policy-on-ethical-sourcing-of-food-and-supplies.
- * Auto-generated from the policy PDF text.
+ * Inner-page template for /sustainability/our-commitment/governance.
+ *
+ * Variables:
+ * - title: Page title string.
+ * - content: Rendered node content (full view mode).
+ * - carousel_items: Optional list of carousel slides.
+ * - sections: Optional list of processed-text sections.
+ * - primary_nav: Primary navigation array.
+ * - secondary_nav: Secondary navigation array.
+ * - mode: Display mode string ('main' or 'secondary').
+ */
 #}
-<section class="mx-auto max-w-4xl px-4 lg:px-8 !bg-white" id="main-content" aria-label="Policy on Ethical Sourcing of Food and Supplies">
-  <div class="min-w-0 space-y-5">
-    <h1 class="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl mb-4">Policy on Ethical Sourcing of Food and Supplies</h1>
-    <div class="prose prose-slate max-w-none">
-      <p><strong>Policy Title:</strong> Policy on Ethical Sourcing of Food and Supplies (PESFS)</p>
-      <p><strong>Policy Number:</strong> ST-PO-6AF</p>
-      <p><strong>Date Created:</strong> 15-09-2023</p>
-      <p><strong>Responsible:</strong> Chief Operational Officer</p>
-      <p><strong>Approved by:</strong> Board of Trustees</p>
-      <h2>Purpose</h2>
-      <p>The purpose of this policy is to establish guidelines for the ethical sourcing of food and supplies for all meetings and events organized by Canadian University Dubai (CUD). This policy aims to support the University’s commitment to sustainability, ethical practices, and social responsibility.</p>
-      <h2>Scope</h2>
-      <p>This policy applies to all CUD departments, faculties, staff, and event organizers responsible for planning, procuring, and managing food and supplies for meetings, conferences, workshops, and other University-hosted events.</p>
-      <h2>Policy Statement</h2>
-      <p>CUD is committed to ethically sourcing food and supplies for meetings and events, prioritizing environmentally sustainable, socially responsible, and economically viable options. The University supports local businesses, fair trade, and sustainable agriculture to align purchasing decisions with its values. This approach reduces the environmental impact by minimizing waste, encouraging the use of sustainable packaging, and promoting reusable or recyclable products. Key principles guiding this policy include sustainability by prioritizing organic, seasonal, and locally sourced food; social responsibility by selecting suppliers with ethical labor practices; minimizing environmental impact by reducing single-use plastics and food waste; and ensuring the availability of healthy, nutritious, and inclusive options such as vegetarian, vegan, and allergen-free choices to cater to diverse dietary needs.</p>
-      <h3>Procedure</h3>
-      <ul>
-        <li><strong>Supplier Selection:</strong> All suppliers must adhere to CUD’s ethical standards, demonstrating sustainable and ethical practices, with preference given to those certified by recognized standards such as Fairtrade, Rainforest Alliance, or equivalent.</li>
-        <li>Suppliers should, where practical, confirm compliance with applicable environmental and labor regulations and support the University’s sustainability objectives.</li>
-        <li><strong>Food Procurement:</strong> CUD will prioritize sourcing food items that are sustainably sourced to support local agriculture, minimize environmental impact, and promote ethical procurement practices.</li>
-        <li><strong>Sustainable Packaging:</strong> Event organizers must collaborate with suppliers to avoid single-use plastics and prioritize biodegradable, compostable, or recyclable packaging to ensure the use of environmentally friendly materials.</li>
-        <li>Preference should be given, where practical and commercially viable, to reusable, recyclable, or reduced packaging options.</li>
-        <li><strong>Minimizing Food Waste:</strong> Implement portion control, careful planning, and donation of surplus food to local charities, when possible, in compliance with health regulations, while encouraging the use of reusable dishware, cutlery, and glassware.</li>
-        <li>Event organizers should plan quantities carefully and, where feasible, work with suppliers to reduce avoidable waste.</li>
-        <li><strong>Diverse Dietary Options:</strong> Provide a variety of food options to accommodate different dietary needs, including vegetarian, vegan, gluten-free, and other special dietary requirements.</li>
-        <li><strong>Training and Awareness:</strong> Regular training on ethical sourcing practices will be provided to staff involved in procurement and event planning, while suppliers and caterers will be educated about CUD’s commitment to sustainable and ethical sourcing.</li>
-      </ul>
-      <h3>Policy Revision History</h3>
-      <p><strong>Version No.:</strong> V1.0<br><strong>Update Brief:</strong> New policy<br><strong>Approved Date:</strong> 16-05-2025</p>
-      <p><a href="/modules/custom/cud_sustainability/contents/Website Content/1 - Our Commitment/Policies PDFs/policy-on-ethical-sourcing-of-food-and-supplies.pdf" class="inline-flex items-center gap-2 text-[#b13634] font-semibold underline"><i class="fa-solid fa-file-pdf"></i> Download PDF</a></p>
-    </div>
-  </div>
+
+{% set carousel_slides = carousel_items|default([]) %}
+
+{% if carousel_slides %}
+	<section class="carousel group relative mb-8 w-screen max-w-none -translate-x-1/2 left-1/2" data-cud-carousel data-cud-carousel-autoplay="5600" aria-label="{{ 'Governance carousel'|t }}">
+		<div class="w-full relative overflow-hidden">
+			<div class="w-full flex transition-transform duration-700 ease-out will-change-transform" data-cud-carousel-track>
+				{% for item in carousel_slides %}
+					<article class="relative min-w-full" data-cud-carousel-slide>
+						{% if item.image %}
+							<div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[280px] overflow-hidden sm:min-h-[340px] lg:min-h-[420px]">
+								{{ item.image }}
+							</div>
+						{% elseif item.image_url %}
+							<div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[280px] overflow-hidden sm:min-h-[340px] lg:min-h-[420px]">
+								<img src="{{ item.image_url }}" alt="{{ item.title|default('Governance') }}" loading="lazy" class="h-full w-full object-cover">
+							</div>
+						{% endif %}
+						<div class="carousel-content-overlay absolute inset-0 mx-auto h-full w-full max-w-none">
+							{% if item.overlay %}
+								{{ item.overlay }}
+							{% endif %}
+						</div>
+					</article>
+				{% endfor %}
+			</div>
+
+			{% if carousel_slides|length > 1 %}
+				<div class="carousel-content-controls">
+					<button class="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-md bg-slate-950/80 p-2.5 text-slate-100 opacity-0 shadow-xl backdrop-blur-md transition-all duration-500 ease-in-out group-hover:opacity-100 hover:bg-slate-800/90 hover:text-white focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-sky-400 sm:left-6" data-cud-carousel-prev aria-label="{{ 'Previous slide'|t }}">
+						<i class="fa-solid fa-chevron-left h-5 w-5" aria-hidden="true"></i>
+					</button>
+					<button class="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-md bg-slate-950/80 p-2.5 text-slate-100 opacity-0 shadow-xl backdrop-blur-md transition-all duration-500 ease-in-out group-hover:opacity-100 hover:bg-slate-800/90 hover:text-white focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-sky-400 sm:right-6" data-cud-carousel-next aria-label="{{ 'Next slide'|t }}">
+						<i class="fa-solid fa-chevron-right h-5 w-5" aria-hidden="true"></i>
+					</button>
+				</div>
+			{% endif %}
+		</div>
+	</section>
+{% endif %}
+
+{# ── Page Header with Breadcrumb ─────────────────────────────────────────────── #}
+<section class="bg-white" aria-label="{{ 'Page header'|t }}">
+	<div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+		<nav class="mb-3 flex items-center gap-1.5 text-xs text-slate-500" aria-label="{{ 'Breadcrumb'|t }}">
+			{% for link in breadcrumb %}
+				{% if not loop.first %}
+					<i class="fa-solid fa-chevron-right text-[9px] text-slate-400" aria-hidden="true"></i>
+				{% endif %}
+				{% if link.url %}
+					<a href="{{ link.url }}" class="hover:text-slate-700 transition-colors">{{ link.text }}</a>
+				{% else %}
+					<span>{{ link.text }}</span>
+				{% endif %}
+			{% endfor %}
+			{% if breadcrumb is not empty %}
+				<i class="fa-solid fa-chevron-right text-[9px] text-slate-400" aria-hidden="true"></i>
+			{% endif %}
+			<span class="font-medium text-slate-700">{{ title }}</span>
+		</nav>
+		<div class="flex items-center gap-3">
+			<h1 class="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">{{ title }}</h1>
+			{% if edit_url %}
+				<a href="{{ edit_url }}" class="shrink-0 rounded-md p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700" title="{{ 'Edit node'|t }}" aria-label="{{ 'Edit'|t }}">
+					<i class="fa-solid fa-pen-to-square text-sm" aria-hidden="true"></i>
+				</a>
+			{% endif %}
+		</div>
+	</div>
 </section>
+
+{# ── Shared sub-nav data ──────────────────────────────────────────────────────── #}
+
+{# Icon map for all seeded primary nav children, keyed by URL #}
+{% set icon_map = {
+	'/sustainability/our-commitment/governance': 'fa-landmark',
+	'/sustainability/our-commitment/sustainability-committee': 'fa-users',
+	'/sustainability/our-commitment/institutional-policies': 'fa-file-lines',
+	'/sustainability/our-commitment/impact-reporting': 'fa-chart-bar',
+	'/sustainability/our-commitment/un-sustainable-development-goals': 'fa-leaf',
+	'/sustainability/our-commitment/ethical-compliance': 'fa-gavel'
+} %}
+
+{# Derive sub_items from the matching top-level primary nav parent #}
+{% set active_nav_parent = null %}
+{% for item in primary_nav %}
+	{% if item.children and (current_path == item.url or current_path starts with (item.url ~ '/')) %}
+		{% set active_nav_parent = item %}
+	{% endif %}
+{% endfor %}
+{% set sub_items = active_nav_parent ? active_nav_parent.children : [] %}
+
+{# ── Mobile / tablet sub-nav strip (hidden on lg+) ───────────────────────────── #}
+<div class="lg:hidden border-b border-slate-100 bg-white px-4 sm:px-6">
+	<nav class="flex flex-wrap gap-1.5 py-2.5" aria-label="{{ 'Our Commitment navigation'|t }}">
+		{% for sub in sub_items %}
+			<a href="{{ sub.url }}" class="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors{% if current_path == sub.url %} bg-slate-900 text-white{% else %} text-slate-600 hover:bg-slate-100 hover:text-slate-900{% endif %}">
+				<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }} shrink-0" aria-hidden="true"></i>
+				{{ sub.title }}
+			</a>
+		{% endfor %}
+	</nav>
+</div>
+
+<section
+	class="mx-auto max-w-7xl px-4 lg:px-8 !bg-white" id="main-content" aria-label="{{ title }}" data-mode="{{ mode }}">
+	{# ── Desktop floating contextual nav (hidden on mobile/tablet) ───────────────── #}
+	<div class="hidden lg:block fixed right-0 top-1/2 -translate-y-1/2 z-40 group" aria-label="{{ 'Our Commitment navigation'|t }}">
+		<div
+			class="flex items-stretch">
+
+			{# Expanded panel — slides in from right edge on hover #}
+			<div class="flex flex-col justify-center overflow-hidden bg-white border-y border-l border-slate-200 rounded-l-2xl shadow-xl w-0 opacity-0 group-hover:w-56 group-hover:opacity-100 transition-all duration-300 ease-out">
+				<div class="min-w-[14rem] px-4 py-5">
+					<p class="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400 whitespace-nowrap">{{ active_nav_parent ? active_nav_parent.title : 'Navigation'|t }}</p>
+					<ul class="space-y-0.5">
+						{% for sub in sub_items %}
+							<li>
+								<a href="{{ sub.url }}" class="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors whitespace-nowrap{% if current_path == sub.url %} bg-slate-100 font-semibold text-slate-900{% else %} text-slate-600 hover:bg-slate-50 hover:text-slate-900{% endif %}">
+									<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }} w-4 text-center text-xs{% if current_path == sub.url %} text-[#b13634]{% else %} text-slate-400{% endif %}" aria-hidden="true"></i>
+									{{ sub.title }}
+								</a>
+							</li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+
+			{# Tab strip — always visible on right edge, collapses border-radius on hover #}
+			<div class="flex flex-col items-center justify-center gap-2.5 bg-[#b13634] rounded-l-2xl group-hover:rounded-l-none shadow-lg shadow-[#b13634]/30 px-2.5 py-5 min-w-[2.75rem] transition-all duration-300 cursor-default select-none">
+				<i class="fa-solid fa-layer-group text-white/90 text-md" aria-hidden="true"></i>
+				<div class="w-px h-2 bg-white/30 rounded-full"></div>
+				{% for sub in sub_items %}
+					<div class="rounded-full transition-colors {% if current_path == sub.url %}w-2 h-2 bg-white{% else %}w-1.5 h-1.5 bg-white/40 hover:bg-white/70{% endif %}" title="{{ sub.title }}"></div>
+				{% endfor %}
+			</div>
+
+		</div>
+	</div>
+
+
+	<div
+		class="min-w-0 space-y-5">
+
+		{# MAIN CONTENT BODY #}
+		<div class="space-y-8">
+
+			{# Policy Metadata Card #}
+			<div class="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-6 shadow-sm">
+				<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-slate-200 pb-4">
+					<div>
+						<p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400 mb-1">{{ 'Institutional Policy'|t }}</p>
+						<h2 class="text-xl font-bold text-slate-900">{{ '6.af Policy on Ethical Sourcing of Food and Supplies (PESFS)'|t }}</h2>
+					</div>
+					<div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#b13634]/5 border border-[#b13634]/10 text-[#b13634] text-xs font-bold">
+						<i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+						{{ 'ACTIVE'|t }}
+					</div>
+				</div>
+
+				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+					<div class="space-y-1">
+						<p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">{{ 'Policy Number'|t }}</p>
+						<p class="text-sm font-semibold text-slate-700">{{ 'ST-PO-6AF'|t }}</p>
+					</div>
+					<div class="space-y-1 border-l border-slate-100 pl-6 hidden sm:block">
+						<p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">{{ 'Date Created'|t }}</p>
+						<p class="text-sm font-semibold text-slate-700">{{ '15-09-2023'|t }}</p>
+					</div>
+					<div class="space-y-1 border-l border-slate-100 pl-6 hidden lg:block">
+						<p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">{{ 'Responsible'|t }}</p>
+						<p class="text-sm font-semibold text-slate-700">{{ 'Chief Operational Officer'|t }}</p>
+					</div>
+					<div class="space-y-1 border-l border-slate-100 pl-6 hidden lg:block">
+						<p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">{{ 'Approved by'|t }}</p>
+						<p class="text-sm font-semibold text-slate-700">{{ 'Board of Trustees'|t }}</p>
+					</div>
+				</div>
+			</div>
+
+			{# Purpose Section #}
+			<div class="block-common-content bg-white" aria-labelledby="heading-purpose">
+				<div class="flex items-center gap-3 mb-4">
+					<div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-sky-50 text-sky-600">
+						<i class="fa-solid fa-bullseye text-sm" aria-hidden="true"></i>
+					</div>
+					<h2 id="heading-purpose" class="text-md md:text-xl font-semibold cud-color-blue">{{ 'Purpose'|t }}</h2>
+				</div>
+				<div class="prose prose-slate max-w-none text-slate-700 leading-relaxed">
+					<p>{{ 'The purpose of this policy is to establish guidelines for the ethical sourcing of food and supplies for all meetings and events organized by Canadian University Dubai (CUD). This policy aims to support the University’s commitment to sustainability, ethical practices, and social responsibility.'|t }}</p>
+				</div>
+			</div>
+
+			{# Scope Card #}
+			<div class="rounded-2xl border border-slate-200 bg-slate-50 p-6 flex flex-col sm:flex-row sm:items-center gap-4">
+				<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm text-slate-400 border border-slate-100">
+					<i class="fa-solid fa-users-viewfinder text-lg" aria-hidden="true"></i>
+				</div>
+				<div>
+					<h2 class="text-sm font-bold text-slate-900 uppercase tracking-wide mb-1">{{ 'Scope of Application'|t }}</h2>
+					<p class="text-sm text-slate-600 leading-snug">{{ 'This policy applies to all CUD departments, faculties, staff, and event organizers responsible for planning, procuring, and managing food and supplies for meetings, conferences, workshops, and other University-hosted events.'|t }}</p>
+				</div>
+			</div>
+
+			{# Policy Statement #}
+			<div class="block-common-content" aria-labelledby="heading-statement">
+				<h2 id="heading-statement" class="text-md md:text-xl font-semibold cud-color-blue mb-6">{{ 'Policy Statement'|t }}</h2>
+
+				<div class="space-y-8">
+					{# Foundational Principles #}
+					<div class="rounded-xl border border-slate-100 bg-white p-6 shadow-sm">
+						<p class="text-sm text-slate-600 leading-relaxed">
+							{{ 'CUD is committed to ethically sourcing food and supplies for meetings and events, prioritizing environmentally sustainable, socially responsible, and economically viable options. The University supports local businesses, fair trade, and sustainable agriculture to align purchasing decisions with its values. This approach reduces the environmental impact by minimizing waste, encouraging the use of sustainable packaging, and promoting reusable or recyclable products.'|t }}
+						</p>
+					</div>
+
+					{# Principles Grid #}
+					<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+						<div class="space-y-4 p-5 rounded-xl border border-slate-100 bg-slate-50/50">
+							<h4 class="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+								<i class="fa-solid fa-leaf text-[#b13634]"></i>
+								{{ 'Sustainability'|t }}
+							</h4>
+							<p class="text-xs text-slate-600 leading-relaxed">
+								{{ 'Prioritizing organic, seasonal, and locally sourced food to reduce environmental footprint and support local agriculture.'|t }}
+							</p>
+						</div>
+						<div class="space-y-4 p-5 rounded-xl border border-slate-100 bg-slate-50/50">
+							<h4 class="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+								<i class="fa-solid fa-hand-holding-heart text-[#b13634]"></i>
+								{{ 'Social Responsibility'|t }}
+							</h4>
+							<p class="text-xs text-slate-600 leading-relaxed">
+								{{ 'Selecting suppliers with ethical labor practices and ensuring inclusive options like vegetarian and vegan choices.'|t }}
+							</p>
+						</div>
+						<div class="space-y-4 p-5 rounded-xl border border-slate-100 bg-slate-50/50">
+							<h4 class="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+								<i class="fa-solid fa-recycle text-[#b13634]"></i>
+								{{ 'Environmental Impact'|t }}
+							</h4>
+							<p class="text-xs text-slate-600 leading-relaxed">
+								{{ 'Reducing single-use plastics and minimizing food waste through careful planning and sustainable packaging.'|t }}
+							</p>
+						</div>
+					</div>
+
+					{# Procedure Section #}
+					<div class="space-y-6">
+						<div class="rounded-xl border border-slate-200 p-6">
+							<h4 class="text-md font-bold text-slate-900 mb-3 flex items-center gap-2">
+								<i class="fa-solid fa-clipboard-list text-sky-600"></i>
+								{{ 'Supplier & Procurement Guidelines'|t }}
+							</h4>
+							<div class="prose prose-slate prose-xs max-w-none text-slate-600 leading-relaxed mb-4">
+								<ul class="space-y-2">
+									<li>{{ 'All suppliers must adhere to CUD’s ethical standards, demonstrating sustainable and ethical practices (Fairtrade, Rainforest Alliance).'|t }}</li>
+									<li>{{ 'Organizers must collaborate with suppliers to avoid single-use plastics and prioritize biodegradable or recyclable packaging.'|t }}</li>
+									<li>{{ 'Implement portion control and donate surplus food to local charities when possible in compliance with health regulations.'|t }}</li>
+								</ul>
+							</div>
+							<div class="grid sm:grid-cols-2 gap-4">
+								<div class="bg-white p-3 rounded border border-slate-100">
+									<p class="font-bold text-[10px] text-slate-400 uppercase mb-1">{{ 'Training'|t }}</p>
+									<p class="text-xs text-slate-600">{{ 'Regular training on ethical sourcing for staff involved in procurement and event planning.'|t }}</p>
+								</div>
+								<div class="bg-white p-3 rounded border border-slate-100">
+									<p class="font-bold text-[10px] text-slate-400 uppercase mb-1">{{ 'Inclusion'|t }}</p>
+									<p class="text-xs text-slate-600">{{ 'Ensuring healthy, nutritious, and allergen-free options to cater to diverse dietary needs.'|t }}</p>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			{# Download/Assets #}
+			<div class="block-common-content">
+				<div class="flex items-center gap-4 rounded-xl border border-slate-200 bg-white px-6 py-5 shadow-sm transition-all hover:border-[#b13634]/20 hover:shadow-md">
+					<div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#b13634]/10 text-[#b13634]">
+						<i class="fa-solid fa-file-pdf text-2xl" aria-hidden="true"></i>
+					</div>
+					<div class="flex-1 min-w-0">
+						<p class="font-bold text-slate-900 truncate">{{ title }}</p>
+						<p class="text-xs text-slate-500">{{ 'Official Document • PDF Format'|t }}</p>
+					</div>
+					<a href="/modules/custom/cud_sustainability/assets/pdfs/policy-on-ethical-sourcing-of-food-and-supplies.pdf" class="inline-flex items-center gap-2 rounded-lg bg-[#b13634] px-4 py-2 text-sm font-medium text-white hover:bg-[#922c2a] transition-all hover:scale-[1.02] active:scale-[0.98]" target="_blank">
+						<i class="fa-solid fa-download" aria-hidden="true"></i>
+						<span class="hidden sm:inline">{{ 'Download Policy'|t }}</span>
+					</a>
+				</div>
+			</div>
+
+			{# Revision History - Simplified #}
+			<div class="block-common-content">
+				<div class="overflow-hidden rounded-xl border border-slate-200 shadow-sm">
+					<table class="w-full text-left text-sm">
+						<thead class="bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-slate-500 border-b border-slate-200">
+							<tr>
+								<th class="px-4 py-3">{{ 'Version'|t }}</th>
+								<th class="px-4 py-3">{{ 'Notes'|t }}</th>
+								<th class="px-4 py-3">{{ 'Date'|t }}</th>
+							</tr>
+						</thead>
+						<tbody class="divide-y divide-slate-100 bg-white">
+							<tr>
+								<td class="px-4 py-3 font-medium text-slate-900">V1.0</td>
+								<td class="px-4 py-3 text-slate-600">{{ 'New policy'|t }}</td>
+								<td class="px-4 py-3 text-slate-500 whitespace-nowrap">16-05-2025</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+		</div>
+		{# /MAIN CONTENT BODY #}
+
+		{% if sections %}
+			<div class="mt-8 space-y-6">
+				{% for section in sections %}
+					<div class="prose prose-slate max-w-none">{{ section }}</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+
+		{% if content %}
+			<div class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-sky-700 prose-a:no-underline hover:prose-a:underline">
+				{{ content }}
+			</div>
+		{% endif %}
+
+	</div>
+</section>
+
+
+{# ── Desktop floating contextual nav (hidden on mobile/tablet) ───────────────── #}
+<div class="hidden lg:block fixed right-0 top-1/2 -translate-y-1/2 z-40 group" aria-label="{{ 'Our Commitment navigation'|t }}">
+	<div
+		class="flex items-stretch">
+
+		{# Expanded panel — slides in from right edge on hover #}
+		<div class="flex flex-col justify-center overflow-hidden bg-white border-y border-l border-slate-200 rounded-l-2xl shadow-xl w-0 opacity-0 group-hover:w-56 group-hover:opacity-100 transition-all duration-300 ease-out">
+			<div class="min-w-[14rem] px-4 py-5">
+				<p class="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400 whitespace-nowrap">{{ active_nav_parent ? active_nav_parent.title : 'Navigation'|t }}</p>
+				<ul class="space-y-0.5">
+					{% for sub in sub_items %}
+						<li>
+							<a href="{{ sub.url }}" class="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors whitespace-nowrap{% if current_path == sub.url %} bg-slate-100 font-semibold text-slate-900{% else %} text-slate-600 hover:bg-slate-50 hover:text-slate-900{% endif %}">
+								<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }} w-4 text-center text-xs{% if current_path == sub.url %} text-[#b13634]{% else %} text-slate-400{% endif %}" aria-hidden="true"></i>
+								{{ sub.title }}
+							</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+
+		{# Tab strip — always visible on right edge, collapses border-radius on hover #}
+		<div class="flex flex-col items-center justify-center gap-2.5 bg-[#b13634] rounded-l-2xl group-hover:rounded-l-none shadow-lg shadow-[#b13634]/30 px-2.5 py-5 min-w-[2.75rem] transition-all duration-300 cursor-default select-none">
+			<i class="fa-solid fa-layer-group text-white/90 text-md" aria-hidden="true"></i>
+			<div class="w-px h-2 bg-white/30 rounded-full"></div>
+			{% for sub in sub_items %}
+				<div class="rounded-full transition-colors {% if current_path == sub.url %}w-2 h-2 bg-white{% else %}w-1.5 h-1.5 bg-white/40 hover:bg-white/70{% endif %}" title="{{ sub.title }}"></div>
+			{% endfor %}
+		</div>
+
+	</div>
+</div>

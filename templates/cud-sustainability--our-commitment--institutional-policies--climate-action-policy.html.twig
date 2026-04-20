@@ -1,154 +1,386 @@
 {#
+/**
  * @file
- * Inner-page template for /sustainability/our-commitment/institutional-policies/climate-action-policy.
- * Auto-generated from the policy PDF text.
+ * Inner-page template for /sustainability/our-commitment/governance.
+ *
+ * Variables:
+ * - title: Page title string.
+ * - content: Rendered node content (full view mode).
+ * - carousel_items: Optional list of carousel slides.
+ * - sections: Optional list of processed-text sections.
+ * - primary_nav: Primary navigation array.
+ * - secondary_nav: Secondary navigation array.
+ * - mode: Display mode string ('main' or 'secondary').
+ */
 #}
 
 {% set carousel_slides = carousel_items|default([]) %}
+
 {% if carousel_slides %}
-  <section class="carousel group relative mb-8 w-screen max-w-none -translate-x-1/2 left-1/2" data-cud-carousel data-cud-carousel-autoplay="5600" aria-label="{{ 'Governance carousel'|t }}">
-    <div class="w-full relative overflow-hidden">
-      <div class="w-full flex transition-transform duration-700 ease-out will-change-transform" data-cud-carousel-track>
-        {% for item in carousel_slides %}
-          <article class="relative min-w-full" data-cud-carousel-slide>
-            {% if item.image %}
-              <div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[280px] overflow-hidden sm:min-h-[340px] lg:min-h-[420px]">
-                {{ item.image }}
-              </div>
-            {% elseif item.image_url %}
-              <div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[280px] overflow-hidden sm:min-h-[340px] lg:min-h-[420px]">
-                <img src="{{ item.image_url }}" alt="{{ item.title|default('Governance') }}" loading="lazy" class="h-full w-full object-cover">
-              </div>
-            {% endif %}
-            <div class="carousel-content-overlay absolute inset-0 mx-auto h-full w-full max-w-none">
-              {% if item.overlay %}
-                {{ item.overlay }}
-              {% endif %}
-            </div>
-          </article>
-        {% endfor %}
-      </div>
-      {% if carousel_slides|length > 1 %}
-        <div class="carousel-content-controls">
-          <button class="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-md bg-slate-950/80 p-2.5 text-slate-100 opacity-0 shadow-xl backdrop-blur-md transition-all duration-500 ease-in-out group-hover:opacity-100 hover:bg-slate-800/90 hover:text-white focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-sky-400 sm:left-6" data-cud-carousel-prev aria-label="{{ 'Previous slide'|t }}">
-            <i class="fa-solid fa-chevron-left h-5 w-5" aria-hidden="true"></i>
-          </button>
-          <button class="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-md bg-slate-950/80 p-2.5 text-slate-100 opacity-0 shadow-xl backdrop-blur-md transition-all duration-500 ease-in-out group-hover:opacity-100 hover:bg-slate-800/90 hover:text-white focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-sky-400 sm:right-6" data-cud-carousel-next aria-label="{{ 'Next slide'|t }}">
-            <i class="fa-solid fa-chevron-right h-5 w-5" aria-hidden="true"></i>
-          </button>
-        </div>
-      {% endif %}
-    </div>
-  </section>
+	<section class="carousel group relative mb-8 w-screen max-w-none -translate-x-1/2 left-1/2" data-cud-carousel data-cud-carousel-autoplay="5600" aria-label="{{ 'Governance carousel'|t }}">
+		<div class="w-full relative overflow-hidden">
+			<div class="w-full flex transition-transform duration-700 ease-out will-change-transform" data-cud-carousel-track>
+				{% for item in carousel_slides %}
+					<article class="relative min-w-full" data-cud-carousel-slide>
+						{% if item.image %}
+							<div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[280px] overflow-hidden sm:min-h-[340px] lg:min-h-[420px]">
+								{{ item.image }}
+							</div>
+						{% elseif item.image_url %}
+							<div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[280px] overflow-hidden sm:min-h-[340px] lg:min-h-[420px]">
+								<img src="{{ item.image_url }}" alt="{{ item.title|default('Governance') }}" loading="lazy" class="h-full w-full object-cover">
+							</div>
+						{% endif %}
+						<div class="carousel-content-overlay absolute inset-0 mx-auto h-full w-full max-w-none">
+							{% if item.overlay %}
+								{{ item.overlay }}
+							{% endif %}
+						</div>
+					</article>
+				{% endfor %}
+			</div>
+
+			{% if carousel_slides|length > 1 %}
+				<div class="carousel-content-controls">
+					<button class="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-md bg-slate-950/80 p-2.5 text-slate-100 opacity-0 shadow-xl backdrop-blur-md transition-all duration-500 ease-in-out group-hover:opacity-100 hover:bg-slate-800/90 hover:text-white focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-sky-400 sm:left-6" data-cud-carousel-prev aria-label="{{ 'Previous slide'|t }}">
+						<i class="fa-solid fa-chevron-left h-5 w-5" aria-hidden="true"></i>
+					</button>
+					<button class="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-md bg-slate-950/80 p-2.5 text-slate-100 opacity-0 shadow-xl backdrop-blur-md transition-all duration-500 ease-in-out group-hover:opacity-100 hover:bg-slate-800/90 hover:text-white focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-sky-400 sm:right-6" data-cud-carousel-next aria-label="{{ 'Next slide'|t }}">
+						<i class="fa-solid fa-chevron-right h-5 w-5" aria-hidden="true"></i>
+					</button>
+				</div>
+			{% endif %}
+		</div>
+	</section>
 {% endif %}
 
+{# ── Page Header with Breadcrumb ─────────────────────────────────────────────── #}
 <section class="bg-white" aria-label="{{ 'Page header'|t }}">
-  <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-    <nav class="mb-3 flex items-center gap-1.5 text-xs text-slate-500" aria-label="{{ 'Breadcrumb'|t }}">
-      {% for link in breadcrumb %}
-        {% if not loop.first %}
-          <i class="fa-solid fa-chevron-right text-[9px] text-slate-400" aria-hidden="true"></i>
-        {% endif %}
-        {% if link.url %}
-          <a href="{{ link.url }}" class="hover:text-slate-700 transition-colors">{{ link.text }}</a>
-        {% else %}
-          <span>{{ link.text }}</span>
-        {% endif %}
-      {% endfor %}
-      {% if breadcrumb is not empty %}
-        <i class="fa-solid fa-chevron-right text-[9px] text-slate-400" aria-hidden="true"></i>
-      {% endif %}
-      <span class="font-medium text-slate-700">{{ title }}</span>
-    </nav>
-    <div class="flex items-center gap-3">
-      <h1 class="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">{{ title }}</h1>
-      {% if edit_url %}
-        <a href="{{ edit_url }}" class="shrink-0 rounded-md p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700" title="{{ 'Edit node'|t }}" aria-label="{{ 'Edit'|t }}">
-          <i class="fa-solid fa-pen-to-square text-sm" aria-hidden="true"></i>
-        </a>
-      {% endif %}
-    </div>
-  </div>
+	<div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+		<nav class="mb-3 flex items-center gap-1.5 text-xs text-slate-500" aria-label="{{ 'Breadcrumb'|t }}">
+			{% for link in breadcrumb %}
+				{% if not loop.first %}
+					<i class="fa-solid fa-chevron-right text-[9px] text-slate-400" aria-hidden="true"></i>
+				{% endif %}
+				{% if link.url %}
+					<a href="{{ link.url }}" class="hover:text-slate-700 transition-colors">{{ link.text }}</a>
+				{% else %}
+					<span>{{ link.text }}</span>
+				{% endif %}
+			{% endfor %}
+			{% if breadcrumb is not empty %}
+				<i class="fa-solid fa-chevron-right text-[9px] text-slate-400" aria-hidden="true"></i>
+			{% endif %}
+			<span class="font-medium text-slate-700">{{ title }}</span>
+		</nav>
+		<div class="flex items-center gap-3">
+			<h1 class="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">{{ title }}</h1>
+			{% if edit_url %}
+				<a href="{{ edit_url }}" class="shrink-0 rounded-md p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700" title="{{ 'Edit node'|t }}" aria-label="{{ 'Edit'|t }}">
+					<i class="fa-solid fa-pen-to-square text-sm" aria-hidden="true"></i>
+				</a>
+			{% endif %}
+		</div>
+	</div>
 </section>
 
+{# ── Shared sub-nav data ──────────────────────────────────────────────────────── #}
+
+{# Icon map for all seeded primary nav children, keyed by URL #}
 {% set icon_map = {
-  '/sustainability/our-commitment/governance': 'fa-landmark',
-  '/sustainability/our-commitment/sustainability-committee': 'fa-users',
-  '/sustainability/our-commitment/institutional-policies': 'fa-file-lines',
-  '/sustainability/our-commitment/impact-reporting': 'fa-chart-bar',
-  '/sustainability/our-commitment/un-sustainable-development-goals': 'fa-leaf',
-  '/sustainability/our-commitment/ethical-compliance': 'fa-gavel'
+	'/sustainability/our-commitment/governance': 'fa-landmark',
+	'/sustainability/our-commitment/sustainability-committee': 'fa-users',
+	'/sustainability/our-commitment/institutional-policies': 'fa-file-lines',
+	'/sustainability/our-commitment/impact-reporting': 'fa-chart-bar',
+	'/sustainability/our-commitment/un-sustainable-development-goals': 'fa-leaf',
+	'/sustainability/our-commitment/ethical-compliance': 'fa-gavel'
 } %}
 
+{# Derive sub_items from the matching top-level primary nav parent #}
 {% set active_nav_parent = null %}
 {% for item in primary_nav %}
-  {% if item.children and (current_path == item.url or current_path starts with (item.url ~ '/')) %}
-    {% set active_nav_parent = item %}
-  {% endif %}
+	{% if item.children and (current_path == item.url or current_path starts with (item.url ~ '/')) %}
+		{% set active_nav_parent = item %}
+	{% endif %}
 {% endfor %}
 {% set sub_items = active_nav_parent ? active_nav_parent.children : [] %}
 
+{# ── Mobile / tablet sub-nav strip (hidden on lg+) ───────────────────────────── #}
 <div class="lg:hidden border-b border-slate-100 bg-white px-4 sm:px-6">
-  <nav class="flex flex-wrap gap-1.5 py-2.5" aria-label="{{ 'Our Commitment navigation'|t }}">
-    {% for sub in sub_items %}
-      <a href="{{ sub.url }}" class="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors{% if current_path == sub.url %} bg-slate-900 text-white{% else %} text-slate-600 hover:bg-slate-100 hover:text-slate-900{% endif %}">
-        <i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }} shrink-0" aria-hidden="true"></i>
-        {{ sub.title }}
-      </a>
-    {% endfor %}
-  </nav>
+	<nav class="flex flex-wrap gap-1.5 py-2.5" aria-label="{{ 'Our Commitment navigation'|t }}">
+		{% for sub in sub_items %}
+			<a href="{{ sub.url }}" class="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors{% if current_path == sub.url %} bg-slate-900 text-white{% else %} text-slate-600 hover:bg-slate-100 hover:text-slate-900{% endif %}">
+				<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }} shrink-0" aria-hidden="true"></i>
+				{{ sub.title }}
+			</a>
+		{% endfor %}
+	</nav>
 </div>
 
-<section class="mx-auto max-w-7xl px-4 lg:px-8 !bg-white" id="main-content" aria-label="{{ title }}" data-mode="{{ mode }}">
-  <div class="min-w-0 space-y-5">
+<section
+	class="mx-auto max-w-7xl px-4 lg:px-8 !bg-white" id="main-content" aria-label="{{ title }}" data-mode="{{ mode }}">
+	{# ── Desktop floating contextual nav (hidden on mobile/tablet) ───────────────── #}
+	<div class="hidden lg:block fixed right-0 top-1/2 -translate-y-1/2 z-40 group" aria-label="{{ 'Our Commitment navigation'|t }}">
+		<div
+			class="flex items-stretch">
 
-    {# MAIN CONTENT BODY #}
-    <div class="prose prose-slate max-w-none">
-      <p>Full policy text is available in the PDF.</p>
-      <p><a href="/modules/custom/cud_sustainability/contents/Website Content/1 - Our Commitment/Policies PDFs/climate-action-policy.pdf" class="inline-flex items-center gap-2 text-[#b13634] font-semibold underline"><i class="fa-solid fa-file-pdf"></i> Download PDF</a></p>
-    </div>
-    {# /MAIN CONTENT BODY #}
+			{# Expanded panel — slides in from right edge on hover #}
+			<div class="flex flex-col justify-center overflow-hidden bg-white border-y border-l border-slate-200 rounded-l-2xl shadow-xl w-0 opacity-0 group-hover:w-56 group-hover:opacity-100 transition-all duration-300 ease-out">
+				<div class="min-w-[14rem] px-4 py-5">
+					<p class="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400 whitespace-nowrap">{{ active_nav_parent ? active_nav_parent.title : 'Navigation'|t }}</p>
+					<ul class="space-y-0.5">
+						{% for sub in sub_items %}
+							<li>
+								<a href="{{ sub.url }}" class="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors whitespace-nowrap{% if current_path == sub.url %} bg-slate-100 font-semibold text-slate-900{% else %} text-slate-600 hover:bg-slate-50 hover:text-slate-900{% endif %}">
+									<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }} w-4 text-center text-xs{% if current_path == sub.url %} text-[#b13634]{% else %} text-slate-400{% endif %}" aria-hidden="true"></i>
+									{{ sub.title }}
+								</a>
+							</li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
 
-    {% if sections %}
-      <div class="mt-8 space-y-6">
-        {% for section in sections %}
-          <div class="prose prose-slate max-w-none">{{ section }}</div>
-        {% endfor %}
-      </div>
-    {% endif %}
+			{# Tab strip — always visible on right edge, collapses border-radius on hover #}
+			<div class="flex flex-col items-center justify-center gap-2.5 bg-[#b13634] rounded-l-2xl group-hover:rounded-l-none shadow-lg shadow-[#b13634]/30 px-2.5 py-5 min-w-[2.75rem] transition-all duration-300 cursor-default select-none">
+				<i class="fa-solid fa-layer-group text-white/90 text-md" aria-hidden="true"></i>
+				<div class="w-px h-2 bg-white/30 rounded-full"></div>
+				{% for sub in sub_items %}
+					<div class="rounded-full transition-colors {% if current_path == sub.url %}w-2 h-2 bg-white{% else %}w-1.5 h-1.5 bg-white/40 hover:bg-white/70{% endif %}" title="{{ sub.title }}"></div>
+				{% endfor %}
+			</div>
 
-    {% if content %}
-      <div class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-sky-700 prose-a:no-underline hover:prose-a:underline">
-        {{ content }}
-      </div>
-    {% endif %}
+		</div>
+	</div>
 
-  </div>
+
+	<div
+		class="min-w-0 space-y-5">
+
+		{# MAIN CONTENT BODY #}
+		<div
+			class="space-y-8">
+
+			{# Policy Metadata Card #}
+			<div class="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-6 shadow-sm">
+				<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-slate-200 pb-4">
+					<div>
+						<p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400 mb-1">{{ 'Institutional Policy'|t }}</p>
+						<h2 class="text-xl font-bold text-slate-900">{{ '10.b Anti-Corruption and Bribery Policy'|t }}</h2>
+					</div>
+					<div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#b13634]/5 border border-[#b13634]/10 text-[#b13634] text-xs font-bold">
+						<i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+						{{ 'ACTIVE'|t }}
+					</div>
+				</div>
+
+				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+					<div class="space-y-1">
+						<p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">{{ 'Policy Number'|t }}</p>
+						<p class="text-sm font-semibold text-slate-700">{{ 'PD-PO-10B'|t }}</p>
+					</div>
+					<div class="space-y-1 border-l border-slate-100 pl-6 hidden sm:block">
+						<p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">{{ 'Date Created'|t }}</p>
+						<p class="text-sm font-semibold text-slate-700">{{ '15-02-2023'|t }}</p>
+					</div>
+					<div class="space-y-1 border-l border-slate-100 pl-6 hidden lg:block">
+						<p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">{{ 'Responsible'|t }}</p>
+						<p class="text-sm font-semibold text-slate-700">{{ 'Registrar & VPSA'|t }}</p>
+					</div>
+					<div class="space-y-1 border-l border-slate-100 pl-6 hidden lg:block">
+						<p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">{{ 'Approved by'|t }}</p>
+						<p class="text-sm font-semibold text-slate-700">{{ 'Board of Trustees'|t }}</p>
+					</div>
+				</div>
+			</div>
+
+			{# Purpose Section #}
+			<div class="block-common-content bg-white" aria-labelledby="heading-purpose">
+				<div class="flex items-center gap-3 mb-4">
+					<div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-sky-50 text-sky-600">
+						<i class="fa-solid fa-bullseye text-sm" aria-hidden="true"></i>
+					</div>
+					<h2 id="heading-purpose" class="text-md md:text-xl font-semibold cud-color-blue">{{ 'Purpose'|t }}</h2>
+				</div>
+				<div class="prose prose-slate max-w-none text-slate-700 leading-relaxed space-y-4">
+					<p>{{ 'Canadian University Dubai is committed to conducting all of its activities in an open, honest, transparent and ethical manner. CUD maintains a zero-tolerance policy towards corruption and bribery in all its forms.'|t }}</p>
+					<p>{{ 'CUD is also committed to follow all relevant Anti-Corruption and Bribery laws in the UAE and will report any suspected incidents of law-breaking in these areas to the relevant authorities.'|t }}</p>
+					<p>{{ 'This policy aims to promote a culture of honesty and integrity. It provides guidance for those working at the university regarding the ethical norms and standards of the university, how to recognize when those norms and standards are being violated, and guidance regarding how to report such violations.'|t }}</p>
+				</div>
+			</div>
+
+			{# Scope Card #}
+			<div class="rounded-2xl border border-slate-200 bg-slate-50 p-6 flex flex-col sm:flex-row sm:items-center gap-4">
+				<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm text-slate-400 border border-slate-100">
+					<i class="fa-solid fa-users-viewfinder text-lg" aria-hidden="true"></i>
+				</div>
+				<div>
+					<h2 class="text-sm font-bold text-slate-900 uppercase tracking-wide mb-1">{{ 'Scope of Application'|t }}</h2>
+					<p class="text-sm text-slate-600 leading-snug">{{ 'This policy applies to all CUD management, faculty and staff across all departments and functions.'|t }}</p>
+				</div>
+			</div>
+
+			{# Policy Statement #}
+			<div class="block-common-content" aria-labelledby="heading-statement">
+				<h2 id="heading-statement" class="text-md md:text-xl font-semibold cud-color-blue mb-4">{{ 'Policy Statement'|t }}</h2>
+
+				<div class="grid gap-6 sm:grid-cols-2 mb-8">
+					<div class="rounded-xl border border-slate-100 bg-white p-5 shadow-sm transition-all hover:shadow-md">
+						<h4 class="text-sm font-bold text-slate-900 mb-2 flex items-center gap-2">
+							<span class="w-1.5 h-4 bg-[#b13634] rounded-full"></span>
+							{{ 'Bribery'|t }}
+						</h4>
+						<p class="text-sm text-slate-600 leading-relaxed">{{ 'Bribery is the offer or promise or demand for an advantage, financial or otherwise, to induce an individual to commit an action which is illegal, unethical or a breach of trust. It may include an offer of money or other benefit to induce an individual to ignore university policies to confer an advantage inappropriately upon another.'|t }}</p>
+					</div>
+					<div class="rounded-xl border border-slate-100 bg-white p-5 shadow-sm transition-all hover:shadow-md">
+						<h4 class="text-sm font-bold text-slate-900 mb-2 flex items-center gap-2">
+							<span class="w-1.5 h-4 bg-sky-600 rounded-full"></span>
+							{{ 'Corruption'|t }}
+						</h4>
+						<p class="text-sm text-slate-600 leading-relaxed">{{ 'Corruption is the misuse of one’s position for private gain. The gain may accrue to the individual making a corrupt decision or taking a corrupt action or it may accrue to family members, friends or others.'|t }}</p>
+					</div>
+				</div>
+
+				<div class="rounded-xl bg-slate-900 p-6 text-white">
+					<div class="flex items-center gap-3 mb-6">
+						<i class="fa-solid fa-circle-exclamation text-[#b13634] text-xl" aria-hidden="true"></i>
+						<h3 class="text-base font-semibold">{{ 'What is NOT Acceptable?'|t }}</h3>
+					</div>
+					<p class="text-slate-400 text-sm mb-4">{{ 'It is strictly prohibited for any member of the university to:'|t }}</p>
+					<ul class="space-y-4">
+						{% set prohibited = [
+                  'Give or promise to give, accept or promise to accept, a payment, gift or hospitality with the expectation that a business or academic or employment advantage will be received.',
+                  'Give or promise to give, accept or promise to accept, a payment, gift or hospitality to a government official to facilitate or speed up a procedure or approval.',
+                  'Accept payment or a gift from a third party if they know or even suspect that it is being offered in expectation of the future receipt of a commercial, academic or employment advantage.',
+                  'Threaten any member of the university community who has refused to participate in a proposed act of corruption or bribery.',
+                  'Engage in other acts of corruption or bribery not directly listed above but which fall under the definitions of bribery or corruption given above.'
+                ] %}
+						{% for item in prohibited %}
+							<li class="flex items-start gap-3 group">
+								<div class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-[#b13634] transition-all group-hover:scale-150" aria-hidden="true"></div>
+								<span class="text-sm text-slate-300 leading-relaxed group-hover:text-white transition-colors">{{ item|t }}</span>
+							</li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+
+			{# Reporting Procedure #}
+			<div class="block-common-content border-l-4 border-[#b13634] bg-slate-50 p-6 rounded-r-2xl" aria-labelledby="heading-concerns">
+				<h2 id="heading-concerns" class="text-md md:text-xl font-semibold cud-color-blue mb-3">{{ 'How to Raise a Concern'|t }}</h2>
+				<div class="prose prose-slate max-w-none text-slate-700 text-sm space-y-4">
+					<p>{{ 'All staff have a responsibility to be aware of the risks of corrupt acts and bribery and to help detect and report such activities. The university creates a safe environment for individuals to report suspected activities.'|t }}</p>
+					<div class="grid sm:grid-cols-2 gap-4 mt-4">
+						<div class="bg-white p-4 rounded-lg border border-slate-200">
+							<p class="font-bold text-slate-900 text-xs uppercase mb-2">{{ 'Primary Contact'|t }}</p>
+							<p>{{ 'Report it to your immediate supervisor, provided they are not a party to the suspected activity.'|t }}</p>
+						</div>
+						<div class="bg-white p-4 rounded-lg border border-slate-200">
+							<p class="font-bold text-[#b13634] text-xs uppercase mb-2">{{ 'Secondary Contact'|t }}</p>
+							<p>{{ 'If the supervisor is involved, behavior should be reported directly to the Director of Human Resources.'|t }}</p>
+						</div>
+					</div>
+					<p class="text-xs italic text-slate-500 bg-white/50 p-2 rounded inline-block">
+						<i class="fa-solid fa-lock mr-2" aria-hidden="true"></i>
+						{{ 'All disclosures are guaranteed by the university to be possible without fear of reprisal.'|t }}
+					</p>
+				</div>
+			</div>
+
+			{# Download/Assets #}
+			<div class="block-common-content">
+				<div class="flex items-center gap-4 rounded-xl border border-slate-200 bg-white px-6 py-5 shadow-sm transition-all hover:border-[#b13634]/20 hover:shadow-md">
+					<div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#b13634]/10 text-[#b13634]">
+						<i class="fa-solid fa-file-pdf text-2xl" aria-hidden="true"></i>
+					</div>
+					<div class="flex-1 min-w-0">
+						<p class="font-bold text-slate-900 truncate">{{ title }}</p>
+						<p class="text-xs text-slate-500">{{ 'Official Document • PDF Format'|t }}</p>
+					</div>
+					<a href="/modules/custom/cud_sustainability/assets/pdfs/climate-action-policy.pdf" class="inline-flex items-center gap-2 rounded-lg bg-[#b13634] px-4 py-2 text-sm font-medium text-white hover:bg-[#922c2a] transition-all hover:scale-[1.02] active:scale-[0.98]" target="_blank">
+						<i class="fa-solid fa-download" aria-hidden="true"></i>
+						<span class="hidden sm:inline">{{ 'Download Policy'|t }}</span>
+					</a>
+				</div>
+			</div>
+
+			{# Revision History - Simplified #}
+			<div class="block-common-content">
+				<div class="overflow-hidden rounded-xl border border-slate-200 shadow-sm">
+					<table class="w-full text-left text-sm">
+						<thead class="bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-slate-500 border-b border-slate-200">
+							<tr>
+								<th class="px-4 py-3">{{ 'Version'|t }}</th>
+								<th class="px-4 py-3">{{ 'Notes'|t }}</th>
+								<th class="px-4 py-3">{{ 'Date'|t }}</th>
+							</tr>
+						</thead>
+						<tbody class="divide-y divide-slate-100 bg-white">
+							<tr>
+								<td class="px-4 py-3 font-medium text-slate-900">V2.0</td>
+								<td class="px-4 py-3 text-slate-600">{{ 'Revised and Updated'|t }}</td>
+								<td class="px-4 py-3 text-slate-500 whitespace-nowrap">13-03-2023</td>
+							</tr>
+							<tr>
+								<td class="px-4 py-3 font-medium text-slate-900">V1.0</td>
+								<td class="px-4 py-3 text-slate-600">{{ 'Initial Release'|t }}</td>
+								<td class="px-4 py-3 text-slate-500 whitespace-nowrap">01-06-2006</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+		</div>
+		{# /MAIN CONTENT BODY #}
+
+		{% if sections %}
+			<div class="mt-8 space-y-6">
+				{% for section in sections %}
+					<div class="prose prose-slate max-w-none">{{ section }}</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+
+		{% if content %}
+			<div class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-sky-700 prose-a:no-underline hover:prose-a:underline">
+				{{ content }}
+			</div>
+		{% endif %}
+
+	</div>
 </section>
 
+{# ── Desktop floating contextual nav (hidden on mobile/tablet) ───────────────── #}
 <div class="hidden lg:block fixed right-0 top-1/2 -translate-y-1/2 z-40 group" aria-label="{{ 'Our Commitment navigation'|t }}">
-  <div class="flex items-stretch">
-    <div class="flex flex-col justify-center overflow-hidden bg-white border-y border-l border-slate-200 rounded-l-2xl shadow-xl w-0 opacity-0 group-hover:w-56 group-hover:opacity-100 transition-all duration-300 ease-out">
-      <div class="min-w-[14rem] px-4 py-5">
-        <p class="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400 whitespace-nowrap">{{ active_nav_parent ? active_nav_parent.title : 'Navigation'|t }}</p>
-        <ul class="space-y-0.5">
-          {% for sub in sub_items %}
-            <li>
-              <a href="{{ sub.url }}" class="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors whitespace-nowrap{% if current_path == sub.url %} bg-slate-100 font-semibold text-slate-900{% else %} text-slate-600 hover:bg-slate-50 hover:text-slate-900{% endif %}">
-                <i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }} w-4 text-center text-xs{% if current_path == sub.url %} text-[#b13634]{% else %} text-slate-400{% endif %}" aria-hidden="true"></i>
-                {{ sub.title }}
-              </a>
-            </li>
-          {% endfor %}
-        </ul>
-      </div>
-    </div>
-    <div class="flex flex-col items-center justify-center gap-2.5 bg-[#b13634] rounded-l-2xl group-hover:rounded-l-none shadow-lg shadow-[#b13634]/30 px-2.5 py-5 min-w-[2.75rem] transition-all duration-300 cursor-default select-none">
-      <i class="fa-solid fa-layer-group text-white/90 text-md" aria-hidden="true"></i>
-      <div class="w-px h-2 bg-white/30 rounded-full"></div>
-      {% for sub in sub_items %}
-        <div class="rounded-full transition-colors {% if current_path == sub.url %}w-2 h-2 bg-white{% else %}w-1.5 h-1.5 bg-white/40 hover:bg-white/70{% endif %}" title="{{ sub.title }}"></div>
-      {% endfor %}
-    </div>
-  </div>
+	<div
+		class="flex items-stretch">
+
+		{# Expanded panel — slides in from right edge on hover #}
+		<div class="flex flex-col justify-center overflow-hidden bg-white border-y border-l border-slate-200 rounded-l-2xl shadow-xl w-0 opacity-0 group-hover:w-56 group-hover:opacity-100 transition-all duration-300 ease-out">
+			<div class="min-w-[14rem] px-4 py-5">
+				<p class="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400 whitespace-nowrap">{{ active_nav_parent ? active_nav_parent.title : 'Navigation'|t }}</p>
+				<ul class="space-y-0.5">
+					{% for sub in sub_items %}
+						<li>
+							<a href="{{ sub.url }}" class="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors whitespace-nowrap{% if current_path == sub.url %} bg-slate-100 font-semibold text-slate-900{% else %} text-slate-600 hover:bg-slate-50 hover:text-slate-900{% endif %}">
+								<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }} w-4 text-center text-xs{% if current_path == sub.url %} text-[#b13634]{% else %} text-slate-400{% endif %}" aria-hidden="true"></i>
+								{{ sub.title }}
+							</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+
+		{# Tab strip — always visible on right edge, collapses border-radius on hover #}
+		<div class="flex flex-col items-center justify-center gap-2.5 bg-[#b13634] rounded-l-2xl group-hover:rounded-l-none shadow-lg shadow-[#b13634]/30 px-2.5 py-5 min-w-[2.75rem] transition-all duration-300 cursor-default select-none">
+			<i class="fa-solid fa-layer-group text-white/90 text-md" aria-hidden="true"></i>
+			<div class="w-px h-2 bg-white/30 rounded-full"></div>
+			{% for sub in sub_items %}
+				<div class="rounded-full transition-colors {% if current_path == sub.url %}w-2 h-2 bg-white{% else %}w-1.5 h-1.5 bg-white/40 hover:bg-white/70{% endif %}" title="{{ sub.title }}"></div>
+			{% endfor %}
+		</div>
+
+	</div>
 </div>

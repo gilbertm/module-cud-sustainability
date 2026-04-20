@@ -1,199 +1,440 @@
 {#
+/**
  * @file
- * Inner-page template for /sustainability/our-commitment/institutional-policies/examination-policy.
- * Auto-generated from the policy PDF text.
+ * Inner-page template for /sustainability/our-commitment/governance.
+ *
+ * Variables:
+ * - title: Page title string.
+ * - content: Rendered node content (full view mode).
+ * - carousel_items: Optional list of carousel slides.
+ * - sections: Optional list of processed-text sections.
+ * - primary_nav: Primary navigation array.
+ * - secondary_nav: Secondary navigation array.
+ * - mode: Display mode string ('main' or 'secondary').
+ */
 #}
-<section class="mx-auto max-w-4xl px-4 lg:px-8 !bg-white" id="main-content" aria-label="Examination Policy">
-  <div class="min-w-0 space-y-5">
-    <h1 class="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl mb-4">Examination Policy</h1>
-    <div class="prose prose-slate max-w-none">
-      <p><strong>Policy Title:</strong> Examination Policy (EP)</p>
-      <p><strong>Policy Number:</strong> EP-PO-3L</p>
-      <p><strong>Date Created:</strong> 12-08-2008</p>
-      <p><strong>Responsible:</strong> Registrar</p>
-      <p><strong>Approved by:</strong> Board of Trustees</p>
-      <h2>Purpose</h2>
-      <p>The purpose of the Examination Policy (EP) is to ensure fair, transparent, and standardized assessments that uphold academic integrity, align with international best practices, and accurately measure student learning while providing mechanisms for review and appeals.</p>
-      {#
-       * @file
-       * Inner-page template for /sustainability/our-commitment/institutional-policies/examination-policy.
-       * Auto-generated from the policy PDF text.
-      #}
 
-      {% set carousel_slides = carousel_items|default([]) %}
-      {% if carousel_slides %}
-        <section class="carousel group relative mb-8 w-screen max-w-none -translate-x-1/2 left-1/2" data-cud-carousel data-cud-carousel-autoplay="5600" aria-label="{{ 'Governance carousel'|t }}">
-          <div class="w-full relative overflow-hidden">
-            <div class="w-full flex transition-transform duration-700 ease-out will-change-transform" data-cud-carousel-track>
-              {% for item in carousel_slides %}
-                <article class="relative min-w-full" data-cud-carousel-slide>
-                  {% if item.image %}
-                    <div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[280px] overflow-hidden sm:min-h-[340px] lg:min-h-[420px]">
-                      {{ item.image }}
-                    </div>
-                  {% elseif item.image_url %}
-                    <div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[280px] overflow-hidden sm:min-h-[340px] lg:min-h-[420px]">
-                      <img src="{{ item.image_url }}" alt="{{ item.title|default('Governance') }}" loading="lazy" class="h-full w-full object-cover">
-                    </div>
-                  {% endif %}
-                  <div class="carousel-content-overlay absolute inset-0 mx-auto h-full w-full max-w-none">
-                    {% if item.overlay %}
-                      {{ item.overlay }}
-                    {% endif %}
-                  </div>
-                </article>
-              {% endfor %}
-            </div>
-            {% if carousel_slides|length > 1 %}
-              <div class="carousel-content-controls">
-                <button class="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-md bg-slate-950/80 p-2.5 text-slate-100 opacity-0 shadow-xl backdrop-blur-md transition-all duration-500 ease-in-out group-hover:opacity-100 hover:bg-slate-800/90 hover:text-white focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-sky-400 sm:left-6" data-cud-carousel-prev aria-label="{{ 'Previous slide'|t }}">
-                  <i class="fa-solid fa-chevron-left h-5 w-5" aria-hidden="true"></i>
-                </button>
-                <button class="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-md bg-slate-950/80 p-2.5 text-slate-100 opacity-0 shadow-xl backdrop-blur-md transition-all duration-500 ease-in-out group-hover:opacity-100 hover:bg-slate-800/90 hover:text-white focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-sky-400 sm:right-6" data-cud-carousel-next aria-label="{{ 'Next slide'|t }}">
-                  <i class="fa-solid fa-chevron-right h-5 w-5" aria-hidden="true"></i>
-                </button>
-              </div>
-            {% endif %}
-          </div>
-        </section>
-      {% endif %}
+{% set carousel_slides = carousel_items|default([]) %}
 
-      <section class="bg-white" aria-label="{{ 'Page header'|t }}">
-        <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-          <nav class="mb-3 flex items-center gap-1.5 text-xs text-slate-500" aria-label="{{ 'Breadcrumb'|t }}">
-            {% for link in breadcrumb %}
-              {% if not loop.first %}
-                <i class="fa-solid fa-chevron-right text-[9px] text-slate-400" aria-hidden="true"></i>
-              {% endif %}
-              {% if link.url %}
-                <a href="{{ link.url }}" class="hover:text-slate-700 transition-colors">{{ link.text }}</a>
-              {% else %}
-                <span>{{ link.text }}</span>
-              {% endif %}
-            {% endfor %}
-            {% if breadcrumb is not empty %}
-              <i class="fa-solid fa-chevron-right text-[9px] text-slate-400" aria-hidden="true"></i>
-            {% endif %}
-            <span class="font-medium text-slate-700">{{ title }}</span>
-          </nav>
-          <div class="flex items-center gap-3">
-            <h1 class="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">{{ title }}</h1>
-            {% if edit_url %}
-              <a href="{{ edit_url }}" class="shrink-0 rounded-md p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700" title="{{ 'Edit node'|t }}" aria-label="{{ 'Edit'|t }}">
-                <i class="fa-solid fa-pen-to-square text-sm" aria-hidden="true"></i>
-              </a>
-            {% endif %}
-          </div>
-        </div>
-      </section>
+{% if carousel_slides %}
+	<section class="carousel group relative mb-8 w-screen max-w-none -translate-x-1/2 left-1/2" data-cud-carousel data-cud-carousel-autoplay="5600" aria-label="{{ 'Governance carousel'|t }}">
+		<div class="w-full relative overflow-hidden">
+			<div class="w-full flex transition-transform duration-700 ease-out will-change-transform" data-cud-carousel-track>
+				{% for item in carousel_slides %}
+					<article class="relative min-w-full" data-cud-carousel-slide>
+						{% if item.image %}
+							<div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[280px] overflow-hidden sm:min-h-[340px] lg:min-h-[420px]">
+								{{ item.image }}
+							</div>
+						{% elseif item.image_url %}
+							<div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[280px] overflow-hidden sm:min-h-[340px] lg:min-h-[420px]">
+								<img src="{{ item.image_url }}" alt="{{ item.title|default('Governance') }}" loading="lazy" class="h-full w-full object-cover">
+							</div>
+						{% endif %}
+						<div class="carousel-content-overlay absolute inset-0 mx-auto h-full w-full max-w-none">
+							{% if item.overlay %}
+								{{ item.overlay }}
+							{% endif %}
+						</div>
+					</article>
+				{% endfor %}
+			</div>
 
-      {% set icon_map = {
-        '/sustainability/our-commitment/governance': 'fa-landmark',
-        '/sustainability/our-commitment/sustainability-committee': 'fa-users',
-        '/sustainability/our-commitment/institutional-policies': 'fa-file-lines',
-        '/sustainability/our-commitment/impact-reporting': 'fa-chart-bar',
-        '/sustainability/our-commitment/un-sustainable-development-goals': 'fa-leaf',
-        '/sustainability/our-commitment/ethical-compliance': 'fa-gavel'
-      } %}
+			{% if carousel_slides|length > 1 %}
+				<div class="carousel-content-controls">
+					<button class="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-md bg-slate-950/80 p-2.5 text-slate-100 opacity-0 shadow-xl backdrop-blur-md transition-all duration-500 ease-in-out group-hover:opacity-100 hover:bg-slate-800/90 hover:text-white focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-sky-400 sm:left-6" data-cud-carousel-prev aria-label="{{ 'Previous slide'|t }}">
+						<i class="fa-solid fa-chevron-left h-5 w-5" aria-hidden="true"></i>
+					</button>
+					<button class="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-md bg-slate-950/80 p-2.5 text-slate-100 opacity-0 shadow-xl backdrop-blur-md transition-all duration-500 ease-in-out group-hover:opacity-100 hover:bg-slate-800/90 hover:text-white focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-sky-400 sm:right-6" data-cud-carousel-next aria-label="{{ 'Next slide'|t }}">
+						<i class="fa-solid fa-chevron-right h-5 w-5" aria-hidden="true"></i>
+					</button>
+				</div>
+			{% endif %}
+		</div>
+	</section>
+{% endif %}
 
-      {% set active_nav_parent = null %}
-      {% for item in primary_nav %}
-        {% if item.children and (current_path == item.url or current_path starts with (item.url ~ '/')) %}
-          {% set active_nav_parent = item %}
-        {% endif %}
-      {% endfor %}
-      {% set sub_items = active_nav_parent ? active_nav_parent.children : [] %}
+{# ── Page Header with Breadcrumb ─────────────────────────────────────────────── #}
+<section class="bg-white" aria-label="{{ 'Page header'|t }}">
+	<div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+		<nav class="mb-3 flex items-center gap-1.5 text-xs text-slate-500" aria-label="{{ 'Breadcrumb'|t }}">
+			{% for link in breadcrumb %}
+				{% if not loop.first %}
+					<i class="fa-solid fa-chevron-right text-[9px] text-slate-400" aria-hidden="true"></i>
+				{% endif %}
+				{% if link.url %}
+					<a href="{{ link.url }}" class="hover:text-slate-700 transition-colors">{{ link.text }}</a>
+				{% else %}
+					<span>{{ link.text }}</span>
+				{% endif %}
+			{% endfor %}
+			{% if breadcrumb is not empty %}
+				<i class="fa-solid fa-chevron-right text-[9px] text-slate-400" aria-hidden="true"></i>
+			{% endif %}
+			<span class="font-medium text-slate-700">{{ title }}</span>
+		</nav>
+		<div class="flex items-center gap-3">
+			<h1 class="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">{{ title }}</h1>
+			{% if edit_url %}
+				<a href="{{ edit_url }}" class="shrink-0 rounded-md p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700" title="{{ 'Edit node'|t }}" aria-label="{{ 'Edit'|t }}">
+					<i class="fa-solid fa-pen-to-square text-sm" aria-hidden="true"></i>
+				</a>
+			{% endif %}
+		</div>
+	</div>
+</section>
 
-      <div class="lg:hidden border-b border-slate-100 bg-white px-4 sm:px-6">
-        <nav class="flex flex-wrap gap-1.5 py-2.5" aria-label="{{ 'Our Commitment navigation'|t }}">
-          {% for sub in sub_items %}
-            <a href="{{ sub.url }}" class="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors{% if current_path == sub.url %} bg-slate-900 text-white{% else %} text-slate-600 hover:bg-slate-100 hover:text-slate-900{% endif %}">
-              <i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }} shrink-0" aria-hidden="true"></i>
-              {{ sub.title }}
-            </a>
-          {% endfor %}
-        </nav>
-      </div>
+{# ── Shared sub-nav data ──────────────────────────────────────────────────────── #}
 
-      <section class="mx-auto max-w-7xl px-4 lg:px-8 !bg-white" id="main-content" aria-label="{{ title }}" data-mode="{{ mode }}">
-        <div class="min-w-0 space-y-5">
+{# Icon map for all seeded primary nav children, keyed by URL #}
+{% set icon_map = {
+	'/sustainability/our-commitment/governance': 'fa-landmark',
+	'/sustainability/our-commitment/sustainability-committee': 'fa-users',
+	'/sustainability/our-commitment/institutional-policies': 'fa-file-lines',
+	'/sustainability/our-commitment/impact-reporting': 'fa-chart-bar',
+	'/sustainability/our-commitment/un-sustainable-development-goals': 'fa-leaf',
+	'/sustainability/our-commitment/ethical-compliance': 'fa-gavel'
+} %}
 
-          {# MAIN CONTENT BODY #}
-          <div class="prose prose-slate max-w-none">
-            <p><strong>Policy Title:</strong> Examination Policy (EP)</p>
-            <p><strong>Policy Number:</strong> EP-PO-3L</p>
-            <p><strong>Date Created:</strong> 12-08-2008</p>
-            <p><strong>Responsible:</strong> Registrar</p>
-            <p><strong>Approved by:</strong> Board of Trustees</p>
-            <h2>Purpose</h2>
-            <p>The purpose of the Examination Policy (EP) is to ensure fair, transparent, and standardized assessments that uphold academic integrity, align with international best practices, and accurately measure student learning while providing mechanisms for review and appeals.</p>
-            <h2>Scope</h2>
-            <p>The Examination Policy applies to all students, faculty members, the Office of the Registrar, and administrative staff involved in assessment processes across all academic programs at Canadian University Dubai (CUD).</p>
-            <h2>Policy Statement</h2>
-            <p>The Office of the Registrar is responsible for scheduling, administering, and managing all written midterm and final examinations. Courses that use presentations as the final assessment instead of a written examination must conduct them during regular class periods to avoid scheduling conflicts during the final examination week. However, project reports, case studies, and other final written assignments may have submission deadlines during the final examination period.</p>
-            <h3>Student Responsibilities and Compliance</h3>
-            <ul>
-              <li>Students must remain silent during the examination unless they communicate with an invigilator.</li>
-              <li>Students must comply with all instructions given by the instructor or invigilators.</li>
-              <li>The use of signals, gestures, or any form of non-verbal communication is strictly prohibited.</li>
-              <li>The use of mobile phones, smartwatches, or any unauthorized electronic devices is prohibited unless explicitly permitted by the instructor or examination rules.</li>
-              <li>If a mobile phone or electronic device is found in a student's possession, it will be considered academic misconduct, regardless of whether it is switched off.</li>
-              <li>Students are not permitted to leave the examination hall to use the restroom unless there is a medical exemption approved before the exam.</li>
-              <li>Electronics wristwatches of any kind are not allowed inside the examination hall, as all rooms are equipped with visible timers.</li>
-              <li>If a student is instructed by an invigilator to change their seat, they must comply immediately.</li>
-              <!-- Additional responsibilities omitted for brevity -->
-            </ul>
-            <h3>Examination Papers</h3>
-            <p>The Dean of the School is responsible for ensuring that each examination paper is prepared in accordance with the Examination Quality Review and Moderation Policy (EQRMP) [Policy No. EP-PO-3X], maintaining quality, fairness, and academic integrity.</p>
-            <h3>Scheduled Examination Periods</h3>
-            <p>Examinations are conducted during designated periods, as outlined in the University Calendar and the course syllabus. Students must review these schedules in advance and make the necessary preparations. The exact schedule for each course, including date, time, and venue, will be communicated at least two (2) weeks before the examination period by the Office of the Registrar.</p>
-            <h3>Final Examination Attendance</h3>
-            <p>Attendance for final examinations is mandatory for all students, and they must be present at the scheduled time and venue as determined by the Office of the Registrar. Students who fail to attend without an approved excuse will receive a grade of zero for the examination. Attendance during the examination will be recorded on an official attendance sheet by the designated invigilator in each examination. Excused absences may be granted only for valid and documented reasons, such as medical emergencies or other ...</p>
-            <p>... (Content truncated for brevity. Please refer to the PDF for the full policy.)</p>
-            <p><a href="/modules/custom/cud_sustainability/contents/Website Content/1 - Our Commitment/Policies PDFs/examination-policy.pdf" class="inline-flex items-center gap-2 text-[#b13634] font-semibold underline"><i class="fa-solid fa-file-pdf"></i> Download PDF</a></p>
-          </div>
-          {# /MAIN CONTENT BODY #}
+{# Derive sub_items from the matching top-level primary nav parent #}
+{% set active_nav_parent = null %}
+{% for item in primary_nav %}
+	{% if item.children and (current_path == item.url or current_path starts with (item.url ~ '/')) %}
+		{% set active_nav_parent = item %}
+	{% endif %}
+{% endfor %}
+{% set sub_items = active_nav_parent ? active_nav_parent.children : [] %}
 
-          {% if sections %}
-            <div class="mt-8 space-y-6">
-              {% for section in sections %}
-                <div class="prose prose-slate max-w-none">{{ section }}</div>
-              {% endfor %}
-            </div>
-          {% endif %}
+{# ── Mobile / tablet sub-nav strip (hidden on lg+) ───────────────────────────── #}
+<div class="lg:hidden border-b border-slate-100 bg-white px-4 sm:px-6">
+	<nav class="flex flex-wrap gap-1.5 py-2.5" aria-label="{{ 'Our Commitment navigation'|t }}">
+		{% for sub in sub_items %}
+			<a href="{{ sub.url }}" class="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors{% if current_path == sub.url %} bg-slate-900 text-white{% else %} text-slate-600 hover:bg-slate-100 hover:text-slate-900{% endif %}">
+				<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }} shrink-0" aria-hidden="true"></i>
+				{{ sub.title }}
+			</a>
+		{% endfor %}
+	</nav>
+</div>
 
-          {% if content %}
-            <div class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-sky-700 prose-a:no-underline hover:prose-a:underline">
-              {{ content }}
-            </div>
-          {% endif %}
+<section
+	class="mx-auto max-w-7xl px-4 lg:px-8 !bg-white" id="main-content" aria-label="{{ title }}" data-mode="{{ mode }}">
+	{# ── Desktop floating contextual nav (hidden on mobile/tablet) ───────────────── #}
+	<div class="hidden lg:block fixed right-0 top-1/2 -translate-y-1/2 z-40 group" aria-label="{{ 'Our Commitment navigation'|t }}">
+		<div
+			class="flex items-stretch">
 
-        </div>
-      </section>
+			{# Expanded panel — slides in from right edge on hover #}
+			<div class="flex flex-col justify-center overflow-hidden bg-white border-y border-l border-slate-200 rounded-l-2xl shadow-xl w-0 opacity-0 group-hover:w-56 group-hover:opacity-100 transition-all duration-300 ease-out">
+				<div class="min-w-[14rem] px-4 py-5">
+					<p class="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400 whitespace-nowrap">{{ active_nav_parent ? active_nav_parent.title : 'Navigation'|t }}</p>
+					<ul class="space-y-0.5">
+						{% for sub in sub_items %}
+							<li>
+								<a href="{{ sub.url }}" class="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors whitespace-nowrap{% if current_path == sub.url %} bg-slate-100 font-semibold text-slate-900{% else %} text-slate-600 hover:bg-slate-50 hover:text-slate-900{% endif %}">
+									<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }} w-4 text-center text-xs{% if current_path == sub.url %} text-[#b13634]{% else %} text-slate-400{% endif %}" aria-hidden="true"></i>
+									{{ sub.title }}
+								</a>
+							</li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
 
-      <div class="hidden lg:block fixed right-0 top-1/2 -translate-y-1/2 z-40 group" aria-label="{{ 'Our Commitment navigation'|t }}">
-        <div class="flex items-stretch">
-          <div class="flex flex-col justify-center overflow-hidden bg-white border-y border-l border-slate-200 rounded-l-2xl shadow-xl w-0 opacity-0 group-hover:w-56 group-hover:opacity-100 transition-all duration-300 ease-out">
-            <div class="min-w-[14rem] px-4 py-5">
-              <p class="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400 whitespace-nowrap">{{ active_nav_parent ? active_nav_parent.title : 'Navigation'|t }}</p>
-              <ul class="space-y-0.5">
-                {% for sub in sub_items %}
-                  <li>
-                    <a href="{{ sub.url }}" class="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors whitespace-nowrap{% if current_path == sub.url %} bg-slate-100 font-semibold text-slate-900{% else %} text-slate-600 hover:bg-slate-50 hover:text-slate-900{% endif %}">
-                      <i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }} w-4 text-center text-xs{% if current_path == sub.url %} text-[#b13634]{% else %} text-slate-400{% endif %}" aria-hidden="true"></i>
-                      {{ sub.title }}
-                    </a>
-                  </li>
-                {% endfor %}
-              </ul>
-            </div>
-          </div>
-          <div class="flex flex-col items-center justify-center gap-2.5 bg-[#b13634] rounded-l-2xl group-hover:rounded-l-none shadow-lg shadow-[#b13634]/30 px-2.5 py-5 min-w-[2.75rem] transition-all duration-300 cursor-default select-none">
-            <i class="fa-solid fa-layer-group text-white/90 text-md" aria-hidden="true"></i>
-            <div class="w-px h-2 bg-white/30 rounded-full"></div>
-            {% for sub in sub_items %}
-              <div class="rounded-full transition-colors {% if current_path == sub.url %}w-2 h-2 bg-white{% else %}w-1.5 h-1.5 bg-white/40 hover:bg-white/70{% endif %}" title="{{ sub.title }}"></div>
-            {% endfor %}
-          </div>
-        </div>
-      </div>
+			{# Tab strip — always visible on right edge, collapses border-radius on hover #}
+			<div class="flex flex-col items-center justify-center gap-2.5 bg-[#b13634] rounded-l-2xl group-hover:rounded-l-none shadow-lg shadow-[#b13634]/30 px-2.5 py-5 min-w-[2.75rem] transition-all duration-300 cursor-default select-none">
+				<i class="fa-solid fa-layer-group text-white/90 text-md" aria-hidden="true"></i>
+				<div class="w-px h-2 bg-white/30 rounded-full"></div>
+				{% for sub in sub_items %}
+					<div class="rounded-full transition-colors {% if current_path == sub.url %}w-2 h-2 bg-white{% else %}w-1.5 h-1.5 bg-white/40 hover:bg-white/70{% endif %}" title="{{ sub.title }}"></div>
+				{% endfor %}
+			</div>
+
+		</div>
+	</div>
+
+
+	<div
+		class="min-w-0 space-y-5">
+
+		{# MAIN CONTENT BODY #}
+		<div
+			class="space-y-8">
+
+			{# Policy Metadata Card #}
+			<div class="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-6 shadow-sm">
+				<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-slate-200 pb-4">
+					<div>
+						<p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400 mb-1">{{ 'Institutional Policy'|t }}</p>
+						<h2 class="text-xl font-bold text-slate-900">{{ '3.l Examination Policy (EP)'|t }}</h2>
+					</div>
+					<div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#b13634]/5 border border-[#b13634]/10 text-[#b13634] text-xs font-bold">
+						<i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+						{{ 'ACTIVE'|t }}
+					</div>
+				</div>
+
+				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+					<div class="space-y-1">
+						<p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">{{ 'Policy Number'|t }}</p>
+						<p class="text-sm font-semibold text-slate-700">{{ 'EP-PO-3L'|t }}</p>
+					</div>
+					<div class="space-y-1 border-l border-slate-100 pl-6 hidden sm:block">
+						<p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">{{ 'Date Created'|t }}</p>
+						<p class="text-sm font-semibold text-slate-700">{{ '12-08-2008'|t }}</p>
+					</div>
+					<div class="space-y-1 border-l border-slate-100 pl-6 hidden lg:block">
+						<p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">{{ 'Responsible'|t }}</p>
+						<p class="text-sm font-semibold text-slate-700">{{ 'Registrar'|t }}</p>
+					</div>
+					<div class="space-y-1 border-l border-slate-100 pl-6 hidden lg:block">
+						<p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">{{ 'Approved by'|t }}</p>
+						<p class="text-sm font-semibold text-slate-700">{{ 'Board of Trustees'|t }}</p>
+					</div>
+				</div>
+			</div>
+
+			{# Purpose Section #}
+			<div class="block-common-content bg-white" aria-labelledby="heading-purpose">
+				<div class="flex items-center gap-3 mb-4">
+					<div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-sky-50 text-sky-600">
+						<i class="fa-solid fa-bullseye text-sm" aria-hidden="true"></i>
+					</div>
+					<h2 id="heading-purpose" class="text-md md:text-xl font-semibold cud-color-blue">{{ 'Purpose'|t }}</h2>
+				</div>
+				<div class="prose prose-slate max-w-none text-slate-700 leading-relaxed">
+					<p>{{ 'The purpose of the Examination Policy (EP) is to ensure fair, transparent, and standardized assessments that uphold academic integrity, align with international best practices, and accurately measure student learning while providing mechanisms for review and appeals.'|t }}</p>
+				</div>
+			</div>
+
+			{# Scope Card #}
+			<div class="rounded-2xl border border-slate-200 bg-slate-50 p-6 flex flex-col sm:flex-row sm:items-center gap-4">
+				<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm text-slate-400 border border-slate-100">
+					<i class="fa-solid fa-users-viewfinder text-lg" aria-hidden="true"></i>
+				</div>
+				<div>
+					<h2 class="text-sm font-bold text-slate-900 uppercase tracking-wide mb-1">{{ 'Scope of Application'|t }}</h2>
+					<p class="text-sm text-slate-600 leading-snug">{{ 'The Examination Policy applies to all students, faculty members, the Office of the Registrar, and administrative staff involved in assessment processes across all academic programs at Canadian University Dubai (CUD).'|t }}</p>
+				</div>
+			</div>
+
+			{# Policy Statement #}
+			<div class="block-common-content" aria-labelledby="heading-statement">
+				<h2 id="heading-statement" class="text-md md:text-xl font-semibold cud-color-blue mb-6">{{ 'Policy Statement'|t }}</h2>
+
+				<div
+					class="space-y-8">
+					{# Administration #}
+					<div class="rounded-xl border border-slate-100 bg-white p-6 shadow-sm">
+						<p class="text-sm text-slate-600 leading-relaxed">
+							{{ 'The Office of the Registrar is responsible for scheduling, administering, and managing all written midterm and final examinations. Courses that use presentations as the final assessment instead of a written examination must conduct them during regular class periods to avoid scheduling conflicts during the final examination week. However, project reports, case studies, and other final written assignments may have submission deadlines during the final examination period.'|t }}
+						</p>
+					</div>
+
+					{# Student Responsibilities #}
+					<div class="rounded-xl bg-slate-900 p-6 text-white">
+						<div class="flex items-center gap-3 mb-6">
+							<i class="fa-solid fa-graduation-cap text-sky-400 text-xl" aria-hidden="true"></i>
+							<h3 class="text-base font-semibold">{{ 'Student Responsibilities and Compliance'|t }}</h3>
+						</div>
+						<p class="text-slate-400 text-sm mb-6">{{ 'Students must adhere to all assessment and examination procedures. The following guidelines must be strictly observed during final examinations:'|t }}</p>
+						<ul class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+							{% set rules = [
+                    'Students must remain silent during the examination.',
+                    'Comply with all instructions given by instructors or invigilators.',
+                    'Signals, gestures, or non-verbal communication are prohibited.',
+                    'No mobile phones or smartwatches even if switched off.',
+                    'No electronics wristwatches; rooms are equipped with timers.',
+                    'Restroom breaks are not permitted without pre-approved medical exemption.',
+                    'Must arrive within 30 minutes of start; no entry after 30 minutes.',
+                    'Must display CUD ID (or Emirates ID/Passport) on desk.'
+                  ] %}
+							{% for item in rules %}
+								<li class="flex items-start gap-3 group">
+									<div class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-sky-500 transition-all group-hover:scale-125" aria-hidden="true"></div>
+									<span class="text-xs text-slate-300 leading-relaxed group-hover:text-white transition-colors">{{ item|t }}</span>
+								</li>
+							{% endfor %}
+						</ul>
+					</div>
+
+					{# Examination Framework Grid #}
+					<div class="grid md:grid-cols-2 gap-6">
+						<div class="space-y-4 p-5 rounded-xl border border-slate-100 bg-slate-50/50">
+							<h4 class="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+								<i class="fa-solid fa-calendar-check text-[#b13634]"></i>
+								{{ 'Attendance & Scheduling'|t }}
+							</h4>
+							<p class="text-xs text-slate-600 leading-relaxed">
+								{{ 'Attendance is mandatory. Students who fail to attend without an approved excuse will receive a grade of zero. Final examination schedules are communicated at least two (2) weeks in advance.'|t }}
+							</p>
+						</div>
+						<div class="space-y-4 p-5 rounded-xl border border-slate-100 bg-slate-50/50">
+							<h4 class="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+								<i class="fa-solid fa-code-merge text-[#b13634]"></i>
+								{{ 'Conflicts & Accommodations'|t }}
+							</h4>
+							<p class="text-xs text-slate-600 leading-relaxed">
+								{{ 'Conflicts (e.g., more than 2 exams/day) must be reported within one week of schedule release. Students of Determination must request arrangements 3 weeks prior.'|t }}
+							</p>
+						</div>
+					</div>
+
+					{# Deferred and Missed Exams #}
+					<div class="space-y-6">
+						<div class="rounded-xl border border-slate-200 p-6">
+							<h4 class="text-md font-bold text-slate-900 mb-3 flex items-center gap-2">
+								<i class="fa-solid fa-hourglass-start text-sky-600"></i>
+								{{ 'Deferred Final Examination'|t }}
+							</h4>
+							<p class="text-sm text-slate-600 leading-relaxed mb-4">
+								{{ 'Students with valid documented reasons (medical/personal crisis) may request a deferral. Approved students receive an Incomplete (I) grade.'|t }}
+							</p>
+							<div class="grid sm:grid-cols-2 gap-4">
+								<div class="bg-white p-3 rounded border border-slate-100">
+									<p class="font-bold text-[10px] text-slate-400 uppercase mb-1">{{ 'Application'|t }}</p>
+									<p class="text-xs text-slate-600">{{ 'Submit Incomplete Request Form 3 weeks prior (or ASAP for emergencies).'|t }}</p>
+								</div>
+								<div class="bg-white p-3 rounded border border-slate-100">
+									<p class="font-bold text-[10px] text-slate-400 uppercase mb-1">{{ 'Criteria'|t }}</p>
+									<p class="text-xs text-slate-600">{{ 'Must have completed continuous assessments and hold a passing grade.'|t }}</p>
+								</div>
+							</div>
+						</div>
+
+						<div class="rounded-xl border border-slate-200 p-6">
+							<h4 class="text-md font-bold text-slate-900 mb-3 flex items-center gap-2">
+								<i class="fa-solid fa-file-circle-exclamation text-[#b13634]"></i>
+								{{ 'Missed Examinations'|t }}
+							</h4>
+							<p class="text-sm text-slate-600 leading-relaxed mb-4">
+								{{ 'Submit Missed Examination Application Form within 3 working days of return. Valid reasons include medical/family emergencies, accidents, or official sick leave.'|t }}
+							</p>
+							<div class="bg-[#b13634]/5 border border-[#b13634]/10 p-4 rounded-lg">
+								<p class="text-xs font-bold text-[#b13634] mb-2 uppercase">{{ 'Make-up Exam Process'|t }}</p>
+								<p class="text-xs text-slate-700">{{ 'If approved, the make-up exam is scheduled within 1 week and must be conducted no later than 2 weeks into the subsequent semester.'|t }}</p>
+							</div>
+						</div>
+					</div>
+
+					{# Appeals and Re-sits #}
+					<div class="grid sm:grid-cols-2 gap-6">
+						<div class="p-5 rounded-xl border border-slate-200 bg-slate-50/30">
+							<h4 class="text-sm font-bold text-slate-900 mb-2">{{ 'Grade Appeals'|t }}</h4>
+							<p class="text-xs text-slate-600 leading-relaxed">
+								{{ 'Submit Grade Appeal Form within 10 working days of grade receipt. Applicable fee applies. Decision by Appeals Committee is final within 10 days.'|t }}
+							</p>
+						</div>
+						<div class="p-5 rounded-xl border border-slate-200 bg-slate-50/30">
+							<h4 class="text-sm font-bold text-slate-900 mb-2">{{ 'Re-sit Examinations'|t }}</h4>
+							<p class="text-xs text-slate-600 leading-relaxed">
+								{{ 'Only for graduating students who fail a course in their final semester. Apply within 5 days of grade receipt. Fee: 50% of course tuition.'|t }}
+							</p>
+						</div>
+					</div>
+
+					{# Academic Misconduct Warning #}
+					<div class="flex items-center gap-4 p-5 rounded-2xl bg-amber-50 border border-amber-200">
+						<div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white text-amber-600 shadow-sm border border-amber-100">
+							<i class="fa-solid fa-shield-virus text-2xl"></i>
+						</div>
+						<div>
+							<h4 class="text-sm font-bold text-amber-900 uppercase tracking-wide">{{ 'Zero Tolerance Policy'|t }}</h4>
+							<p class="text-xs text-amber-800">{{ 'CUD maintains zero tolerance for academic misconduct. Exams may be recorded via photo/video for review. Misconduct includes cheating, Passing messages, or possession of unauthorized materials.'|t }}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			{# Download/Assets #}
+			<div class="block-common-content">
+				<div class="flex items-center gap-4 rounded-xl border border-slate-200 bg-white px-6 py-5 shadow-sm transition-all hover:border-[#b13634]/20 hover:shadow-md">
+					<div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#b13634]/10 text-[#b13634]">
+						<i class="fa-solid fa-file-pdf text-2xl" aria-hidden="true"></i>
+					</div>
+					<div class="flex-1 min-w-0">
+						<p class="font-bold text-slate-900 truncate">{{ title }}</p>
+						<p class="text-xs text-slate-500">{{ 'Official Document • PDF Format'|t }}</p>
+					</div>
+					<a href="/modules/custom/cud_sustainability/assets/pdfs/examination-policy.pdf" class="inline-flex items-center gap-2 rounded-lg bg-[#b13634] px-4 py-2 text-sm font-medium text-white hover:bg-[#922c2a] transition-all hover:scale-[1.02] active:scale-[0.98]" target="_blank">
+						<i class="fa-solid fa-download" aria-hidden="true"></i>
+						<span class="hidden sm:inline">{{ 'Download Policy'|t }}</span>
+					</a>
+				</div>
+			</div>
+
+			{# Revision History - Simplified #}
+			<div class="block-common-content">
+				<div class="overflow-hidden rounded-xl border border-slate-200 shadow-sm">
+					<table class="w-full text-left text-sm">
+						<thead class="bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-slate-500 border-b border-slate-200">
+							<tr>
+								<th class="px-4 py-3">{{ 'Version'|t }}</th>
+								<th class="px-4 py-3">{{ 'Notes'|t }}</th>
+								<th class="px-4 py-3">{{ 'Date'|t }}</th>
+							</tr>
+						</thead>
+						<tbody class="divide-y divide-slate-100 bg-white">
+							<tr>
+								<td class="px-4 py-3 font-medium text-slate-900">V1.0</td>
+								<td class="px-4 py-3 text-slate-600">{{ 'Initial Release'|t }}</td>
+								<td class="px-4 py-3 text-slate-500 whitespace-nowrap">12-08-2008</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+		</div>
+		{# /MAIN CONTENT BODY #}
+
+		{% if sections %}
+			<div class="mt-8 space-y-6">
+				{% for section in sections %}
+					<div class="prose prose-slate max-w-none">{{ section }}</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+
+		{% if content %}
+			<div class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-sky-700 prose-a:no-underline hover:prose-a:underline">
+				{{ content }}
+			</div>
+		{% endif %}
+
+	</div>
+</section>
+
+{# ── Desktop floating contextual nav (hidden on mobile/tablet) ───────────────── #}
+<div class="hidden lg:block fixed right-0 top-1/2 -translate-y-1/2 z-40 group" aria-label="{{ 'Our Commitment navigation'|t }}">
+	<div
+		class="flex items-stretch">
+
+		{# Expanded panel — slides in from right edge on hover #}
+		<div class="flex flex-col justify-center overflow-hidden bg-white border-y border-l border-slate-200 rounded-l-2xl shadow-xl w-0 opacity-0 group-hover:w-56 group-hover:opacity-100 transition-all duration-300 ease-out">
+			<div class="min-w-[14rem] px-4 py-5">
+				<p class="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400 whitespace-nowrap">{{ active_nav_parent ? active_nav_parent.title : 'Navigation'|t }}</p>
+				<ul class="space-y-0.5">
+					{% for sub in sub_items %}
+						<li>
+							<a href="{{ sub.url }}" class="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors whitespace-nowrap{% if current_path == sub.url %} bg-slate-100 font-semibold text-slate-900{% else %} text-slate-600 hover:bg-slate-50 hover:text-slate-900{% endif %}">
+								<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }} w-4 text-center text-xs{% if current_path == sub.url %} text-[#b13634]{% else %} text-slate-400{% endif %}" aria-hidden="true"></i>
+								{{ sub.title }}
+							</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+
+		{# Tab strip — always visible on right edge, collapses border-radius on hover #}
+		<div class="flex flex-col items-center justify-center gap-2.5 bg-[#b13634] rounded-l-2xl group-hover:rounded-l-none shadow-lg shadow-[#b13634]/30 px-2.5 py-5 min-w-[2.75rem] transition-all duration-300 cursor-default select-none">
+			<i class="fa-solid fa-layer-group text-white/90 text-md" aria-hidden="true"></i>
+			<div class="w-px h-2 bg-white/30 rounded-full"></div>
+			{% for sub in sub_items %}
+				<div class="rounded-full transition-colors {% if current_path == sub.url %}w-2 h-2 bg-white{% else %}w-1.5 h-1.5 bg-white/40 hover:bg-white/70{% endif %}" title="{{ sub.title }}"></div>
+			{% endfor %}
+		</div>
+
+	</div>
+</div>
