@@ -189,7 +189,114 @@
 		<div class="block-common-content" aria-labelledby="heading-pillar-4">
 			<h2 id="heading-pillar-4" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Pillar 4: Engagement & Education'|t }}</h2>
 			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The fourth and last strategic pillar guiding the operation of the Centre for Sustainability and Innovation is engagement and education. By fostering interdisciplinary collaboration and knowledge exchange, the Centre contributes to building resilient, inclusive, and sustainable communities, while shaping visionary leaders who advance sustainable innovation and create positive impact in business and society worldwide.'|t }}</p>
-			<p class="text-slate-700 text-sm leading-relaxed">{{ 'The Centre has initiated staff and student sustainability programs, conduct sustainability awareness campaigns, organize trainings and workshops, dialogues, and sustainability events.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-4">{{ 'The Centre has initiated staff and student sustainability programs, conduct sustainability awareness campaigns, organize trainings and workshops, dialogues, and sustainability events.'|t }}</p>
+
+			<div class="space-y-6">
+				{# --- Research Projects --- #}
+				<div>
+					<h3 class="text-base font-semibold text-slate-800 mb-2">{{ 'Research Projects'|t }}</h3>
+					<p class="text-slate-700 text-sm mb-3">{{ 'The list of 19 CUD research projects related to sustainability can be found in the link:'|t }}</p>
+					<ul class="flex flex-col gap-2">
+						<li>
+							<a href="/sustainability/research-in-sustainability/research-groups"
+							   class="group flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm transition-all hover:border-[#b13634]/30 hover:bg-[#b13634]/5 hover:text-[#b13634]">
+								<span class="flex items-center gap-2.5">
+									<i class="fa-solid fa-diagram-project w-4 text-center text-slate-400 group-hover:text-[#b13634] transition-colors" aria-hidden="true"></i>
+									{{ 'Research Projects'|t }}
+								</span>
+								<i class="fa-solid fa-arrow-right text-xs text-slate-300 group-hover:text-[#b13634] transition-all group-hover:translate-x-0.5" aria-hidden="true"></i>
+							</a>
+						</li>
+					</ul>
+				</div>
+
+				{# --- Academic Programs --- #}
+				<div>
+					<h3 class="text-base font-semibold text-slate-800 mb-2">{{ 'Academic Programs'|t }}</h3>
+					<p class="text-slate-700 text-sm mb-3">{{ 'The list of CUD programs related to sustainability can be found in the link:'|t }}</p>
+					<ul class="flex flex-col gap-2">
+						<li>
+							<a href="/sustainability/programs-in-sustainability/sustainability-focused-programs"
+							   class="group flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm transition-all hover:border-[#b13634]/30 hover:bg-[#b13634]/5 hover:text-[#b13634]">
+								<span class="flex items-center gap-2.5">
+									<i class="fa-solid fa-graduation-cap w-4 text-center text-slate-400 group-hover:text-[#b13634] transition-colors" aria-hidden="true"></i>
+									{{ 'Sustainability Focused Programs'|t }}
+								</span>
+								<i class="fa-solid fa-arrow-right text-xs text-slate-300 group-hover:text-[#b13634] transition-all group-hover:translate-x-0.5" aria-hidden="true"></i>
+							</a>
+						</li>
+					</ul>
+				</div>
+
+				{# --- General Education Courses --- #}
+				<div>
+					<h3 class="text-base font-semibold text-slate-800 mb-2">{{ 'General Education Courses (Bearing Credits)'|t }}</h3>
+					<p class="text-slate-700 text-sm mb-3">{{ 'The list of CUD General Education courses related to sustainability and SDGs can be found in:'|t }}</p>
+					<ul class="flex flex-col gap-2">
+						<li>
+							<a href="/sustainability/programs-in-sustainability/sustainability-in-general-education"
+							   class="group flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm transition-all hover:border-[#b13634]/30 hover:bg-[#b13634]/5 hover:text-[#b13634]">
+								<span class="flex items-center gap-2.5">
+									<i class="fa-solid fa-book-open w-4 text-center text-slate-400 group-hover:text-[#b13634] transition-colors" aria-hidden="true"></i>
+									{{ 'Sustainability in General Education'|t }}
+								</span>
+								<i class="fa-solid fa-arrow-right text-xs text-slate-300 group-hover:text-[#b13634] transition-all group-hover:translate-x-0.5" aria-hidden="true"></i>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		{# ── Center Members ─────────────────────────────────────────────────── #}
+		<div class="block-common-content">
+			<h2 class="text-md md:text-xl font-semibold cud-color-blue mb-4">{{ 'Full-Time Members of Center for Sustainability and Innovation'|t }}</h2>
+			
+			<div class="grid gap-6 sm:grid-cols-2">
+				{% set members = [
+					{ name: 'Dr. Chureerat Haq', role: 'Manager', email: 'chureerat.haq@cud.ac.ae' },
+					{ name: 'Dr. Adam Fenech', role: 'Canada Research Chair', email: 'adam.fenech@cud.ac.ae' },
+					{ name: 'Dr. Robert F. Gilmour', role: 'Canada Excellence Chair', email: 'robert.gilmour@cud.ac.ae' },
+					{ name: 'Dr. Daniel Scott', role: 'Canada Research Chair', email: 'daniel.scott@cud.ac.ae' },
+					{ name: 'Dr. Rafik Belarbi', role: 'Professor', email: 'rafik.belarbi@cud.ac.ae' },
+					{ name: 'Dr. Ammar Yahia', role: 'Professor', email: 'ammar.yahia@cud.ac.ae' },
+					{ name: 'Dr. Seif Khiati', role: 'Associate Professor', email: 'seif.khiati@cud.ac.ae' }
+				] %}
+
+				{% for member in members %}
+					<div class="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-5 shadow-sm">
+						<div class="flex items-start gap-4">
+							<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#b13634]/10 text-[#b13634]">
+								<i class="fa-solid fa-user-doctor text-lg" aria-hidden="true"></i>
+							</div>
+							<div class="min-w-0 flex-1">
+								<p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-400 mb-1">{{ member.role|t }}</p>
+								<p class="text-sm font-semibold text-slate-900 mb-0">{{ member.name|t }}</p>
+								<div class="mt-2 flex items-center gap-2.5 text-sm text-slate-700">
+									<i class="fa-solid fa-envelope w-4 text-center text-[#b13634]" aria-hidden="true"></i>
+									<a href="mailto:{{ member.email }}" class="hover:text-[#b13634] transition-colors underline underline-offset-2 break-all">{{ member.email }}</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+
+			<div class="mt-6">
+				<p class="text-slate-700 text-sm mb-3">{{ 'List of Full-Time Faculty who are Members of Research Groups Related to Sustainability can be found in:'|t }}</p>
+				<ul class="flex flex-col gap-2">
+					<li>
+						<a href="/sustainability/researchers-in-sustainability/list-of-researchers"
+						   class="group flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm transition-all hover:border-[#b13634]/30 hover:bg-[#b13634]/5 hover:text-[#b13634]">
+							<span class="flex items-center gap-2.5">
+								<i class="fa-solid fa-id-card w-4 text-center text-slate-400 group-hover:text-[#b13634] transition-colors" aria-hidden="true"></i>
+								{{ 'List of Researchers'|t }}
+							</span>
+							<i class="fa-solid fa-arrow-right text-xs text-slate-300 group-hover:text-[#b13634] transition-all group-hover:translate-x-0.5" aria-hidden="true"></i>
+						</a>
+					</li>
+				</ul>
+			</div>
 		</div>
 
 		{# ── Manager Contact ──────────────────────────────────────────────────── #}

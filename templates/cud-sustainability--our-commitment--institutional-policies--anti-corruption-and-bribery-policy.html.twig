@@ -145,36 +145,121 @@
 
         {# MAIN CONTENT BODY #}
         <div class="prose prose-slate max-w-none">
-          <p><strong>Policy Title:</strong> Anti-Corruption and Bribery Policy</p>
-          <p><strong>Policy Number:</strong> PD-PO-10B</p>
-          <p><strong>Date Created:</strong> 15-02-2023</p>
-          <p><strong>Responsible:</strong> Registrar, Vice President Student Affairs</p>
-          <p><strong>Approved by:</strong> Board of Trustees</p>
-          <h2>Purpose</h2>
-          <p>Canadian University Dubai is committed to conducting all of its activities in an open, honest, transparent and ethical manner. CUD maintains a zero-tolerance policy towards corruption and bribery in all its forms. CUD is also committed to follow all relevant Anti-Corruption and Bribery laws in the UAE and will report any suspected incidents of law-breaking in these areas to the relevant authorities. This policy aims to promote a culture of honesty and integrity. This policy also provides guidance for those working at the university regarding the ethical norms and standards of the university, how to recognize when those norms and standards are being violated, and guidance regarding how to report such violations.</p>
-          <h2>Scope</h2>
-          <p>This policy applies to CUD management, faculty and staff.</p>
-          <h2>Policy Statement</h2>
-          <h3>What is Bribery and Corruption?</h3>
-          <p><strong>Bribery:</strong> The offer or promise or demand for an advantage, financial or otherwise, to induce an individual to commit an action which is illegal, unethical or a breach of trust. It may include an offer of money or other benefit to induce an individual to ignore university policies to confer an advantage inappropriately upon another. Acts of bribery typically are designed to induce an individual to perform their duties dishonestly. There is typically a "quid pro quo" in a bribery transaction; both sides receive a benefit. It is a corrupt act.</p>
-          <p><strong>Corruption:</strong> The misuse of one’s position for private gain. The gain may accrue to the individual making a corrupt decision or taking a corrupt action or it may accrue to family members, friends or others.</p>
-          <h3>What is not Acceptable?</h3>
-          <ul>
-            <li>Give or promise to give, accept or promise to accept, a payment, gift or hospitality with the expectation that a business or academic or employment advantage will be received.</li>
-            <li>Give or promise to give, accept or promise to accept, a payment, gift or hospitality to a government official to facilitate or speed up a procedure or approval.</li>
-            <li>Accept payment or a gift from a third party if they know or even suspect that it is being offered in expectation of the future receipt of a commercial, academic or employment advantage.</li>
-            <li>Threaten any member of the university community who has refused to participate in a proposed act of corruption or bribery.</li>
-            <li>Engage in other acts of corruption or bribery not directly listed above but which fall under the definitions of bribery or corruption given above.</li>
+          <p><strong>{{ 'Policy Title:'|t }}</strong> {{ '10.b Anti-Corruption and Bribery Policy'|t }}</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8">
+            <p><strong>{{ 'Policy Number:'|t }}</strong> {{ 'PD-PO-10B'|t }}</p>
+            <p><strong>{{ 'Date Created:'|t }}</strong> {{ '15-02-2023'|t }}</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8">
+            <p><strong>{{ 'Responsible:'|t }}</strong> {{ 'Registrar, Vice President Student Affairs'|t }}</p>
+            <p><strong>{{ 'Approved by:'|t }}</strong> {{ 'Board of Trustees'|t }}</p>
+          </div>
+
+          <h2 class="text-md md:text-xl font-semibold cud-color-blue mt-6 mb-3">{{ 'Purpose'|t }}</h2>
+          <p>{{ 'Canadian University Dubai is committed to conducting all of its activities in an open, honest, transparent and ethical manner. CUD maintains a zero-tolerance policy towards corruption and bribery in all its forms.'|t }}</p>
+          <p>{{ 'CUD is also committed to follow all relevant Anti-Corruption and Bribery laws in the UAE and will report any suspected incidents of law-breaking in these areas to the relevant authorities.'|t }}</p>
+          <p>{{ 'This policy aims to promote a culture of honesty and integrity.'|t }}</p>
+          <p>{{ 'This policy also provides guidance for those working at the university regarding the ethical norms and standards of the university, how to recognize when those norms and standards are being violated, and guidance regarding how to report such violations.'|t }}</p>
+
+          <h2 class="text-md md:text-xl font-semibold cud-color-blue mt-6 mb-3">{{ 'Scope'|t }}</h2>
+          <p>{{ 'This policy applies to CUD management, faculty and staff.'|t }}</p>
+
+          <h2 class="text-md md:text-xl font-semibold cud-color-blue mt-6 mb-3">{{ 'Policy Statement'|t }}</h2>
+          <h3 class="text-base font-semibold text-slate-800 mt-4 mb-2">{{ 'What is Bribery and Corruption?'|t }}</h3>
+          
+          <h4 class="text-sm font-bold text-slate-700 mt-3 mb-1">{{ 'Bribery'|t }}</h4>
+          <p>{{ 'Bribery is the offer or promise or demand for an advantage, financial or otherwise, to induce an individual to commit an action which is illegal, unethical or a breach of trust. It may include an offer of money or other benefit to induce an individual to ignore university policies to confer an advantage inappropriately upon another. Acts of bribery typically are designed to induce an individual to perform their duties dishonestly. There is typically a “quid pro quo” in a bribery transaction; both sides receive a benefit. It is a corrupt act.'|t }}</p>
+
+          <h4 class="text-sm font-bold text-slate-700 mt-3 mb-1">{{ 'Corruption'|t }}</h4>
+          <p>{{ 'Corruption is the misuse of one’s position for private gain. The gain may accrue to the individual making a corrupt decision or taking a corrupt action or it may accrue to family members, friends or others.'|t }}</p>
+
+          <h3 class="text-base font-semibold text-slate-800 mt-4 mb-2">{{ 'What is not Acceptable?'|t }}</h3>
+          <p>{{ 'It is not acceptable for any member of the university to:'|t }}</p>
+          <ul class="space-y-2 mt-2">
+            <li class="flex items-start gap-3">
+              <i class="fa-solid fa-circle-xmark mt-1 text-[#b13634] shrink-0" aria-hidden="true"></i>
+              <span>{{ 'Give or promise to give, accept or promise to accept, a payment, gift or hospitality with the expectation that a business or academic or employment advantage will be received.'|t }}</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <i class="fa-solid fa-circle-xmark mt-1 text-[#b13634] shrink-0" aria-hidden="true"></i>
+              <span>{{ 'Give or promise to give, accept or promise to accept, a payment, gift or hospitality to a government official to facilitate or speed up a procedure or approval.'|t }}</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <i class="fa-solid fa-circle-xmark mt-1 text-[#b13634] shrink-0" aria-hidden="true"></i>
+              <span>{{ 'Accept payment or a gift from a third party if they know or even suspect that it is being offered in expectation of the future receipt of a commercial, academic or employment advantage.'|t }}</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <i class="fa-solid fa-circle-xmark mt-1 text-[#b13634] shrink-0" aria-hidden="true"></i>
+              <span>{{ 'Threaten any member of the university community who has refused to participate in a proposed act of corruption or bribery.'|t }}</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <i class="fa-solid fa-circle-xmark mt-1 text-[#b13634] shrink-0" aria-hidden="true"></i>
+              <span>{{ 'Engage in other acts of corruption or bribery not directly listed above but which fall under the definitions of bribery or corruption given above.'|t }}</span>
+            </li>
           </ul>
-          <h3>Responsibilities</h3>
-          <p>Ultimate responsibility for this Policy lies with the Board of Trustees. However, the Board of Trustees requires that the President ensures that this policy is applied rigorously and fairly. The President in turn will delegate responsibility for the application of this policy to the Executive Vice-President and all the Vice-Presidents. Each senior manager must ensure that his or her staff are familiar with the Policy.</p>
-          <h3>What Steps Can be Taken to Prevent Bribery and Corruption</h3>
-          <ol>
-            <li><strong>Risk Assessment:</strong> All managers must assess the vulnerability of their operations to corruption and bribery. The Vice-President, Finance and Administration must coordinate and monitor these efforts. It is important to identify those areas in which we face bribery and/or corruption risks.</li>
-            <li><strong>Risk Monitoring:</strong> Heads of Departments must take steps to assess corruption and bribery risks, to keep detailed records of activities which may face such risks and to keep proper records of these activities.</li>
-          </ol>
-          <p>... (Content truncated for brevity. Please refer to the PDF for the full policy.)</p>
-          <p><a href="/modules/custom/cud_sustainability/contents/Website Content/1 - Our Commitment/Policies PDFs/anti-corruption-and-bribery-policy.pdf" class="inline-flex items-center gap-2 text-[#b13634] font-semibold underline"><i class="fa-solid fa-file-pdf"></i> Download PDF</a></p>
+
+          <h2 class="text-md md:text-xl font-semibold cud-color-blue mt-6 mb-3">{{ 'Responsibilities'|t }}</h2>
+          <p>{{ 'Ultimate responsibility for this Policy lies with the Board of Trustees. However, the Board of Trustees requires that the President ensures that this policy is applied rigorously and fairly. The President in turn will delegate responsibility for the application of this policy to the Executive Vice-President and all the Vice-Presidents. Each senior manager must ensure that his or her staff are familiar with the Policy.'|t }}</p>
+
+          <h2 class="text-md md:text-xl font-semibold cud-color-blue mt-6 mb-3">{{ 'What Steps Can be Taken to Prevent Bribery and Corruption'|t }}</h2>
+          <div class="space-y-4">
+            <div>
+              <h3 class="text-base font-semibold text-slate-800 mb-1">{{ 'i) Risk Assessment'|t }}</h3>
+              <p>{{ 'All managers must assess the vulnerability of their operations to corruption and bribery. The Vice-President, Finance and Administration must coordinate and monitor these efforts. It is important to identify those areas in which we face bribery and/or corruption risks.'|t }}</p>
+            </div>
+            <div>
+              <h3 class="text-base font-semibold text-slate-800 mb-1">{{ 'ii) Risk Monitoring'|t }}</h3>
+              <p>{{ 'Heads of Departments must take steps to assess corruption and bribery risks, to keep detailed records of activities which may face such risks and to keep proper records of these activities.'|t }}</p>
+            </div>
+          </div>
+
+          <h2 class="text-md md:text-xl font-semibold cud-color-blue mt-6 mb-3">{{ 'How to Raise a Concern'|t }}</h2>
+          <p>{{ 'All staff have a responsibility to be aware of the risks of corrupt acts and bribery and to help detect and report such activities. The university needs to create a safe environment for individuals to report suspected activities.'|t }}</p>
+          <p>{{ 'If you are concerned that a corrupt act is taking place you should first report it to your immediate supervisor if that supervisor is not a party to the suspect activity. If the supervisor is a party to the suspect activity the behaviour should be reported to the Director of Human Resources. The Director of Human Resources must ensure that all staff are aware that this kind of disclosure is guaranteed by the university to be possible without fear of reprisal.'|t }}</p>
+
+          <h2 class="text-md md:text-xl font-semibold cud-color-blue mt-6 mb-3">{{ 'Policy Revision History'|t }}</h2>
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-slate-200 text-sm">
+              <thead>
+                <tr class="bg-slate-50">
+                  <th class="px-4 py-2 text-left font-semibold text-slate-900 border border-slate-200">{{ 'Version No.'|t }}</th>
+                  <th class="px-4 py-2 text-left font-semibold text-slate-900 border border-slate-200">{{ 'Update Brief'|t }}</th>
+                  <th class="px-4 py-2 text-left font-semibold text-slate-900 border border-slate-200">{{ 'Approved Date'|t }}</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200 bg-white">
+                <tr>
+                  <td class="px-4 py-2 border border-slate-200">{{ 'V1.0'|t }}</td>
+                  <td class="px-4 py-2 border border-slate-200">{{ 'New Policy'|t }}</td>
+                  <td class="px-4 py-2 border border-slate-200">{{ '01-06-2006'|t }}</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-2 border border-slate-200">{{ 'V2.0'|t }}</td>
+                  <td class="px-4 py-2 border border-slate-200">{{ 'Revised and Updated'|t }}</td>
+                  <td class="px-4 py-2 border border-slate-200">{{ '13-03-2023'|t }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          {# Download Link #}
+          <div class="mt-8 pt-6 border-t border-slate-100">
+            <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-400 mb-4">{{ 'Related Documents'|t }}</h3>
+            <ul class="flex flex-col gap-3">
+              <li>
+                <a href="/modules/custom/cud_sustainability/assets/pdfs/anti-corruption-and-bribery-policy.pdf" 
+                   class="group flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm transition-all hover:border-[#b13634]/30 hover:bg-[#b13634]/5 hover:text-[#b13634]"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                  <span class="flex items-center gap-2.5">
+                    <i class="fa-solid fa-file-pdf w-4 text-center text-[#b13634]" aria-hidden="true"></i>
+                    {{ 'Download Anti-Corruption and Bribery Policy (PDF)'|t }}
+                  </span>
+                  <i class="fa-solid fa-download text-xs text-slate-300 group-hover:text-[#b13634] transition-all" aria-hidden="true"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
         {# /MAIN CONTENT BODY #}
 
