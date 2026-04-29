@@ -120,16 +120,54 @@
 
 		{# ── EDI Intro ───────────────────────────────────────────────────────── #}
 		<div class="block-common-content">
-			<p class="text-slate-700 text-sm">Since its inception, Canadian University Dubai has been dedicated to fostering a diverse, equitable, and inclusive environment. Our commitment to EDI is a fundamental element of our organizational culture, explicitly embedded in our
+			<p class="text-slate-700 text-sm mb-4 lg:mb-8">Since its inception, Canadian University Dubai has been dedicated to fostering a diverse, equitable, and inclusive environment. Our commitment to EDI is a fundamental element of our organizational culture, explicitly embedded in our
 				<strong>ASPIRE Core Values</strong>, specifically under
 				<strong>Inclusion</strong>,
 				<strong>People</strong>, and
 				<strong>Respect</strong>. We strive to cultivate a community built on mutual trust and personal dignity, empowering our members to excel as global citizens.</p>
+
+
+			<ul class="grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4 lg:mb-8" role="list">
+				<li>
+
+					<a href="/sustainability/social-responsibility/edi#aspire-core-values-main" class="flex items-center gap-3 rounded-lg border border-slate-300 px-4 py-2.5 text-sm text-slate-700 transition-all hover:border-[#b13634]/30 hover:bg-[#b13634]/5 hover:text-slate-900 group/link">
+						<span class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-sky-50 text-sky-600 transition-colors group-hover/link:bg-[#b13634]/10 group-hover/link:text-[#b13634]">
+							<i class="fa-solid fa-gem text-[#b13634] text-base shrink-0" aria-hidden="true"></i>
+						</span>
+						<span class="leading-snug">{{ 'ASPIRE Core Values'|t }}</span>
+						<i class="fa-solid fa-chevron-right ml-auto text-[10px] text-slate-300 transition-colors group-hover/link:text-[#b13634]" aria-hidden="true"></i>
+					</a>
+
+				</li>	
+				<li>
+
+					<a href="/sustainability/social-responsibility/edi#equity-diversity-and-inclusion-officer-main" class="flex items-center gap-3 rounded-lg border border-slate-300 px-4 py-2.5 text-sm text-slate-700 transition-all hover:border-[#b13634]/30 hover:bg-[#b13634]/5 hover:text-slate-900 group/link">
+						<span class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-sky-50 text-sky-600 transition-colors group-hover/link:bg-[#b13634]/10 group-hover/link:text-[#b13634]">
+							<i class="fa-solid fa-user-tie text-[#b13634] text-base shrink-0" aria-hidden="true"></i>
+						</span>
+						<span class="leading-snug">{{ 'Equity, Diversity, and Inclusion Officer'|t }}</span>
+						<i class="fa-solid fa-chevron-right ml-auto text-[10px] text-slate-300 transition-colors group-hover/link:text-[#b13634]" aria-hidden="true"></i>
+					</a>
+
+				</li>
+				<li>
+
+					<a href="/sustainability/social-responsibility/edi#mandatory-and-continuous-training-for-employees-main" class="flex items-center gap-3 rounded-lg border border-slate-300 px-4 py-2.5 text-sm text-slate-700 transition-all hover:border-[#b13634]/30 hover:bg-[#b13634]/5 hover:text-slate-900 group/link">
+						<span class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-sky-50 text-sky-600 transition-colors group-hover/link:bg-[#b13634]/10 group-hover/link:text-[#b13634]">
+							<i class="fa-solid fa-chalkboard-user text-[#b13634] text-base shrink-0" aria-hidden="true"></i>
+						</span>
+						<span class="leading-snug">{{ 'Mandatory and Continuous Training for Employees'|t }}</span>
+						<i class="fa-solid fa-chevron-right ml-auto text-[10px] text-slate-300 transition-colors group-hover/link:text-[#b13634]" aria-hidden="true"></i>
+					</a>
+
+				</li>
+			</ul>
+
 		</div>
 
 		{# ── ASPIRE Core Values ───────────────────────────────────────────────────────── #}
-		<div class="block-common-content" aria-labelledby="heading-aspire">
-			<h2 id="heading-aspire" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Core Values (ASPIRE)'|t }}</h2>
+		<div class="block-common-content" aria-labelledby="aspire-core-values-main">
+			<h2 id="aspire-core-values-main" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Core Values (ASPIRE)'|t }}</h2>
 			<p class="text-slate-500 text-sm mb-4">{{ 'The fundamental elements that drive CUD\'s organizational culture and operations.'|t }}</p>
 			<div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
 				<div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
@@ -178,16 +216,15 @@
 		</div>
 
 		{# ── EDI Officer ─────────────────────────────────────────────────────── #}
-		
-		<div class="block-common-content" aria-labelledby="heading-edi-officer">
-		<h2 id="heading-edi-officer" class="text-md md:text-xl font-semibold cud-color-blue mb-4">Equity, Diversity & Inclusion Officer</h2>
+		<div class="block-common-content" aria-labelledby="equity-diversity-and-inclusion-officer-main	">
+			<h2 id="equity-diversity-and-inclusion-officer-main" class="text-md md:text-xl font-semibold cud-color-blue mb-4">Equity, Diversity & Inclusion Officer</h2>
 			<div class="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-5 sm:p-6 shadow-sm">
 				<div class="flex flex-col sm:flex-row sm:items-start gap-6">
 					<div class="shrink-0 flex justify-center sm:justify-start">
 						<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/edi-officer.png' }}" alt="{{ 'Ms. Simran Siddiqui — EDI Officer'|t }}" class="w-48 h-48 object-cover rounded-full shadow-md ring-2 ring-slate-200"/>
 					</div>
 					<div class="flex-1 min-w-0">
-						<p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-400 mb-1">{{ 'Equality, Diversity &amp; Inclusion Officer'|t }}</p>
+						<p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-400 mb-1">{{ 'Equity, Diversity &amp; Inclusion Officer'|t }}</p>
 						<h2 id="heading-edi-officer" class="text-lg font-semibold text-slate-900">Ms. Simran Siddiqui</h2>
 						<p class="text-slate-600 text-sm leading-relaxed mt-2">Ms. Simran Siddiqui heads the counselling office and oversees the EDI and Disability Support offices in CUD. Together with Student Affairs and Human Resources, Ms. Simran ensures all matters of EDI and disability support is properly addressed at all management levels.</p>
 						<p class="text-slate-500 text-sm mt-3 italic">{{ 'Schedule an appointment, call, or visit us. We\'re here to support you.'|t }}</p>
@@ -214,10 +251,9 @@
 			</div>
 		</div>
 
-
 		{# ── Mandatory and Continuous Training for Employees ─────────────────── #}
-		<div class="block-common-content" aria-labelledby="heading-training">
-			<h2 id="heading-training" class="text-md md:text-xl font-semibold cud-color-blue mb-3">{{ 'Mandatory and Continuous Training for Employees on Conduct, Ethics, EDI, and more'|t }}</h2>
+		<div class="block-common-content" aria-labelledby="mandatory-and-continuous-training-for-employees-main">
+			<h2 id="mandatory-and-continuous-training-for-employees-main" class="text-md md:text-xl font-semibold cud-color-blue mb-3">{{ 'Mandatory and Continuous Training for Employees on Conduct, Ethics, EDI, and more'|t }}</h2>
 			<p class="text-slate-700 text-sm leading-relaxed mb-3">CUD engages TES Global to provide employees with accessibility to attend and complete a specific course &ldquo;Safeguarding of Young People (Colleges &amp; Universities)&rdquo;, where subjects on harassment and bullying, amongst other important topics, are addressed. Employees must begin and complete these trainings as part of their orientation requirements and are provided with certification once they complete the training course.</p>
 			<p class="text-slate-700 text-sm leading-relaxed mb-5">The TES Global platform also allows employees to continuously attend courses such as Bullying and Harassment in the Workplace, Anti-Fraud, Bribery, and Corruption, just to name a few.</p>
 
@@ -247,68 +283,46 @@
 		</div>
 
 		{# ── Get Involved CTA ─────────────────────────────────────────────────── #}
-		<div class="mt-5 rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-4 sm:p-5">
-			<div class="flex items-start gap-4">
-				<div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#b13634]/10 text-[#b13634]">
-					<i class="fa-solid fa-handshake text-xl" aria-hidden="true"></i>
-				</div>
-				<div class="min-w-0 flex-1">
-					<p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">{{ 'Get Involved'|t }}</p>
-					<p class="mt-1 text-sm leading-relaxed text-slate-700">Interested in contributing to EDI initiatives at CUD? Whether you are a student, faculty member, or staff, there are many ways to engage — from joining community events to partnering with the EDI office on inclusion-related projects. We welcome everyone to be part of building a more equitable and inclusive campus.</p>
-					<p class="mt-2 text-sm font-semibold text-[#b13634]">{{ 'Email:'|t }}
-						<a href="mailto:edi@cud.ac.ae" class="underline hover:text-[#922c2a]">edi@cud.ac.ae</a>
-					</p>
-				</div>
-			</div>
-		</div>
 
-		{% if content %}
-			<div class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-sky-700 prose-a:no-underline hover:prose-a:underline">
-				{{ content }}
-			</div>
-		{% endif %}
-
-		{% if sections %}
-			<div class="mt-8 space-y-6">
-				{% for section in sections %}
-					<div class="prose prose-slate max-w-none">{{ section }}</div>
-				{% endfor %}
-			</div>
-		{% endif %}
-		
+<div class="mt-5 rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-4 sm:p-5">
+<div class="flex items-start gap-4">
+	<div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#b13634]/10 text-[#b13634]">
+		<i class="fa-solid fa-handshake text-xl" aria-hidden="true"></i>
 	</div>
-</section>
-
-{# ── Desktop floating contextual nav (hidden on mobile/tablet) ───────────────── #}
-<section class="hidden lg:block fixed right-0 top-1/2 -translate-y-1/2 z-40 group" aria-label="{{ 'Our Commitment navigation'|t }}">
-	<div
-		class="flex items-stretch">
-
-		{# Expanded panel — slides in from right edge on hover #}
-		<div class="flex flex-col justify-center overflow-hidden bg-white border-y border-l border-slate-200 rounded-l-2xl shadow-xl w-0 opacity-0 group-hover:w-56 group-hover:opacity-100 transition-all duration-300 ease-out">
-			<div class="min-w-[14rem] px-4 py-5">
-				<p class="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400 whitespace-nowrap">{{ active_nav_parent ? active_nav_parent.title : 'Navigation'|t }}</p>
-				<ul class="space-y-0.5">
-					{% for sub in sub_items %}
-						<li>
-							<a href="{{ sub.url }}" class="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors whitespace-nowrap{% if current_path == sub.url %} bg-slate-100 font-semibold text-slate-900{% else %} text-slate-600 hover:bg-slate-50 hover:text-slate-900{% endif %}">
-								<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }} w-4 text-center text-xs{% if current_path == sub.url %} text-[#b13634]{% else %} text-slate-400{% endif %}" aria-hidden="true"></i>
-								{{ sub.title }}
-							</a>
-						</li>
-					{% endfor %}
-				</ul>
-			</div>
-		</div>
-
-		{# Tab strip — always visible on right edge, collapses border-radius on hover #}
-		<div class="flex flex-col items-center justify-center gap-2.5 bg-[#b13634] rounded-l-2xl group-hover:rounded-l-none shadow-lg shadow-[#b13634]/30 px-2.5 py-5 min-w-[2.75rem] transition-all duration-300 cursor-default select-none">
-			<i class="fa-solid fa-layer-group text-white/90 text-md" aria-hidden="true"></i>
-			<div class="w-px h-2 bg-white/30 rounded-full"></div>
-			{% for sub in sub_items %}
-				<div class="rounded-full transition-colors {% if current_path == sub.url %}w-2 h-2 bg-white{% else %}w-1.5 h-1.5 bg-white/40 hover:bg-white/70{% endif %}" title="{{ sub.title }}"></div>
-			{% endfor %}
-		</div>
-
+	<div class="min-w-0 flex-1">
+		<p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">{{ 'Get Involved'|t }}</p>
+		<p class="mt-1 text-sm leading-relaxed text-slate-700">Interested in contributing to EDI initiatives at CUD? Whether you are a student, faculty member, or staff, there are many ways to engage — from joining community events to partnering with the EDI office on inclusion-related projects. We welcome everyone to be part of building a more equitable and inclusive campus.</p>
+		<p class="mt-2 text-sm font-semibold text-[#b13634]">{{ 'Email:'|t }}
+			<a href="mailto:edi@cud.ac.ae" class="underline hover:text-[#922c2a]">edi@cud.ac.ae</a>
+		</p>
 	</div>
-</section>
+	</div>
+</div>
+
+{% if content %}
+<div class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-sky-700 prose-a:no-underline hover:prose-a:underline">
+	{{ content }}
+</div>{% endif %}{% if sections %}
+<div class="mt-8 space-y-6">
+	{% for section in sections %}
+		<div class="prose prose-slate max-w-none">{{ section }}</div>
+	{% endfor %}
+</div>{% endif %}</div></section>{# ── Desktop floating contextual nav (hidden on mobile/tablet) ───────────────── #}<section class="hidden lg:block fixed right-0 top-1/2 -translate-y-1/2 z-40 group" aria-label="{{ 'Our Commitment navigation'|t }}"><divclass="flex items-stretch">{# Expanded panel — slides in from right edge on hover #}<div class="flex flex-col justify-center overflow-hidden bg-white border-y border-l border-slate-200 rounded-l-2xl shadow-xl w-0 opacity-0 group-hover:w-56 group-hover:opacity-100 transition-all duration-300 ease-out">
+<div class="min-w-[14rem] px-4 py-5">
+	<p class="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400 whitespace-nowrap">{{ active_nav_parent ? active_nav_parent.title : 'Navigation'|t }}</p>
+	<ul class="space-y-0.5">
+		{% for sub in sub_items %}
+			<li>
+				<a href="{{ sub.url }}" class="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors whitespace-nowrap{% if current_path == sub.url %} bg-slate-100 font-semibold text-slate-900{% else %} text-slate-600 hover:bg-slate-50 hover:text-slate-900{% endif %}">
+					<i class="fa-solid {{ icon_map[sub.url]|default('fa-circle') }} w-4 text-center text-xs{% if current_path == sub.url %} text-[#b13634]{% else %} text-slate-400{% endif %}" aria-hidden="true"></i>
+					{{ sub.title }}
+				</a>
+			</li>
+		{% endfor %}
+	</ul>
+</div></div>{# Tab strip — always visible on right edge, collapses border-radius on hover #}<div class="flex flex-col items-center justify-center gap-2.5 bg-[#b13634] rounded-l-2xl group-hover:rounded-l-none shadow-lg shadow-[#b13634]/30 px-2.5 py-5 min-w-[2.75rem] transition-all duration-300 cursor-default select-none">
+<i class="fa-solid fa-layer-group text-white/90 text-md" aria-hidden="true"></i>
+<div class="w-px h-2 bg-white/30 rounded-full"></div>
+{% for sub in sub_items %}
+	<div class="rounded-full transition-colors {% if current_path == sub.url %}w-2 h-2 bg-white{% else %}w-1.5 h-1.5 bg-white/40 hover:bg-white/70{% endif %}" title="{{ sub.title }}"></div>
+{% endfor %}</div></div></section>

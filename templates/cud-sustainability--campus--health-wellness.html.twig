@@ -124,8 +124,7 @@
 		<div class="block-common-content">
 
 			<ul class="grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4 lg:mb-8" role="list">
-								<li>
-
+				<li>
 					<a href="/sustainability/campus/health-wellness#mental-health-support-main" class="flex items-center gap-3 rounded-lg border border-slate-300 px-4 py-2.5 text-sm text-slate-700 transition-all hover:border-[#b13634]/30 hover:bg-[#b13634]/5 hover:text-slate-900 group/link">
 						<span class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-sky-50 text-sky-600 transition-colors group-hover/link:bg-[#b13634]/10 group-hover/link:text-[#b13634]">
 							<i class="fa-solid fa-brain text-[#b13634] text-base shrink-0" aria-hidden="true"></i>
@@ -136,8 +135,30 @@
 
 				</li>
 				<li>
+					<a href="/sustainability/campus/health-wellness#sexual-reproductive-health" class="flex items-center gap-3 rounded-lg border border-slate-300 px-4 py-2.5 text-sm text-slate-700 transition-all hover:border-[#b13634]/30 hover:bg-[#b13634]/5 hover:text-slate-900 group/link">
+						<span class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-sky-50 text-sky-600 transition-colors group-hover/link:bg-[#b13634]/10 group-hover/link:text-[#b13634]">
+							<i class="fa-solid fa-venus-mars text-[#b13634] text-base shrink-0" aria-hidden="true"></i>
+						</span>
+						<span class="leading-snug">{{ 'Sexual and Reproductive Health-Care'|t }}</span>
+						<i class="fa-solid fa-chevron-right ml-auto text-[10px] text-slate-300 transition-colors group-hover/link:text-[#b13634]" aria-hidden="true"></i>
+					</a>
 
-					<a href="/sustainability/campus/health-wellness#on-campus-physical-fitness-main" class="flex items-center gap-3 rounded-lg border border-slate-300 px-4 py-2.5 text-sm text-slate-700 transition-all hover:border-[#b13634]/30 hover:bg-[#b13634]/5 hover:text-slate-900 group/link">
+				</li>			
+				<li>
+
+					<a href="/sustainability/campus/health-wellness#affordable-healthy-food-on-campus" class="flex items-center gap-3 rounded-lg border border-slate-300 px-4 py-2.5 text-sm text-slate-700 transition-all hover:border-[#b13634]/30 hover:bg-[#b13634]/5 hover:text-slate-900 group/link">
+						<span class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-sky-50 text-sky-600 transition-colors group-hover/link:bg-[#b13634]/10 group-hover/link:text-[#b13634]">
+							<i class="fa-solid fa-apple-whole text-[#b13634] text-base shrink-0" aria-hidden="true"></i>
+						</span>
+						<span class="leading-snug">{{ 'Affordable and Healthy Food Options on Campus'|t }}</span>
+						<i class="fa-solid fa-chevron-right ml-auto text-[10px] text-slate-300 transition-colors group-hover/link:text-[#b13634]" aria-hidden="true"></i>
+					</a>
+
+				</li>
+
+				<li>
+
+					<a href="/sustainability/campus/health-wellness#physical-fitness" class="flex items-center gap-3 rounded-lg border border-slate-300 px-4 py-2.5 text-sm text-slate-700 transition-all hover:border-[#b13634]/30 hover:bg-[#b13634]/5 hover:text-slate-900 group/link">
 						<span class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-sky-50 text-sky-600 transition-colors group-hover/link:bg-[#b13634]/10 group-hover/link:text-[#b13634]">
 							<i class="fa-solid fa-dumbbell text-[#b13634] text-base shrink-0" aria-hidden="true"></i>
 						</span>
@@ -179,7 +200,6 @@
 				<img src="//www.cud.ac.ae/sites/default/files/general/2016/health-centre-1920x1080.jpg" alt="{{ 'CUD Health Centre'|t }}" class="w-full h-auto object-cover rounded-lg shadow" loading="lazy" onload="this.previousElementSibling.style.display='none'"/>
 			</div>
 
-			<a id="mental-health-support-main" name="mental-health-support-main" class="max-h-[1px] h-[1px] overflow-hidden text-[1px]"></a>
 			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'Canadian University Dubai provides free-of-charge medical services to all students.'|t }}</p>
 			<ul class="space-y-2 mb-0">
 				<li class="flex gap-2.5 text-sm text-slate-700">
@@ -188,12 +208,7 @@
 						<strong>{{ 'On-Campus Health Centre:'|t }}</strong>
 						{{ 'Licensed nurses provide first-aid, medical consultations, and vital signs monitoring at no cost to the student body.'|t }}</span>
 				</li>
-				<li class="flex gap-2.5 text-sm text-slate-700">
-					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
-					<span>
-						<strong>{{ 'Sexual and Reproductive Health-Care Guide:'|t }}</strong>
-						{{ 'The licensed nurses are able to provide guidance and advice where appropriate for students and staff who wish to avail to the services.'|t }}</span>
-				</li>
+				
 				<li class="flex gap-2.5 text-sm text-slate-700">
 					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
 					<span>
@@ -209,9 +224,16 @@
 			</ul>
 		</div>
 
+			
+		{# ── Sexual and Reproductive Health-Care Guide ─────────────────────────────── #}
+		<div class="block-common-content" aria-labelledby="sexual-reproductive-health">
+			<h2 id="sexual-reproductive-health" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Sexual and Reproductive Health-Care Guide'|t }}</h2>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The licensed nurses are able to provide guidance and advice where appropriate for students and staff who wish to avail to the services.'|t }}</p>
+		</div>
+
 		{# ── Mental Health Support ─────────────────────────────────────────────── #}
-		<div class="block-common-content" aria-labelledby="heading-mental-health">
-			<h2 id="heading-mental-health" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Mental Health Support'|t }}</h2>
+		<div class="block-common-content" aria-labelledby="mental-health-support-main">
+			<h2 id="mental-health-support-main" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Mental Health Support'|t }}</h2>
 			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'CUD recognizes that mental wellbeing is a cornerstone of social sustainability and academic success. Staff and faculty are also offered mental wellbeing support throughout their entire CUD career.'|t }}</p>
 			<ul class="space-y-2 mb-4">
 				<li class="flex gap-2.5 text-sm text-slate-700">
@@ -259,13 +281,15 @@
 
 		{# ── Food and Exercise ─────────────────────────────────────────────────── #}
 		<div class="block-common-content" aria-labelledby="heading-food-exercise">
-			<h2 id="heading-food-exercise" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Food and Exercise'|t }}</h2>
+			<h1 id="heading-food-exercise" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Food and Exercise'|t }}</h1>
 			<p class="text-slate-700 text-sm leading-relaxed mb-4">{{ 'At Canadian University Dubai, we recognize that healthy and affordable access to food and fitness is essential for a thriving academic community. Our provisions ensure that maintaining a balanced lifestyle is both convenient and financially accessible for all students and staff.'|t }}</p>
+
+			<h2 id="affordable-healthy-food-on-campus" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Affordable and Healthy Food Options on Campus'|t }}</h2>
 
 			<h3 class="text-base font-semibold text-slate-800 mt-4 mb-2">{{ 'CUD Café'|t }}</h3>
 
 			{# ── Café Gallery ── #}
-			<div class="mb-4 flex flex-wrap justify-center gap-3 sm:gap-4" aria-label="{{ 'CUD Gym Gallery'|t }}">
+			<div class="mb-4 flex flex-wrap justify-center gap-3 sm:gap-4" aria-label="{{ 'CUD Café Gallery'|t }}">
 				{% for i in 1..4 %}
 					<figure class="group overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm bg-white w-[calc(50%-0.375rem)] lg:w-[calc(25%-0.75rem)]">
 						<div class="overflow-hidden lazy-loading relative">
@@ -298,7 +322,6 @@
 				</li>
 			</ul>
 
-			<a id="on-campus-physical-fitness-main" name="on-campus-physical-fitness-main" class="max-h-[1px] h-[1px] overflow-hidden text-[1px]"></a>
 			<h3 class="text-base font-semibold text-slate-800 mt-4 mb-2">{{ 'CUDeals'|t }}</h3>
 			<p class="text-slate-700 text-sm leading-relaxed mb-2">{{ 'We extend the affordability of the Dubai lifestyle through the CUDeals program, an exclusive loyalty initiative for the CUD community.'|t }}
 				<strong>{{ 'For all CUDeals, visit'|t }}
@@ -321,11 +344,11 @@
 				</li>
 			</ul>
 
-			<h3 class="text-base font-semibold text-slate-800 mt-4 mb-2">{{ 'On-Campus Physical Fitness'|t }}</h3>
+			<h2 id="physical-fitness" class="text-base font-semibold text-slate-800 mt-4 mb-2">{{ 'On-Campus Physical Fitness'|t }}</h2>
 
 			{# ── Gym Gallery ── #}
 			<div class="mb-4 lg:mb-8 flex flex-wrap justify-center gap-3 sm:gap-4" aria-label="{{ 'CUD Gym Gallery'|t }}">
-				{% for i in 1..5 %}
+				{% for i in 1..4 %}
 					<figure class="group overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm bg-white w-[calc(50%-0.375rem)] lg:w-[calc(25%-0.75rem)]">
 						<div class="overflow-hidden lazy-loading relative">
 							<span class="image-loader absolute inset-0 flex items-center justify-center bg-white/60 z-10">
@@ -339,7 +362,6 @@
 						</div>
 					</figure>
 				{% endfor %}
-				<a id="health-awareness-initiatives-main" name="health-awareness-initiatives-main" class="max-h-[1px] h-[1px] overflow-hidden text-[1px]"></a>
 			</div>
 
 		
@@ -361,8 +383,8 @@
 		</div>
 
 		{# ── Health Awareness Initiatives and Education ────────────────────────── #}
-		<div class="block-common-content" aria-labelledby="heading-health-awareness">
-			<h2 id="heading-health-awareness" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Health Awareness Initiatives and Education'|t }}</h2>
+		<div class="block-common-content" aria-labelledby="health-awareness-initiatives-main">
+			<h2 id="health-awareness-initiatives-main" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Health Awareness Initiatives and Education'|t }}</h2>
 			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'CUD supports the health and wellbeing of its community through on campus health services, counselling, health education, and preventive awareness initiatives.'|t }}</p>
 			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'The CUD Health Centre provides primary healthcare support for students, faculty and staff, including first aid, care for minor illnesses and injuries, health education, disease prevention guidance, and referral support where needed.'|t }}</p>
 			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'CUD also promotes wellbeing through personal counselling and health awareness activities delivered across the academic year.'|t }}</p>

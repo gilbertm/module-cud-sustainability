@@ -125,15 +125,15 @@
 		{# ── Partnership Stats ──────────────────────────────────────────────── #}
 		<div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
 			<div class="rounded-xl border border-slate-200 bg-white p-4 text-center shadow-sm">
-				<p class="text-2xl font-bold text-[#b13634]">16</p>
+				<p class="text-2xl font-bold text-[#b13634]">22</p>
 				<p class="mt-1 text-xs text-slate-500">{{ 'Partner Institutions'|t }}</p>
 			</div>
 			<div class="rounded-xl border border-slate-200 bg-white p-4 text-center shadow-sm">
-				<p class="text-2xl font-bold text-emerald-600">4</p>
+				<p class="text-2xl font-bold text-emerald-600">5</p>
 				<p class="mt-1 text-xs text-slate-500">{{ 'Sectors'|t }}</p>
 			</div>
 			<div class="rounded-xl border border-slate-200 bg-white p-4 text-center shadow-sm">
-				<p class="text-2xl font-bold text-sky-600">5</p>
+				<p class="text-2xl font-bold text-sky-600">8</p>
 				<p class="mt-1 text-xs text-slate-500">{{ 'Academic Partners'|t }}</p>
 			</div>
 			<div class="rounded-xl border border-slate-200 bg-white p-4 text-center shadow-sm">
@@ -149,9 +149,10 @@
 				icon: 'fa-landmark',
 				color: 'bg-[#b13634]/10 text-[#b13634]',
 				partners: [
-					{ name: 'Dubai Municipality'|t, icon: 'fa-city', desc: 'City-wide urban sustainability, infrastructure, and environmental regulation authority.'|t },
-					{ name: 'Authority for Social Contribution (Ma\'an)'|t, icon: 'fa-hands-holding-circle', desc: 'UAE\'s authority championing social contribution and inclusive community development.'|t },
-					{ name: 'Canadian Trade Commission'|t, icon: 'fa-handshake', desc: 'Facilitating bilateral trade and institutional cooperation between Canada and the UAE.'|t },
+					{ name: 'Dubai Municipality'|t, icon: 'fa-city', insitution: 'https://www.dm.gov.ae/', desc: 'City-wide urban sustainability, infrastructure, and environmental regulation authority.'|t },
+					{ name: 'Canadian Trade Commission'|t, icon: 'fa-handshake', insitution: 'https://www.tradecommissioner.gc.ca/en.html', desc: 'Facilitating bilateral trade and institutional cooperation between Canada and the UAE.'|t },
+					{ name: 'ECO Canada'|t, icon: 'fa-tree', insitution: 'https://eco.ca/educators/program-accreditation/current-international-programs/', desc: 'A steward for the Canadian environmental workforce across all industries and aims to promote and drive responsible, sustainable economic growth.'|t },
+					{ name: 'PRME'|t, icon: 'fa-university', insitution: 'https://www.unprme.org/canadian-university-dubai/', desc: 'Principles for Responsible Management Education, promoting sustainability and responsibility in business education.'|t },
 				],
 			},
 			{
@@ -159,10 +160,10 @@
 				icon: 'fa-heart-pulse',
 				color: 'bg-rose-50 text-rose-600',
 				partners: [
-					{ name: 'Emirates Health Economics Society'|t, icon: 'fa-heart-pulse', desc: 'Advancing health economics research, education, and policy in the Emirates.'|t },
-					{ name: 'American Hospital Dubai'|t, icon: 'fa-hospital', desc: 'Leading multi-specialty hospital and healthcare provider in Dubai.'|t },
-					{ name: 'Hope Abilitation Medical Center'|t, icon: 'fa-hand-holding-heart', desc: 'Specialist rehabilitation and abilitation services for people of determination.'|t },
-					{ name: 'uniCare Medical Center'|t, icon: 'fa-user-doctor', desc: 'Comprehensive primary and specialist medical care services across the UAE.'|t },
+					{ name: 'Emirates Health Economics Society'|t, icon: 'fa-heart-pulse', insitution: 'https://ehes.ae/', desc: 'Advancing health economics research, education, and policy in the Emirates.'|t },
+					{ name: 'American Hospital Dubai'|t, icon: 'fa-hospital', insitution: 'https://www.ahdubai.com/', desc: 'Leading multi-specialty hospital and healthcare provider in Dubai.'|t },
+					{ name: 'Hope Abilitation Medical Center'|t, icon: 'fa-hand-holding-heart', insitution: 'https://www.hope-amc.com/', desc: 'Specialist rehabilitation and abilitation services for people of determination.'|t },
+					{ name: 'uniCare Medical Center'|t, icon: 'fa-user-doctor', insitution: 'https://www.unicaredubai.com/', desc: 'Comprehensive primary and specialist medical care services across the UAE.'|t },
 				],
 			},
 			{
@@ -170,10 +171,11 @@
 				icon: 'fa-seedling',
 				color: 'bg-emerald-50 text-emerald-700',
 				partners: [
-					{ name: 'Emirates Park Zoo and Resort'|t, icon: 'fa-paw', desc: 'Abu Dhabi\'s premier zoo committed to wildlife care and biodiversity conservation.'|t },
-					{ name: 'Yas SeaWorld Research & Rescue'|t, icon: 'fa-fish', desc: 'Marine research, animal rescue, and ocean conservation on Yas Island.'|t },
-					{ name: 'Sustainable Development Research & Training Institute'|t, icon: 'fa-seedling', desc: 'Advancing research and capacity building aligned with sustainable development goals.'|t },
-					{ name: 'Climate Institute'|t, icon: 'fa-cloud-sun', desc: 'Dedicated climate research, policy analysis, and environmental advocacy.'|t },
+					{ name: 'Emirates Park Zoo and Resort'|t, icon: 'fa-paw', insitution: 'https://emiratesparkzooandresort.com/', desc: 'Abu Dhabi\'s premier zoo committed to wildlife care and biodiversity conservation.'|t },
+					{ name: 'Yas SeaWorld Research & Rescue'|t, icon: 'fa-fish', insitution: 'https://www.seaworldabudhabi.com/en/research-and-rescue', desc: 'Marine research, animal rescue, and ocean conservation on Yas Island.'|t },
+					{ name: 'Sustainable Development Research & Training Institute'|t, icon: 'fa-seedling', insitution: 'https://institute.ae/', desc: 'Advancing research and capacity building aligned with sustainable development goals.'|t },
+					{ name: 'Climate Institute'|t, icon: 'fa-cloud-sun', insitution: 'https://climate.org/', desc: 'Dedicated climate research, policy analysis, and environmental advocacy.'|t },
+					{ name: 'AZRAQ'|t, icon: 'fa-water', insitution: 'https://azraqme.org/', desc: 'A non-profit marine conservation organisation registered with the Community Development Authority in the UAE on a mission to safeguard and protect the oceanic ecosystem.'|t },
 				],
 			},
 			{
@@ -181,11 +183,22 @@
 				icon: 'fa-building-columns',
 				color: 'bg-sky-50 text-sky-700',
 				partners: [
-					{ name: 'Silk-Road Universities Network'|t, icon: 'fa-globe', desc: 'International network of universities fostering cooperation along the historic Silk Road corridor.'|t },
-					{ name: 'Yunus Centre at Asian Institute of Technology in Thailand'|t, icon: 'fa-graduation-cap', desc: 'Social business and sustainable development research hub based in Bangkok, Thailand.'|t },
-					{ name: 'HEC – Montreal in Canada'|t, icon: 'fa-building-columns', desc: 'One of Canada\'s leading business schools, located in Montreal, Quebec.'|t },
-					{ name: 'Charles Darwin University in Australia'|t, icon: 'fa-building-columns', desc: 'Australian university with a strong focus on sustainability and regional development.'|t },
-					{ name: 'Université de Sherbrooke'|t, icon: 'fa-building-columns', desc: 'Comprehensive research university in Sherbrooke, Quebec, Canada.'|t },
+					{ name: 'Silk-Road Universities Network (SUN)'|t, icon: 'fa-globe', insitution: 'https://sun-silkroadia.org/', desc: 'International network of universities fostering cooperation along the historic Silk Road corridor.'|t },
+					{ name: 'Yonsei University'|t, icon: 'fa-building-columns', insitution: 'https://www.yonsei.ac.kr/en_sc/index.do', desc: 'Yonsei University is one of Korea\'s oldest and most prestigious institutions, consistently ranked among the top private universities in Asia.'|t },
+					{ name: 'University of Oxford'|t, icon: 'fa-building-columns', insitution: 'https://www.ox.ac.uk/', desc: 'Oxford is the oldest university in the English-speaking world and a leading global center for education and research.'|t },
+					{ name: 'University of New Brunswick'|t, icon: 'fa-building-columns', insitution: 'https://www.unb.ca/', desc: 'UNB is Canada\'s oldest English-speaking university that offers up to PhD level study across a broad range of academic fields.'|t },
+					{ name: 'University of Ottawa'|t, icon: 'fa-building-columns', insitution: 'https://www.uottawa.ca/en', desc: 'Founded in 1848, University of Ottawa is the largest bilingual (English-French) university in the world, located in the heart of Canada\'s capital.'|t },
+					{ name: 'The Maldives National University'|t, icon: 'fa-building-columns', insitution: 'https://mnu.edu.mv/', desc: 'MNU, a state-funded institution, serves over half of the tertiary education population in the Maldives. With a mission to create, discover, preserve, and disseminate knowledge.'|t },
+					{ name: 'Yunus Center AIT'|t, icon: 'fa-building-columns', insitution: 'https://www.yunuscenterait.org/', desc: 'YCA\'s vision is to harness the power of social business to create a poverty-free world.'|t },
+					{ name: 'Universiti Teknologi Mara'|t, icon: 'fa-building-columns', insitution: 'https://uitm.edu.my/index.php/en', desc: 'UiTM is the largest comprehensive university in Malaysia, providing innovative education with state-of-the-art infrastructure and technology across the country.'|t },
+				],
+			},
+			{
+				label: 'Industry Partners'|t,
+				icon: 'fa-industry',
+				color: 'bg-amber-50 text-amber-700',
+				partners: [
+					{ name: 'Acumen Light'|t, icon: 'fa-lightbulb', insitution: 'https://www.acumenlight.com/', desc: 'ACUMEN provides a wide variety of cutting-edge technologies in lighting and control systems, working with CUD\'s School of Architecture and Interior Design on sustainable lighting solutions.'|t },
 				],
 			},
 		] %}
@@ -206,7 +219,11 @@
 								{# <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl {{ category.color }} text-lg">
 									<i class="fa-solid {{ partner.icon }}" aria-hidden="true"></i>
 								</span> #}
-								<h3 class="text-sm font-semibold text-slate-800 leading-snug">{{ partner.name }}</h3>
+								<h3 class="text-sm font-semibold text-slate-800 leading-snug">
+									<a href="{{ partner.insitution }}" target="_blank" rel="noopener noreferrer" class="underline-offset-2 hover:underline focus:underline">
+										{{ partner.name }}
+									</a>
+								</h3>
 							</div>
 							<p class="text-xs text-slate-500 leading-relaxed">{{ partner.desc }}</p>
 						</div>

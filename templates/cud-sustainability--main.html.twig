@@ -15,17 +15,17 @@
 {% set research_link_calendar = research_link_overview %}
 
 {% if carousel_slides %}
-	<section class="carousel group relative mb-8 w-screen max-w-none -translate-x-1/2 left-1/2" data-cud-carousel data-cud-carousel-autoplay="5600" aria-label="{{ 'Sustainability highlights carousel'|t }}">
+	<section class="carousel group relative mb-1 lg:mb-8 w-screen max-w-none -translate-x-1/2 left-1/2" data-cud-carousel data-cud-carousel-autoplay="5600" aria-label="{{ 'Sustainability highlights carousel'|t }}">
 		<div class="w-full relative overflow-hidden">
 			<div class="w-full flex transition-transform duration-700 ease-out will-change-transform" data-cud-carousel-track>
 				{% for item in carousel_slides %}
 					<article class="relative min-w-full" data-cud-carousel-slide>
 						{% if item.image %}
-							<div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[360px] overflow-hidden sm:min-h-[420px] lg:min-h-[500px]">
+							<div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] x-min-h-[260px] overflow-hidden md:min-h-[360px] lg:min-h-[500px]">
 								{{ item.image }}
 							</div>
 						{% elseif item.image_url %}
-							<div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] min-h-[360px] overflow-hidden sm:min-h-[420px] lg:min-h-[500px]">
+							<div class="cud-sustainability-carousel__frame w-full aspect-[2.6/1] x-min-h-[260px] overflow-hidden md:min-h-[360px] lg:min-h-[500px]">
 								<img src="{{ item.image_url }}" alt="{{ item.title|default('Sustainability highlight') }}" loading="lazy" class="h-full w-full object-cover">
 							</div>
 						{% endif %}
@@ -41,7 +41,7 @@
 			</div>
 
 			{% if carousel_slides|length > 1 %}
-				<div class="carousel-content-controls">
+				<div class="carousel-content-controls hidden md:block">
 					<button class="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-md bg-slate-950/80 p-2.5 text-slate-100 opacity-0 shadow-xl backdrop-blur-md transition-all duration-500 ease-in-out group-hover:opacity-100 hover:bg-slate-800/90 hover:text-white focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-sky-400 sm:left-6" data-cud-carousel-prev aria-label="{{ 'Previous slide'|t }}">
 						<i class="fa-solid fa-chevron-left h-5 w-5" aria-hidden="true"></i>
 					</button>
@@ -84,8 +84,7 @@
 				<img src="{{ cud_sustainability_asset_path ~ 'images/canadian-university-dubai-front.jpg' }}" alt="Canadian University Dubai campus front" loading="lazy" class="h-full w-full object-cover">
 			</div>
 			<div class="p-5 sm:p-7 lg:col-span-2 lg:p-8">
-				<p class="text-xs font-semibold uppercase tracking-[0.32em] text-slate-600">{{ 'CUD Statement on UAE Net Zero 2050'|t }}</p>
-				<h3 class="mt-3 text-2xl font-semibold cud-color-blue sm:text-3xl">{{ 'Net Zero 2050'|t }}</h3>
+				<h1 class="mt-3 text-2xl font-semibold cud-color-blue sm:text-3xl">{{ 'CUD Statement on UAE Net Zero 2050'|t }}</h1>
 				<p class="mt-3 text-sm text-slate-700 leading-relaxed">{{ 'Canadian University Dubai recognizes its responsibility as an institution of higher education to contribute meaningfully to global climate goals. In alignment with the UAE\'s Net Zero by 2050 Strategic Initiative, the university is committed to progressively reducing its greenhouse gas emissions across its operations, curriculum, and research activities.'|t }}</p>
 				<p class="mt-3 text-sm text-slate-700 leading-relaxed">{{ 'This commitment is reflected in the integration of sustainability principles into academic programs, the promotion of energy-efficient practices across campus operations, and the preparation of graduates equipped to address environmental challenges in their professional fields.'|t }}</p>
 				<p class="mt-3 text-sm text-slate-700 leading-relaxed">{{ 'CUD acknowledges that achieving net zero requires a long-term, institution-wide approach — one that involves students, faculty, staff, and external partners. The university will continue to measure, report, and improve upon its environmental performance, contributing to the broader national and international efforts to limit global temperature rise and build a more sustainable future.'|t }}</p>

@@ -70,8 +70,26 @@
           });
         }
 
+        // Check hash on load to auto-activate a tab.
+        const currentHash = window.location.hash.substring(1);
+        if (currentHash) {
+          const targetBtn = buttons.find(function (b) {
+            return b.getAttribute('data-cud-tab') === currentHash;
+          });
+          if (targetBtn) {
+            activate(targetBtn);
+          }
+        }
+
         buttons.forEach(function (btn, idx) {
           btn.addEventListener('click', function () {
+            // Update hash without jumping for clean URL navigation.
+            const panelId = btn.getAttribute('data-cud-tab');
+            if (window.history.pushState) {
+              window.history.pushState(null, null, '#' + panelId);
+            } else {
+              window.location.hash = panelId;
+            }
             activate(btn);
           });
 

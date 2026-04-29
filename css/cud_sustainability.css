@@ -32,6 +32,54 @@
 
 /* /basic carousel */
 
+
+
+/* anchors */
+:root {
+  --header-height: 145px; /* Default for desktop */
+}
+
+@media (max-width: 1250px) {
+  :root {
+    --header-height: 245px; /* Adjusted for mobile */
+  }
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --header-height: 112px; /* Adjusted for mobile */
+  }
+}
+
+h1[id], h2[id], h3[id], h4[id], h5[id], h6[id] {
+  /* Automatically uses the correct height based on screen size */
+  scroll-margin-top: var(--header-height);
+}
+
+/* Desktop */
+h1[id], h2[id], h3[id], h4[id], h5[id], h6[id] {
+  scroll-margin-top: 145px;
+}
+
+/* Tablet */
+@media (max-width: 1250px) {
+  h1[id], h2[id], h3[id], h4[id], h5[id], h6[id] {
+    scroll-margin-top: 245px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 1024px) {
+  h1[id], h2[id], h3[id], h4[id], h5[id], h6[id] {
+    scroll-margin-top: 112px;
+  }
+}
+
+
+/* /anchors */
+
+
+
 #block-indicud-page-title,
 .visually-hidden {
   display: none !important;
