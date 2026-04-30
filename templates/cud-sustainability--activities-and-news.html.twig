@@ -124,7 +124,7 @@
 
 					<a href="/sustainability/activities-and-news#heading-training-main" class="flex items-center gap-3 rounded-lg border border-slate-300 px-4 py-2.5 text-sm text-slate-700 transition-all hover:border-[#b13634]/30 hover:bg-[#b13634]/5 hover:text-slate-900 group/link">
 						<span class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-sky-50 text-sky-600 transition-colors group-hover/link:bg-[#b13634]/10 group-hover/link:text-[#b13634]">
-							<i class="fa-solid fa-user-graduate text-[#b13634] text-base shrink-0" aria-hidden="true"></i>
+							<i class="fa-solid fa-chalkboard-user text-[#b13634] text-base shrink-0" aria-hidden="true"></i>
 						</span>
 						<span class="leading-snug">{{ 'Mandatory Sustainability Training For Staff and Students'|t }}</span>
 						<i class="fa-solid fa-chevron-right ml-auto text-[10px] text-slate-300 transition-colors group-hover/link:text-[#b13634]" aria-hidden="true"></i>
@@ -167,7 +167,6 @@
 				{% endfor %}
 			</ul>
 			<div class="mt-5 rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-4 sm:p-5">
-				<a id="heading-training-main">&nbsp;</a>
 				<div class="flex items-start gap-4">
 					<div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#b13634]/10 text-[#b13634]">
 						<i class="fa-solid fa-newspaper text-xl" aria-hidden="true"></i>
@@ -186,9 +185,9 @@
 		</div>
 
 		{# ── Sustainability News ──────────────────────────────────────────────── #}
-		<div class="block-common-content" aria-labelledby="heading-training">
-			<h2 id="heading-training" class="text-md md:text-xl font-semibold cud-color-blue mb-4 flex items-center gap-2">
-				<i class="fa-solid fa-user-graduate text-[#b13634] text-base shrink-0" aria-hidden="true"></i>
+		<div class="block-common-content" aria-labelledby="heading-training-main">
+			<h2 id="heading-training-main" class="text-md md:text-xl font-semibold cud-color-blue mb-4 flex items-center gap-2">
+				<i class="fa-solid fa-chalkboard-user text-[#b13634] text-base shrink-0" aria-hidden="true"></i>
 				{{ 'Mandatory Sustainability Training For Staff and Students'|t }}
 			</h2>
 			<div class="prose max-w-none text-slate-700 mb-4 lg:mb-8">
@@ -209,6 +208,31 @@
 						</div>
 					</figure>
 				{% endfor %}
+			</div>
+			<h2 id="heading-training-for-faculty" class="text-md md:text-xl font-semibold cud-color-blue mb-4 flex items-center gap-2">
+				<i class="fa-solid fa-chalkboard-user text-[#b13634] text-base shrink-0" aria-hidden="true"></i>
+				{{ 'Training For Faculty'|t }}
+			</h2>
+			{# ── Training For Faculty Gallery ───────────────────────────────────── #}
+			<div class="mb-4 flex flex-wrap justify-center gap-3 sm:gap-4" aria-label="{{ 'Training For Faculty Gallery'|t }}">
+				{% for i in 1..2 %}
+					<figure class="group overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm bg-white w-[calc(50%-0.375rem)] lg:w-[calc(25%-0.75rem)]">
+						<div class="overflow-hidden lazy-loading relative">
+							<span class="image-loader absolute inset-0 flex items-center justify-center bg-white/60 z-10">
+								<i class="fa-solid fa-arrow-rotate-right animate-spin text-green-700 text-3xl" aria-hidden="true"></i>
+							</span>
+							<img src="{{ cud_sustainability_asset_path ~ 'images/activities-news/faculty-training/faculty-training-0' ~ i ~ '.jpg' }}" alt="{{ 'Training For Faculty'|t }} {{ i }}" class="tc-lightbox w-full h-48 sm:h-56 object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" onload="this.previousElementSibling.style.display='none'">
+						</div>
+					</figure>
+				{% endfor %}
+			</div>
+			<div class="mb-4 text-center justify-center" aria-label="{{ 'Training For Students LinkedIn'|t }}">
+				<a href="https://www.linkedin.com/posts/canadian-university-dubai_canadian-university-dubai-proudly-welcomes-activity-7363934141286936577-XBlL?utm_source=share&utm_medium=member_desktop&rcm=ACoAACnwqCgBznzU_eUzox8QLXMrimOfgzs5kbo" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 rounded-full border border-[#0A66C2]/30 bg-[#0A66C2]/5 px-2.5 py-1 text-[11px] font-medium text-[#0A66C2] transition-colors hover:bg-[#0A66C2]/10" aria-label="{{ 'View original post on LinkedIn'|t }}">
+					<i class="fa-brands fa-linkedin text-[#0A66C2] text-xs" aria-hidden="true"></i>
+					{{ 'View on LinkedIn'|t }}
+					<i class="fa-solid fa-arrow-up-right-from-square text-[9px] opacity-60" aria-hidden="true"></i>
+				</a>
+
 			</div>
 		</div>
 
