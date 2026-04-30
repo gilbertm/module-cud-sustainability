@@ -88,9 +88,11 @@
 
 {# Icon map for all seeded primary nav children, keyed by URL #}
 {% set icon_map = {
+	'/sustainability/campus/cud-residence': 'fa-building',
 	'/sustainability/campus/health-wellness': 'fa-heart-pulse',
 	'/sustainability/campus/sustainable-infrastructure': 'fa-solar-panel',
 	'/sustainability/campus/path-to-net-zero': 'fa-seedling'
+
 } %}
 
 {# Derive sub_items from the matching top-level primary nav parent #}
@@ -179,12 +181,56 @@
 
 				</li>
 
+				<li>
+
+					<a href="/sustainability/campus/health-wellness#heading-comprehensive-health-insurance" class="flex items-center gap-3 rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm transition-all hover:border-[#b13634]/30 hover:bg-[#b13634]/5 hover:text-[#b13634]">
+						<span class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-[#b13634]/10 text-[#b13634] transition-colors group-hover:bg-[#b13634] group-hover:text-white">
+							<i class="fa-solid fa-shield-heart text-base shrink-0" aria-hidden="true"></i>
+						</span>
+						<span class="leading-snug">{{ 'Comprehensive Health and Insurance Coverage'|t }}</span>
+						<i class="fa-solid fa-chevron-right ml-auto text-[10px] text-slate-300 transition-colors group-hover:text-[#b13634]" aria-hidden="true"></i>
+					</a>
+
+				</li>
+
+
+				
+
 			</ul>
 
 
 			<p class="text-slate-700 text-sm leading-relaxed">{{ 'Canadian University Dubai supports the health and wellbeing of its community through on campus health services, personal counselling, and health promotion initiatives. CUD also boasts a wide range of facilities and services for its community – including affordable and healthy food options on and around campus in City Walk, and a well-equipped free-access Gym in the HUB Building on campus.'|t }}</p>
 			<p class="text-slate-700 text-sm leading-relaxed">{{ 'In addition, CUD provides medical and life insurance coverage for faculty and staff, including access to a broad range of healthcare services and, in exceptional cases, further support beyond standard coverage based on individual circumstances and institutional approval.'|t }}</p>
 
+		</div>
+
+		<div class="block-common-content" aria-labelledby="heading-comprehensive-health-insurance">
+			<h2 id="heading-comprehensive-health-insurance" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Comprehensive Health and Insurance Coverage for the CUD Community'|t }}</h2>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'CUD is committed to the health, safety, and well-being of its entire community by providing robust medical and life insurance coverage. Through our third-party provider, eligible employees and their eligible dependents are covered under medical insurance plans that offer an annual maximum benefit of up to AED 500,000. These plans grant access to a broad range of healthcare services, including:'|t }}</p>
+			<ul class="space-y-2 mb-3">
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span><strong>{{ 'Maternity Care:'|t }}</strong> {{ 'In-patient and out-patient benefits up to AED 15,000 for female employees and the spouses of employees.'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span><strong>{{ 'Dental Benefits:'|t }}</strong> {{ 'Provisions covering routine oral examinations, cleanings, extractions, fillings, x-rays, and root canal therapy.'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span><strong>{{ 'Optical Benefits:'|t }}</strong> {{ 'Coverage for vision tests to correct errors of refraction, as well as lenses and frames.'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span><strong>{{ 'Alternative Medicine:'|t }}</strong> {{ 'Support for homeopathy, Ayurveda, chiropractic, osteopathy, and acupuncture treatments.'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span><strong>{{ 'Life Insurance:'|t }}</strong> {{ 'Exclusive life insurance provisions specifically for our employees.'|t }}</span>
+				</li>
+			</ul>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'Recognizing that unique situations arise, CUD may also provide further support beyond standard coverage in exceptional cases, subject to individual circumstances and institutional approval. Beyond insurance, the on-campus CUD Health Centre provides free primary healthcare support, first aid, and disease prevention guidance to all students, faculty, and staff.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'All CUD students are covered under a comprehensive accident insurance plan that protects the student worldwide, 24/7. In addition, the coverage includes force majeure-related incidents, strictly as defined and permitted under the policy schedule, master policy wordings, and applicable endorsements. This includes coverage as per policy limit for events arising from natural disaster and also includes bodily injury from unforeseen circumstances such as passive exposure to war, political violence, or similar situations, where explicitly covered under the policy endorsement.'|t }}</p>
 		</div>
 
 		{# ── CUD Health Centre ────────────────────────────────────────────────── #}

@@ -1,7 +1,7 @@
 {#
 /**
  * @file
- * Inner-page template for /sustainability/campus/path-to-net-zero.
+ * Inner-page template for /sustainability/campus/sustainable-infrastructure.
  *
  * Variables:
  * - title: Page title string.
@@ -92,9 +92,7 @@
 	'/sustainability/campus/health-wellness': 'fa-heart-pulse',
 	'/sustainability/campus/sustainable-infrastructure': 'fa-solar-panel',
 	'/sustainability/campus/path-to-net-zero': 'fa-seedling'
-
 } %}
-
 {# Derive sub_items from the matching top-level primary nav parent #}
 {% set active_nav_parent = null %}
 {% for item in primary_nav %}
@@ -121,86 +119,73 @@
 	<div
 		class="min-w-0 space-y-5">
 
-		{# ── Path to Net Zero 2050 Intro ──────────────────────────────────────── #}
-		<div class="block-common-content">
-			<p class="text-slate-700 text-sm leading-relaxed">{{ 'Canadian University Dubai recognizes its responsibility as an institution of higher education to contribute meaningfully to global climate goals. In alignment with the UAE\'s Net Zero by 2050 Strategic Initiative, the university is committed to progressively reducing its greenhouse gas emissions across its operations, curriculum, and research activities.'|t }}</p>
-			<p class="text-slate-700 text-sm leading-relaxed">{{ 'This commitment is reflected in the integration of sustainability principles into academic programs, the promotion of energy-efficient practices across campus operations, and the preparation of graduates equipped to address environmental challenges in their professional fields.'|t }}</p>
-			<p class="text-slate-700 text-sm leading-relaxed">{{ 'CUD acknowledges that achieving net zero requires a long-term, institution-wide approach — one that involves students, faculty, staff, and external partners. The university will continue to measure, report, and improve upon its environmental performance, contributing to the broader national and international efforts to limit global temperature rise and build a more sustainable future.'|t }}</p>
-		</div>
+		{% set accommodation_gallery = [
+			{
+				src: '//www.cud.ac.ae/sites/default/files/general/2023/student-life/accommodation/thumb/2.jpg',
+				alt: 'CUD student accommodation living space'
+			},
+			{
+				src: '//www.cud.ac.ae/sites/default/files/general/2023/student-life/accommodation/thumb/11.jpg',
+				alt: 'CUD student accommodation bedroom'
+			},
+			{
+				src: '//www.cud.ac.ae/sites/default/files/general/2023/student-life/accommodation/building2_gallery/21.jpg',
+				alt: 'CUD student accommodation building exterior'
+			}
+		] %}
 
-		{# ── Our Strategic Alignment: From Local Action to Global Impact ───────── #}
-		<div class="block-common-content" aria-labelledby="heading-strategic-alignment">
-			<h2 id="heading-strategic-alignment" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Our Strategic Alignment: From Local Action to Global Impact'|t }}</h2>
+		{# ── Sustainable and Connected Campus Living ─────────────────────────── #}
+		<div class="block-common-content" aria-labelledby="heading-campus-living">
+			<h2 id="heading-campus-living" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'Sustainable and Connected Campus Living'|t }}</h2>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'CUD’s student accommodation, available for UAE residents and international students, is located just minutes from our vibrant City Walk campus, offering the perfect blend of convenience, comfort, and mindful living. Our semi-furnished apartments within a premium locality in Dubai provide a modern living experience designed to support both your academic needs and the environment.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'As part of our commitment to sustainable campus life, we encourage eco-friendly commuting. Our accommodation provides a convenient daily shuttle service to and from campus, reducing the need for individual car travel and lowering our collective carbon footprint. Furthermore, with easy access to the Dubai Metro and within walking distance of supermarkets, laundry services, and diverse dining options, residents can easily adopt a highly walkable, low-emission lifestyle.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-4">{{ 'Alongside these green mobility options, these thoughtfully designed apartments come with free high-speed Wi-Fi and included utilities (DEWA). At CUD, our student accommodation offers a comfortable, supportive, and environmentally conscious environment where you can focus on your studies and make the most of your university journey.'|t }}</p>
 
-			<div class="grid gap-3 sm:grid-cols-2">
-				<div class="flex items-start gap-3 rounded-xl border border-slate-200 bg-white p-4 transition-colors hover:border-emerald-200 hover:bg-emerald-50/40">
-					<div class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-50">
-						<i class="fa-solid fa-wind text-xs text-emerald-600" aria-hidden="true"></i>
-					</div>
-					<div>
-						<p class="text-sm font-semibold text-slate-800">{{ 'UAE Net Zero 2050 & Low Emission Development'|t }}</p>
-						<p class="mt-1 text-xs leading-relaxed text-slate-600">{{ 'We are active contributors to the UAE\'s Strategic Initiative to achieve carbon neutrality by 2050. Our campus operations and research initiatives support the nation\'s transition toward a low-carbon, innovation-driven economy.'|t }}</p>
-					</div>
-				</div>
-				<div class="flex items-start gap-3 rounded-xl border border-slate-200 bg-white p-4 transition-colors hover:border-sky-200 hover:bg-sky-50/40">
-					<div class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-sky-50">
-						<i class="fa-solid fa-flag text-xs text-sky-600" aria-hidden="true"></i>
-					</div>
-					<div>
-						<p class="text-sm font-semibold text-slate-800">{{ 'UAE Vision 2031 & Centennial 2071'|t }}</p>
-						<p class="mt-1 text-xs leading-relaxed text-slate-600">{{ 'In support of "We the UAE 2031" and the long-term aspirations of the UAE Centennial 2071, CUD focuses on building human capital and advancing green innovation to position the UAE as a global leader in sustainability.'|t }}</p>
-					</div>
-				</div>
-				<div class="flex items-start gap-3 rounded-xl border border-slate-200 bg-white p-4 transition-colors hover:border-violet-200 hover:bg-violet-50/40">
-					<div class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-violet-50">
-						<i class="fa-solid fa-star text-xs text-violet-600" aria-hidden="true"></i>
-					</div>
-					<div>
-						<p class="text-sm font-semibold text-slate-800">{{ 'CUD "ASPIRE" Core Values'|t }}</p>
-						<div class="mt-1 text-xs leading-relaxed text-slate-600">{{ 'Sustainability and Accountability are two of the foundational elements that drive CUD\'s organizational culture. We integrate environmental protection, social equity, and economic responsibility into all aspects of our operations to foster a more just and resilient future. See:'|t }}
-							<a href="//www.cud.ac.ae/about/mission-and-vision" class="font-medium text-[#b13634] hover:underline" target="_blank" rel="noopener noreferrer">{{ 'CUD\'s Mission and Vision'|t }}</a>
+			<ul class="space-y-2 mb-4">
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span><strong>{{ 'Sustainable mobility:'|t }}</strong> {{ 'Daily shuttle service, nearby Metro access, and a walkable neighborhood help reduce reliance on private car travel.'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span><strong>{{ 'Convenient living:'|t }}</strong> {{ 'Residents benefit from semi-furnished apartments, free high-speed Wi-Fi, included DEWA utilities, and easy access to everyday services.'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span><strong>{{ 'Student-centered environment:'|t }}</strong> {{ 'The residence experience is designed to support wellbeing, academic focus, and a lower-emission lifestyle close to campus.'|t }}</span>
+				</li>
+			</ul>
+
+			<div class="mb-4 grid grid-cols-1 gap-3 md:grid-cols-2 sm:gap-4 lg:grid-cols-3" aria-label="{{ 'CUD Student Accommodation Gallery'|t }}">
+				{% for item in accommodation_gallery %}
+					<figure class="group overflow-hidden rounded-xl ring-1 ring-slate-900/5 shadow-sm bg-white">
+						<div class="overflow-hidden lazy-loading relative">
+							<span class="image-loader absolute inset-0 flex items-center justify-center bg-white/60 z-10">
+								<i class="fa-solid fa-arrow-rotate-right animate-spin text-green-700 text-3xl" aria-hidden="true"></i>
+							</span>
+							<img src="{{ item.src }}"
+								 alt="{{ item.alt|t }}"
+								 class="tc-lightbox w-full h-48 sm:h-56 object-cover transition-transform duration-300 group-hover:scale-105"
+								 loading="lazy"
+								 onload="this.previousElementSibling.style.display='none'">
 						</div>
-					</div>
-				</div>
-				<div class="flex items-start gap-3 rounded-xl border border-slate-200 bg-white p-4 transition-colors hover:border-amber-200 hover:bg-amber-50/40">
-					<div class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-50">
-						<i class="fa-solid fa-globe text-xs text-amber-600" aria-hidden="true"></i>
-					</div>
-					<div>
-						<p class="text-sm font-semibold text-slate-800">{{ 'United Nations Sustainable Development Goals (SDGs)'|t }}</p>
-						<p class="mt-1 text-xs leading-relaxed text-slate-600">{{ 'Our initiatives across Environmental, Social, and Governance (ESG) pillars are designed to advance the UN 2030 Agenda. We take particular pride in our partnership with UN PRME, shaping the future of responsible management education.'|t }}</p>
-					</div>
-				</div>
+					</figure>
+				{% endfor %}
 			</div>
-		</div>
 
-		{# ── CUD Facilities Carbon Performance and Sustainability Roadmap ─────── #}
-		<div class="block-common-content" aria-labelledby="heading-roadmap">
-			<h2 id="heading-roadmap" class="text-md md:text-xl font-semibold cud-color-blue mb-1">{{ 'CUD Facilities Carbon Performance and Sustainability Roadmap: 2026'|t }}</h2>
-			<p class="text-slate-700 text-sm leading-relaxed mb-4">{{ 'Canadian University Dubai is steadfast in its institutional commitment to environmental stewardship, establishing a clear and ambitious trajectory toward carbon neutrality that mirrors the visionary climate goals of the United Arab Emirates. This comprehensive roadmap outlines our strategic approach to decarbonizing our operations and infrastructure in direct harmony with the UAE Net Zero 2050 Strategic Initiative. By integrating advanced energy management, resource circularity, and sustainable mobility into our core operational framework, CUD serves as an academic knowledge hub that translates national priorities into measurable, climate-resilient action.'|t }}</p>
-
-			<div class="flex flex-col items-center gap-4 rounded-xl border border-slate-200 bg-slate-50 px-6 py-5 shadow-sm">
-				<div class="lazy-loading relative w-full">
-					<span class="image-loader absolute inset-0 flex items-center justify-center bg-white/60 z-10">
-						<i class="fa-solid fa-arrow-rotate-right animate-spin text-green-700 text-3xl" aria-hidden="true"></i>
-					</span>
-					<img src="{{ cud_sustainability_asset_path ~ 'images/our-commitment/impact-reporting-03.png' }}"
-						 alt="{{ 'CUD Facilities Carbon Performance and Sustainability Roadmap: 2026'|t }}"
-						 class="w-full h-auto max-w-4xl mx-auto rounded-lg object-contain aspect-[2.4/1]"
-						 loading="lazy"
-						 onload="this.previousElementSibling.style.display='none'">
-				</div>
-				<div class="flex w-full items-center gap-4">
-					<i class="fa-solid fa-file-pdf text-3xl text-[#b13634]" aria-hidden="true"></i>
-					<div class="flex-1">
-						<p class="font-medium text-slate-800">{{ 'CUD Facilities Carbon Performance and Sustainability Roadmap'|t }}</p>
-						<p class="text-sm text-slate-500">2026</p>
-					</div>
-					<a href="/modules/custom/cud_sustainability/assets/pdfs/CUD_Facilities_Sustainability_Roadmap.pdf" class="inline-flex items-center gap-2 rounded-lg bg-[#b13634] px-4 py-2 text-sm font-medium text-white hover:bg-[#922c2a] transition-colors">
-						<i class="fa-solid fa-download" aria-hidden="true"></i>
-						{{ 'Download'|t }}
-					</a>
-				</div>
+			<div class="mt-2">
+				<p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400 mb-3">{{ 'More Information'|t }}</p>
+				<ul class="flex flex-col gap-2">
+					<li>
+						<a href="https://www.cud.ac.ae/life-on-campus/accommodation" class="group flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm transition-all hover:border-[#b13634]/30 hover:bg-[#b13634]/5 hover:text-[#b13634]" target="_blank" rel="noopener noreferrer">
+							<span class="flex items-center gap-2.5">
+								<i class="fa-solid fa-building w-4 text-center text-slate-400 group-hover:text-[#b13634] transition-colors" aria-hidden="true"></i>
+								{{ 'Visit the CUD Accommodation page'|t }}
+							</span>
+							<i class="fa-solid fa-arrow-up-right-from-square text-xs text-slate-300 group-hover:text-[#b13634] transition-all" aria-hidden="true"></i>
+						</a>
+					</li>
+				</ul>
 			</div>
 		</div>
 
