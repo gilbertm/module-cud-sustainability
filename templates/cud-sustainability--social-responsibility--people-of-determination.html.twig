@@ -146,7 +146,7 @@
 						<span class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-sky-50 text-sky-600 transition-colors group-hover/link:bg-[#b13634]/10 group-hover/link:text-[#b13634]">
 							<i class="fa-solid fa-people-group text-[#b13634] text-base shrink-0" aria-hidden="true"></i>
 						</span>
-						<span class="leading-snug">{{ 'People of Determination Accessibility Features on Campus'|t }}</span>
+						<span class="leading-snug">{{ 'Commitment to Accessibility for People of Determination'|t }}</span>
 						<i class="fa-solid fa-chevron-right ml-auto text-[10px] text-slate-300 transition-colors group-hover/link:text-[#b13634]" aria-hidden="true"></i>
 					</a>
 				</li>
@@ -232,8 +232,366 @@
 
 		{# ── People of Determination Accessibility Features on Campus ────────── #}
 		<div class="block-common-content" aria-labelledby="people-of-determination-main">
-			<h2 id="people-of-determination-main" class="text-md md:text-xl font-semibold cud-color-blue mb-4">{{ 'People of Determination Accessibility Features on Campus'|t }}</h2>
-			{% set accessibility_buildings = [
+			<h2 id="people-of-determination-main" class="text-md md:text-xl font-semibold cud-color-blue mb-4">{{ 'Commitment to Accessibility for People of Determination'|t }}</h2>
+			<p class="text-slate-700 text-sm leading-relaxed mb-4">{{ 'At Canadian University Dubai (CUD), accessibility and inclusion are fundamental to creating a welcoming campus environment for all students, employees, and visitors. Our campus is designed to support People of Determination (People with Disabilities) through accessible facilities, dedicated services, and continuous improvements that promote independence, comfort, and equal participation in university life.'|t }}</p>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-4 mb-2">{{ 'Inclusive Campus Services and Facilities'|t }}</h3>
+			<p class="text-slate-700 text-sm leading-relaxed mb-3">{{ 'CUD provides a range of accessibility features across campus to ensure convenient and barrier-free movement between academic, administrative, and student spaces. These include:'|t }}</p>
+			<ul class="space-y-2 mb-6">
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-restroom mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>{{ 'Accessible washrooms strategically located across both campus buildings'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-square-parking mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>{{ 'Dedicated People of Determination parking bays close to entrances'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-wheelchair mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>{{ 'Wheelchairs available on-site for temporary assistance'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-person-walking mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>{{ 'Step-free access and ramps to all major areas'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-elevator mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>{{ 'Elevators providing access between floors'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-route mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>{{ 'Wide corridors and accessible circulation routes'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-bell-concierge mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>{{ 'Supportive reception and security teams ready to assist when needed'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-shield-halved mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>{{ 'Emergency preparedness measures including evacuation chairs and accessible emergency procedures'|t }}</span>
+				</li>
+			</ul>
+
+			<h3 class="text-base font-semibold text-slate-800 mt-4 mb-2">{{ 'Accessible Washrooms'|t }}</h3>
+			<p class="text-slate-700 text-sm leading-relaxed mb-4">{{ 'CUD provides 9 dedicated People of Determination washrooms across the campus, located in convenient areas within both buildings: '|t }}</p>
+			{% set accessibility_buildings_hub_building_accessible_washrooms = [
+				{
+					title: 'HUB Building – 5 Accessible Washrooms '|t,
+					cards: [
+						{ title: 'Ground-floor VIP toilet'|t, alt: 'HUB Building ground-floor VIP accessible toilet'|t, images: ['hub-building-ground-floor-vip-toilet-01-corrected.jpeg', 'hub-building-ground-floor-vip-toilet-02-corrected.jpeg'] },
+						{ title: 'Library first-floor toilet'|t, alt: 'Accessible toilet near the HUB Building library on the first floor'|t, images: ['hub-building-toilet-first-floor-01-corrected.jpeg'] },
+						{ title: 'Kitchen-side first-floor toilet'|t, alt: 'Accessible toilet near the HUB Building kitchen on the first floor'|t, images: ['hub-building-toilet-first-floor-near-kitchen-01-corrected.jpeg'] },
+					],
+				},
+			] %}
+
+			{% for building in accessibility_buildings_hub_building_accessible_washrooms %}
+				<h4 class="text-base font-semibold text-slate-800 mb-3 flex items-center gap-2">
+					<i class="fa-solid fa-building text-[#b13634] text-sm" aria-hidden="true"></i>
+					{{ building.title }}
+				</h4>
+				<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-4">
+					{% for card in building.cards %}
+						{% set image_count = card.images|length %}
+						{% set image_grid_class = image_count == 4 ? 'grid-cols-4' : 'grid-cols-2' %}
+						<div class="flex flex-col gap-2 rounded-xl border border-slate-200 p-3 shadow-sm h-56 sm:h-64 lg:h-72">
+							{% if image_count > 1 %}
+								<div class="grid {{ image_grid_class }} gap-1.5 overflow-hidden h-28 sm:h-32 lg:h-40">
+									{% for image in card.images %}
+										<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/' ~ image }}" alt="{{ card.alt }}" class="w-full h-full max-h-full object-cover rounded-lg tc-lightbox"/>
+									{% endfor %}
+								</div>
+							{% else %}
+								<div class="flex items-center justify-center overflow-hidden h-28 sm:h-32 lg:h-40">
+									<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/' ~ card.images|first }}" alt="{{ card.alt }}" class="w-full h-full max-h-full object-cover rounded-lg tc-lightbox"/>
+								</div>
+							{% endif %}
+							<p class="text-xs font-medium text-slate-700 text-center">{{ card.title }}</p>
+						</div>
+					{% endfor %}
+				</div>
+			{% endfor %}
+			<ul class="space-y-2 mb-4">
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>{{ 'Ground Floor – Near Male Prayer Area'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>{{ 'Ground Floor – Near Fitness Center'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>{{ 'Ground Floor – Behind Theatre'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>{{ 'First Floor – Near Staff Lounge'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>{{ 'First Floor – Behind Library'|t }}</span>
+				</li>
+			</ul>
+
+			{% set accessibility_buildings_som_building_accessible_washrooms = [
+				{
+					title: 'School of Management Building – 4 Accessible Washrooms '|t,
+					cards: [
+						{ title: 'First-floor accessible toilet'|t, alt: 'Management Building first-floor accessible toilet'|t, images: ['management-building-first-floor-toilet-01-corrected.jpeg', 'management-building-first-floor-toilet-02-corrected.jpeg'] },
+						{ title: 'Ground-floor accessible toilet'|t, alt: 'Management Building ground-floor accessible toilet'|t, images: ['management-building-ground-floor-toilet-01-corrected.jpeg', 'management-ground-floor-toilet-02.jpeg'] },
+					],
+				},
+			] %}
+
+			{% for building in accessibility_buildings_som_building_accessible_washrooms %}
+				<h4 class="text-base font-semibold text-slate-800 mb-3 flex items-center gap-2">
+					<i class="fa-solid fa-building text-[#b13634] text-sm" aria-hidden="true"></i>
+					{{ building.title }}
+				</h4>
+				<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-4">
+					{% for card in building.cards %}
+						{% set image_count = card.images|length %}
+						{% set image_grid_class = image_count == 4 ? 'grid-cols-4' : 'grid-cols-2' %}
+						<div class="flex flex-col gap-2 rounded-xl border border-slate-200 p-3 shadow-sm h-56 sm:h-64 lg:h-72">
+							{% if image_count > 1 %}
+								<div class="grid {{ image_grid_class }} gap-1.5 overflow-hidden h-28 sm:h-32 lg:h-40">
+									{% for image in card.images %}
+										<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/' ~ image }}" alt="{{ card.alt }}" class="w-full h-full max-h-full object-cover rounded-lg tc-lightbox"/>
+									{% endfor %}
+								</div>
+							{% else %}
+								<div class="flex items-center justify-center overflow-hidden h-28 sm:h-32 lg:h-40">
+									<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/' ~ card.images|first }}" alt="{{ card.alt }}" class="w-full h-full max-h-full object-cover rounded-lg tc-lightbox"/>
+								</div>
+							{% endif %}
+							<p class="text-xs font-medium text-slate-700 text-center">{{ card.title }}</p>
+						</div>
+					{% endfor %}
+				</div>
+			{% endfor %}
+			<ul class="space-y-2 mb-4">
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>{{ 'Ground Floor – Behind President Office (Male)'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>{{ 'Ground Floor – Behind President Office (Female)'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>{{ 'First Floor – Behind ICT Office (Male)'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>{{ 'First Floor – Behind ICT Office (Female)'|t }}</span>
+				</li>
+			</ul>
+
+			<p class="text-slate-700 text-sm leading-relaxed mb-4">{{ 'These washrooms are designed with accessible layouts, grab rails, maneuvering space, and user-friendly fixtures to ensure safety and comfort. '|t }}</p>
+			<h3 class="text-base font-semibold text-slate-800 mt-4 mb-2">{{ 'Wheelchair Availability'|t }}</h3>
+			<p class="text-slate-700 text-sm leading-relaxed mb-4">{{ 'Wheelchairs are available at key service points across campus for students, visitors, and guests requiring mobility support: '|t }}</p>
+			<ul class="space-y-2 mb-4">
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>{{ 'HUB Building – Ground Floor Clinic: 2 wheelchairs'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>{{ 'HUB Building – Main Reception: 1 wheelchair'|t }}</span>
+				</li>
+				<li class="flex gap-2.5 text-sm text-slate-700">
+					<i class="fa-solid fa-circle-check mt-0.5 w-4 shrink-0 text-[#b13634]" aria-hidden="true"></i>
+					<span>{{ 'SoM Building – Ground Floor Clinic: 2 wheelchairs'|t }}</span>
+				</li>
+			</ul>
+			{% set accessibility_buildings_wheelchair_availability = [
+				{
+					title: 'Wheelchair Availability'|t,
+					cards: [
+						{ title: 'SOM Clinic wheelchairs'|t, alt: 'Wheelchairs available at the Management Building clinic'|t, images: ['management-building-wheelchairs-at-the-clinic-01-corrected.jpeg'] },
+						{ title: 'HUB Reception and clinic wheelchairs'|t, alt: 'Wheelchairs available near HUB Building reception and clinic'|t, images: ['hub-building-wheelchair-reception-clinic-01-corrected.jpeg', 'hub-building-wheelchair-reception-clinic-02-corrected.jpeg'] },
+					],
+				},
+			] %}
+
+			{% for building in accessibility_buildings_wheelchair_availability %}
+				<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-4">
+					{% for card in building.cards %}
+						{% set image_count = card.images|length %}
+						{% set image_grid_class = image_count == 4 ? 'grid-cols-4' : 'grid-cols-2' %}
+						<div class="flex flex-col gap-2 rounded-xl border border-slate-200 p-3 shadow-sm h-56 sm:h-64 lg:h-72">
+							{% if image_count > 1 %}
+								<div class="grid {{ image_grid_class }} gap-1.5 overflow-hidden h-28 sm:h-32 lg:h-40">
+									{% for image in card.images %}
+										<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/' ~ image }}" alt="{{ card.alt }}" class="w-full h-full max-h-full object-cover rounded-lg tc-lightbox"/>
+									{% endfor %}
+								</div>
+							{% else %}
+								<div class="flex items-center justify-center overflow-hidden h-28 sm:h-32 lg:h-40">
+									<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/' ~ card.images|first }}" alt="{{ card.alt }}" class="w-full h-full max-h-full object-cover rounded-lg tc-lightbox"/>
+								</div>
+							{% endif %}
+							<p class="text-xs font-medium text-slate-700 text-center">{{ card.title }}</p>
+						</div>
+					{% endfor %}
+				</div>
+			{% endfor %}
+			<p class="text-slate-700 text-sm leading-relaxed mb-4">{{ 'Our teams are available to assist with wheelchair access whenever required.'|t }}</p>
+			
+			<h3 class="text-base font-semibold text-slate-800 mt-4 mb-2">{{ 'Dedicated Parking Facilities'|t }}</h3>
+			<p class="text-slate-700 text-sm leading-relaxed mb-4">{{ 'CUD provides 20 designated parking spaces for People of Determination (People with Disabilities) within the car parking areas. These spaces are positioned for convenient access to building entrances and major pathways, helping ensure a smooth arrival experience. '|t }}</p>
+			{% set accessibility_buildings_dedicated_parking = [
+				{
+					title: 'Dedicated Parking Facilities'|t,
+					cards: [
+						{ title: 'SOM Designated car park'|t, alt: 'Management Building designated parking for people of determination'|t, images: ['management-building-pod-designated-carpark-01-corrected.jpeg'] },
+						{ title: 'HUB Designated parking'|t, alt: 'HUB Building designated parking for people of determination'|t, images: ['hub-building-pod-designated-parking-01-corrected.jpeg'] },
+					],
+				},
+			] %}
+
+			{% for building in accessibility_buildings_dedicated_parking %}
+				<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-4">
+					{% for card in building.cards %}
+						{% set image_count = card.images|length %}
+						{% set image_grid_class = image_count == 4 ? 'grid-cols-4' : 'grid-cols-2' %}
+						<div class="flex flex-col gap-2 rounded-xl border border-slate-200 p-3 shadow-sm h-56 sm:h-64 lg:h-72">
+							{% if image_count > 1 %}
+								<div class="grid {{ image_grid_class }} gap-1.5 overflow-hidden h-28 sm:h-32 lg:h-40">
+									{% for image in card.images %}
+										<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/' ~ image }}" alt="{{ card.alt }}" class="w-full h-full max-h-full object-cover rounded-lg tc-lightbox"/>
+									{% endfor %}
+								</div>
+							{% else %}
+								<div class="flex items-center justify-center overflow-hidden h-28 sm:h-32 lg:h-40">
+									<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/' ~ card.images|first }}" alt="{{ card.alt }}" class="w-full h-full max-h-full object-cover rounded-lg tc-lightbox"/>
+								</div>
+							{% endif %}
+							<p class="text-xs font-medium text-slate-700 text-center">{{ card.title }}</p>
+						</div>
+					{% endfor %}
+				</div>
+			{% endfor %}
+
+			<h3 class="text-base font-semibold text-slate-800 mt-4 mb-2">{{ 'Ramps and Step-Free Access'|t }}</h3>
+			<p class="text-slate-700 text-sm leading-relaxed mb-4">{{ 'The campus is designed with accessibility in mind, offering ramps and step-free routes to support movement throughout all key areas. Ramps are available at entrances and across internal circulation points, including access to offices, classrooms, theatre areas, recruitment offices, and shared student spaces. This ensures that People of Determination (People with Disabilities) can move independently and comfortably across campus. '|t }}</p>
+			{% set accessibility_buildings_ramps_step_free_access = [
+				{
+					title: 'Ramps and Step-Free Access'|t,
+					cards: [
+						{ title: 'SOM Backside exit ramp'|t, alt: 'Management Building backside exit ramp'|t, images: ['management-building-ramp-backside-exit-01-corrected.jpeg'] },
+						{ title: 'HUB Recruitment offices'|t, alt: 'HUB Building recruitment offices accessibility feature'|t, images: ['hub-building-recruitment-offices-01-corrected.jpeg'] },
+						{ title: 'HUB New offices entrance'|t, alt: 'Accessible entrance to the new offices in HUB Building'|t, images: ['hub-building-entrance-new-offices-01-corrected.jpeg'] },
+						{ title: 'HUB Theatre seating areas'|t, alt: 'Theatre seating accessibility area in HUB Building'|t, images: ['hub-building-theatre-seating-areas-01-corrected.jpeg', 'hub-building-theatre-seating-areas-02-corrected.jpeg'] },
+					],
+				},
+			] %}
+
+			{% for building in accessibility_buildings_ramps_step_free_access %}
+				<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-4">
+					{% for card in building.cards %}
+						{% set image_count = card.images|length %}
+						{% set image_grid_class = image_count == 4 ? 'grid-cols-4' : 'grid-cols-2' %}
+						<div class="flex flex-col gap-2 rounded-xl border border-slate-200 p-3 shadow-sm h-56 sm:h-64 lg:h-72">
+							{% if image_count > 1 %}
+								<div class="grid {{ image_grid_class }} gap-1.5 overflow-hidden h-28 sm:h-32 lg:h-40">
+									{% for image in card.images %}
+										<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/' ~ image }}" alt="{{ card.alt }}" class="w-full h-full max-h-full object-cover rounded-lg tc-lightbox"/>
+									{% endfor %}
+								</div>
+							{% else %}
+								<div class="flex items-center justify-center overflow-hidden h-28 sm:h-32 lg:h-40">
+									<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/' ~ card.images|first }}" alt="{{ card.alt }}" class="w-full h-full max-h-full object-cover rounded-lg tc-lightbox"/>
+								</div>
+							{% endif %}
+							<p class="text-xs font-medium text-slate-700 text-center">{{ card.title }}</p>
+						</div>
+					{% endfor %}
+				</div>
+			{% endfor %}
+
+			<h3 class="text-base font-semibold text-slate-800 mt-4 mb-2">{{ 'Elevators and Vertical Access'|t }}</h3>
+			<p class="text-slate-700 text-sm leading-relaxed mb-4">{{ 'Both campus buildings are equipped with elevators that provide safe and convenient access between floors.'|t }}</p>
+			<p class="text-slate-700 text-sm leading-relaxed mb-4">{{ 'Elevators connect classrooms, offices, library areas, student services, and other facilities, ensuring seamless movement for wheelchair users and individuals with mobility needs. '|t }}</p>
+			
+			{% set accessibility_buildings_elevators_and_vertical_access = [
+				{
+					title: 'Elevators and Vertical Access'|t,
+					cards: [
+						{ title: 'First-floor access elevator'|t, alt: 'HUB Building elevator providing access to the first floor'|t, images: ['hub-building-elevator-access-to-first-floor-01-corrected.jpeg'] },
+						{ title: 'Library and offices elevator access'|t, alt: 'HUB Building elevator access to the library and offices'|t, images: ['hub-building-elevator-access-to-library-and-offices-01-corrected.jpeg', 'hub-building-elevator-access-to-library-and-offices-02-corrected.png'] },
+					],
+				},
+			] %}
+
+			{% for building in accessibility_buildings_elevators_and_vertical_access %}
+				<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-4">
+					{% for card in building.cards %}
+						{% set image_count = card.images|length %}
+						{% set image_grid_class = image_count == 4 ? 'grid-cols-4' : 'grid-cols-2' %}
+						<div class="flex flex-col gap-2 rounded-xl border border-slate-200 p-3 shadow-sm h-56 sm:h-64 lg:h-72">
+							{% if image_count > 1 %}
+								<div class="grid {{ image_grid_class }} gap-1.5 overflow-hidden h-28 sm:h-32 lg:h-40">
+									{% for image in card.images %}
+										<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/' ~ image }}" alt="{{ card.alt }}" class="w-full h-full max-h-full object-cover rounded-lg tc-lightbox"/>
+									{% endfor %}
+								</div>
+							{% else %}
+								<div class="flex items-center justify-center overflow-hidden h-28 sm:h-32 lg:h-40">
+									<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/' ~ card.images|first }}" alt="{{ card.alt }}" class="w-full h-full max-h-full object-cover rounded-lg tc-lightbox"/>
+								</div>
+							{% endif %}
+							<p class="text-xs font-medium text-slate-700 text-center">{{ card.title }}</p>
+						</div>
+					{% endfor %}
+				</div>
+			{% endfor %}
+
+			<h3 class="text-base font-semibold text-slate-800 mt-4 mb-2">{{ 'Safety and Emergency Readiness'|t }}</h3>
+			<p class="text-slate-700 text-sm leading-relaxed mb-4">{{ 'CUD is committed to inclusive safety standards. Emergency evacuation chairs are available on campus, and emergency response procedures consider the needs of People of Determination (People with Disabilities). Trained staff are available to provide assistance when required.'|t }}</p>
+			
+			{% set accessibility_buildings_safety_and_emergency_readiness = [
+				{
+					title: 'Safety and Emergency Readiness'|t,
+					cards: [
+						{ title: 'Evacuation chairs'|t, alt: 'Evacuation chairs in HUB Building'|t, images: ['hub-building-evacuation-chairs-01-corrected.png'] },
+					],
+				},
+			] %}
+
+			{% for building in accessibility_buildings_safety_and_emergency_readiness %}
+				<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-4">
+					{% for card in building.cards %}
+						{% set image_count = card.images|length %}
+						{% set image_grid_class = image_count == 4 ? 'grid-cols-4' : 'grid-cols-2' %}
+						<div class="flex flex-col gap-2 rounded-xl border border-slate-200 p-3 shadow-sm h-56 sm:h-64 lg:h-72">
+							{% if image_count > 1 %}
+								<div class="grid {{ image_grid_class }} gap-1.5 overflow-hidden h-28 sm:h-32 lg:h-40">
+									{% for image in card.images %}
+										<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/' ~ image }}" alt="{{ card.alt }}" class="w-full h-full max-h-full object-cover rounded-lg tc-lightbox"/>
+									{% endfor %}
+								</div>
+							{% else %}
+								<div class="flex items-center justify-center overflow-hidden h-28 sm:h-32 lg:h-40">
+									<img src="{{ cud_sustainability_asset_path ~ 'images/social-responsibility/accessibility/' ~ card.images|first }}" alt="{{ card.alt }}" class="w-full h-full max-h-full object-cover rounded-lg tc-lightbox"/>
+								</div>
+							{% endif %}
+							<p class="text-xs font-medium text-slate-700 text-center">{{ card.title }}</p>
+						</div>
+					{% endfor %}
+				</div>
+			{% endfor %}
+
+			<h3 class="text-base font-semibold text-slate-800 mt-4 mb-2">{{ 'Commitment to Accessibility'|t }}</h3>
+			<p class="text-slate-700 text-sm leading-relaxed mb-4">{{ 'Canadian University Dubai continues to enhance its facilities and services to ensure an inclusive learning and working environment. Accessibility is an essential part of our sustainability and social responsibility commitment, helping create a campus where everyone can thrive.'|t }}</p>
+			
+		
+
+
+
+			{# % set accessibility_buildings = [
 				{
 					title: 'Management Building'|t,
 					cards: [
@@ -260,9 +618,9 @@
 						{ title: 'Library and offices elevator access'|t, alt: 'HUB Building elevator access to the library and offices'|t, images: ['hub-building-elevator-access-to-library-and-offices-01-corrected.jpeg', 'hub-building-elevator-access-to-library-and-offices-02-corrected.png'] },
 					],
 				},
-			] %}
+			] % }
 
-			{% for building in accessibility_buildings %}
+			{ % for building in accessibility_buildings % }
 				<h3 class="text-base font-semibold text-slate-800 mt-5 mb-3 flex items-center gap-2">
 					<i class="fa-solid fa-building text-[#b13634] text-sm" aria-hidden="true"></i>
 					{{ building.title }}
@@ -287,7 +645,7 @@
 						</div>
 					{% endfor %}
 				</div>
-			{% endfor %}
+			{ % endfor % #}
 		</div>
 
 		{% if content %}
