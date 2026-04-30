@@ -17,5 +17,7 @@ Thumbs.db
 *.swo
 
 *.tar.gz
+*.md
+*.MD
 
 contents/
