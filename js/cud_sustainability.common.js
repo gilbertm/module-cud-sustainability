@@ -229,6 +229,62 @@
         }, 3500);
       });
 
+      // ── Generic filterable list (select + cards/items) ─────────────────
+      // Reusable wiring for any page that needs client-side category filtering.
+      // Required: <select data-cud-filter-control ...>
+      // Optional data attributes on select:
+      //   data-cud-filter-target="#list-id"
+      //   data-cud-filter-item-selector="[data-category]"
+      //   data-cud-filter-item-attr="data-category"
+      //   data-cud-filter-count-target="#count-id"
+      //   data-cud-filter-count-singular="policy"
+      //   data-cud-filter-count-plural="policies"
+      context.querySelectorAll('select[data-cud-filter-control]').forEach(function (select) {
+        if (select.dataset.cudFilterInit) return;
+        select.dataset.cudFilterInit = '1';
+
+        var targetSelector = select.getAttribute('data-cud-filter-target');
+        var itemSelector = select.getAttribute('data-cud-filter-item-selector') ||
+          '[data-cud-filter-value],[data-policy-category],[data-filter-category]';
+        var itemAttr = select.getAttribute('data-cud-filter-item-attr');
+        var countSelector = select.getAttribute('data-cud-filter-count-target');
+        var singular = select.getAttribute('data-cud-filter-count-singular') || Drupal.t('item');
+        var plural = select.getAttribute('data-cud-filter-count-plural') || Drupal.t('items');
+
+        var list = targetSelector ? document.querySelector(targetSelector) : null;
+        if (!list) return;
+
+        var countEl = countSelector ? document.querySelector(countSelector) : null;
+
+        function getItemValue(item) {
+          if (itemAttr) {
+            return item.getAttribute(itemAttr) || '';
+          }
+          return item.dataset.cudFilterValue || item.dataset.policyCategory || item.dataset.filterCategory || '';
+        }
+
+        function refreshFilteredList() {
+          var selected = select.value;
+          var count = 0;
+
+          list.querySelectorAll(itemSelector).forEach(function (item) {
+            var value = getItemValue(item);
+            var visible = !selected || value === selected;
+            item.hidden = !visible;
+            if (visible) {
+              count += 1;
+            }
+          });
+
+          if (countEl) {
+            countEl.textContent = count + ' ' + (count === 1 ? singular : plural);
+          }
+        }
+
+        select.addEventListener('change', refreshFilteredList);
+        refreshFilteredList();
+      });
+
     }
   };
 
